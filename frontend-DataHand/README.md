@@ -20,6 +20,27 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Pre-Scripts in `package.json`
+
+We use `predev` script in our `package.json` file, which will automatically run before `npm run dev` starts. Here’s an example:
+
+```json
+"scripts": {
+  "predev": "npm install",  // This will run 'npm install' before 'next dev'
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start"
+}
+```
+
+### With this setup:
+- When someone runs `npm run dev`, it will first execute `npm install` (if necessary) to ensure that all dependencies are installed.
+- After that, the `next dev` command will be executed to start the development server.
+
+### Considerations
+- **Efficiency**: `npm install` only installs dependencies if something is missing or if there are changes in `package.json` or `package-lock.json`, so this step won’t affect performance if the dependencies are already installed.
+- **Flexibility**: Users won’t have to remember to manually install dependencies before running the project for the first time.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
