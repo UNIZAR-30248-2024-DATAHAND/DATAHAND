@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Restablecer márgenes y padding */
 * {
   margin: 0;
   padding: 0;
@@ -31,3 +30,22 @@ body {
     text-wrap: balance;
   }
 }
+
+.input-field {
+  background: transparent;
+  border-bottom: 2px solid white;
+  color: white;
+  padding: 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-field:focus {
+  outline: none;
+  border-bottom: 2px solid #A855F7;
+  color: #A855F7;
+}
+
+.input-field::placeholder {
+  color: #D1D5DB;
+}
+
