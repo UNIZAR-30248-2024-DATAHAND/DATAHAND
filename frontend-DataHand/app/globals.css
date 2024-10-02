@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Restablecer márgenes y padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
