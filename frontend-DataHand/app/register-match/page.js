@@ -5,7 +5,7 @@ export default function Home() {
     return (
         <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 overflow-hidden">
             <h1 className="text-5xl font-bold mb-4 text-white" style={{fontFamily: 'var(--font-geist-sans)'}}>
-                Bienvenido a DataHand
+                Partido
             </h1>
             <p className="text-lg text-center text-gray-100 mb-8" style={{fontFamily: 'var(--font-geist-sans)'}}>
                 Elige una opción para continuar

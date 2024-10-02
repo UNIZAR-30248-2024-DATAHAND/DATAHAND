@@ -6,7 +6,7 @@ export default function Login() {
         <div className="relative h-screen flex bg-orange-500 justify-center overflow-hidden">
             {/* Fondo de olas */}
             <Image
-                src="/images/waves_bg_login.svg" // Ruta del archivo SVG
+                src="/images/waves_bg_login.svg"
                 alt="Background Waves"
                 layout="fill"
                 objectFit="cover"

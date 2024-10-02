@@ -5,16 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/components/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/components/layout.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/register-match/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/home/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/home/page.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,7 +69,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1727884259401</updated>
-      <workItem from="1727884260629" duration="6073000" />
+      <workItem from="1727884260629" duration="7891000" />
     </task>
     <servers />
   </component>
