@@ -3,7 +3,20 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import { useState } from "react"; // Importa useState
+
 export default function Home() {
+
+    const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
+
+    const handleGolClick = () => {
+        setShowPopup(true); // Muestra el popup
+    };
+
+    const handleClosePopup = () => {
+        setShowPopup(false); // Oculta el popup
+    };
+
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
@@ -17,7 +30,7 @@ export default function Home() {
                     {/* Equipo 1 */}
                     <div className="flex items-center mr-8">
                         <Image 
-                            src="/path/to/escudo1.png" // Cambia este path por el de tu escudo
+                            src="/path/to/escudo1.png" // Cambiar este path 
                             alt="Escudo Equipo 1"
                             width={50}
                             height={50}
@@ -29,7 +42,7 @@ export default function Home() {
                     {/* Equipo 2 */}
                     <div className="flex items-center">
                         <Image 
-                            src="/path/to/escudo2.png" // Cambia este path por el de tu escudo
+                            src="/path/to/escudo2.png" // Cambiar este path 
                             alt="Escudo Equipo 2"
                             width={50}
                             height={50}
@@ -134,7 +147,13 @@ export default function Home() {
                         <h2 className="text-lg font-semibold text-black mb-2">Resultado</h2>
                         <div className="flex justify-between mb-2">
                             {["Gol", "Parada", "Palo/Fuera", "Perdida de balon"].map((resultado) => (
-                                <button key={resultado} className="bg-yellow-500 text-white px-4 py-3 rounded-lg">{resultado}</button>
+                                <button 
+                                    key={resultado} 
+                                    className="bg-yellow-500 text-white px-4 py-3 rounded-lg"
+                                    onClick={resultado === "Gol" ? handleGolClick : null} // Llama a handleGolClick si es "Gol"
+                                >
+                                    {resultado}
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -143,8 +162,8 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Acciones</h2>
                         <div className="grid grid-cols-3 gap-2">
-                            {[1, 2, 3, 4, 5, 6].map((accion) => (
-                                <button key={accion} className="bg-green-500 text-white px-4 py-3 rounded-lg">Acción {accion}</button>
+                            {["Falta", "Lanzamiento bloqueado", "2 Min provocado", "7m provocado", "1c1 ganado", "7m + 2min"].map((accion) => (
+                                <button key={accion} className="bg-green-500 text-white px-4 py-3 rounded-lg"> {accion}</button>
                             ))}
                         </div>
                     </div>
@@ -153,8 +172,8 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Suspensiones</h2>
                         <div className="flex justify-between mb-2">
-                            {[1, 2, 3, 4].map((suspension) => (
-                                <button key={suspension} className="bg-blue-500 text-white px-4 py-3 rounded-lg">Suspensión {suspension}</button>
+                            {["2 Minutos", "Tarjeta amarilla", "Tarjeta roja", "Tarjeta azul"].map((suspension) => (
+                                <button key={suspension} className="bg-blue-500 text-white px-4 py-3 rounded-lg"> {suspension}</button>
                             ))}
                         </div>
                     </div>
@@ -237,16 +256,26 @@ export default function Home() {
                     </div>
                     
                 </div>
+        
             </div>
 
-            <div className="flex flex-col gap-4 w-full max-w-xs">
-                <Link href="/">
-                    <button
-                        className="bg-transparent text-black border-2 border-black p-3 rounded-full w-full font-semibold hover:bg-black hover:text-white transition duration-300 ease-in-out text-center" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-                        Salir
-                    </button>
-                </Link>
-            </div>
+            {/* Popup para Gol */}
+            {showPopup && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    {/* Popup ocupa una gran parte de la pantalla */}
+                    <div className="bg-white rounded-lg p-6 w-[80vw] h-[80vh] overflow-auto flex flex-col items-center justify-center">
+                        <h2 className="text-3xl font-bold text-black mb-4">¡Gol!</h2>
+                        <p className="text-lg text-black mb-6">Se ha registrado un gol.</p>
+                        <button 
+                            className="mt-4 bg-blue-500 text-white px-6 py-3 rounded" 
+                            onClick={handleClosePopup} // Cierra el popup
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
