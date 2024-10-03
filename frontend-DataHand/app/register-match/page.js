@@ -69,23 +69,23 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Tiempo Muerto</h2>
                         <div className="flex justify-between mb-2">
-                            <button className="bg-blue-500 text-white px-3 py-3 rounded-lg">Botón 1</button>
-                            <button className="bg-green-500 text-white px-3 py-3 rounded-lg">Botón 2</button>
-                            <button className="bg-red-500 text-white px-3 py-3 rounded-lg">Botón 3</button>
+                            <button className="bg-blue-500 text-white px-3 py-3 rounded-lg">Primero</button>
+                            <button className="bg-green-500 text-white px-3 py-3 rounded-lg">Segundo</button>
+                            <button className="bg-red-500 text-white px-3 py-3 rounded-lg">Tercero</button>
                         </div>
                     </div>
 
                     {/* Sección Portero */}
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Portero</h2>
-                        <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Seleccionar Portero</button>
+                        <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Seleccionar Portero</button> {/* 888:esto sera variable */}
                     </div>
 
                     {/* Sección Jugadores */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2>
+                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2> {/* 888:esto sera variable */}
                         <div className="grid grid-cols-3 gap-2">
-                            {[1, 2, 3, 4, 5, 6].map((jugador) => (
+                            {[1, 2, 3, 4, 5, 6].map((jugador) => ( 
                                 <button key={jugador} className="bg-green-500 text-white px-3 py-3 rounded-lg">Jugador {jugador}</button>
                             ))}
                         </div>
@@ -103,17 +103,16 @@ export default function Home() {
 
                     {/* Sección Sistema Defensivo */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Sistema Defensivo</h2>
-                        <div className="flex gap-2">
-                            {[1, 2, 3, 4, 5].map((check) => (
-                                <div key={check} className="flex items-center">
-                                    <input type="checkbox" className="mr-2" id={`check-${check}`} />
-                                    <label htmlFor={`check-${check}`} className="text-black">Opción {check}</label>
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2> {/* Aumentado a text-xl */}
+                        <div className="flex gap-2 flex-wrap">
+                            {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
+                                <div key={index} className="flex items-center">
+                                    <input type="checkbox" className="mr-2" id={`check-${index}`} />
+                                    <label htmlFor={`check-${index}`} className="text-black text-lg">{opcion}</label> {/* Aumentado a text-lg */}
                                 </div>
                             ))}
                         </div>
-                    </div>
-                    
+                    </div>                    
                 </div>
                 
                 {/* Rectángulo 2 (más grande) */}
@@ -124,9 +123,9 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Fases de Juego</h2>
                         <div className="flex justify-between mb-2">
-                            <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Fase 1</button>
-                            <button className="bg-green-500 text-white px-4 py-3 rounded-lg">Fase 2</button>
-                            <button className="bg-red-500 text-white px-4 py-3 rounded-lg">Fase 3</button>
+                            <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Ataque Posicional</button>
+                            <button className="bg-green-500 text-white px-4 py-3 rounded-lg">Contragol</button>
+                            <button className="bg-red-500 text-white px-4 py-3 rounded-lg">Contrataque</button>
                         </div>
                     </div>
 
@@ -134,8 +133,8 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Resultado</h2>
                         <div className="flex justify-between mb-2">
-                            {[1, 2, 3, 4].map((resultado) => (
-                                <button key={resultado} className="bg-yellow-500 text-white px-4 py-3 rounded-lg">Resultado {resultado}</button>
+                            {["Gol", "Parada", "Palo/Fuera", "Perdida de balon"].map((resultado) => (
+                                <button key={resultado} className="bg-yellow-500 text-white px-4 py-3 rounded-lg">{resultado}</button>
                             ))}
                         </div>
                     </div>
@@ -192,9 +191,9 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Tiempo Muerto</h2>
                         <div className="flex justify-between mb-2">
-                            <button className="bg-blue-500 text-white px-3 py-3 rounded-lg">Botón 1</button>
-                            <button className="bg-green-500 text-white px-3 py-3 rounded-lg">Botón 2</button>
-                            <button className="bg-red-500 text-white px-3 py-3 rounded-lg">Botón 3</button>
+                            <button className="bg-blue-500 text-white px-3 py-3 rounded-lg">Primero</button>
+                            <button className="bg-green-500 text-white px-3 py-3 rounded-lg">Segundo</button>
+                            <button className="bg-red-500 text-white px-3 py-3 rounded-lg">Tercero</button>
                         </div>
                     </div>
 
@@ -226,12 +225,12 @@ export default function Home() {
 
                     {/* Sección Sistema Defensivo */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Sistema Defensivo</h2>
-                        <div className="flex gap-2">
-                            {[1, 2, 3, 4, 5].map((check) => (
-                                <div key={check} className="flex items-center">
-                                    <input type="checkbox" className="mr-2" id={`check-${check}`} />
-                                    <label htmlFor={`check-${check}`} className="text-black">Opción {check}</label>
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2> {/* Aumentado a text-xl */}
+                        <div className="flex gap-2 flex-wrap">
+                            {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
+                                <div key={index} className="flex items-center">
+                                    <input type="checkbox" className="mr-2" id={`check-${index}`} />
+                                    <label htmlFor={`check-${index}`} className="text-black text-lg">{opcion}</label> {/* Aumentado a text-lg */}
                                 </div>
                             ))}
                         </div>
