@@ -1,0 +1,20 @@
+.waveButton {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .waveButton::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: transform 0.6s ease-in-out;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  
+  .waveButton:hover::before {
+    transform: translate(-50%, -50%) rotate(45deg) translate(-150%, -150%);
+  }

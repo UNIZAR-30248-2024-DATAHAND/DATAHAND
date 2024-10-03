@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import Sidebar from "../components/Sidebar"
 
 export default function Home() {
     return (
         <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 overflow-hidden">
+          <Sidebar />
             <h1 className="text-5xl font-bold mb-4 text-white" style={{fontFamily: 'var(--font-geist-sans)'}}>
                 Bienvenido a DataHand
             </h1>
