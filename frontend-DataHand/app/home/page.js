@@ -17,6 +17,12 @@ export default function Home() {
                         Registrar Partido
                     </button>
                 </Link>
+                <Link href="/profile">
+                    <button
+                        className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+                        Perfil Entrenador
+                    </button>
+                </Link>
                 <Link href="/">
                     <button
                         className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center" style={{ fontFamily: 'var(--font-geist-sans)' }}>
