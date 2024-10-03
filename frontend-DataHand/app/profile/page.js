@@ -48,7 +48,7 @@ export default function Home() {
                     {/* Imagen centrada */}
                     <div className="flex justify-center items-center h-full">
                         <Image 
-                            src="/public/image/logo.png" // Cambiar este path 
+                            src="/image/logo.png" // Cambiar este path 
                             alt="Imagen predefinida"
                             width={150}
                             height={150}
@@ -67,8 +67,18 @@ export default function Home() {
             </div>
 
             {/* Rectángulo debajo de los cuadrados */}
-            <div className="w-[85vw] max-w-[1048px] h-[10vw] max-h-[150px] bg-white rounded-lg flex items-center justify-center mb-12">
-                <p className="text-2xl text-orange-500 font-semibold">Este es el rectángulo</p>
+            <div className="w-[85vw] max-w-[1048px] h-[10vw] max-h-[150px] bg-white rounded-lg flex flex-col justify-center mb-12">
+                {/* Fila de partidos */}
+                {['Partido 1', 'Partido 2', 'Partido 3'].map((partido, index) => (
+                    <div key={index} className="flex justify-between items-center p-2 border-b">
+                        <p className="text-2xl text-orange-500 font-semibold">{partido}</p>
+                        <div className="flex gap-2">
+                            <button className="bg-blue-500 text-white px-4 py-2 rounded">Editar</button>
+                            <button className="bg-green-500 text-white px-4 py-2 rounded">Ver</button>
+                            <button className="bg-red-500 text-white px-4 py-2 rounded">Borrar</button>
+                        </div>
+                    </div>
+                ))}
             </div>
 
             <div className="flex flex-col gap-4 w-full max-w-xs">
