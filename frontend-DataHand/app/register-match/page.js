@@ -70,6 +70,12 @@ export default function Home() {
                 </div>
 
                 <button className="bg-gray-300 text-black px-4 py-2 rounded">UNDO</button>
+                <Link href="/">
+                    <button
+                        className="bg-red-600 text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
+                        Salir
+                    </button>
+                </Link>
             </div>
 
             {/* Fila de tres rectángulos */}
@@ -116,16 +122,21 @@ export default function Home() {
 
                     {/* Sección Sistema Defensivo */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2> {/* Aumentado a text-xl */}
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2>
                         <div className="flex gap-2 flex-wrap">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
-                                    <input type="checkbox" className="mr-2" id={`check-${index}`} />
-                                    <label htmlFor={`check-${index}`} className="text-black text-lg">{opcion}</label> {/* Aumentado a text-lg */}
+                                    <input 
+                                        type="radio" 
+                                        name="sistemaDefensivo" // El mismo nombre para agrupar los radios
+                                        className="mr-2" 
+                                        id={`radio-${index}`} 
+                                    />
+                                    <label htmlFor={`radio-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
-                    </div>                    
+                    </div>               
                 </div>
                 
                 {/* Rectángulo 2 (más grande) */}
@@ -244,12 +255,17 @@ export default function Home() {
 
                     {/* Sección Sistema Defensivo */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2> {/* Aumentado a text-xl */}
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2>
                         <div className="flex gap-2 flex-wrap">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
-                                    <input type="checkbox" className="mr-2" id={`check-${index}`} />
-                                    <label htmlFor={`check-${index}`} className="text-black text-lg">{opcion}</label> {/* Aumentado a text-lg */}
+                                    <input 
+                                        type="radio" 
+                                        name="sistemaDefensivo" // El mismo nombre para agrupar los radios
+                                        className="mr-2" 
+                                        id={`radio-${index}`} 
+                                    />
+                                    <label htmlFor={`radio-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
