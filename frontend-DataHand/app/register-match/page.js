@@ -117,8 +117,71 @@ export default function Home() {
                 </div>
                 
                 {/* Rectángulo 2 (más grande) */}
-                <div className="flex-[1.5] h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4">
+                <div className="flex-[1.5] h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     <p className="text-xl font-semibold text-black text-center">Rectángulo 2 (Más Grande)</p>
+
+                    {/* Sección Fases de Juego */}
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-black mb-2">Fases de Juego</h2>
+                        <div className="flex justify-between mb-2">
+                            <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Fase 1</button>
+                            <button className="bg-green-500 text-white px-4 py-3 rounded-lg">Fase 2</button>
+                            <button className="bg-red-500 text-white px-4 py-3 rounded-lg">Fase 3</button>
+                        </div>
+                    </div>
+
+                    {/* Sección Resultado */}
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-black mb-2">Resultado</h2>
+                        <div className="flex justify-between mb-2">
+                            {[1, 2, 3, 4].map((resultado) => (
+                                <button key={resultado} className="bg-yellow-500 text-white px-4 py-3 rounded-lg">Resultado {resultado}</button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Sección Acciones */}
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-black mb-2">Acciones</h2>
+                        <div className="grid grid-cols-3 gap-2">
+                            {[1, 2, 3, 4, 5, 6].map((accion) => (
+                                <button key={accion} className="bg-green-500 text-white px-4 py-3 rounded-lg">Acción {accion}</button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Sección Suspensiones */}
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-black mb-2">Suspensiones</h2>
+                        <div className="flex justify-between mb-2">
+                            {[1, 2, 3, 4].map((suspension) => (
+                                <button key={suspension} className="bg-blue-500 text-white px-4 py-3 rounded-lg">Suspensión {suspension}</button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Tabla */}
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-black mb-2">Tabla</h2>
+                        <table className="w-full text-left border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="border border-gray-300 px-4 py-2">Jugador</th>
+                                    <th className="border border-gray-300 px-4 py-2">Acción</th>
+                                    <th className="border border-gray-300 px-4 py-2">Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[1, 2, 3].map((fila) => (
+                                    <tr key={fila}>
+                                        <td className="border border-gray-300 px-4 py-2">Jugador {fila}</td>
+                                        <td className="border border-gray-300 px-4 py-2">Acción {fila}</td>
+                                        <td className="border border-gray-300 px-4 py-2">Resultado {fila}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 
                 {/* Rectángulo 3 */}
