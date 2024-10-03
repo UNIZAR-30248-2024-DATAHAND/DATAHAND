@@ -67,10 +67,10 @@ export default function Home() {
             </div>
 
             {/* Rectángulo debajo de los cuadrados */}
-            <div className="w-[85vw] max-w-[1048px] h-[10vw] max-h-[150px] bg-white rounded-lg flex flex-col justify-center mb-12">
+            <div className="w-[85vw] max-w-[1048px] bg-gray-200 rounded-lg flex flex-col justify-center mb-12 p-4">
                 {/* Fila de partidos */}
                 {['Partido 1', 'Partido 2', 'Partido 3'].map((partido, index) => (
-                    <div key={index} className="flex justify-between items-center p-2 border-b">
+                    <div key={index} className="flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded">
                         <p className="text-2xl text-orange-500 font-semibold">{partido}</p>
                         <div className="flex gap-2">
                             <button className="bg-blue-500 text-white px-4 py-2 rounded">Editar</button>
@@ -82,15 +82,9 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-4 w-full max-w-xs">
-                <Link href="/register-match">
-                    <button
-                        className="bg-transparent text-white border-2 border-white p-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center">
-                        Registrar Partido
-                    </button>
-                </Link>
                 <Link href="/">
                     <button
-                        className="bg-transparent text-white border-2 border-white p-3 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center">
+                        className="bg-transparent text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
                         Salir
                     </button>
                 </Link>
