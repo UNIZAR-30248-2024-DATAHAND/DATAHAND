@@ -7,7 +7,67 @@ import { useState } from "react"; // Importa useState
 
 export default function Home() {
 
+    /*
+    Cosas TO DO:
+    - Cambiar los paths de las imágenes de los escudos
+    - Crear structs para los jugadores y banquillo, para poder intercambiarlos
+    - Marcar jugador, fase de juego y resultado para que salga PopUp
+    - Marcar jugador, fase de juego y accion/suspension para guardar dato
+
+    */
+
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
+    
+    //EQUIPO LOCAL, falta portero
+    const [jugadoresLocal, setJugadoresLocal] = useState([1, 2, 3, 4, 5, 6]);
+    const [banquilloLocal, setBanquilloLocal] = useState([7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    const [seleccionadoLocal, setSeleccionadoLocal] = useState(null); // Para manejar el jugador seleccionado
+
+    //EQUIPO VISITANTE, falta portero
+    //Esto lo vamos a hacer metiendo un ID de equipo y editaremos las funciones para que se adapten a los dos equipos
+
+    // Función para seleccionar un jugador o banquillo
+    const seleccionarJugadorLocal = (index, tipo) => {
+        if (seleccionadoLocal) {
+            intercambiarPosicionesLocal(index, tipo); // Intercambiar si ya hay un jugador seleccionado
+        } else {
+            setSeleccionadoLocal({ index, tipo }); // Seleccionar el jugador o banquillo
+        }
+    };
+
+    // Función para intercambiar posiciones entre jugador y banquillo
+    const intercambiarPosicionesLocal = (index, tipo) => {
+        if (seleccionadoLocal.tipo === tipo) {
+            // Si se seleccionan dos del mismo tipo, intercambia entre ellos
+            if (tipo === "jugador") {
+                const nuevosJugadoresLocal = [...jugadoresLocal];
+                [nuevosJugadoresLocal[seleccionadoLocal.index], nuevosJugadoresLocal[index]] = [nuevosJugadoresLocal[index], nuevosJugadoresLocal[seleccionadoLocal.index]];
+                setJugadoresLocal(nuevosJugadoresLocal);
+            } else {
+                const nuevoBanquilloLocal = [...banquilloLocal];
+                [nuevoBanquilloLocal[seleccionadoLocal.index], nuevoBanquilloLocal[index]] = [nuevoBanquilloLocal[index], nuevoBanquilloLocal[seleccionadoLocal.index]];
+                setBanquilloLocal(nuevoBanquilloLocal);
+            }
+        } else {
+            // Si seleccionas un jugador y luego un banquillo o viceversa
+            const nuevosJugadoresLocal = [...jugadoresLocal];
+            const nuevoBanquilloLocal= [...banquilloLocal];
+
+            if (tipo === "jugador") {
+                // Intercambio entre banquillo y jugadores
+                [nuevoBanquilloLocal[seleccionadoLocal.index], nuevosJugadoresLocal[index]] = [nuevosJugadoresLocal[index], nuevoBanquilloLocal[seleccionadoLocal.index]];
+            } else {
+                [nuevosJugadoresLocal[seleccionadoLocal.index], nuevoBanquilloLocal[index]] = [nuevoBanquilloLocal[index], nuevosJugadoresLocal[seleccionadoLocal.index]];
+            }
+
+            setJugadoresLocal(nuevosJugadoresLocal);
+            setBanquilloLocal(nuevoBanquilloLocal);
+        }
+
+        // Reiniciar selección después de intercambiar
+        setSeleccionadoLocal(null);
+    };
+
 
     const handleGolClick = () => {
         setShowPopup(true); // Muestra el popup
@@ -82,7 +142,7 @@ export default function Home() {
             <div className="flex justify-between w-full mb-12 flex-grow">
                 {/* Rectángulo 1 */}
                 <div className="flex-1 h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
-                    <p className="text-xl font-semibold text-black text-center">Rectángulo 1</p>
+                    <p className="text-xl font-semibold text-black text-center">Equipo Local</p>
 
                     {/* Sección Tiempo Muerto dentro del Rectángulo 1 */}
                     <div className="mt-4">
@@ -97,15 +157,25 @@ export default function Home() {
                     {/* Sección Portero */}
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Portero</h2>
-                        <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Seleccionar Portero</button> {/* 888:esto sera variable */}
+                        <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Portero 1</button> {/* 888:esto sera variable */}
                     </div>
 
                     {/* Sección Jugadores */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2> {/* 888:esto sera variable */}
+                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2>
                         <div className="grid grid-cols-3 gap-2">
-                            {[1, 2, 3, 4, 5, 6].map((jugador) => ( 
-                                <button key={jugador} className="bg-green-500 text-white px-3 py-3 rounded-lg">Jugador {jugador}</button>
+                            {jugadoresLocal.map((jugador, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => seleccionarJugadorLocal(index, "jugador")}
+                                    className={`${
+                                        seleccionadoLocal?.index === index && seleccionadoLocal?.tipo === "jugador"
+                                            ? "bg-red-500"
+                                            : "bg-green-500"
+                                    } text-white px-3 py-3 rounded-lg`}
+                                >
+                                    Jugador {jugador}
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -114,8 +184,18 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Banquillo</h2>
                         <div className="grid grid-cols-3 gap-2">
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((banquillo) => (
-                                <button key={banquillo} className="bg-yellow-500 text-white px-3 py-3 rounded-lg">Banquillo {banquillo}</button>
+                            {banquilloLocal.map((jugador, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => seleccionarJugadorLocal(index, "banquillo")}
+                                    className={`${
+                                        seleccionadoLocal?.index === index && seleccionadoLocal?.tipo === "banquillo"
+                                            ? "bg-red-500"
+                                            : "bg-yellow-500"
+                                    } text-white px-3 py-3 rounded-lg`}
+                                >
+                                    Jugador {jugador}
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -141,7 +221,7 @@ export default function Home() {
                 
                 {/* Rectángulo 2 (más grande) */}
                 <div className="flex-[1.5] h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
-                    <p className="text-xl font-semibold text-black text-center">Rectángulo 2 (Más Grande)</p>
+                    <p className="text-xl font-semibold text-black text-center">Acciones del juego</p>
 
                     {/* Sección Fases de Juego */}
                     <div className="mt-4">
@@ -215,7 +295,7 @@ export default function Home() {
                 
                 {/* Rectángulo 3 */}
                 <div className="flex-1 h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
-                    <p className="text-xl font-semibold text-black text-center">Rectángulo 1</p>
+                    <p className="text-xl font-semibold text-black text-center">Equipo visitante</p>
 
                     {/* Sección Tiempo Muerto dentro del Rectángulo 1 */}
                     <div className="mt-4">
@@ -261,7 +341,7 @@ export default function Home() {
                                 <div key={index} className="flex items-center">
                                     <input 
                                         type="radio" 
-                                        name="sistemaDefensivo" // El mismo nombre para agrupar los radios
+                                        name="sistemaDefensivo2" // El mismo nombre para agrupar los radios
                                         className="mr-2" 
                                         id={`radio-${index}`} 
                                     />

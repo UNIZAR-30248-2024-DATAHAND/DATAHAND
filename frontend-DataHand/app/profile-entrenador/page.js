@@ -86,7 +86,14 @@ export default function Home() {
                     </div>
                 ))}
             </div>
-
+            <div className="flex flex-col gap-4 w-full max-w-xs">
+                <Link href="/register-match">
+                    <button
+                        className="bg-transparent text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
+                        Partido
+                    </button>
+                </Link>
+            </div>
             <div className="flex flex-col gap-4 w-full max-w-xs">
                 <Link href="/">
                     <button
