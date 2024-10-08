@@ -10,7 +10,6 @@ export default function Home() {
     /*
     Cosas TO DO:
     - Cambiar los paths de las imágenes de los escudos
-    - Crear structs para los jugadores y banquillo, para poder intercambiarlos
     - Marcar jugador, fase de juego y resultado para que salga PopUp
     - Marcar jugador, fase de juego y accion/suspension para guardar dato
 
@@ -18,21 +17,25 @@ export default function Home() {
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
-   // Estado inicial para ambos equipos, con 2 porteros
-   const [equipos, setEquipos] = useState({
-        local: {
-            jugadores: [1, 2, 3, 4, 5, 6],
-            banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
-            porteros: [15, 16], // Dos porteros
-        },
-        visitante: {
-            jugadores: [17, 18, 19, 20, 21, 22],
-            banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
-            porteros: [31, 32], // Dos porteros
-        },
-    });
+    // Estado inicial para ambos equipos, con 2 porteros
+    const [equipos, setEquipos] = useState({
+            local: {
+                jugadores: [1, 2, 3, 4, 5, 6],
+                banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
+                porteros: [15, 16], // Dos porteros
+            },
+            visitante: {
+                jugadores: [17, 18, 19, 20, 21, 22],
+                banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
+                porteros: [31, 32], // Dos porteros
+            },
+        });
 
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
+    const [faseDeJuego, setFaseDeJuego] = useState(null);
+    const [resultado, setResultado] = useState(null);
+
+    //const showPopup = seleccionado.index !== null && faseDeJuego !== null && resultado !== null;
 
     // Función para seleccionar un jugador o banquillo
     const seleccionarJugador = (equipo, index, tipo) => {
@@ -128,12 +131,19 @@ export default function Home() {
     };
 
 
-    const handleGolClick = () => {
-        setShowPopup(true); // Muestra el popup
+    const handleAccionClick = () => {
+        // Verificar las condiciones antes de mostrar el popup
+        if (seleccionado.equipo !== null && faseDeJuego !== null && resultado !== null) {
+            setShowPopup(true); // Muestra el popup
+        }
     };
 
     const handleClosePopup = () => {
         setShowPopup(false); // Oculta el popup
+        // Opcional: Resetear estados si es necesario
+        setFaseDeJuego(null);
+        setResultado(null);
+        setSeleccionado({ equipo: null, index: null, tipo: null });
     };
 
     return (
@@ -309,9 +319,24 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Fases de Juego</h2>
                         <div className="flex justify-between mb-2">
-                            <button className="bg-blue-500 text-white px-4 py-3 rounded-lg">Ataque Posicional</button>
-                            <button className="bg-green-500 text-white px-4 py-3 rounded-lg">Contragol</button>
-                            <button className="bg-red-500 text-white px-4 py-3 rounded-lg">Contrataque</button>
+                            <button 
+                                className={`bg-blue-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === 'ataquePosicional' ? 'opacity-80' : ''}`}
+                                onClick={() => setFaseDeJuego('ataquePosicional')} // Actualiza el estado
+                            >
+                                Ataque Posicional
+                            </button>
+                            <button 
+                                className={`bg-green-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === 'contragol' ? 'opacity-80' : ''}`}
+                                onClick={() => setFaseDeJuego('contragol')} // Actualiza el estado
+                            >
+                                Contragol
+                            </button>
+                            <button 
+                                className={`bg-red-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === 'contrataque' ? 'opacity-80' : ''}`}
+                                onClick={() => setFaseDeJuego('contrataque')} // Actualiza el estado
+                            >
+                                Contrataque
+                            </button>
                         </div>
                     </div>
 
@@ -322,8 +347,11 @@ export default function Home() {
                             {["Gol", "Parada", "Palo/Fuera", "Perdida de balon"].map((resultado) => (
                                 <button 
                                     key={resultado} 
-                                    className="bg-yellow-500 text-white px-4 py-3 rounded-lg"
-                                    onClick={resultado === "Gol" ? handleGolClick : null} // Llama a handleGolClick si es "Gol"
+                                    className={`bg-yellow-500 text-white px-4 py-3 rounded-lg ${resultado === resultado ? 'opacity-80' : ''}`}
+                                    onClick={() => {
+                                        setResultado(resultado); // Actualiza el estado
+                                        handleAccionClick();
+                                    }}
                                 >
                                     {resultado}
                                 </button>
