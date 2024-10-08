@@ -133,7 +133,11 @@ export default function Home() {
 
     const handleAccionClick = () => {
         // Verificar las condiciones antes de mostrar el popup
-        if (seleccionado.equipo !== null && faseDeJuego !== null && resultado !== null) {
+        console.log("Intentando registrar una accion...");
+        console.log(faseDeJuego);
+        console.log(resultado);
+        if (seleccionado.tipo == "jugador" && faseDeJuego !== null && resultado !== null) {
+            console.log("Muestro PopUp");
             setShowPopup(true); // Muestra el popup
         }
     };
@@ -350,6 +354,7 @@ export default function Home() {
                                     className={`bg-yellow-500 text-white px-4 py-3 rounded-lg ${resultado === resultado ? 'opacity-80' : ''}`}
                                     onClick={() => {
                                         setResultado(resultado); // Actualiza el estado
+                                        //Aqui hay un problema, no se actualiza el estado de resultado
                                         handleAccionClick();
                                     }}
                                 >
