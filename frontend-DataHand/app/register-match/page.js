@@ -67,6 +67,12 @@ export default function Home() {
             return;
         }
 
+        // Verificar que los jugadores pertenecen al mismo equipo
+        if (seleccionado.equipo !== equipo) {
+            alert("No se puede intercambiar jugadores entre equipos diferentes.");
+            return;
+        }
+
         // Intercambio
         if (seleccionado.tipo === tipo) {
             if (tipo === "jugador") {
@@ -215,7 +221,7 @@ export default function Home() {
                             <button
                                 onClick={() => seleccionarJugador("local", 0, "portero")}
                                 className={`${
-                                    seleccionado?.index === 0 && seleccionado?.tipo === "portero"
+                                    seleccionado?.equipo === "local" && seleccionado?.index === 0 && seleccionado?.tipo === "portero"
                                         ? "bg-red-500"
                                         : "bg-blue-500"
                                 } text-white px-3 py-3 rounded-lg`}
@@ -234,7 +240,7 @@ export default function Home() {
                                     key={index}
                                     onClick={() => seleccionarJugador("local", index, "jugador")}
                                     className={`${
-                                        seleccionado?.index === index && seleccionado?.tipo === "jugador"
+                                        seleccionado?.equipo === "local" &&  seleccionado?.index === index && seleccionado?.tipo === "jugador"
                                             ? "bg-red-500"
                                             : "bg-green-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -254,7 +260,7 @@ export default function Home() {
                                     key={index}
                                     onClick={() => seleccionarJugador("local", index, "banquillo")}
                                     className={`${
-                                        seleccionado?.index === index && seleccionado?.tipo === "banquillo"
+                                        seleccionado?.equipo === "local" &&  seleccionado?.index === index && seleccionado?.tipo === "banquillo"
                                             ? "bg-red-500"
                                             : "bg-yellow-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -266,7 +272,7 @@ export default function Home() {
                             <button
                                 onClick={() => seleccionarJugador("local", 1, "portero")}
                                 className={`${
-                                    seleccionado?.index === 1 && seleccionado?.tipo === "portero"
+                                    seleccionado?.equipo === "local" &&  seleccionado?.index === 1 && seleccionado?.tipo === "portero"
                                         ? "bg-red-500"
                                         : "bg-blue-500"
                                 } text-white px-3 py-3 rounded-lg`}
@@ -389,9 +395,9 @@ export default function Home() {
                         <div className="grid grid-cols-2 gap-2">
                             {/* Solo se muestra un portero aquí */}
                             <button
-                                onClick={() => seleccionarJugador("local", 0, "portero")}
+                                onClick={() => seleccionarJugador("visitante", 0, "portero")}
                                 className={`${
-                                    seleccionado?.index === 0 && seleccionado?.tipo === "portero"
+                                    seleccionado?.equipo === "visitante" && seleccionado?.index === 0 && seleccionado?.tipo === "portero"
                                         ? "bg-red-500"
                                         : "bg-blue-500"
                                 } text-white px-3 py-3 rounded-lg`}
@@ -408,9 +414,9 @@ export default function Home() {
                             {equipos.visitante.jugadores.map((jugador, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => seleccionarJugador("local", index, "jugador")}
+                                    onClick={() => seleccionarJugador("visitante", index, "jugador")}
                                     className={`${
-                                        seleccionado?.index === index && seleccionado?.tipo === "jugador"
+                                        seleccionado?.equipo === "visitante" && seleccionado?.index === index && seleccionado?.tipo === "jugador"
                                             ? "bg-red-500"
                                             : "bg-green-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -428,9 +434,9 @@ export default function Home() {
                             {equipos.visitante.banquillo.map((jugador, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => seleccionarJugador("local", index, "banquillo")}
+                                    onClick={() => seleccionarJugador("visitante", index, "banquillo")}
                                     className={`${
-                                        seleccionado?.index === index && seleccionado?.tipo === "banquillo"
+                                        seleccionado?.equipo === "visitante" && seleccionado?.index === index && seleccionado?.tipo === "banquillo"
                                             ? "bg-red-500"
                                             : "bg-yellow-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -440,9 +446,9 @@ export default function Home() {
                             ))}
                             {/* Agregar el segundo portero al banquillo */}
                             <button
-                                onClick={() => seleccionarJugador("local", 1, "portero")}
+                                onClick={() => seleccionarJugador("visitante", 1, "portero")}
                                 className={`${
-                                    seleccionado?.index === 1 && seleccionado?.tipo === "portero"
+                                    seleccionado?.equipo === "visitante" &&  seleccionado?.index === 1 && seleccionado?.tipo === "portero"
                                         ? "bg-red-500"
                                         : "bg-blue-500"
                                 } text-white px-3 py-3 rounded-lg`}
