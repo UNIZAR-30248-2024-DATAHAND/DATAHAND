@@ -348,17 +348,19 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Resultado</h2>
                         <div className="flex justify-between mb-2">
-                            {["Gol", "Parada", "Palo/Fuera", "Perdida de balon"].map((resultado) => (
+                            {["Gol", "Parada", "Palo/Fuera", "Perdida de balon"].map((opcionResultado) => (
                                 <button 
-                                    key={resultado} 
-                                    className={`bg-yellow-500 text-white px-4 py-3 rounded-lg ${resultado === resultado ? 'opacity-80' : ''}`}
+                                    key={opcionResultado} 
+                                    className={`bg-yellow-500 text-white px-4 py-3 rounded-lg ${resultado === opcionResultado ? 'opacity-80' : ''}`}
                                     onClick={() => {
-                                        setResultado(resultado); // Actualiza el estado
+                                        console.log("Seccion resultado");
+                                        console.log(opcionResultado);
+                                        setResultado(opcionResultado); // Actualiza el estado
                                         //Aqui hay un problema, no se actualiza el estado de resultado
                                         handleAccionClick();
                                     }}
                                 >
-                                    {resultado}
+                                    {opcionResultado}
                                 </button>
                             ))}
                         </div>
