@@ -1,42 +1,79 @@
-// app/components/Sidebar.js
-
 "use client"; // Esto marca el componente como Client Component
 
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-import styles from '../styles/Sidebar.module.css'; // Para manejar la animación del botón
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-purple-600 to-purple-400 shadow-lg flex flex-col items-center py-6 rounded-r-3xl">
-    {/* Logo y título */}
-        <div className="flex items-center mb-10">
+    <div 
+      className={`fixed top-0 left-0 h-full bg-gradient-to-b from-purple-600 to-purple-400 shadow-lg flex flex-col items-center py-6 rounded-r-3xl border-r-8 border-black transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+    >
+      {/* Logo y título */}
+      <div className="flex items-center mb-10 mr-2">
         <Image src="/images/logo.png" alt="DataHand Logo" width={80} height={80} />
-        <h1 className="text-3xl font-bold text-white ml-3">DataHand</h1>
-    </div>
+        <h1 className="text-3xl font-bold text-white ml-3">DataHand </h1>
+      </div>
 
-    {/* Botón de registrar partido */}
-    <div className="mt-6 w-full px-4">
-        <Link href="/register-match">
-            <button
-                className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-center" 
-                style={{ fontFamily: 'var(--font-geist-sans)' }}
-                >
-                {/* Icono de + */}
-                <Image 
-                    src="/images/icon_plus.svg" 
-                    alt="Registrar partido" 
-                    width={30} 
-                    height={30} 
-                    className="mr-2"
-                />
-                Registrar partido
-            </button>
+      {/* Botones */}
+      <div className="mt-6 w-full px-4">
+        <Link href="/profile-entrenador">
+          <button
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4" 
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            <Image src="/images/icon_profile.svg" alt="Perfil" width={30} height={30} />
+            Perfil
+          </button>
         </Link>
-    </div>
 
-      {/* Aquí puedes agregar más elementos al menú o contenido */}
+        <Link href="/register-match">
+          <button
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4" 
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            <Image src="/images/icon_plus.svg" alt="Registrar partido" width={30} height={30} />
+            Registrar partido
+          </button>
+        </Link>
+
+        <Link href="/stats">
+          <button
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4" 
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            <Image src="/images/icon_stats.svg" alt="Estadisticas" width={30} height={30} />
+            Estadísticas
+          </button>
+        </Link>
+
+        <Link href="/">
+          <button
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3"
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            <Image src="/images/icon_logout.svg" alt="Salir" width={30} height={30} />
+            Salir
+          </button>
+        </Link>
+      </div>
+
+      {/* Botón de abrir/cerrar (icono flecha derecha) */}
+      <div className="absolute top-1/2 -right-12 transform -translate-y-1/2 cursor-pointer" onClick={toggleSidebar}>
+        <Image 
+          src="/images/icon_right_arrow.svg" 
+          alt="Toggle Sidebar" 
+          width={40} 
+          height={40} 
+          className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} // Rotación para indicar abrir/cerrar
+        />
+      </div>
     </div>
   );
 };
