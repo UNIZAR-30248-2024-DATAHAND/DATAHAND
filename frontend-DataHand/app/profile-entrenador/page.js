@@ -8,7 +8,6 @@ import { Chart as ChartJS, registerables } from 'chart.js';
 ChartJS.register(...registerables);
 
 export default function Home() {
-    
     const data = {
         labels: ['Fuerza', 'Resistencia', 'Velocidad', 'Habilidad Técnica', 'Estrategia'],
         datasets: [
@@ -30,21 +29,18 @@ export default function Home() {
     };
 
     return (
-        <div
-            className="relative h-screen flex flex-col items-center justify-center bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
-            <h1 className="text-5xl font-bold mb-4 text-white" style={{fontFamily: 'var(--font-geist-sans)'}}>
+        <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
+            <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Perfil Entrenador
             </h1>
 
             {/* Contenedor para los cuadrados grandes con borde redondeado */}
             <div className="flex justify-center gap-8 mb-12 flex-wrap">
                 {/* Primer cuadrado con contenido */}
-                <div
-                    className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
+                <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
                     {/* Parte superior: Nombre y Nacionalidad */}
                     <div className="flex justify-between">
-                        <p className="text-xl font-semibold text-orange-500">Alejandro
-                            Sanz</p> {/* 888:esto sera variable */}
+                        <p className="text-xl font-semibold text-orange-500">Alejandro Sanz</p> {/* 888:esto sera variable */}
                         <p className="text-xl font-semibold text-orange-500">ESP</p> {/* 888:esto sera variable */}
                     </div>
 
@@ -61,13 +57,11 @@ export default function Home() {
 
                     {/* Parte inferior: Nombre del equipo */}
                     <div className="flex justify-center">
-                        <p className="text-2xl font-bold text-orange-500">Balonmano
-                            Zaragoza</p> {/* 888:esto sera variable */}
+                        <p className="text-2xl font-bold text-orange-500">Balonmano Zaragoza</p> {/* 888:esto sera variable */}
                     </div>
                 </div>
-                <div
-                    className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex items-center justify-center">
-                    <Radar data={data}/>
+                <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex items-center justify-center">
+                    <Radar data={data} />
                 </div>
             </div>
 
