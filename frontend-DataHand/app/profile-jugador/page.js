@@ -30,7 +30,7 @@ export default function Home() {
     };
 
     return (
-        <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 overflow-hidden">
+        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-auto">
             <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Perfil Jugador
             </h1>
@@ -41,8 +41,8 @@ export default function Home() {
                 <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
                     {/* Parte superior: Nombre y Nacionalidad */}
                     <div className="flex justify-between">
-                        <p className="text-xl font-semibold text-orange-500">Alejandro Sanz</p> {/* 888:esto sera variable */}
-                        <p className="text-xl font-semibold text-orange-500">ESP</p> {/* 888:esto sera variable */}
+                        <p className="text-xl font-semibold text-orange-500">Alejandro Sanz</p>
+                        <p className="text-xl font-semibold text-orange-500">ESP</p>
                     </div>
 
                     {/* Imagen centrada */}
@@ -58,7 +58,7 @@ export default function Home() {
 
                     {/* Parte inferior: Nombre del equipo */}
                     <div className="flex justify-center">
-                        <p className="text-2xl font-bold text-orange-500">Balonmano Zaragoza</p> {/* 888:esto sera variable */}
+                        <p className="text-2xl font-bold text-orange-500">Balonmano Zaragoza</p>
                     </div>
                 </div>
                 <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex items-center justify-center">
