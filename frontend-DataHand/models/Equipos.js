@@ -1,8 +1,8 @@
-// models/Equipo.js
+// models/Equipos.js
 import mongoose from 'mongoose';
 
 // Define el esquema para la colección 'equipos'
-const equipoSchema = new mongoose.Schema(
+const equiposSchema = new mongoose.Schema(
     {
         nombre: {
             type: String,
@@ -23,5 +23,5 @@ const equipoSchema = new mongoose.Schema(
 );
 
 // Exporta el modelo, asegurando que se use la colección 'equipos'
-const Equipo = mongoose.models.Equipo || mongoose.model('Equipo', equipoSchema);
-export default Equipo;
+const Equipos = mongoose.models.Equipos || mongoose.model('Equipos', equiposSchema);
+export default Equipos;

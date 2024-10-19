@@ -1,5 +1,5 @@
 // app/api/equipos/route.js
-import Equipo from '../../../../models/Equipo';
+import Equipo from '../../../../models/Equipos';
 import { connectDB } from '../../../../lib/db';
 
 export async function GET(req) {

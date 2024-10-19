@@ -1,7 +1,7 @@
-// models/Usuario.js
+// models/Usuarios.js
 import mongoose from 'mongoose';
 
-const usuarioSchema = new mongoose.Schema(
+const usuariosSchema = new mongoose.Schema(
     {
         nombreCompleto: {
             type: String,
@@ -48,7 +48,7 @@ const usuarioSchema = new mongoose.Schema(
         },
         historialPartidos: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Partido', // Asume que tienes un modelo Partido
+            ref: 'Partidos', // Asume que tienes un modelo Partido
         }],
     },
     {
@@ -56,5 +56,5 @@ const usuarioSchema = new mongoose.Schema(
     }
 );
 
-const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', usuarioSchema);
-export default Usuario;
+const Usuarios = mongoose.models.Usuarios || mongoose.model('Usuarios', usuariosSchema);
+export default Usuarios;
