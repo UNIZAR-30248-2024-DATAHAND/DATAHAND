@@ -1,6 +1,6 @@
 // app/api/usuarios/route.js
-import { connectDB } from '../../../../lib/db'; // Asegúrate de que la ruta sea correcta
-import Usuario from '../../../../models/Usuario'; // Asegúrate de tener un modelo de Usuario
+import { connectDB } from '../../../../lib/db'; // Ruta relativa para db.js
+import Usuario from '../../../../models/Usuario'; // Ruta relativa para Usuario.js
 
 export async function POST(request) {
     // Conectar a la base de datos
