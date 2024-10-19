@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { useState } from "react"; // Importa useState
+// import { useState } from "react"; // Importa useState
+import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
 
 export default function Home() {
 
@@ -34,6 +35,32 @@ export default function Home() {
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
     const [faseDeJuego, setFaseDeJuego] = useState(null);
     const [resultado, setResultado] = useState(null);
+
+    // Estado para el cronómetro
+    const [tiempo, setTiempo] = useState(0); // Tiempo en segundos
+    const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
+    const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
+    const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
+
+    // Efecto para manejar el cronómetro
+    useEffect(() => {
+        let intervalo;
+
+        if (cronometroActivo) {
+            intervalo = setInterval(() => {
+                setTiempo((prevTiempo) => prevTiempo + 1); // Incrementa el tiempo en 1 segundo
+            }, 1000);
+        }
+
+        return () => clearInterval(intervalo); // Limpia el intervalo al desmontar
+    }, [cronometroActivo]);
+
+    // Función para formatear el tiempo en minutos y segundos (MM:SS)
+    const formatearTiempo = (tiempo) => {
+        const minutos = String(Math.floor(tiempo / 60)).padStart(2, "0");
+        const segundos = String(tiempo % 60).padStart(2, "0");
+        return `${minutos}:${segundos}`;
+    };
 
     //const showPopup = seleccionado.index !== null && faseDeJuego !== null && resultado !== null;
 
@@ -150,6 +177,39 @@ export default function Home() {
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
 
+    // Funciones para iniciar y detener el cronómetro
+    const iniciarCronometro = () => {
+        setCronometroActivo(true);
+    };
+
+    const detenerCronometro = () => {
+        setCronometroActivo(false);
+    };
+
+    // Maneja el final del primer tiempo
+    const finalizarPrimerTiempo = () => {
+        setTiempo(30 * 60); // Establece el tiempo a 30 minutos
+        detenerCronometro(); // Detiene el cronómetro si estaba activo
+        setTextoBoton("Fin del partido"); // Cambia el texto del botón
+        setPrimerTiempoFinalizado(true); // Marca que el primer tiempo ha terminado
+    };
+
+    // Maneja el fin del partido
+    const finalizarPartido = () => {
+        setTiempo(0); // Establece el tiempo a 00:00
+        setTextoBoton("Partido acabado"); // Cambia el texto del botón
+        detenerCronometro(); // Detiene el cronómetro
+    };
+
+    // Maneja el clic en el botón de finalizar
+    const manejarClickFinPartido = () => {
+        if (!primerTiempoFinalizado) {
+            finalizarPrimerTiempo(); // Si el primer tiempo no ha finalizado, lo finaliza
+        } else {
+            finalizarPartido(); // Si el primer tiempo ya ha finalizado, finaliza el partido
+        }
+    };
+
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
@@ -190,15 +250,31 @@ export default function Home() {
                     <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span>
                 </div>
                 
+                {/* Cronómetro */}
                 <div className="flex items-center">
                     <div className="flex flex-col mr-4">
-                        <span className="text-lg font-semibold text-black">Cronómetro: 00:00</span>
+                        <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(tiempo)}</span>
                         <span className="text-md font-semibold text-black">Primer Tiempo</span>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2">Fin del 1er Tiempo</button>
+                    <button 
+                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                        onClick={manejarClickFinPartido} // Cambia la funcionalidad del botón
+                    >
+                        {textoBoton}
+                    </button>
                     <div className="flex gap-2">
-                        <button className="bg-green-500 text-white px-4 py-2 rounded">Iniciar</button>
-                        <button className="bg-red-500 text-white px-4 py-2 rounded">Detener</button>
+                        <button 
+                            className="bg-green-500 text-white px-4 py-2 rounded"
+                            onClick={iniciarCronometro} // Inicia el cronómetro
+                        >
+                            Iniciar
+                        </button>
+                        <button 
+                            className="bg-red-500 text-white px-4 py-2 rounded"
+                            onClick={detenerCronometro} // Detiene el cronómetro
+                        >
+                            Detener
+                        </button>
                     </div>
                 </div>
 
