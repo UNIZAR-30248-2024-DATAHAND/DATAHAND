@@ -3,8 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react"; // Importamos useState para gestionar el estado
+import { useRouter } from 'next/navigation'; // Importamos useRouter desde next/navigation
 
 export default function Login() {
+  const router = useRouter(); // Inicializamos el enrutador
   const [mensaje, setMensaje] = useState(""); // Mensaje de éxito o error
   const [nombreUsuario, setNombreUsuario] = useState(""); // Estado para el nombre de usuario
   const [contrasena, setContrasena] = useState(""); // Estado para la contraseña
@@ -15,9 +17,9 @@ export default function Login() {
 
     // Usuario ficticio que será enviado
     const nuevoUsuario = {
-      nombreCompleto: "Pedro García",
-      correoElectronico: "pedro.garcia@example.com",
-      contrasena: "supersegura123",
+      nombreCompleto: "b",
+      correoElectronico: "b@example.com",
+      contrasena: "b",
       fechaNacimiento: "1985-11-15T00:00:00.000Z",
       tipoUsuario: "jugador",
       fotoPerfil: "url_a_la_foto_pedro.jpg",
@@ -56,39 +58,10 @@ export default function Login() {
     }
   };
 
-  // Función para iniciar sesión
-  const iniciarSesion = async (e) => {
+  // Nueva función para redirigir al home sin iniciar sesión
+  const redirigirAHome = (e) => {
     e.preventDefault(); // Evitar el comportamiento predeterminado del botón
-
-    // Datos del usuario para inicio de sesión
-    const datosInicioSesion = {
-      nombreUsuario,
-      contrasena,
-    };
-
-    try {
-      // Enviar una solicitud POST a la API para iniciar sesión
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datosInicioSesion),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setMensaje("Inicio de sesión exitoso");
-        console.log("Sesión iniciada:", data);
-        // Redirigir a la página de inicio u otra página
-      } else {
-        setMensaje("Error al iniciar sesión");
-        console.error("Error:", response.statusText);
-      }
-    } catch (error) {
-      setMensaje("Error de conexión");
-      console.error("Error de conexión:", error);
-    }
+    router.push('/home'); // Cambia la ruta a /home
   };
 
   return (
@@ -146,7 +119,7 @@ export default function Login() {
             <button
               className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
               style={{ fontFamily: 'var(--font-geist-sans)' }}
-              onClick={iniciarSesion} // Aquí conectamos la función de inicio de sesión
+              onClick={redirigirAHome} // Aquí redirigimos sin iniciar sesión
             >
               Iniciar Sesión
             </button>
