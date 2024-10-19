@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/public/images/bx-football.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/public/images/bx-power-off.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/public/images/bx-user.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/public/images/bxs-user.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/home/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/home/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/profile-entrenador/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/profile-entrenador/page.js" afterDir="false" />
-    </list>
+    <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,6 +20,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "jaimichuVG"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/UNIZAR-30248-2024-DATAHAND/DATAHAND.git",
+    "accountId": "d4ea8c06-d028-4073-b715-e441d0f5b709"
+  }
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -38,40 +45,42 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Node.js.page.js.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "Merging main",
+    "go.import.settings.migrated": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/lukita5/Documents/GitHub/DATAHAND/frontend-DataHand/public/images",
+    "last_opened_file_path": "/home/jaime/Escritorio/INGINF/QC/GPS/DATAHAND",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "ts.external.directory.path": "/home/jaime/.local/share/JetBrains/Toolbox/apps/intellij-idea-ultimate/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mongo"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/frontend-DataHand/app/api/users" />
+      <recent name="$PROJECT_DIR$/frontend-DataHand/api" />
       <recent name="$PROJECT_DIR$/frontend-DataHand/public/images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend-DataHand/lib" />
       <recent name="$PROJECT_DIR$/frontend-DataHand/public" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="DATAHAND" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="DATAHAND" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -91,10 +100,28 @@
       <updated>1727884259401</updated>
       <workItem from="1727884260629" duration="8630000" />
       <workItem from="1728031219615" duration="6953000" />
+      <workItem from="1728985183275" duration="3261000" />
+      <workItem from="1729266967520" duration="17859000" />
     </task>
+    <task id="LOCAL-00001" summary="Changes DB">
+      <option name="closed" value="true" />
+      <created>1729343793451</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729343793452</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changes DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes DB" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
   </component>
 </project>
