@@ -44,6 +44,10 @@ export default function Home() {
     const [golesLocal, setGolesLocal] = useState(0); // Goles del equipo local
     const [golesVisitante, setGolesVisitante] = useState(0); // Goles del equipo visitante
 
+    const [sistemaDefensivo, setSistemaDefensivo] = useState(null);
+    const [sistemaDefensivoLocal, setSistemaDefensivoLocal] = useState(null);
+    const [sistemaDefensivoVisitante, setSistemaDefensivoVisitante] = useState(null);
+
 
     // Efecto para manejar el cronómetro
     useEffect(() => {
@@ -184,6 +188,14 @@ export default function Home() {
 
     // Funciones para iniciar y detener el cronómetro
     const iniciarCronometro = () => {
+        if (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) {
+            alert("Debes seleccionar un sistema defensivo antes de comenzar el partido.");
+            return;
+        }
+        // Lógica para iniciar el partido si ambos sistemas defensivos están seleccionados
+        console.log("Partido iniciado con los sistemas defensivos:");
+        console.log("Local:", sistemaDefensivoLocal);
+        console.log("Visitante:", sistemaDefensivoVisitante);
         setCronometroActivo(true);
     };
 
@@ -231,6 +243,16 @@ export default function Home() {
 
         // Reiniciar la selección después de marcar gol
         setSeleccionado({ equipo: null, index: null, tipo: null });
+    };
+
+    // Función para manejar la selección del sistema defensivo local
+    const seleccionarSistemaDefensivoLocal = (opcion) => {
+        setSistemaDefensivoLocal(opcion);
+    };
+
+    // Función para manejar la selección del sistema defensivo visitante
+    const seleccionarSistemaDefensivoVisitante = (opcion) => {
+        setSistemaDefensivoVisitante(opcion);
     };
 
     return (
@@ -288,8 +310,13 @@ export default function Home() {
                     </button>
                     <div className="flex gap-2">
                         <button 
-                            className="bg-green-500 text-white px-4 py-2 rounded"
+                            className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
+                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            // className="bg-green-500 text-white px-4 py-2 rounded"
                             onClick={iniciarCronometro} // Inicia el cronómetro
+                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
+                        
                         >
                             Iniciar
                         </button>
@@ -394,23 +421,25 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Sistema Defensivo */}
+                    {/* Sección Sistema Defensivo del equipo local */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2>
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo Local</h2>
                         <div className="flex gap-2 flex-wrap">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
                                     <input 
                                         type="radio" 
-                                        name="sistemaDefensivo" // El mismo nombre para agrupar los radios
+                                        name="sistemaDefensivoLocal"
                                         className="mr-2" 
-                                        id={`radio-${index}`} 
+                                        id={`radio-local-${index}`} 
+                                        onChange={() => seleccionarSistemaDefensivoLocal(opcion)} // Actualiza el estado al seleccionar
+                                        checked={sistemaDefensivoLocal === opcion} // Verificar cuál está seleccionado
                                     />
-                                    <label htmlFor={`radio-${index}`} className="text-black text-lg">{opcion}</label>
+                                    <label htmlFor={`radio-local-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
-                    </div>               
+                    </div>     
                 </div>
                 
                 {/* Rectángulo 2 (más grande) */}
@@ -589,19 +618,21 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Sistema Defensivo */}
+                    {/* Sección Sistema Defensivo del equipo visitante */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2>
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo Visitante</h2>
                         <div className="flex gap-2 flex-wrap">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
                                     <input 
                                         type="radio" 
-                                        name="sistemaDefensivo2" // El mismo nombre para agrupar los radios
+                                        name="sistemaDefensivoVisitante"
                                         className="mr-2" 
-                                        id={`radio-${index}`} 
+                                        id={`radio-visitante-${index}`} 
+                                        onChange={() => seleccionarSistemaDefensivoVisitante(opcion)} // Actualiza el estado al seleccionar
+                                        checked={sistemaDefensivoVisitante === opcion} // Verificar cuál está seleccionado
                                     />
-                                    <label htmlFor={`radio-${index}`} className="text-black text-lg">{opcion}</label>
+                                    <label htmlFor={`radio-visitante-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
