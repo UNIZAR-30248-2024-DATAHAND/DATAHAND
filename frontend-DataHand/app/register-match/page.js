@@ -41,6 +41,9 @@ export default function Home() {
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
+    const [golesLocal, setGolesLocal] = useState(0); // Goles del equipo local
+    const [golesVisitante, setGolesVisitante] = useState(0); // Goles del equipo visitante
+
 
     // Efecto para manejar el cronómetro
     useEffect(() => {
@@ -166,6 +169,8 @@ export default function Home() {
         if (seleccionado.tipo == "jugador" && faseDeJuego !== null && resultado !== null) {
             console.log("Muestro PopUp");
             setShowPopup(true); // Muestra el popup
+        } else if(resultado === "Gol") {
+            marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
         }
     };
 
@@ -210,6 +215,24 @@ export default function Home() {
         }
     };
 
+    // Función para manejar los goles
+    const marcarGol = () => {
+        if (!seleccionado.equipo) {
+            alert("Selecciona un jugador primero.");
+            return;
+        }
+
+        // Si el jugador seleccionado es del equipo local
+        if (seleccionado.equipo === "local") {
+            setGolesLocal((prevGoles) => prevGoles + 1); // Incrementar goles del equipo local
+        } else if (seleccionado.equipo === "visitante") {
+            setGolesVisitante((prevGoles) => prevGoles + 1); // Incrementar goles del equipo visitante
+        }
+
+        // Reiniciar la selección después de marcar gol
+        setSeleccionado({ equipo: null, index: null, tipo: null });
+    };
+
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
@@ -247,7 +270,8 @@ export default function Home() {
 
                 {/* Marcador y Cronómetro */}
                 <div className="flex flex-col">
-                    <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span>
+                    <span className="text-xl font-semibold text-black">Marcador: {golesLocal} - {golesVisitante}</span>
+                    {/* <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span> */}
                 </div>
                 
                 {/* Cronómetro */}
@@ -321,16 +345,16 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Jugadores */}
+                     {/* Sección Jugadores Locales */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2>
+                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores Locales</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.local.jugadores.map((jugador, index) => (
                                 <button
                                     key={index}
                                     onClick={() => seleccionarJugador("local", index, "jugador")}
                                     className={`${
-                                        seleccionado?.equipo === "local" &&  seleccionado?.index === index && seleccionado?.tipo === "jugador"
+                                        seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "jugador"
                                             ? "bg-red-500"
                                             : "bg-green-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -339,18 +363,15 @@ export default function Home() {
                                 </button>
                             ))}
                         </div>
-                    </div>
 
-                    {/* Sección Banquillo */}
-                    <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Banquillo</h2>
+                        <h2 className="text-lg font-semibold text-black mt-4 mb-2">Banquillo Local</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.local.banquillo.map((jugador, index) => (
                                 <button
                                     key={index}
                                     onClick={() => seleccionarJugador("local", index, "banquillo")}
                                     className={`${
-                                        seleccionado?.equipo === "local" &&  seleccionado?.index === index && seleccionado?.tipo === "banquillo"
+                                        seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "banquillo"
                                             ? "bg-red-500"
                                             : "bg-yellow-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -358,6 +379,7 @@ export default function Home() {
                                     Jugador {jugador}
                                 </button>
                             ))}
+
                             {/* Agregar el segundo portero al banquillo */}
                             <button
                                 onClick={() => seleccionarJugador("local", 1, "portero")}
@@ -518,9 +540,9 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Jugadores */}
+                    {/* Sección Jugadores Visitantes */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2>
+                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores Visitantes</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.visitante.jugadores.map((jugador, index) => (
                                 <button
@@ -536,11 +558,8 @@ export default function Home() {
                                 </button>
                             ))}
                         </div>
-                    </div>
 
-                    {/* Sección Banquillo */}
-                    <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Banquillo</h2>
+                        <h2 className="text-lg font-semibold text-black mt-4 mb-2">Banquillo Visitante</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.visitante.banquillo.map((jugador, index) => (
                                 <button
@@ -555,6 +574,7 @@ export default function Home() {
                                     Jugador {jugador}
                                 </button>
                             ))}
+
                             {/* Agregar el segundo portero al banquillo */}
                             <button
                                 onClick={() => seleccionarJugador("visitante", 1, "portero")}
