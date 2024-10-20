@@ -48,6 +48,24 @@ export default function Home() {
     const [sistemaDefensivoLocal, setSistemaDefensivoLocal] = useState(null);
     const [sistemaDefensivoVisitante, setSistemaDefensivoVisitante] = useState(null);
 
+    const [partidoData, setPartidoData] = useState({
+        fecha: new Date(),
+        equipoLocal: "Club A",
+        equipoVisitante: "Club B",
+        resultado: "0-0",
+        jugadores: [],
+        eventos: [],
+        sistemaDefensivoLocal: null,
+        sistemaDefensivoVisitante: null,
+        golesLocal: 0,
+        golesVisitante: 0,
+        horarios: ["00:00", "00:00", "00:00"], // Reemplaza con los horarios reales
+        imagenes: {
+            local: "/ruta/a/imagen/local.png",
+            visitante: "/ruta/a/imagen/visitante.png",
+        },
+    });
+
 
     // Efecto para manejar el cronómetro
     useEffect(() => {
@@ -218,14 +236,32 @@ export default function Home() {
         detenerCronometro(); // Detiene el cronómetro
     };
 
-    // Maneja el clic en el botón de finalizar
-    const manejarClickFinPartido = () => {
+    const manejarClickFinPartido = async () => {
         if (!primerTiempoFinalizado) {
             finalizarPrimerTiempo(); // Si el primer tiempo no ha finalizado, lo finaliza
         } else {
-            finalizarPartido(); // Si el primer tiempo ya ha finalizado, finaliza el partido
+            await finalizarPartido(); // Si el primer tiempo ya ha finalizado, finaliza el partido
+            await enviarDatosAPartido(); // Enviar los datos a la API
         }
     };
+
+    const enviarDatosAPartido = async () => {
+        try {
+            const response = await fetch('/api/users/datosPartidos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(partidoData),
+            });
+    
+            const data = await response.json();
+            console.log('Datos del partido guardados:', data);
+        } catch (error) {
+            console.error('Error al guardar el partido:', error);
+        }
+    };
+    
 
     // Función para manejar los goles
     const marcarGol = () => {
@@ -234,26 +270,51 @@ export default function Home() {
             return;
         }
 
-        // Si el jugador seleccionado es del equipo local
+        // Incrementa los goles
         if (seleccionado.equipo === "local") {
-            setGolesLocal((prevGoles) => prevGoles + 1); // Incrementar goles del equipo local
+            setPartidoData(prevData => ({
+                ...prevData,
+                golesLocal: prevData.golesLocal + 1,
+                eventos: [...prevData.eventos, {
+                    tipo: "gol",
+                    jugadorId: seleccionado.index, // Cambia esto por el ID del jugador
+                    minuto: formatearTiempo(tiempo),
+                    descripcion: `Gol de jugador ${seleccionado.index}`, // Cambia esto si tienes un nombre
+                }],
+            }));
         } else if (seleccionado.equipo === "visitante") {
-            setGolesVisitante((prevGoles) => prevGoles + 1); // Incrementar goles del equipo visitante
+            setPartidoData(prevData => ({
+                ...prevData,
+                golesVisitante: prevData.golesVisitante + 1,
+                eventos: [...prevData.eventos, {
+                    tipo: "gol",
+                    jugadorId: seleccionado.index, // Cambia esto por el ID del jugador
+                    minuto: formatearTiempo(tiempo),
+                    descripcion: `Gol de jugador ${seleccionado.index}`, // Cambia esto si tienes un nombre
+                }],
+            }));
         }
 
         // Reiniciar la selección después de marcar gol
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
 
-    // Función para manejar la selección del sistema defensivo local
     const seleccionarSistemaDefensivoLocal = (opcion) => {
+        setPartidoData(prevData => ({
+            ...prevData,
+            sistemaDefensivoLocal: opcion,
+        }));
         setSistemaDefensivoLocal(opcion);
     };
-
-    // Función para manejar la selección del sistema defensivo visitante
+    
     const seleccionarSistemaDefensivoVisitante = (opcion) => {
+        setPartidoData(prevData => ({
+            ...prevData,
+            sistemaDefensivoVisitante: opcion,
+        }));
         setSistemaDefensivoVisitante(opcion);
     };
+    
 
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
@@ -302,13 +363,17 @@ export default function Home() {
                         <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(tiempo)}</span>
                         <span className="text-md font-semibold text-black">Primer Tiempo</span>
                     </div>
-                    <button 
-                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                        onClick={manejarClickFinPartido} // Cambia la funcionalidad del botón
-                    >
-                        {textoBoton}
-                    </button>
                     <div className="flex gap-2">
+                        <button 
+                            className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
+                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            onClick={manejarClickFinPartido} // Cambia la funcionalidad del botón
+                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante}
+                        >
+                            {textoBoton}
+                        </button>
+                    
                         <button 
                             className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
                                 (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
@@ -316,13 +381,15 @@ export default function Home() {
                             // className="bg-green-500 text-white px-4 py-2 rounded"
                             onClick={iniciarCronometro} // Inicia el cronómetro
                             disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
-                        
                         >
                             Iniciar
                         </button>
                         <button 
-                            className="bg-red-500 text-white px-4 py-2 rounded"
+                            className={`mt-4 px-4 py-2 rounded bg-red-500 text-white ${
+                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
                             onClick={detenerCronometro} // Detiene el cronómetro
+                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante}
                         >
                             Detener
                         </button>
