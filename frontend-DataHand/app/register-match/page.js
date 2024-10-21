@@ -16,35 +16,29 @@ export default function Home() {
 
     */
 
-    const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
+      const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
-    // Estado inicial para ambos equipos, con 2 porteros
-    const [equipos, setEquipos] = useState({
-            IdPartido: '1',                  // Identificador del partido
-            Fecha: new Date(),               // Fecha del partido
-            EquipoLocal: 'Equipo A',         // Nombre del equipo local
-            EquipoVisitante: 'Equipo B',     // Nombre del equipo visitante
-            MarcadorLocal: 2,                // Marcador del equipo local
-            MarcadorVisitante: 1,            // Marcador del equipo visitante
-            TiempoDeJuego: 0,                // Tiempo de juego transcurrido en minutos
-            Parte: 'Segunda parte',                // Parte actual del juego (Parte 1, Parte 2, Prórroga)
-            local: {
-                jugadores: [1, 2, 3, 4, 5, 6],
-                banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
-                porteros: [15, 16], // Dos porteros
-            },
-            visitante: {
-                jugadores: [17, 18, 19, 20, 21, 22],
-                banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
-                porteros: [31, 32], // Dos porteros
-            },
-            sistemaDefensivoLocal: null, // Sistema defensivo del equipo local
-            sistemaDefensivoVisitante: null, // Sistema defensivo del equipo visitante
-        });
+  // Estado inicial para ambos equipos, con 2 porteros
+  const [equipos, setEquipos] = useState({
+    local: {
+      jugadores: [1, 2, 3, 4, 5, 6],
+      banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
+      porteros: [15, 16], // Dos porteros
+    },
+    visitante: {
+      jugadores: [17, 18, 19, 20, 21, 22],
+      banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
+      porteros: [31, 32], // Dos porteros
+    },
+  });
 
-    const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
-    const [faseDeJuego, setFaseDeJuego] = useState(null);
-    const [resultado, setResultado] = useState(null);
+  const [seleccionado, setSeleccionado] = useState({
+    equipo: null,
+    index: null,
+    tipo: null,
+  }); // Para manejar el jugador seleccionado
+  const [faseDeJuego, setFaseDeJuego] = useState(null);
+  const [resultado, setResultado] = useState(null);
 
     // Estado para el cronómetro
     const [tiempo, setTiempo] = useState(0); // Tiempo en segundos
@@ -283,44 +277,47 @@ export default function Home() {
     };
     
 
-    const seleccionarSistemaDefensivoLocal = (opcion) => {
-        setPartidoData(prevData => ({
-            ...prevData,
-            sistemaDefensivoLocal: opcion,
-        }));
-        setSistemaDefensivoLocal(opcion);
-    };
-    
-    const seleccionarSistemaDefensivoVisitante = (opcion) => {
-        setPartidoData(prevData => ({
-            ...prevData,
-            sistemaDefensivoVisitante: opcion,
-        }));
-        setSistemaDefensivoVisitante(opcion);
-    };
-    
+  const seleccionarSistemaDefensivoLocal = (opcion) => {
+    setPartidoData((prevData) => ({
+      ...prevData,
+      sistemaDefensivoLocal: opcion,
+    }));
+    setSistemaDefensivoLocal(opcion);
+  };
 
-    return (
-        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
-            <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-                Partido
-            </h1>
-            
-            {/* Rectángulo alargado para el marcador y cronómetro */}
-            <div className="w-full h-32 bg-white rounded-lg flex items-center justify-between p-4 mb-8 shadow-md">
-                {/* Escudos y Nombres de Equipos */}
-                <div className="flex items-center">
-                    {/* Equipo 1 */}
-                    <div className="flex items-center mr-8">
-                        <Image 
-                            src="/path/to/escudo1.png" // Cambiar este path 
-                            alt="Escudo Equipo 1"
-                            width={50}
-                            height={50}
-                            className="mr-2"
-                        />
-                        <span className="text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
-                    </div>
+  const seleccionarSistemaDefensivoVisitante = (opcion) => {
+    setPartidoData((prevData) => ({
+      ...prevData,
+      sistemaDefensivoVisitante: opcion,
+    }));
+    setSistemaDefensivoVisitante(opcion);
+  };
+
+  return (
+    <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4 overflow-y-auto    ">
+      <Sidebar />
+      <h1
+        className="text-5xl font-bold mb-4 text-black"
+        style={{ fontFamily: 'var(--font-geist-sans)' }}
+      >
+        Partido
+      </h1>
+
+      {/* Rectángulo alargado para el marcador y cronómetro */}
+      <div className="w-full h-32 bg-white rounded-lg flex items-center justify-between p-4 mb-8 shadow-md">
+        {/* Escudos y Nombres de Equipos */}
+        <div className="flex items-center">
+          {/* Equipo 1 */}
+          <div className="flex items-center mr-8">
+            <Image
+              src="/path/to/escudo1.png" // Cambiar este path
+              alt="Escudo Equipo 1"
+              width={50}
+              height={50}
+              className="mr-2"
+            />
+            <span className="text-xl font-semibold text-black">Equipo 1</span>
+          </div>
 
                     {/* Equipo 2 */}
                     <div className="flex items-center">
