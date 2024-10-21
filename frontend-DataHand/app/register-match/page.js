@@ -263,42 +263,6 @@ export default function Home() {
     };
     
 
-    // Función para manejar los goles
-    const marcarGol = () => {
-        if (!seleccionado.equipo) {
-            alert("Selecciona un jugador primero.");
-            return;
-        }
-
-        // Incrementa los goles
-        if (seleccionado.equipo === "local") {
-            setPartidoData(prevData => ({
-                ...prevData,
-                golesLocal: prevData.golesLocal + 1,
-                eventos: [...prevData.eventos, {
-                    tipo: "gol",
-                    jugadorId: seleccionado.index, // Cambia esto por el ID del jugador
-                    minuto: formatearTiempo(tiempo),
-                    descripcion: `Gol de jugador ${seleccionado.index}`, // Cambia esto si tienes un nombre
-                }],
-            }));
-        } else if (seleccionado.equipo === "visitante") {
-            setPartidoData(prevData => ({
-                ...prevData,
-                golesVisitante: prevData.golesVisitante + 1,
-                eventos: [...prevData.eventos, {
-                    tipo: "gol",
-                    jugadorId: seleccionado.index, // Cambia esto por el ID del jugador
-                    minuto: formatearTiempo(tiempo),
-                    descripcion: `Gol de jugador ${seleccionado.index}`, // Cambia esto si tienes un nombre
-                }],
-            }));
-        }
-
-        // Reiniciar la selección después de marcar gol
-        setSeleccionado({ equipo: null, index: null, tipo: null });
-    };
-
     const seleccionarSistemaDefensivoLocal = (opcion) => {
         setPartidoData(prevData => ({
             ...prevData,
