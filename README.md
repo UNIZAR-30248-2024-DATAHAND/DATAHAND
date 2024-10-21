@@ -35,3 +35,4 @@ Se ha creado la siguiente estructura para el proyecto con la finalidad de que es
         ├── logo.png
         ├── home-banner.jpg
         └── about-background.jpg
+```

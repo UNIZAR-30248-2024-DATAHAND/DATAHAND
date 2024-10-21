@@ -1,4 +1,4 @@
-"use client"; // Esto marca el componente como Client Component
+'use client'; // Esto marca el componente como Client Component
 
 import { useState } from 'react';
 import Image from 'next/image';
@@ -12,12 +12,17 @@ const Sidebar = () => {
   };
 
   return (
-    <div 
+    <div
       className={`fixed top-0 left-0 h-full bg-gradient-to-b from-purple-600 to-purple-400 shadow-lg flex flex-col items-center py-6 rounded-r-3xl border-r-8 border-black transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
     >
       {/* Logo y título */}
       <div className="flex items-center mb-10 mr-2">
-        <Image src="/images/logo.png" alt="DataHand Logo" width={80} height={80} />
+        <Image
+          src="/images/logo.png"
+          alt="DataHand Logo"
+          width={80}
+          height={80}
+        />
         <h1 className="text-3xl font-bold text-white ml-3">DataHand </h1>
       </div>
 
@@ -25,30 +30,45 @@ const Sidebar = () => {
       <div className="mt-6 w-full px-4">
         <Link href="/profile-entrenador">
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4" 
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
-            <Image src="/images/icon_profile.svg" alt="Perfil" width={30} height={30} />
+            <Image
+              src="/images/icon_profile.svg"
+              alt="Perfil"
+              width={30}
+              height={30}
+            />
             Perfil
           </button>
         </Link>
 
         <Link href="/register-match">
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4" 
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
-            <Image src="/images/icon_plus.svg" alt="Registrar partido" width={30} height={30} />
+            <Image
+              src="/images/icon_plus.svg"
+              alt="Registrar partido"
+              width={30}
+              height={30}
+            />
             Registrar partido
           </button>
         </Link>
 
         <Link href="/stats">
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4" 
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
-            <Image src="/images/icon_stats.svg" alt="Estadisticas" width={30} height={30} />
+            <Image
+              src="/images/icon_stats.svg"
+              alt="Estadisticas"
+              width={30}
+              height={30}
+            />
             Estadísticas
           </button>
         </Link>
@@ -58,19 +78,27 @@ const Sidebar = () => {
             className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
-            <Image src="/images/icon_logout.svg" alt="Salir" width={30} height={30} />
+            <Image
+              src="/images/icon_logout.svg"
+              alt="Salir"
+              width={30}
+              height={30}
+            />
             Salir
           </button>
         </Link>
       </div>
 
       {/* Botón de abrir/cerrar (icono flecha derecha) */}
-      <div className="absolute top-1/2 -right-12 transform -translate-y-1/2 cursor-pointer" onClick={toggleSidebar}>
-        <Image 
-          src="/images/icon_right_arrow.svg" 
-          alt="Toggle Sidebar" 
-          width={40} 
-          height={40} 
+      <div
+        className="absolute top-1/2 -right-12 transform -translate-y-1/2 cursor-pointer"
+        onClick={toggleSidebar}
+      >
+        <Image
+          src="/images/icon_right_arrow.svg"
+          alt="Toggle Sidebar"
+          width={40}
+          height={40}
           className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} // Rotación para indicar abrir/cerrar
         />
       </div>

@@ -1,30 +1,58 @@
-// app/api/usuarios/route.js
-import { connectDB } from '../../../../lib/db'; // Ruta relativa para db.js
+// app/api/users/crearPartido/route.js
+import connectDB from '../../../../lib/db'; // Ruta relativa para db.js
 import CrearPartidos from '../../../../models/CrearPartido'; // Ruta relativa para Usuario.js
+import { getNextPartidoId } from '../../../utils/generatePartido';
 
-export async function POST(request) {
-    // Conectar a la base de datos
-    await connectDB();
 
-    // Obtener los datos del usuario desde la solicitud
-    const data = await request.json();
+export default async function handler(req, res) {
+    if (req.method === 'POST') {
+        try {
+            // Conectar a la base de datos
+            await connectDB();
 
-    // Crear una nueva instancia del modelo Usuario
-    const nuevoPartido = new CrearPartidos(data);
+            // Obtener la fecha actual
+            const fechaActual = new Date();
 
-    try {
-        // Guardar el nuevo usuario en la base de datos
-        const partidoGuardado = await nuevoPartido.save();
+            // Obtener el siguiente ID secuencial
+            const IdPartido = await getNextPartidoId();
 
-        // Retornar una respuesta con el usuario guardado
-        return new Response(JSON.stringify(partidoGuardado), {
-            status: 201, // Estado HTTP para creación exitosa
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-    } catch (error) {
-        console.error('Error al guardar el partido:', error);
-        return new Response('Error al crear el partido', { status: 500 });
-    }
+            // Crear el partido con valores predeterminados
+            const partidoVacio = new CrearPartidos({
+                IdPartido: `Partido-${IdPartido}`,
+                Fecha: fechaActual,
+                EquipoLocal: 'Local',
+                EquipoVisitante: 'Visitante',
+                MarcadorLocal: 0,
+                MarcadorVisitante: 0,
+                TiempoDeJuego: '0',
+                Parte: 'Parte 1',
+                Equipos: {
+                Locales: {
+                    Porteros: [],
+                    Jugadores: [],
+                    Banquillo: [],
+                },
+                Visitantes: {
+                    Porteros: [],
+                    Jugadores: [],
+                    Banquillo: [],
+                },
+                },
+                SistemaDefensivoLocal: '6:0',
+                SistemaDefensivoVisitante: '6:0',
+            });
+
+            // Guardar en la base de datos
+            await partidoVacio.save();
+
+         // Devolver respuesta exitosa
+            return res.status(201).json({ message: 'Partido creado exitosamente', partido: partidoVacio });
+        } catch (error) {
+            console.error(error);
+        return res.status(500).json({ error: 'Error al crear el partido' });
+            }
+        } else {
+            res.setHeader('Allow', ['POST']);
+            res.status(405).end(`Method ${req.method} Not Allowed`);
+        }
 }

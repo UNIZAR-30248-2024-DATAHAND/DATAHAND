@@ -41,11 +41,10 @@ body {
 
 .input-field:focus {
   outline: none;
-  border-bottom: 2px solid #A855F7;
-  color: #A855F7;
+  border-bottom: 2px solid #a855f7;
+  color: #a855f7;
 }
 
 .input-field::placeholder {
   color: white;
 }
-

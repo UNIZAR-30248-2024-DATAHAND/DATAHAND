@@ -1,16 +1,16 @@
-"use client"; // Marcamos el componente como cliente
+'use client'; // Marcamos el componente como cliente
 
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react"; // Importamos useState para gestionar el estado
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react'; // Importamos useState para gestionar el estado
 import { useRouter } from 'next/navigation'; // Importamos useRouter desde next/navigation
-import { connectDB } from '/lib/db.js'; 
+import { connectDB } from '/lib/db.js';
 
 export default function Login() {
   const router = useRouter(); // Inicializamos el enrutador
-  const [mensaje, setMensaje] = useState(""); // Mensaje de éxito o error
-  const [nombreUsuario, setNombreUsuario] = useState(""); // Estado para el nombre de usuario
-  const [contrasena, setContrasena] = useState(""); // Estado para la contraseña
+  const [mensaje, setMensaje] = useState(''); // Mensaje de éxito o error
+  const [nombreUsuario, setNombreUsuario] = useState(''); // Estado para el nombre de usuario
+  const [contrasena, setContrasena] = useState(''); // Estado para la contraseña
 
   //connectDB()
 
@@ -20,15 +20,15 @@ export default function Login() {
 
     // Usuario ficticio que será enviado
     const nuevoUsuario = {
-      nombreCompleto: "c",
-      correoElectronico: "c@example.com",
-      contrasena: "c",
-      fechaNacimiento: "1985-11-15T00:00:00.000Z",
-      tipoUsuario: "jugador",
-      fotoPerfil: "url_a_la_foto_pedro.jpg",
-      club: "Club Deportivo Ejemplo",
-      pais: "España",
-      posicion: "delantero",
+      nombreCompleto: 'c',
+      correoElectronico: 'c@example.com',
+      contrasena: 'c',
+      fechaNacimiento: '1985-11-15T00:00:00.000Z',
+      tipoUsuario: 'jugador',
+      fotoPerfil: 'url_a_la_foto_pedro.jpg',
+      club: 'Club Deportivo Ejemplo',
+      pais: 'España',
+      posicion: 'delantero',
       atributos: {
         velocidad: 7,
         fuerza: 8,
@@ -39,25 +39,25 @@ export default function Login() {
 
     try {
       // Enviar una solicitud POST a la API para registrar el usuario
-      const response = await fetch("/api/users/usuarios", {
-        method: "POST",
+      const response = await fetch('/api/users/usuarios', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(nuevoUsuario),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setMensaje("Usuario registrado con éxito");
-        console.log("Usuario creado:", data);
+        setMensaje('Usuario registrado con éxito');
+        console.log('Usuario creado:', data);
       } else {
-        setMensaje("Error al registrar el usuario");
-        console.error("Error:", response.statusText);
+        setMensaje('Error al registrar el usuario');
+        console.error('Error:', response.statusText);
       }
     } catch (error) {
-      setMensaje("Error de conexión");
-      console.error("Error de conexión:", error);
+      setMensaje('Error de conexión');
+      console.error('Error de conexión:', error);
     }
   };
 
@@ -80,7 +80,12 @@ export default function Login() {
 
       {/* Contenedor de la izquierda */}
       <div className="relative z-10 flex flex-col items-center justify-center w-1/2 p-8">
-        <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>DataHand</h1>
+        <h1
+          className="text-5xl font-bold mb-4 text-white"
+          style={{ fontFamily: 'var(--font-geist-sans)' }}
+        >
+          DataHand
+        </h1>
         <Image
           src="/images/logo.png"
           alt="Logo"
@@ -88,8 +93,13 @@ export default function Login() {
           height={280}
           className="mb-4"
         />
-        <p className="mb-6 text-gray-100 text-center text-lg" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-          Convierte datos en decisiones.<br />¡Eleva el rendimiento de tu equipo en cada jugada!
+        <p
+          className="mb-6 text-gray-100 text-center text-lg"
+          style={{ fontFamily: 'var(--font-geist-sans)' }}
+        >
+          Convierte datos en decisiones.
+          <br />
+          ¡Eleva el rendimiento de tu equipo en cada jugada!
         </p>
       </div>
 
@@ -134,14 +144,16 @@ export default function Login() {
           >
             Registrarse
           </button>
-          {mensaje && (
-            <p className="text-white text-center mt-6">
-              {mensaje}
-            </p>
-          )}
-          <p className="text-white text-center mt-6" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-            ¿Olvidaste tu contraseña?{" "}
-            <Link href="/forgot-password" className="text-purple-600 hover:text-white transition">
+          {mensaje && <p className="text-white text-center mt-6">{mensaje}</p>}
+          <p
+            className="text-white text-center mt-6"
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            ¿Olvidaste tu contraseña?{' '}
+            <Link
+              href="/forgot-password"
+              className="text-purple-600 hover:text-white transition"
+            >
               Recuperar
             </Link>
           </p>
