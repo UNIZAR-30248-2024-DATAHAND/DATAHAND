@@ -1,30 +1,30 @@
-// app/api/usuarios/route.js
-import { connectDB } from '../../../../lib/db'; // Ruta relativa para db.js
+// app/api/users/crearPartido/route.js
+import connectDB from '../../../../lib/db'; // Ruta relativa para db.js
 import CrearPartidos from '../../../../models/CrearPartido'; // Ruta relativa para Usuario.js
 
-export async function POST(request) {
-    // Conectar a la base de datos
-    await connectDB();
-
-    // Obtener los datos del usuario desde la solicitud
-    const data = await request.json();
-
-    // Crear una nueva instancia del modelo Usuario
-    const nuevoPartido = new CrearPartidos(data);
-
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
     try {
-        // Guardar el nuevo usuario en la base de datos
-        const partidoGuardado = await nuevoPartido.save();
+      // Conectar a la base de datos
+      await connectDB();
 
-        // Retornar una respuesta con el usuario guardado
-        return new Response(JSON.stringify(partidoGuardado), {
-            status: 201, // Estado HTTP para creación exitosa
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+      // Crear un nuevo documento basado en el modelo
+      const partido = new CrearPartidos(req.body);
+
+      // Guardar en la base de datos
+      await partido.save();
+
+      // Devolver respuesta exitosa
+      return res
+        .status(201)
+        .json({ message: 'Partido registrado exitosamente' });
     } catch (error) {
-        console.error('Error al guardar el partido:', error);
-        return new Response('Error al crear el partido', { status: 500 });
+      console.error(error);
+      return res.status(500).json({ error: 'Error al registrar el partido' });
     }
+  } else {
+    // Método no permitido
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 }
