@@ -38,8 +38,8 @@ export default function Home() {
                 banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
                 porteros: [31, 32], // Dos porteros
             },
-            sistemaDefensivoLocal: null, // Sistema defensivo del equipo local
-            sistemaDefensivoVisitante: null, // Sistema defensivo del equipo visitante
+            sistemaDefensivoLocal: "6:0", // Sistema defensivo del equipo local
+            sistemaDefensivoVisitante: "5:1", // Sistema defensivo del equipo visitante
         });
 
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
@@ -218,14 +218,14 @@ export default function Home() {
 
     // Funciones para iniciar y detener el cronómetro
     const iniciarCronometro = () => {
-        if (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) {
+        if (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) {
             alert("Debes seleccionar un sistema defensivo antes de comenzar el partido.");
             return;
         }
         // Lógica para iniciar el partido si ambos sistemas defensivos están seleccionados
         console.log("Partido iniciado con los sistemas defensivos:");
-        console.log("Local:", sistemaDefensivoLocal);
-        console.log("Visitante:", sistemaDefensivoVisitante);
+        console.log("Local:", equipos.sistemaDefensivoLocal);
+        console.log("Visitante:", equipos.sistemaDefensivoVisitante);
         setCronometroActivo(true);
     };
 
@@ -284,20 +284,19 @@ export default function Home() {
     
 
     const seleccionarSistemaDefensivoLocal = (opcion) => {
-        setPartidoData(prevData => ({
-            ...prevData,
-            sistemaDefensivoLocal: opcion,
+        setEquipos(prevEquipos => ({
+            ...prevEquipos,
+            sistemaDefensivoLocal: opcion, // Actualiza el sistema defensivo local en el estado
         }));
-        setSistemaDefensivoLocal(opcion);
     };
     
     const seleccionarSistemaDefensivoVisitante = (opcion) => {
-        setPartidoData(prevData => ({
-            ...prevData,
-            sistemaDefensivoVisitante: opcion,
+        setEquipos(prevEquipos => ({
+            ...prevEquipos,
+            sistemaDefensivoVisitante: opcion, // Actualiza el sistema defensivo visitante en el estado
         }));
-        setSistemaDefensivoVisitante(opcion);
     };
+    
     
 
     return (
@@ -350,30 +349,30 @@ export default function Home() {
                     <div className="flex gap-2">
                         <button 
                             className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
-                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             onClick={manejarClickFinPartido} // Cambia la funcionalidad del botón
-                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante}
+                            disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
                         >
                             {textoBoton}
                         </button>
                     
                         <button 
                             className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
-                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             // className="bg-green-500 text-white px-4 py-2 rounded"
                             onClick={iniciarCronometro} // Inicia el cronómetro
-                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
+                            disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
                         >
                             Iniciar
                         </button>
                         <button 
                             className={`mt-4 px-4 py-2 rounded bg-red-500 text-white ${
-                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
                             }`}
                             onClick={detenerCronometro} // Detiene el cronómetro
-                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante}
+                            disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
                         >
                             Detener
                         </button>
@@ -484,7 +483,7 @@ export default function Home() {
                                         className="mr-2" 
                                         id={`radio-local-${index}`} 
                                         onChange={() => seleccionarSistemaDefensivoLocal(opcion)} // Actualiza el estado al seleccionar
-                                        checked={sistemaDefensivoLocal === opcion} // Verificar cuál está seleccionado
+                                        checked={equipos.sistemaDefensivoLocal === opcion} // Verificar cuál está seleccionado
                                     />
                                     <label htmlFor={`radio-local-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
@@ -681,7 +680,7 @@ export default function Home() {
                                         className="mr-2" 
                                         id={`radio-visitante-${index}`} 
                                         onChange={() => seleccionarSistemaDefensivoVisitante(opcion)} // Actualiza el estado al seleccionar
-                                        checked={sistemaDefensivoVisitante === opcion} // Verificar cuál está seleccionado
+                                        checked={equipos.sistemaDefensivoVisitante === opcion} // Verificar cuál está seleccionado
                                     />
                                     <label htmlFor={`radio-visitante-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
