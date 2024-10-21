@@ -13,6 +13,7 @@ if (!MONGODB_URI) {
 let isConnected; // Estado de la conexión
 
 export async function connectDB() {
+    console.log('Tratando de conectar a MongoDB');
     if (isConnected) {
         return; // Si ya estamos conectados, no hacemos nada
     }

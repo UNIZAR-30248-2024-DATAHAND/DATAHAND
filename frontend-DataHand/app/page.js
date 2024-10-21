@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react"; // Importamos useState para gestionar el estado
 import { useRouter } from 'next/navigation'; // Importamos useRouter desde next/navigation
+import { connectDB } from '/lib/db.js'; 
 
 export default function Login() {
   const router = useRouter(); // Inicializamos el enrutador
@@ -11,15 +12,17 @@ export default function Login() {
   const [nombreUsuario, setNombreUsuario] = useState(""); // Estado para el nombre de usuario
   const [contrasena, setContrasena] = useState(""); // Estado para la contraseña
 
+  //connectDB()
+
   // Función para enviar los datos del usuario para registrar
   const registrarUsuario = async (e) => {
     e.preventDefault(); // Evitar el comportamiento predeterminado del botón
 
     // Usuario ficticio que será enviado
     const nuevoUsuario = {
-      nombreCompleto: "b",
-      correoElectronico: "b@example.com",
-      contrasena: "b",
+      nombreCompleto: "c",
+      correoElectronico: "c@example.com",
+      contrasena: "c",
       fechaNacimiento: "1985-11-15T00:00:00.000Z",
       tipoUsuario: "jugador",
       fotoPerfil: "url_a_la_foto_pedro.jpg",
