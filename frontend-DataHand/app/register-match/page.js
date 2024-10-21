@@ -499,24 +499,15 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Fases de Juego</h2>
                         <div className="flex justify-between mb-2">
-                            <button 
-                                className={`bg-blue-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === 'ataquePosicional' ? 'opacity-80' : ''}`}
-                                onClick={() => setFaseDeJuego('ataquePosicional')} // Actualiza el estado
-                            >
-                                Ataque Posicional
-                            </button>
-                            <button 
-                                className={`bg-green-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === 'contragol' ? 'opacity-80' : ''}`}
-                                onClick={() => setFaseDeJuego('contragol')} // Actualiza el estado
-                            >
-                                Contragol
-                            </button>
-                            <button 
-                                className={`bg-red-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === 'contrataque' ? 'opacity-80' : ''}`}
-                                onClick={() => setFaseDeJuego('contrataque')} // Actualiza el estado
-                            >
-                                Contrataque
-                            </button>
+                            {["Ataque Posicional", "Contragol", "Contrataque"].map((nombre) => (
+                                <button 
+                                    key={nombre}
+                                    className={`bg-red-500 text-white px-4 py-3 rounded-lg ${faseDeJuego === nombre ? 'opacity-80' : ''}`}
+                                    onClick={() => setFaseDeJuego(nombre)} // Actualiza el estado
+                                >
+                                    {nombre}
+                                </button>
+                            ))}
                         </div>
                     </div>
 
