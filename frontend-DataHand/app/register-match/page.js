@@ -45,6 +45,8 @@ export default function Home() {
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
     const [faseDeJuego, setFaseDeJuego] = useState(null);
     const [resultado, setResultado] = useState(null);
+    const [accion, setAccion] = useState(null);
+    const [suspension, setSuspension] = useState(null);
 
     // Estado para el cronómetro
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
@@ -195,6 +197,8 @@ export default function Home() {
         console.log("Intentando registrar una accion...");
         console.log(faseDeJuego);
         console.log(resultado);
+        console.log(accion);
+        console.log(suspension);
         if (seleccionado.tipo == "jugador" && faseDeJuego !== null && resultado !== null) {
             console.log("Muestro PopUp");
             setShowPopup(true); // Muestra el popup
@@ -542,8 +546,19 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Acciones</h2>
                         <div className="grid grid-cols-3 gap-2">
-                            {["Falta", "Lanzamiento bloqueado", "2 Min provocado", "7m provocado", "1c1 ganado", "7m + 2min"].map((accion) => (
-                                <button key={accion} className="bg-green-500 text-white px-4 py-3 rounded-lg"> {accion}</button>
+                            {["Falta", "Lanzamiento bloqueado", "2 Min provocado", "7m provocado", "1c1 ganado", "7m + 2min"].map((accionItem) => (
+                                <button 
+                                key={accionItem} 
+                                className={`bg-green-500 text-white px-4 py-3 rounded-lg ${accion === accionItem ? 'opacity-80' : ''}`}
+                                onClick={() => {
+                                    console.log("Sección acciones");
+                                    console.log(accionItem);
+                                    setAccion(accionItem); // Actualiza el estado
+                                    handleAccionClick(); // Llama a la función correspondiente
+                                }}
+                            >
+                                {accionItem}
+                            </button>
                             ))}
                         </div>
                     </div>
@@ -552,8 +567,19 @@ export default function Home() {
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Suspensiones</h2>
                         <div className="flex justify-between mb-2">
-                            {["2 Minutos", "Tarjeta amarilla", "Tarjeta roja", "Tarjeta azul"].map((suspension) => (
-                                <button key={suspension} className="bg-blue-500 text-white px-4 py-3 rounded-lg"> {suspension}</button>
+                            {["2 Minutos", "Tarjeta amarilla", "Tarjeta roja", "Tarjeta azul"].map((suspensionItem) => (
+                                <button 
+                                key={suspensionItem} 
+                                className={`bg-blue-500 text-white px-4 py-3 rounded-lg ${suspension === suspensionItem ? 'opacity-80' : ''}`}
+                                onClick={() => {
+                                    console.log("Sección suspensiones");
+                                    console.log(suspensionItem);
+                                    setSuspension(suspensionItem); // Actualiza el estado
+                                    handleAccionClick();
+                                }}
+                            >
+                                {suspensionItem}
+                            </button>
                             ))}
                         </div>
                     </div>
