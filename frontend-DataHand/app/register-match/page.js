@@ -20,6 +20,14 @@ export default function Home() {
 
     // Estado inicial para ambos equipos, con 2 porteros
     const [equipos, setEquipos] = useState({
+            IdPartido: '1',                  // Identificador del partido
+            Fecha: new Date(),               // Fecha del partido
+            EquipoLocal: 'Equipo A',         // Nombre del equipo local
+            EquipoVisitante: 'Equipo B',     // Nombre del equipo visitante
+            MarcadorLocal: 2,                // Marcador del equipo local
+            MarcadorVisitante: 1,            // Marcador del equipo visitante
+            TiempoDeJuego: 0,                // Tiempo de juego transcurrido en minutos
+            Parte: 'Segunda parte',                // Parte actual del juego (Parte 1, Parte 2, Prórroga)
             local: {
                 jugadores: [1, 2, 3, 4, 5, 6],
                 banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
@@ -30,6 +38,8 @@ export default function Home() {
                 banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
                 porteros: [31, 32], // Dos porteros
             },
+            sistemaDefensivoLocal: null, // Sistema defensivo del equipo local
+            sistemaDefensivoVisitante: null, // Sistema defensivo del equipo visitante
         });
 
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
@@ -41,8 +51,6 @@ export default function Home() {
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
-    const [golesLocal, setGolesLocal] = useState(0); // Goles del equipo local
-    const [golesVisitante, setGolesVisitante] = useState(0); // Goles del equipo visitante
 
     const [sistemaDefensivo, setSistemaDefensivo] = useState(null);
     const [sistemaDefensivoLocal, setSistemaDefensivoLocal] = useState(null);
@@ -73,7 +81,11 @@ export default function Home() {
 
         if (cronometroActivo) {
             intervalo = setInterval(() => {
-                setTiempo((prevTiempo) => prevTiempo + 1); // Incrementa el tiempo en 1 segundo
+                // Usa setEquipos para actualizar el tiempo de juego
+                setEquipos((prevState) => ({
+                    ...prevState,
+                    TiempoDeJuego: prevState.TiempoDeJuego + 1, // Incrementa el tiempo en 1 segundo
+                }));
             }, 1000);
         }
 
@@ -223,7 +235,11 @@ export default function Home() {
 
     // Maneja el final del primer tiempo
     const finalizarPrimerTiempo = () => {
-        setTiempo(30 * 60); // Establece el tiempo a 30 minutos
+        setEquipos((prevState) => ({
+            ...prevState,
+            TiempoDeJuego: 30 * 60, // Establece el tiempo a 30 minutos
+            Parte: 'Fin del primer tiempo', // Cambia el estado de la parte
+        }));
         detenerCronometro(); // Detiene el cronómetro si estaba activo
         setTextoBoton("Fin del partido"); // Cambia el texto del botón
         setPrimerTiempoFinalizado(true); // Marca que el primer tiempo ha terminado
@@ -231,7 +247,11 @@ export default function Home() {
 
     // Maneja el fin del partido
     const finalizarPartido = () => {
-        setTiempo(0); // Establece el tiempo a 00:00
+        setEquipos((prevState) => ({
+            ...prevState,
+            TiempoDeJuego: 0, // Establece el tiempo a 00:00
+            Parte: 'Fin del partido', // Cambia el estado a 'Fin del partido'
+        }));
         setTextoBoton("Partido acabado"); // Cambia el texto del botón
         detenerCronometro(); // Detiene el cronómetro
     };
@@ -299,7 +319,7 @@ export default function Home() {
                             height={50}
                             className="mr-2"
                         />
-                        <span className="text-xl font-semibold text-black">Equipo 1</span>
+                        <span className="text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
                     </div>
 
                     {/* Equipo 2 */}
@@ -311,21 +331,21 @@ export default function Home() {
                             height={50}
                             className="mr-2"
                         />
-                        <span className="text-xl font-semibold text-black">Equipo 2</span>
+                        <span className="text-xl font-semibold text-black">{equipos.EquipoVisitante}</span>
                     </div>
                 </div>
 
                 {/* Marcador y Cronómetro */}
                 <div className="flex flex-col">
-                    <span className="text-xl font-semibold text-black">Marcador: {golesLocal} - {golesVisitante}</span>
+                    <span className="text-xl font-semibold text-black">Marcador: {equipos.MarcadorLocal} - {equipos.MarcadorVisitante}</span>
                     {/* <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span> */}
                 </div>
                 
                 {/* Cronómetro */}
                 <div className="flex items-center">
                     <div className="flex flex-col mr-4">
-                        <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(tiempo)}</span>
-                        <span className="text-md font-semibold text-black">Primer Tiempo</span>
+                        <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(equipos.TiempoDeJuego)}</span>
+                        <span className="text-md font-semibold text-black">{equipos.Parte}</span>
                     </div>
                     <div className="flex gap-2">
                         <button 
