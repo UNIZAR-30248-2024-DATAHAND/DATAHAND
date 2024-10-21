@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import Sidebar from "../components/Sidebar"
-import { crearPartidoNuevo } from "../profile-entrenador/profile-entrenadorController";
+//import { crearPartidoNuevo } from "../profile-entrenador/profile-entrenadorController";
 
 ChartJS.register(...registerables);
 
@@ -30,7 +30,7 @@ export default function Home() {
         ],
     };
 
-    crearPartidoNuevo();
+    //crearPartidoNuevo();
 
     return (
         <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
