@@ -47,7 +47,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 gap-6 w-2/4 mb-10"> {/* Espacio añadido */}
-                <Link href="/profile-entrenador">
+                <Link href="/">
                     <button
                         className="flex items-center justify-center bg-transparent text-white border-2 border-white py-10 px-5 text-4xl rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
                         style={{fontFamily: 'var(--font-geist-sans)'}}>
