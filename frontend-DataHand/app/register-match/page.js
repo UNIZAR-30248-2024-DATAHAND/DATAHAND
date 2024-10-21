@@ -47,14 +47,9 @@ export default function Home() {
     const [resultado, setResultado] = useState(null);
 
     // Estado para el cronómetro
-    const [tiempo, setTiempo] = useState(0); // Tiempo en segundos
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
-
-    const [sistemaDefensivo, setSistemaDefensivo] = useState(null);
-    const [sistemaDefensivoLocal, setSistemaDefensivoLocal] = useState(null);
-    const [sistemaDefensivoVisitante, setSistemaDefensivoVisitante] = useState(null);
 
     const [partidoData, setPartidoData] = useState({
         fecha: new Date(),
