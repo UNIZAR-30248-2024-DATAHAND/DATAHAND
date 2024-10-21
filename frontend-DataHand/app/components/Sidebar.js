@@ -3,12 +3,35 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  // Función para registrar un partido
+  const registrarPartido = async () => {
+    try {
+      const res = await fetch('../api/users/crearPartido/register-match', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        // Redirigir al usuario a la página del partido registrado con su ID
+        router.push(`/register-match/${data.partidoId}`);
+      } else {
+        console.error('Error al registrar el partido');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
   };
 
   return (
