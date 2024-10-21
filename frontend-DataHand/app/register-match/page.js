@@ -5,7 +5,7 @@ import Image from "next/image";
 
 // import { useState } from "react"; // Importa useState
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
-
+import CampoBalonmano from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
 export default function Home() {
 
     /*
@@ -203,7 +203,7 @@ export default function Home() {
             console.log("Muestro PopUp");
             setShowPopup(true); // Muestra el popup
         } else if(resultado === "Gol") {
-            marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
+            //marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
         }
     };
 
@@ -215,6 +215,11 @@ export default function Home() {
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
 
+    const handleCampoClick = (coordinates) => {
+        // Manejar la lógica cuando se hace clic en el campo
+        console.log(`Clic en coordenadas:`, coordinates);
+      };
+    
     // Funciones para iniciar y detener el cronómetro
     const iniciarCronometro = () => {
         if (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) {
@@ -717,6 +722,7 @@ export default function Home() {
                                 <div className="bg-gray-200 rounded-lg p-4 mb-4 flex-grow text-center">
                                     <h3 className="text-lg font-semibold text-black">Posición Gol</h3>
                                     <p className="text-black">Detalles sobre la posición del gol.</p>
+                                    <CampoBalonmano onClick={handleCampoClick} />
                                 </div>
 
                                 {/* Sección de Posición Lanzador */}
