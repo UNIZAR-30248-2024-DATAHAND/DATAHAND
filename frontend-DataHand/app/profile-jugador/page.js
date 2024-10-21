@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
+import Sidebar from "../components/Sidebar"
 
 ChartJS.register(...registerables);
 
@@ -31,6 +32,7 @@ export default function Home() {
 
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-auto">
+            <Sidebar />
             <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Perfil Jugador
             </h1>
@@ -77,15 +79,6 @@ export default function Home() {
                         </div>
                     </div>
                 ))}
-            </div>
-
-            <div className="flex flex-col gap-4 w-full max-w-xs">
-                <Link href="/">
-                    <button
-                        className="bg-transparent text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
-                        Salir
-                    </button>
-                </Link>
             </div>
         </div>
     );

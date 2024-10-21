@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import Sidebar from "../components/Sidebar"
+
 
 import { useState } from "react"; // Importa useState
 
@@ -151,7 +153,8 @@ export default function Home() {
     };
 
     return (
-        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
+        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4 overflow-y-auto    ">
+            <Sidebar />
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Partido
             </h1>
