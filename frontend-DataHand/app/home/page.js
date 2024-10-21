@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function Home() {
     return (
         <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 overflow-hidden">
+            
             <h1 className="text-5xl font-bold mb-4 text-white" style={{fontFamily: 'var(--font-geist-sans)'}}>
                 Bienvenido a DataHand
             </h1>
@@ -81,6 +82,7 @@ export default function Home() {
                     animation: gradient 20s ease infinite;
                 }
             `}</style>
+
         </div>
     );
 }

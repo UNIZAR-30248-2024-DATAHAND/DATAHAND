@@ -5,7 +5,8 @@ import Image from "next/image";
 import Sidebar from "../components/Sidebar"
 
 
-import { useState } from "react"; // Importa useState
+// import { useState } from "react"; // Importa useState
+import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
 
 export default function Home() {
 
@@ -36,6 +37,57 @@ export default function Home() {
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
     const [faseDeJuego, setFaseDeJuego] = useState(null);
     const [resultado, setResultado] = useState(null);
+
+    // Estado para el cronómetro
+    const [tiempo, setTiempo] = useState(0); // Tiempo en segundos
+    const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
+    const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
+    const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
+    const [golesLocal, setGolesLocal] = useState(0); // Goles del equipo local
+    const [golesVisitante, setGolesVisitante] = useState(0); // Goles del equipo visitante
+
+    const [sistemaDefensivo, setSistemaDefensivo] = useState(null);
+    const [sistemaDefensivoLocal, setSistemaDefensivoLocal] = useState(null);
+    const [sistemaDefensivoVisitante, setSistemaDefensivoVisitante] = useState(null);
+
+    const [partidoData, setPartidoData] = useState({
+        fecha: new Date(),
+        equipoLocal: "Club A",
+        equipoVisitante: "Club B",
+        resultado: "0-0",
+        jugadores: [],
+        eventos: [],
+        sistemaDefensivoLocal: null,
+        sistemaDefensivoVisitante: null,
+        golesLocal: 0,
+        golesVisitante: 0,
+        horarios: ["00:00", "00:00", "00:00"], // Reemplaza con los horarios reales
+        imagenes: {
+            local: "/ruta/a/imagen/local.png",
+            visitante: "/ruta/a/imagen/visitante.png",
+        },
+    });
+
+
+    // Efecto para manejar el cronómetro
+    useEffect(() => {
+        let intervalo;
+
+        if (cronometroActivo) {
+            intervalo = setInterval(() => {
+                setTiempo((prevTiempo) => prevTiempo + 1); // Incrementa el tiempo en 1 segundo
+            }, 1000);
+        }
+
+        return () => clearInterval(intervalo); // Limpia el intervalo al desmontar
+    }, [cronometroActivo]);
+
+    // Función para formatear el tiempo en minutos y segundos (MM:SS)
+    const formatearTiempo = (tiempo) => {
+        const minutos = String(Math.floor(tiempo / 60)).padStart(2, "0");
+        const segundos = String(tiempo % 60).padStart(2, "0");
+        return `${minutos}:${segundos}`;
+    };
 
     //const showPopup = seleccionado.index !== null && faseDeJuego !== null && resultado !== null;
 
@@ -141,6 +193,8 @@ export default function Home() {
         if (seleccionado.tipo == "jugador" && faseDeJuego !== null && resultado !== null) {
             console.log("Muestro PopUp");
             setShowPopup(true); // Muestra el popup
+        } else if(resultado === "Gol") {
+            marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
         }
     };
 
@@ -151,6 +205,82 @@ export default function Home() {
         setResultado(null);
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
+
+    // Funciones para iniciar y detener el cronómetro
+    const iniciarCronometro = () => {
+        if (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) {
+            alert("Debes seleccionar un sistema defensivo antes de comenzar el partido.");
+            return;
+        }
+        // Lógica para iniciar el partido si ambos sistemas defensivos están seleccionados
+        console.log("Partido iniciado con los sistemas defensivos:");
+        console.log("Local:", sistemaDefensivoLocal);
+        console.log("Visitante:", sistemaDefensivoVisitante);
+        setCronometroActivo(true);
+    };
+
+    const detenerCronometro = () => {
+        setCronometroActivo(false);
+    };
+
+    // Maneja el final del primer tiempo
+    const finalizarPrimerTiempo = () => {
+        setTiempo(30 * 60); // Establece el tiempo a 30 minutos
+        detenerCronometro(); // Detiene el cronómetro si estaba activo
+        setTextoBoton("Fin del partido"); // Cambia el texto del botón
+        setPrimerTiempoFinalizado(true); // Marca que el primer tiempo ha terminado
+    };
+
+    // Maneja el fin del partido
+    const finalizarPartido = () => {
+        setTiempo(0); // Establece el tiempo a 00:00
+        setTextoBoton("Partido acabado"); // Cambia el texto del botón
+        detenerCronometro(); // Detiene el cronómetro
+    };
+
+    const manejarClickFinPartido = async () => {
+        if (!primerTiempoFinalizado) {
+            finalizarPrimerTiempo(); // Si el primer tiempo no ha finalizado, lo finaliza
+        } else {
+            await finalizarPartido(); // Si el primer tiempo ya ha finalizado, finaliza el partido
+            await enviarDatosAPartido(); // Enviar los datos a la API
+        }
+    };
+
+    const enviarDatosAPartido = async () => {
+        try {
+            const response = await fetch('/api/users/datosPartidos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(partidoData),
+            });
+    
+            const data = await response.json();
+            console.log('Datos del partido guardados:', data);
+        } catch (error) {
+            console.error('Error al guardar el partido:', error);
+        }
+    };
+    
+
+    const seleccionarSistemaDefensivoLocal = (opcion) => {
+        setPartidoData(prevData => ({
+            ...prevData,
+            sistemaDefensivoLocal: opcion,
+        }));
+        setSistemaDefensivoLocal(opcion);
+    };
+    
+    const seleccionarSistemaDefensivoVisitante = (opcion) => {
+        setPartidoData(prevData => ({
+            ...prevData,
+            sistemaDefensivoVisitante: opcion,
+        }));
+        setSistemaDefensivoVisitante(opcion);
+    };
+    
 
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4 overflow-y-auto    ">
@@ -190,18 +320,46 @@ export default function Home() {
 
                 {/* Marcador y Cronómetro */}
                 <div className="flex flex-col">
-                    <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span>
+                    <span className="text-xl font-semibold text-black">Marcador: {golesLocal} - {golesVisitante}</span>
+                    {/* <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span> */}
                 </div>
                 
+                {/* Cronómetro */}
                 <div className="flex items-center">
                     <div className="flex flex-col mr-4">
-                        <span className="text-lg font-semibold text-black">Cronómetro: 00:00</span>
+                        <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(tiempo)}</span>
                         <span className="text-md font-semibold text-black">Primer Tiempo</span>
                     </div>
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2">Fin del 1er Tiempo</button>
                     <div className="flex gap-2">
-                        <button className="bg-green-500 text-white px-4 py-2 rounded">Iniciar</button>
-                        <button className="bg-red-500 text-white px-4 py-2 rounded">Detener</button>
+                        <button 
+                            className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
+                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            onClick={manejarClickFinPartido} // Cambia la funcionalidad del botón
+                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante}
+                        >
+                            {textoBoton}
+                        </button>
+                    
+                        <button 
+                            className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
+                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            // className="bg-green-500 text-white px-4 py-2 rounded"
+                            onClick={iniciarCronometro} // Inicia el cronómetro
+                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
+                        >
+                            Iniciar
+                        </button>
+                        <button 
+                            className={`mt-4 px-4 py-2 rounded bg-red-500 text-white ${
+                                (!sistemaDefensivoLocal || !sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            onClick={detenerCronometro} // Detiene el cronómetro
+                            disabled={!sistemaDefensivoLocal || !sistemaDefensivoVisitante}
+                        >
+                            Detener
+                        </button>
                     </div>
                 </div>
 
@@ -248,16 +406,16 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Jugadores */}
+                     {/* Sección Jugadores Locales */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2>
+                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores Locales</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.local.jugadores.map((jugador, index) => (
                                 <button
                                     key={index}
                                     onClick={() => seleccionarJugador("local", index, "jugador")}
                                     className={`${
-                                        seleccionado?.equipo === "local" &&  seleccionado?.index === index && seleccionado?.tipo === "jugador"
+                                        seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "jugador"
                                             ? "bg-red-500"
                                             : "bg-green-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -266,18 +424,15 @@ export default function Home() {
                                 </button>
                             ))}
                         </div>
-                    </div>
 
-                    {/* Sección Banquillo */}
-                    <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Banquillo</h2>
+                        <h2 className="text-lg font-semibold text-black mt-4 mb-2">Banquillo Local</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.local.banquillo.map((jugador, index) => (
                                 <button
                                     key={index}
                                     onClick={() => seleccionarJugador("local", index, "banquillo")}
                                     className={`${
-                                        seleccionado?.equipo === "local" &&  seleccionado?.index === index && seleccionado?.tipo === "banquillo"
+                                        seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "banquillo"
                                             ? "bg-red-500"
                                             : "bg-yellow-500"
                                     } text-white px-3 py-3 rounded-lg`}
@@ -285,6 +440,7 @@ export default function Home() {
                                     Jugador {jugador}
                                 </button>
                             ))}
+
                             {/* Agregar el segundo portero al banquillo */}
                             <button
                                 onClick={() => seleccionarJugador("local", 1, "portero")}
@@ -299,23 +455,25 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Sistema Defensivo */}
+                    {/* Sección Sistema Defensivo del equipo local */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2>
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo Local</h2>
                         <div className="flex gap-2 flex-wrap">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
                                     <input 
                                         type="radio" 
-                                        name="sistemaDefensivo" // El mismo nombre para agrupar los radios
+                                        name="sistemaDefensivoLocal"
                                         className="mr-2" 
-                                        id={`radio-${index}`} 
+                                        id={`radio-local-${index}`} 
+                                        onChange={() => seleccionarSistemaDefensivoLocal(opcion)} // Actualiza el estado al seleccionar
+                                        checked={sistemaDefensivoLocal === opcion} // Verificar cuál está seleccionado
                                     />
-                                    <label htmlFor={`radio-${index}`} className="text-black text-lg">{opcion}</label>
+                                    <label htmlFor={`radio-local-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
-                    </div>               
+                    </div>     
                 </div>
                 
                 {/* Rectángulo 2 (más grande) */}
@@ -445,9 +603,9 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Jugadores */}
+                    {/* Sección Jugadores Visitantes */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores</h2>
+                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores Visitantes</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.visitante.jugadores.map((jugador, index) => (
                                 <button
@@ -463,11 +621,8 @@ export default function Home() {
                                 </button>
                             ))}
                         </div>
-                    </div>
 
-                    {/* Sección Banquillo */}
-                    <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Banquillo</h2>
+                        <h2 className="text-lg font-semibold text-black mt-4 mb-2">Banquillo Visitante</h2>
                         <div className="grid grid-cols-3 gap-2">
                             {equipos.visitante.banquillo.map((jugador, index) => (
                                 <button
@@ -482,6 +637,7 @@ export default function Home() {
                                     Jugador {jugador}
                                 </button>
                             ))}
+
                             {/* Agregar el segundo portero al banquillo */}
                             <button
                                 onClick={() => seleccionarJugador("visitante", 1, "portero")}
@@ -496,19 +652,21 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Sección Sistema Defensivo */}
+                    {/* Sección Sistema Defensivo del equipo visitante */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo</h2>
+                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo Visitante</h2>
                         <div className="flex gap-2 flex-wrap">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
                                     <input 
                                         type="radio" 
-                                        name="sistemaDefensivo2" // El mismo nombre para agrupar los radios
+                                        name="sistemaDefensivoVisitante"
                                         className="mr-2" 
-                                        id={`radio-${index}`} 
+                                        id={`radio-visitante-${index}`} 
+                                        onChange={() => seleccionarSistemaDefensivoVisitante(opcion)} // Actualiza el estado al seleccionar
+                                        checked={sistemaDefensivoVisitante === opcion} // Verificar cuál está seleccionado
                                     />
-                                    <label htmlFor={`radio-${index}`} className="text-black text-lg">{opcion}</label>
+                                    <label htmlFor={`radio-visitante-${index}`} className="text-black text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
