@@ -15,9 +15,9 @@ export async function POST(req, datos) {
         // Crear el partido con valores predeterminados
         const nuevoEvento = new Eventos({
             IdEvento: `Evento-${IdEvento}`,
-            IdPartido: datos.idPartido, 
+            IdPartido: datos.IdPartido, 
             IdJugador: datos.idJugador,
-            MinSeg: datos.tiempoJugado, 
+            MinSeg: datos.MinSeg, 
             FaseDeJuego: datos.faseDeJuego,
             Resultado: datos.resultado, 
             LocalizacionLanzamiento: datos.localizacionLanzamiento,

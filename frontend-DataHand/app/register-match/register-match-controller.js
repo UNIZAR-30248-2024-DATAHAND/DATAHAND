@@ -167,16 +167,16 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   const [sistemaDefensa, setSistemaDefensa] = useState(null);
 
   const [datosEvento, setDatosEvento] = useState({
-    idPartido: 'Partido-3', //HAY QUEVER COMO LO PASAMOS, PREGUNTAR JUANJO
-    idJugador: '',
-    tiempoJugado: '',
-    faseDeJuego: '',
-    resultado: '',
-    posicionLanzador: '',
-    localizacionLanzamiento: '',
-    asistenciaDada: '',
-    sistemaAtaque: '',
-    sistemaDefensa: ''
+    IdPartido: null,
+    idJugador: null,
+    MinSeg: null,
+    faseDeJuego: null,
+    resultado: null,
+    posicionLanzador: null,
+    localizacionLanzamiento: null,
+    asistenciaDada: null,
+    sistemaAtaque: null,
+    sistemaDefensa: null
   });
 
   // Función que maneja el clic en el campo y almacena las coordenadas
@@ -193,62 +193,74 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
 
   const handleGuardarDatos = () => {
     // Validaciones
-  if (seleccionado.index === null) {
-    alert("Falta seleccionar el jugador.");
-    return;
-  }
-  if (!tiempoJugado) {
-    alert("Falta registrar el tiempo de juego.");
-    return;
-  }
-  if (!faseDeJuego) {
-    alert("Falta definir la fase de juego.");
-    return;
-  }
-  if (!resultado) {
-    alert("Falta registrar el resultado.");
-    return;
-  }
-  if (!posicionLanzador) {
-    alert("Falta seleccionar la posición del lanzador.");
-    return;
-  }
-  if (!localizacionLanzamiento) {
-    alert("Falta seleccionar la localización del lanzamiento.");
-    return;
-  }
-  if (!asistenciaDada) {
-    alert("Falta seleccionar la asistencia dada.");
-    return;
-  }
-  if (!sistemaAtaque) {
-    alert("Falta seleccionar el sistema de ataque.");
-    return;
-  }
-  if (!sistemaDefensa) {
-    alert("Falta seleccionar el sistema de defensa.");
-    return;
-  }
+    if (seleccionado.index === null) {
+      alert("Falta seleccionar el jugador.");
+      return;
+    }
+    if (!tiempoJugado) {
+      alert("Falta registrar el tiempo de juego.");
+      return;
+    }
+    if (!faseDeJuego) {
+      alert("Falta definir la fase de juego.");
+      return;
+    }
+    if (!resultado) {
+      alert("Falta registrar el resultado.");
+      return;
+    }
+    if (!posicionLanzador) {
+      alert("Falta seleccionar la posición del lanzador.");
+      return;
+    }
+    if (!localizacionLanzamiento) {
+      alert("Falta seleccionar la localización del lanzamiento.");
+      return;
+    }
+    if (!asistenciaDada) {
+      alert("Falta seleccionar la asistencia dada.");
+      return;
+    }
+    if (!sistemaAtaque) {
+      alert("Falta seleccionar el sistema de ataque.");
+      return;
+    }
+    if (!sistemaDefensa) {
+      alert("Falta seleccionar el sistema de defensa.");
+      return;
+    }
 
-  // Actualizar el estado de datosEvento
-  setDatosEvento(prevDatosEvento => ({
-    ...prevDatosEvento, // Mantener los valores existentes
-    idPartido: "Partido-1",
-    idJugador: seleccionado.index,
-    tiempoJugado: tiempoJugado,
-    faseDeJuego: faseDeJuego,
-    resultado: resultado,
-    posicionLanzador: posicionLanzador,
-    localizacionLanzamiento: localizacionLanzamiento,
-    asistenciaDada: asistenciaDada,
-    sistemaAtaque: sistemaAtaque,
-    sistemaDefensa: sistemaDefensa
-  }));
+    console.log("Valores actuales antes de la actualización:", {
+      IdPartido: "Partido-J",
+      idJugador: seleccionado.index,
+      MinSeg: tiempoJugado,
+      faseDeJuego,
+      resultado,
+      posicionLanzador,
+      localizacionLanzamiento,
+      asistenciaDada,
+      sistemaAtaque,
+      sistemaDefensa
+    });
 
-  //setDatosEvento(); // Actualizar los datos del evento
-  registrarEvento(); // Llamar a la función para registrar el evento
+    // Actualizar el estado de datosEvento
+    setDatosEvento(datosEvento => ({
+      ...datosEvento, // Mantener los valores existentes
+      idPartido: "Partido-1",
+      idJugador: seleccionado.index,
+      MinSeg: tiempoJugado,
+      faseDeJuego: faseDeJuego,
+      resultado: resultado,
+      posicionLanzador: posicionLanzador,
+      localizacionLanzamiento: localizacionLanzamiento,
+      asistenciaDada: asistenciaDada,
+      sistemaAtaque: sistemaAtaque,
+      sistemaDefensa: sistemaDefensa
+    }));
 
-  console.log("Datos del evento:", datosEvento);
+    registrarEvento(); // Llamar a la función para registrar el evento
+    
+    console.log("Datos del evento:", datosEvento);
   };
 
   // Función para registrar un partido
