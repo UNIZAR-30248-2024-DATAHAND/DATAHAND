@@ -34,6 +34,54 @@ export const obtenerPartidos = async () => {
   }
 };
 
+async function actualizarEquipoLocal(idPartido, nuevoNombreEquipoLocal) {
+  try {
+      const response = await fetch('/api/users/crearPartido', { // Cambia la ruta según tu estructura
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              idPartido: idPartido, // ID del partido a actualizar
+              EquipoLocal: nuevoNombreEquipoLocal // Nuevo nombre del equipo local
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error('Error al actualizar el equipo local');
+      }
+
+      const data = await response.json();
+      console.log('Partido actualizado:', data);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}
+
+async function actualizarEquipoVisitante(idPartido, nuevoNombreEquipoVisitante) {
+  try {
+      const response = await fetch('/api/users/crearPartido', { // Cambia la ruta según tu estructura
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              idPartido: idPartido, // ID del partido a actualizar
+              EquipoVisitante: nuevoNombreEquipoVisitante // Nuevo nombre del equipo local
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error('Error al actualizar el equipo local');
+      }
+
+      const data = await response.json();
+      console.log('Partido actualizado:', data);
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}
+
 export default function Home() {
 
   const [partidos, setPartidos] = useState([]); // Estado para almacenar los partidos
@@ -136,10 +184,14 @@ export default function Home() {
           >
             <p className="text-2xl text-orange-500 font-semibold">{idPartido}</p>
             <div className="flex gap-2">
-              <button className="bg-blue-500 text-white px-4 py-2 rounded">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded"
+                onClick={() => actualizarEquipoLocal(idPartido, 'JoseteFC')}
+              >
                 Editar
               </button>
-              <button className="bg-green-500 text-white px-4 py-2 rounded">
+              <button className="bg-green-500 text-white px-4 py-2 rounded"
+                onClick={() => actualizarEquipoVisitante(idPartido, 'MaulasFC')}
+                >
                 Ver
               </button>
               <button className="bg-red-500 text-white px-4 py-2 rounded">
