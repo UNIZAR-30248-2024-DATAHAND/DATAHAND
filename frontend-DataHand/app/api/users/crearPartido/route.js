@@ -89,3 +89,5 @@ export async function GET(req) {
         });
     }
   }
+
+// CREAR PUT PARA MODIFICAR DATOS
