@@ -160,11 +160,11 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias }) => {
                   <div className="mb-4 flex flex-col">
                       <h3 className="text-lg font-semibold text-black mb-2">Asistencias</h3>
                       <div className="flex justify-between mb-2">
-                          {Array.from({ length: 6 }, (_, index) => (
-                              <button key={index} className="bg-blue-500 text-white px-4 py-2 rounded text-sm">
-                                  Asistencia {index + 1}
-                              </button>
-                          ))}
+                        {asistencias.map((jugador, index) => (
+                        <button key={index} className="bg-blue-500 text-white px-4 py-2 rounded text-sm">
+                          Jugador {jugador}
+                        </button>
+                      ))}
                       </div>
                   </div>
 
