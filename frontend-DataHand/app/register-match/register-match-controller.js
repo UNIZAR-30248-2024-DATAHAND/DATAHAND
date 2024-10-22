@@ -246,13 +246,13 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     // Actualizar el estado de datosEvento
     setDatosEvento(datosEvento => ({
       ...datosEvento, // Mantener los valores existentes
-      idPartido: "Partido-1",
+      IdPartido: "Partido-1",
       idJugador: seleccionado.index,
       MinSeg: tiempoJugado,
       faseDeJuego: faseDeJuego,
       resultado: resultado,
-      posicionLanzador: posicionLanzador,
-      localizacionLanzamiento: localizacionLanzamiento,
+      posicionLanzador: JSON.stringify(posicionLanzador), // Convertir a string
+      localizacionLanzamiento: JSON.stringify(localizacionLanzamiento), // Convertir a string
       asistenciaDada: asistenciaDada,
       sistemaAtaque: sistemaAtaque,
       sistemaDefensa: sistemaDefensa

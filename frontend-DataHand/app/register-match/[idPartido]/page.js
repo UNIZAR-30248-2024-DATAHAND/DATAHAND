@@ -198,21 +198,24 @@ export default function Home() {
         return equipos.local.porteros.includes(jugador) || equipos.visitante.porteros.includes(jugador);
     };
 
-
-    const handleAccionClick = () => {
-        // Verificar las condiciones antes de mostrar el popup
+    useEffect(() => {
         console.log("Intentando registrar una accion...");
-        console.log(faseDeJuego);
-        console.log(resultado);
-        console.log(accion);
-        console.log(suspension);
-        if (seleccionado.tipo == "jugador" && faseDeJuego !== null && resultado !== null) {
-            console.log("Muestro PopUp");
-            setShowPopup(true); // Muestra el popup
-        } else if(resultado === "Gol") {
-            //marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
+          console.log("Tipo seleccionado:", seleccionado.tipo);
+          console.log("Fase de juego:", faseDeJuego);
+          console.log("Resultado:", resultado);
+          console.log("Accion:", accion);
+          console.log("Suspension:", suspension);
+
+        if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado !== null) {
+          console.log("Muestro PopUp");
+          setShowPopup(true); // Mostrar el popup
+        } else if (resultado === "Gol") {
+          console.log("Gol detectado");
+          // marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
+        } else {
+          console.log("Condiciones no cumplidas, no se muestra el popup.");
         }
-    };
+      }, [resultado, faseDeJuego, accion, suspension, seleccionado]); // Se ejecuta cada vez que `resultado` cambia
 
     const handleClosePopup = () => {
         setShowPopup(false); // Oculta el popup
@@ -532,7 +535,6 @@ export default function Home() {
                                         console.log(opcionResultado);
                                         setResultado(opcionResultado); // Actualiza el estado
                                         //Aqui hay un problema, no se actualiza el estado de resultado
-                                        handleAccionClick();
                                     }}
                                 >
                                     {opcionResultado}
