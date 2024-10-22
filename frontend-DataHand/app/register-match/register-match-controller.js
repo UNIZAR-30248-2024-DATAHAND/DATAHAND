@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 
 const CampoBalonmano = ({ onClick }) => {
+  const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
+
   const handleClick = (event) => {
     const stage = event.target.getStage();
     if (stage) {
       const { x, y } = stage.getPointerPosition();
-      
+      setCruzPosicion({ x, y });
       if (onClick) {
         onClick({ x, y });
       }
@@ -46,6 +48,15 @@ const CampoBalonmano = ({ onClick }) => {
 
         {/* Círculo central (si es necesario) */}
         <Circle x={150} y={300} radius={50} fill="transparent" stroke="white" strokeWidth={5} />
+        {/* Dibujar la cruz en la posición del clic */}
+        {cruzPosicion && (
+          <>
+            {/* Línea vertical */}
+            <Line points={[cruzPosicion.x, cruzPosicion.y - 10, cruzPosicion.x, cruzPosicion.y + 10]} stroke="red" strokeWidth={2}/>
+            {/* Línea horizontal */}
+            <Line points={[cruzPosicion.x - 10, cruzPosicion.y, cruzPosicion.x + 10, cruzPosicion.y]} stroke="red" strokeWidth={2}/>
+          </>
+        )}
       </Layer>
     </Stage>
   );
@@ -56,12 +67,15 @@ const PorteriaBalonmano = ({ onClick }) => {
   const height = 200; // Altura de la portería
   const postThickness = 15; // Grosor de los postes
   const stripeHeight = height / 10; // Alto de cada franja
+  
+  const [cruzPorteria, setCruzPorteria] = useState(null); // Para guardar la posición de la cruz
 
   // Maneja el click en el Stage
   const handleClick = (event) => {
     const stage = event.target.getStage();
     if (stage) {
       const { x, y } = stage.getPointerPosition();  
+      setCruzPorteria({ x, y });
       if (onClick) {
         onClick({ x, y }); // Pasa las coordenadas a la función onClick que recibes por props
       }
@@ -120,6 +134,15 @@ const PorteriaBalonmano = ({ onClick }) => {
         <Line points={[25, 100, 375, 100]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
         <Line points={[25, 160, 375, 160]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
         
+        {/* Dibujar la cruz en la posición del clic */}
+        {cruzPorteria && (
+          <>
+            {/* Línea vertical */}
+            <Line points={[cruzPorteria.x, cruzPorteria.y - 10, cruzPorteria.x, cruzPorteria.y + 10]} stroke="red" strokeWidth={2}/>
+            {/* Línea horizontal */}
+            <Line points={[cruzPorteria.x - 10, cruzPorteria.y, cruzPorteria.x + 10, cruzPorteria.y]} stroke="red" strokeWidth={2}/>
+          </>
+        )}
 
       </Layer>
     </Stage>
@@ -156,6 +179,43 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   };
 
   const handleGuardarDatos = () => {
+    // Validaciones
+  if (seleccionado.index === null) {
+    alert("Falta seleccionar el jugador.");
+    return;
+  }
+  if (!tiempoJugado) {
+    alert("Falta registrar el tiempo de juego.");
+    return;
+  }
+  if (!faseDeJuego) {
+    alert("Falta definir la fase de juego.");
+    return;
+  }
+  if (!resultado) {
+    alert("Falta registrar el resultado.");
+    return;
+  }
+  if (!posicionLanzador) {
+    alert("Falta seleccionar la posición del lanzador.");
+    return;
+  }
+  if (!localizacionLanzamiento) {
+    alert("Falta seleccionar la localización del lanzamiento.");
+    return;
+  }
+  if (!asistenciaDada) {
+    alert("Falta seleccionar la asistencia dada.");
+    return;
+  }
+  if (!sistemaAtaque) {
+    alert("Falta seleccionar el sistema de ataque.");
+    return;
+  }
+  if (!sistemaDefensa) {
+    alert("Falta seleccionar el sistema de defensa.");
+    return;
+  }
     console.log("IdEvento: ");
     console.log("IdPartido: ");
     console.log("IdJugador:", seleccionado.index);
