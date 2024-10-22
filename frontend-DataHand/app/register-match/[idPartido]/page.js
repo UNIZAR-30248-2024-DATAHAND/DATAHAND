@@ -8,6 +8,8 @@ import React, { useState, useEffect } from "react"; // Asegúrate de importar us
 import { PopUpAccion } from "../register-match-controller"; // Importa el componente CampoBalonmano
 import Sidebar from '../../components/Sidebar';
 import { set } from "mongoose";
+import { useParams } from 'next/navigation';
+
 
 export default function Home() {
 
@@ -18,6 +20,8 @@ export default function Home() {
     - Marcar jugador, fase de juego y accion/suspension para guardar dato
     - Falta que el cronometro se actualize cada segundo en tiempoDeJuego
     */
+
+    const { idPartido } = useParams(); // Obtener el idPartido de los parámetros
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
@@ -716,7 +720,7 @@ export default function Home() {
 
             {/* Popup para Gol */}
             <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} asistencias={asistencias}
-             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} />   {/*Me falta pasarle el IdPartido*/}
+             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} />   {/*Me falta pasarle el IdPartido*/}
         </div>
     );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
+import { useRouter } from 'next/router';
 
 const CampoBalonmano = ({ onClick }) => {
   const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
@@ -149,7 +150,7 @@ const PorteriaBalonmano = ({ onClick }) => {
   );
 };
 
-const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado }) => {
+const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado, idPartido }) => {
 
   if (!showPopup) return null; // Si no se debe mostrar el popup, no renderizar nada
 
@@ -161,7 +162,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
 
   //Habra que enviar estos const + IdEvento, IdPartido, Jugador ,Minuto-segundo, Fase de juego, Resultado
   const [posicionLanzador, setPosicionLanzador] = useState(null);
-  const [localizacionLanzamiento, setlocalizacionLanzamiento] = useState(null);
+  const [localizacionLanzamiento, setLocalizacionLanzamiento] = useState(null);
   const [asistenciaDada, setAsistenciaDada] = useState(null);
   const [sistemaAtaque, setSistemaAtaque] = useState(null);
   const [sistemaDefensa, setSistemaDefensa] = useState(null);
@@ -179,6 +180,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     sistemaDefensa: null
   });
 
+
   // Función que maneja el clic en el campo y almacena las coordenadas
   const handlePosicionClick = (coords) => {
     setPosicionLanzador(coords); // Actualiza las coordenadas del campo
@@ -187,81 +189,91 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
 
   // Función que maneja el clic en la portería y almacena las coordenadas
   const handlePorteriaClick = (coords) => {
-    setlocalizacionLanzamiento(coords); // Actualiza las coordenadas de la portería
+    setLocalizacionLanzamiento(coords); // Actualiza las coordenadas de la portería
     console.log("Coordenadas de la portería:", coords);
   };
 
-  const handleGuardarDatos = () => {
-    // Validaciones
-    if (seleccionado.index === null) {
-      alert("Falta seleccionar el jugador.");
-      return;
-    }
-    if (!tiempoJugado) {
-      alert("Falta registrar el tiempo de juego.");
-      return;
-    }
-    if (!faseDeJuego) {
-      alert("Falta definir la fase de juego.");
-      return;
-    }
-    if (!resultado) {
-      alert("Falta registrar el resultado.");
-      return;
-    }
-    if (!posicionLanzador) {
-      alert("Falta seleccionar la posición del lanzador.");
-      return;
-    }
-    if (!localizacionLanzamiento) {
-      alert("Falta seleccionar la localización del lanzamiento.");
-      return;
-    }
-    if (!asistenciaDada) {
-      alert("Falta seleccionar la asistencia dada.");
-      return;
-    }
-    if (!sistemaAtaque) {
-      alert("Falta seleccionar el sistema de ataque.");
-      return;
-    }
-    if (!sistemaDefensa) {
-      alert("Falta seleccionar el sistema de defensa.");
-      return;
-    }
+  //HASTA AQUI
+  const [eventoRegistrado, setEventoRegistrado] = useState(false); // Booleano de control
 
-    console.log("Valores actuales antes de la actualización:", {
-      IdPartido: "Partido-J",
-      idJugador: seleccionado.index,
-      MinSeg: tiempoJugado,
-      faseDeJuego,
-      resultado,
-      posicionLanzador,
-      localizacionLanzamiento,
-      asistenciaDada,
-      sistemaAtaque,
-      sistemaDefensa
-    });
+  // useEffect para actualizar datosEvento solo si todos los datos están completos
+  useEffect(() => {
+    // Solo actualizar datosEvento si todos los datos están completos y no se ha registrado un evento
+    if (!eventoRegistrado && 
+        seleccionado.index !== null &&
+        tiempoJugado &&
+        faseDeJuego &&
+        resultado &&
+        posicionLanzador &&
+        localizacionLanzamiento &&
+        asistenciaDada &&
+        sistemaAtaque &&
+        sistemaDefensa
+    ) {
+      console.log("Valores actuales antes de la actualización:", {
+        IdPartido: idPartido,
+        idJugador: seleccionado.index,
+        MinSeg: tiempoJugado,
+        faseDeJuego,
+        resultado,
+        posicionLanzador,
+        localizacionLanzamiento,
+        asistenciaDada,
+        sistemaAtaque,
+        sistemaDefensa
+      });
 
-    // Actualizar el estado de datosEvento
-    setDatosEvento(datosEvento => ({
-      ...datosEvento, // Mantener los valores existentes
-      IdPartido: "Partido-1",
-      idJugador: seleccionado.index,
-      MinSeg: tiempoJugado,
-      faseDeJuego: faseDeJuego,
-      resultado: resultado,
-      posicionLanzador: JSON.stringify(posicionLanzador), // Convertir a string
-      localizacionLanzamiento: JSON.stringify(localizacionLanzamiento), // Convertir a string
-      asistenciaDada: asistenciaDada,
-      sistemaAtaque: sistemaAtaque,
-      sistemaDefensa: sistemaDefensa
-    }));
+      // Actualizar el estado de datosEvento
+      setDatosEvento({
+        IdPartido: idPartido,
+        idJugador: seleccionado.index,
+        MinSeg: tiempoJugado,
+        faseDeJuego,
+        resultado,
+        posicionLanzador: JSON.stringify(posicionLanzador), // Convertir a string
+        localizacionLanzamiento: JSON.stringify(localizacionLanzamiento), // Convertir a string
+        asistenciaDada,
+        sistemaAtaque,
+        sistemaDefensa
+      });
+    }
+  }, [
+    seleccionado.index,
+    tiempoJugado,
+    faseDeJuego,
+    resultado,
+    posicionLanzador,
+    localizacionLanzamiento,
+    asistenciaDada,
+    sistemaAtaque,
+    sistemaDefensa,
+    eventoRegistrado // Añadido para controlar el registro del evento
+  ]);
 
-    registrarEvento(); // Llamar a la función para registrar el evento
-    
-    console.log("Datos del evento:", datosEvento);
-  };
+  // useEffect para registrar el evento cuando datosEvento cambia
+  useEffect(() => {
+    if (eventoRegistrado) return; // Si el evento ya se registró, no hacer nada
+
+    // Verificar si todos los datos del evento están completos
+    if (
+      datosEvento.idJugador !== undefined &&
+      datosEvento.MinSeg &&
+      datosEvento.faseDeJuego &&
+      datosEvento.resultado &&
+      datosEvento.posicionLanzador &&
+      datosEvento.localizacionLanzamiento &&
+      datosEvento.asistenciaDada &&
+      datosEvento.sistemaAtaque &&
+      datosEvento.sistemaDefensa
+    ) {
+      // Marcar el evento como registrado
+      setEventoRegistrado(true);
+      console.log("Evento registrado:", datosEvento);
+
+      // Llamar a la función para registrar el evento
+      registrarEvento(); 
+    }
+  }, [datosEvento, eventoRegistrado]); // Cambiar solo si cambia datosEvento o eventoRegistrado 
 
   // Función para registrar un partido
   const registrarEvento = async () => {
@@ -277,12 +289,31 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
       if (res.ok) {
         const data = await res.json();
         console.log('Evento registrado:', data);
+        // Reiniciar los campos
+        reiniciarCampos();
+
+        // Cerrar el popup
+        onClose(); // Asegúrate de invocar la función
+
       } else {
         console.error('Error al registrar el evento');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
+    } finally {
+      // Siempre reiniciar el booleano aquí después de intentar registrar
+      setEventoRegistrado(false); // Reiniciar el booleano
     }
+  };
+
+  // Función para reiniciar los campos
+  const reiniciarCampos = () => {
+    setPosicionLanzador(null);
+    setLocalizacionLanzamiento(null);
+    setAsistenciaDada('');
+    setSistemaAtaque('');
+    setSistemaDefensa('');
+    setDatosEvento({}); // Reiniciar datosEvento
   };
 
   return (
@@ -358,16 +389,6 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                               ))}
                           </div>
                       </div>
-                  </div>
-                  
-                  {/* Botón de Guardar */}
-                  <div className="flex justify-center">
-                      <button 
-                          className="bg-green-500 text-white px-6 py-2 rounded" 
-                          onClick={handleGuardarDatos} // Cierra el popup
-                      >
-                          Guardar
-                      </button>
                   </div>
 
                   {/* Botón de Cerrar */}
