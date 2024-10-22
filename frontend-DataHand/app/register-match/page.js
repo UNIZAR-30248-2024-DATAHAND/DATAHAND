@@ -5,7 +5,7 @@ import Image from "next/image";
 
 // import { useState } from "react"; // Importa useState
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
-import { CampoBalonmano, PorteriaBalonmano } from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
+import { CampoBalonmano, PorteriaBalonmano, PopUpAccion } from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
 import Sidebar from '../components/Sidebar';
 
 export default function Home() {
@@ -97,8 +97,6 @@ export default function Home() {
         const segundos = String(tiempo % 60).padStart(2, "0");
         return `${minutos}:${segundos}`;
     };
-
-    //const showPopup = seleccionado.index !== null && faseDeJuego !== null && resultado !== null;
 
     // Función para seleccionar un jugador o banquillo
     const seleccionarJugador = (equipo, index, tipo) => {
@@ -713,94 +711,7 @@ export default function Home() {
             </div>
 
             {/* Popup para Gol */}
-            {showPopup && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    {/* Popup ocupa una gran parte de la pantalla y es naranja */}
-                    <div className="bg-orange-500 rounded-lg p-6 w-[80vw] h-[80vh] overflow-auto flex items-center justify-center">
-                        {/* Rectángulo blanco dentro del popup */}
-                        <div className="bg-white rounded-lg p-6 w-[90%] h-[90%] flex flex-row shadow-lg">
-                            {/* Columna izquierda */}
-                            <div className="flex flex-col flex-1 justify-between">
-                                {/* Sección de Posición Gol */}
-                                <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4">
-                                    <h3 className="text-sm font-semibold text-black">Posición Gol</h3>
-                                    <PorteriaBalonmano onClick={handleCampoClick} />
-                                    
-                                </div>
-                                {/* Sección de Posición Lanzador */}
-                                <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center">
-                                    <h3 className="text-sm font-semibold text-black mb-4">Posición Lanzador</h3>
-                                    <CampoBalonmano onClick={handleCampoClick} />
-                                </div>
-                            </div>
-                            
-                            {/* Línea separadora */}
-                            <div className="w-1 bg-orange-500 mx-4" />
-
-                            {/* Columna derecha */}
-                            <div className="flex flex-col flex-1">
-                                {/* Sección de Asistencias */}
-                                <div className="mb-4 flex flex-col">
-                                    <h3 className="text-lg font-semibold text-black mb-2">Asistencias</h3>
-                                    <div className="flex justify-between mb-2">
-                                        {Array.from({ length: 6 }, (_, index) => (
-                                            <button key={index} className="bg-blue-500 text-white px-4 py-2 rounded text-sm">
-                                                Asistencia {index + 1}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Sección de Sistema de Juego */}
-                                <div className="flex flex-col mb-4">
-                                    <h3 className="text-lg font-semibold text-black mb-2">Sistema de Juego</h3>
-                                    <div className="flex flex-col mb-4">
-                                        <h4 className="text-md font-semibold text-black mb-2">Ataque</h4>
-                                        <div className="grid grid-cols-5 gap-2">
-                                            {Array.from({ length: 10 }, (_, index) => (
-                                                <button key={index} className="bg-gray-200 text-black px-3 py-2 rounded text-sm">
-                                                    Ataque {index + 1}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <h4 className="text-md font-semibold text-black mb-2">Defensa</h4>
-                                        <div className="grid grid-cols-5 gap-2">
-                                            {Array.from({ length: 10 }, (_, index) => (
-                                                <button key={index + 10} className="bg-gray-200 text-black px-3 py-2 rounded text-sm">
-                                                    Defensa {index + 1}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                {/* Botón de Guardar */}
-                                <div className="flex justify-center">
-                                    <button 
-                                        className="bg-green-500 text-white px-6 py-2 rounded" 
-                                        onClick={handleClosePopup} // Cierra el popup
-                                    >
-                                        Guardar
-                                    </button>
-                                </div>
-
-                                {/* Botón de Cerrar */}
-                                <div className="flex justify-center">
-                                    <button 
-                                        className="bg-red-500 text-white px-6 py-2 rounded" 
-                                        onClick={handleClosePopup} // Cierra el popup
-                                    >
-                                        Cerrar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
+            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} handleCampoClick={handleCampoClick} />
         </div>
     );
 }
