@@ -9,28 +9,6 @@ import { PopUpAccion } from "../register-match-controller"; // Importa el compon
 import Sidebar from '../../components/Sidebar';
 import { set } from "mongoose";
 
-export const obtenerEventos = async () => {
-    try {
-      const res = await fetch('../api/users/eventos', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (res.ok) {
-        const data = await res.json();
-        // Aquí puedes trabajar con los datos de partidos recibidos
-        console.log('Total de eventos:', data.totalEventos);
-        console.log('Datos eventos:', data.eventos);
-        return data.eventos;
-      } else {
-        console.error('Error al obtener los eventos');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-  };
 
 export default function Home() {
 
@@ -411,10 +389,9 @@ export default function Home() {
                 </div>
 
                 <button className="bg-gray-300 text-black px-4 py-2 rounded">UNDO</button>
-                <button className="bg-gray-300 text-black px-4 py-2 rounded"
-                    onClick={obtenerEventos}
-                >
-                    Eventos</button>
+                <Link href="/statsGen">
+                <button className="bg-gray-300 text-black px-4 py-2 rounded">Eventos</button>
+                </Link>
                 <Link href="/">
                     <button
                         className="bg-red-600 text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
