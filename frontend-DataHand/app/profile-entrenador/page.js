@@ -34,6 +34,7 @@ export const obtenerPartidos = async () => {
   }
 };
 
+//ESTO DEJARA DE IR AQUI E IRA REGISTER MACTH PARA EDITAR NOMBRE LOCAL Y VISITANTE
 async function actualizarEquipoLocal(idPartido, nuevoNombreEquipoLocal) {
   try {
       const response = await fetch('/api/users/crearPartido', { // Cambia la ruta según tu estructura

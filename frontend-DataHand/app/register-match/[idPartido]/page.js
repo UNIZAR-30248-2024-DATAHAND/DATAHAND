@@ -11,6 +11,7 @@ import { set } from "mongoose";
 import { useParams } from 'next/navigation';
 
 
+
 export default function Home() {
 
     /*
@@ -310,8 +311,6 @@ export default function Home() {
         }));
     };
     
-    
-
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
             <Sidebar />
@@ -394,6 +393,9 @@ export default function Home() {
                 </div>
 
                 <button className="bg-gray-300 text-black px-4 py-2 rounded">UNDO</button>
+                <Link href="/statsGen">
+                <button className="bg-gray-300 text-black px-4 py-2 rounded">Eventos</button>
+                </Link>
                 <Link href="/">
                     <button
                         className="bg-red-600 text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
