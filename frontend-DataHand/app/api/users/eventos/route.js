@@ -28,7 +28,7 @@ export async function POST(req, datos) {
             Accion: datos.accion,
             Suspension: datos.suspension,
         });
-
+        console.log("Estoy en el POST de eventos");
         // Guardar en la base de datos
         await nuevoEvento.save();
 
@@ -57,21 +57,21 @@ export async function GET(req) {
         await connectDB();
   
         // Obtener todos los partidos de la base de datos
-        const partidos = await CrearPartidos.find({}, 'IdPartido'); // Obtiene solo el IdPartido
+        const eventos = await Eventos.find({}, 'IdEvento'); // Obtiene solo el IdPartido
   
         // Mapear para obtener solo los IdPartido
-        const idsPartidos = partidos.map(partido => partido.IdPartido);
+        const idsEventos = eventos.map(eventos => eventos.IdEvento);
   
         // Devolver la respuesta con el conteo y los IdPartido
-        return new Response(JSON.stringify({ totalPartidos: idsPartidos.length, idsPartidos }), {
+        return new Response(JSON.stringify({ totalEventos: idsEventos.length, idsEventos }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
     } catch (error) {
-        console.error('Error al obtener la lista de partidos:', error);
-        return new Response(JSON.stringify({ error: 'Error al obtener la lista de partidos' }), {
+        console.error('Error al obtener la lista de eventos:', error);
+        return new Response(JSON.stringify({ error: 'Error al obtener la lista de eventos' }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',

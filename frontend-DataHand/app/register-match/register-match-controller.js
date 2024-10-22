@@ -166,6 +166,19 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   const [sistemaAtaque, setSistemaAtaque] = useState(null);
   const [sistemaDefensa, setSistemaDefensa] = useState(null);
 
+  const [datosEvento, setDatosEvento] = useState({
+    idPartido: 'Partido-3', //HAY QUEVER COMO LO PASAMOS, PREGUNTAR JUANJO
+    idJugador: '',
+    tiempoJugado: '',
+    faseDeJuego: '',
+    resultado: '',
+    posicionLanzador: '',
+    localizacionLanzamiento: '',
+    asistenciaDada: '',
+    sistemaAtaque: '',
+    sistemaDefensa: ''
+  });
+
   // Función que maneja el clic en el campo y almacena las coordenadas
   const handlePosicionClick = (coords) => {
     setPosicionLanzador(coords); // Actualiza las coordenadas del campo
@@ -216,17 +229,48 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     alert("Falta seleccionar el sistema de defensa.");
     return;
   }
-    console.log("IdEvento: ");
-    console.log("IdPartido: ");
-    console.log("IdJugador:", seleccionado.index);
-    console.log("Minuto-segundo:", tiempoJugado);
-    console.log("Fase de juego:", faseDeJuego);
-    console.log("Resultado:", resultado);
-    console.log("Posición Lanzador:", posicionLanzador);
-    console.log("Localización Lanzamiento:", localizacionLanzamiento);
-    console.log("Asistencia Dada:", asistenciaDada);
-    console.log("Sistema de Ataque:", sistemaAtaque);
-    console.log("Sistema de Defensa:", sistemaDefensa);
+
+  // Actualizar el estado de datosEvento
+  setDatosEvento(prevDatosEvento => ({
+    ...prevDatosEvento, // Mantener los valores existentes
+    idPartido: "Partido-1",
+    idJugador: seleccionado.index,
+    tiempoJugado: tiempoJugado,
+    faseDeJuego: faseDeJuego,
+    resultado: resultado,
+    posicionLanzador: posicionLanzador,
+    localizacionLanzamiento: localizacionLanzamiento,
+    asistenciaDada: asistenciaDada,
+    sistemaAtaque: sistemaAtaque,
+    sistemaDefensa: sistemaDefensa
+  }));
+
+  //setDatosEvento(); // Actualizar los datos del evento
+  registrarEvento(); // Llamar a la función para registrar el evento
+
+  console.log("Datos del evento:", datosEvento);
+  };
+
+  // Función para registrar un partido
+  const registrarEvento = async () => {
+    try {
+      const res = await fetch('../api/users/eventos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datosEvento), // Convertir el objeto a una cadena JSON
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Evento registrado:', data);
+      } else {
+        console.error('Error al registrar el evento');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
   };
 
   return (
