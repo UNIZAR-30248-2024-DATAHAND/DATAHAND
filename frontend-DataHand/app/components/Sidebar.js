@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -15,7 +14,7 @@ const Sidebar = () => {
   // Función para registrar un partido
   const registrarPartido = async () => {
     try {
-      const res = await fetch('../api/users/crearPartido/register-match', {
+      const res = await fetch('../api/users/crearPartido', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +24,7 @@ const Sidebar = () => {
       if (res.ok) {
         const data = await res.json();
         // Redirigir al usuario a la página del partido registrado con su ID
-        router.push(`/register-match/${data.partidoId}`);
+        router.push(`/register-match/${data.partido.IdPartido}`);
       } else {
         console.error('Error al registrar el partido');
       }
@@ -66,8 +65,8 @@ const Sidebar = () => {
           </button>
         </Link>
 
-        <Link href="/register-match">
           <button
+            onClick={registrarPartido} // Cambiado de Link a botón
             className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
@@ -79,7 +78,6 @@ const Sidebar = () => {
             />
             Registrar partido
           </button>
-        </Link>
 
         <Link href="/stats">
           <button

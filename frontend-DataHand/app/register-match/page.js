@@ -6,6 +6,8 @@ import Image from "next/image";
 // import { useState } from "react"; // Importa useState
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
 import CampoBalonmano from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
+import Sidebar from '../components/Sidebar';
+
 export default function Home() {
 
     /*
@@ -304,7 +306,8 @@ export default function Home() {
     
 
     return (
-        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-hidden p-4">
+        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
+            <Sidebar />
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Partido
             </h1>

@@ -1,5 +1,5 @@
 // utils/generatePartidoId.js
-import Counter from '../models/Counter';
+import Counter from '../../models/Counter';
 
 export async function getNextPartidoId() {
   const result = await Counter.findByIdAndUpdate(
