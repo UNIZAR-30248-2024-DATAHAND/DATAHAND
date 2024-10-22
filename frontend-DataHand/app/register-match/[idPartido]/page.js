@@ -16,7 +16,7 @@ export default function Home() {
     - Cambiar los paths de las imágenes de los escudos
     - Marcar jugador, fase de juego y resultado para que salga PopUp
     - Marcar jugador, fase de juego y accion/suspension para guardar dato
-
+    - Falta que el cronometro se actualize cada segundo en tiempoDeJuego
     */
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
@@ -81,12 +81,18 @@ export default function Home() {
         if (cronometroActivo) {
             intervalo = setInterval(() => {
                 // Usa setEquipos para actualizar el tiempo de juego
-                setEquipos((prevState) => ({
-                    ...prevState,
-                    TiempoDeJuego: prevState.TiempoDeJuego + 1, // Incrementa el tiempo en 1 segundo
-                }));
+                setEquipos((prevState) => {
+                    const nuevoTiempo = prevState.TiempoDeJuego + 1;
+                    // Actualiza el tiempo jugado
+                    setTiempoJugado(nuevoTiempo);
+                    // Retorna el nuevo estado con el tiempo actualizado
+                    return {
+                        ...prevState,
+                        TiempoDeJuego: nuevoTiempo
+                    };
+                });
             }, 1000);
-            setTiempoJugado(equipos.TiempoDeJuego);
+            
         }
 
         return () => clearInterval(intervalo); // Limpia el intervalo al desmontar
@@ -261,7 +267,7 @@ export default function Home() {
             finalizarPrimerTiempo(); // Si el primer tiempo no ha finalizado, lo finaliza
         } else {
             await finalizarPartido(); // Si el primer tiempo ya ha finalizado, finaliza el partido
-            await enviarDatosAPartido(); // Enviar los datos a la API
+            //await enviarDatosAPartido(); // Enviar los datos a la API
         }
     };
 
