@@ -61,20 +61,17 @@ export async function POST(req) {
     }
   }
 
-//HAY QUE EDITARLO PARA SACAR EVENTOS
+//HAY QUE EDITARLO PARA SACAR EVENTOS 
 export async function GET(req) {
     try {
         // Conectar a la base de datos
         await connectDB();
   
         // Obtener todos los partidos de la base de datos
-        const eventos = await Eventos.find({}, 'IdEvento'); // Obtiene solo el IdPartido
-  
-        // Mapear para obtener solo los IdPartido
-        const idsEventos = eventos.map(eventos => eventos.IdEvento);
-  
+        const eventos = await Eventos.find({}); 
+    
         // Devolver la respuesta con el conteo y los IdPartido
-        return new Response(JSON.stringify({ totalEventos: idsEventos.length, idsEventos }), {
+        return new Response(JSON.stringify({ totalEventos: eventos.length, eventos }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
