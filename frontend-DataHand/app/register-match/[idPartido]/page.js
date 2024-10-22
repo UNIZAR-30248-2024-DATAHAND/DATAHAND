@@ -5,8 +5,8 @@ import Image from "next/image";
 
 // import { useState } from "react"; // Importa useState
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
-import { CampoBalonmano, PorteriaBalonmano, PopUpAccion } from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
-import Sidebar from '../components/Sidebar';
+import { CampoBalonmano, PorteriaBalonmano, PopUpAccion } from "../register-match-controller"; // Importa el componente CampoBalonmano
+import Sidebar from '../../components/Sidebar';
 
 export default function Home() {
 

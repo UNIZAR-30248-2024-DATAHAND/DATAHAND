@@ -81,7 +81,7 @@ const crearPartidoSchema = new mongoose.Schema(
   }
 );
 
-const CrearPartidos =
-  mongoose.models.CrearPartidos ||
+const CrearPartido =
+  mongoose.models.CrearPartido ||
   mongoose.model('CrearPartido', crearPartidoSchema);
-export default CrearPartidos;
+export default CrearPartido;

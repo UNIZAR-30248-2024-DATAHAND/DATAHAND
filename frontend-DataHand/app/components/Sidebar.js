@@ -3,8 +3,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 const Sidebar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
