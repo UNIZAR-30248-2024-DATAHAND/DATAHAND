@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 
 const CampoBalonmano = ({ onClick }) => {
@@ -61,8 +61,7 @@ const PorteriaBalonmano = ({ onClick }) => {
   const handleClick = (event) => {
     const stage = event.target.getStage();
     if (stage) {
-      const { x, y } = stage.getPointerPosition();
-      
+      const { x, y } = stage.getPointerPosition();  
       if (onClick) {
         onClick({ x, y }); // Pasa las coordenadas a la función onClick que recibes por props
       }
@@ -127,13 +126,49 @@ const PorteriaBalonmano = ({ onClick }) => {
   );
 };
 
-const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, seleccionado }) => {
+const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado }) => {
+
   if (!showPopup) return null; // Si no se debe mostrar el popup, no renderizar nada
+
   const jugadoresAMostrar = seleccionado.equipo === 'local' ? asistencias.slice(0, 7) : asistencias.slice(7, 14);
   // Filtrar para excluir el jugador seleccionado
   const jugadoresFiltrados = jugadoresAMostrar.filter((jugador, index) => 
     seleccionado.index === null || index !== seleccionado.index
   );
+
+  //Habra que enviar estos const + IdEvento, IdPartido, Jugador ,Minuto-segundo, Fase de juego, Resultado
+  const [posicionLanzador, setPosicionLanzador] = useState(null);
+  const [localizacionLanzamiento, setlocalizacionLanzamiento] = useState(null);
+  const [asistenciaDada, setAsistenciaDada] = useState(null);
+  const [sistemaAtaque, setSistemaAtaque] = useState(null);
+  const [sistemaDefensa, setSistemaDefensa] = useState(null);
+
+  // Función que maneja el clic en el campo y almacena las coordenadas
+  const handlePosicionClick = (coords) => {
+    setPosicionLanzador(coords); // Actualiza las coordenadas del campo
+    console.log("Coordenadas del campo:", coords);
+  };
+
+  // Función que maneja el clic en la portería y almacena las coordenadas
+  const handlePorteriaClick = (coords) => {
+    setlocalizacionLanzamiento(coords); // Actualiza las coordenadas de la portería
+    console.log("Coordenadas de la portería:", coords);
+  };
+
+  const handleGuardarDatos = () => {
+    console.log("IdEvento: ");
+    console.log("IdPartido: ");
+    console.log("IdJugador:", seleccionado.index);
+    console.log("Minuto-segundo:", tiempoJugado);
+    console.log("Fase de juego:", faseDeJuego);
+    console.log("Resultado:", resultado);
+    console.log("Posición Lanzador:", posicionLanzador);
+    console.log("Localización Lanzamiento:", localizacionLanzamiento);
+    console.log("Asistencia Dada:", asistenciaDada);
+    console.log("Sistema de Ataque:", sistemaAtaque);
+    console.log("Sistema de Defensa:", sistemaDefensa);
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       {/* Popup ocupa una gran parte de la pantalla y es naranja */}
@@ -145,13 +180,13 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, selecc
                   {/* Sección de Posición Gol */}
                   <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4">
                       <h3 className="text-sm font-semibold text-black">Posición Gol</h3>
-                      <PorteriaBalonmano onClick={handleCampoClick} />
+                      <PorteriaBalonmano onClick={handlePorteriaClick} />
                       
                   </div>
                   {/* Sección de Posición Lanzador */}
                   <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center">
                       <h3 className="text-sm font-semibold text-black mb-4">Posición Lanzador</h3>
-                      <CampoBalonmano onClick={handleCampoClick} />
+                      <CampoBalonmano onClick={handlePosicionClick} />
                   </div>
               </div>
               
@@ -165,7 +200,11 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, selecc
                       <h3 className="text-lg font-semibold text-black mb-2">Asistencias</h3>
                       <div className="flex justify-between mb-2">
                         {jugadoresFiltrados.map((jugador, index) => (
-                        <button key={index} className="bg-blue-500 text-white px-4 py-2 rounded text-sm">
+                        <button
+                          key={index}
+                          onClick={() => setAsistenciaDada(jugador)}  // Guardamos el jugador seleccionado
+                          className={`bg-blue-500 text-white px-4 py-2 rounded text-sm ${asistenciaDada === jugador ? 'opacity-80' : ''}`}  // Aplicamos clase de opacidad si está seleccionado
+                        >
                           Jugador {jugador}
                         </button>
                       ))}
@@ -179,8 +218,12 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, selecc
                           <h4 className="text-md font-semibold text-black mb-2">Ataque</h4>
                           <div className="grid grid-cols-5 gap-2">
                               {Array.from({ length: 10 }, (_, index) => (
-                                  <button key={index} className="bg-gray-200 text-black px-3 py-2 rounded text-sm">
-                                      Ataque {index + 1}
+                                  <button
+                                    key={index}
+                                    onClick={() => setSistemaAtaque(index + 1)}  // Guardar la selección del sistema de ataque
+                                    className={`bg-gray-200 text-black px-3 py-2 rounded text-sm ${sistemaAtaque === index + 1 ? 'opacity-80' : ''}`}  // Aplicar la clase "opacity-80" si está seleccionado
+                                  >
+                                    Ataque {index + 1}
                                   </button>
                               ))}
                           </div>
@@ -189,8 +232,12 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, selecc
                           <h4 className="text-md font-semibold text-black mb-2">Defensa</h4>
                           <div className="grid grid-cols-5 gap-2">
                               {Array.from({ length: 10 }, (_, index) => (
-                                  <button key={index + 10} className="bg-gray-200 text-black px-3 py-2 rounded text-sm">
-                                      Defensa {index + 1}
+                                  <button
+                                    key={index + 10}
+                                    onClick={() => setSistemaDefensa(index + 1)}  // Guardar la selección del sistema de defensa
+                                    className={`bg-gray-200 text-black px-3 py-2 rounded text-sm ${sistemaDefensa === index + 1 ? 'opacity-80' : ''}`}  // Aplicar la clase "opacity-80" si está seleccionado
+                                  >
+                                    Defensa {index + 1}
                                   </button>
                               ))}
                           </div>
@@ -201,7 +248,7 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, selecc
                   <div className="flex justify-center">
                       <button 
                           className="bg-green-500 text-white px-6 py-2 rounded" 
-                          onClick={onClose} // Cierra el popup
+                          onClick={handleGuardarDatos} // Cierra el popup
                       >
                           Guardar
                       </button>

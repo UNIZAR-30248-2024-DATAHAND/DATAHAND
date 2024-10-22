@@ -5,8 +5,9 @@ import Image from "next/image";
 
 // import { useState } from "react"; // Importa useState
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
-import { CampoBalonmano, PorteriaBalonmano, PopUpAccion } from "../register-match-controller"; // Importa el componente CampoBalonmano
+import { PopUpAccion } from "../register-match-controller"; // Importa el componente CampoBalonmano
 import Sidebar from '../../components/Sidebar';
+import { set } from "mongoose";
 
 export default function Home() {
 
@@ -54,7 +55,7 @@ export default function Home() {
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
-
+    const [tiempoJugado, setTiempoJugado] = useState(null);
 
     //Para pasarle los jugadores que hay en el campo al PopUp
     //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
@@ -72,25 +73,6 @@ export default function Home() {
         setAsistencias(nuevasAsistencias);
     }, [equipos]); // Ejecutar el efecto cada vez que 'equipos' cambie
 
-    
-    const [partidoData, setPartidoData] = useState({
-        fecha: new Date(),
-        equipoLocal: "Club A",
-        equipoVisitante: "Club B",
-        resultado: "0-0",
-        jugadores: [],
-        eventos: [],
-        sistemaDefensivoLocal: null,
-        sistemaDefensivoVisitante: null,
-        golesLocal: 0,
-        golesVisitante: 0,
-        horarios: ["00:00", "00:00", "00:00"], // Reemplaza con los horarios reales
-        imagenes: {
-            local: "/ruta/a/imagen/local.png",
-            visitante: "/ruta/a/imagen/visitante.png",
-        },
-    });
-
 
     // Efecto para manejar el cronómetro
     useEffect(() => {
@@ -104,6 +86,7 @@ export default function Home() {
                     TiempoDeJuego: prevState.TiempoDeJuego + 1, // Incrementa el tiempo en 1 segundo
                 }));
             }, 1000);
+            setTiempoJugado(equipos.TiempoDeJuego);
         }
 
         return () => clearInterval(intervalo); // Limpia el intervalo al desmontar
@@ -232,11 +215,6 @@ export default function Home() {
         setResultado(null);
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
-
-    const handleCampoClick = (coordinates) => {
-        // Manejar la lógica cuando se hace clic en el campo
-        console.log(`Clic en coordenadas:`, coordinates);
-      };
     
     // Funciones para iniciar y detener el cronómetro
     const iniciarCronometro = () => {
@@ -729,7 +707,8 @@ export default function Home() {
             </div>
 
             {/* Popup para Gol */}
-            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} handleCampoClick={handleCampoClick} asistencias={asistencias} seleccionado={seleccionado}/>
+            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} asistencias={asistencias}
+             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} />   {/*Me falta pasarle el IdPartido*/}
         </div>
     );
 }

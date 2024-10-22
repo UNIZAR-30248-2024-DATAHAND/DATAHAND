@@ -20,7 +20,11 @@ Crear Partido:
             - Banquillo
     - Sistema defensivo local
     - Sistema defensivo visitante
+
+    
     - Eventos:
+        -IdEvento
+        -IdPartido
         - Jugador
         - Minuto-segundo
         ----------------
