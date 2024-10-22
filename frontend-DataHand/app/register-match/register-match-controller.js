@@ -127,7 +127,7 @@ const PorteriaBalonmano = ({ onClick }) => {
   );
 };
 
-const PopUpAccion = ({ showPopup, onClose, handleCampoClick }) => {
+const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias }) => {
   if (!showPopup) return null; // Si no se debe mostrar el popup, no renderizar nada
 
   return (

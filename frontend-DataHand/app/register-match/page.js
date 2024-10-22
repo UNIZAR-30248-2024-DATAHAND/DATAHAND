@@ -55,6 +55,24 @@ export default function Home() {
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
 
+
+    //Para pasarle los jugadores que hay en el campo al PopUp
+    //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
+    const [asistencias, setAsistencias] = useState([]);
+    
+    useEffect(() => {
+        // Crear un nuevo array con los jugadores y el primer portero
+        const nuevasAsistencias = [
+            ...equipos.local.jugadores,
+            equipos.local.porteros[0],
+            ...equipos.visitante.jugadores,
+            equipos.visitante.porteros[0],
+        ];
+
+        setAsistencias(nuevasAsistencias);
+    }, [equipos]); // Ejecutar el efecto cada vez que 'equipos' cambie
+
+    
     const [partidoData, setPartidoData] = useState({
         fecha: new Date(),
         equipoLocal: "Club A",
@@ -711,7 +729,7 @@ export default function Home() {
             </div>
 
             {/* Popup para Gol */}
-            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} handleCampoClick={handleCampoClick} />
+            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} handleCampoClick={handleCampoClick} asistencias={asistencias}/>
         </div>
     );
 }
