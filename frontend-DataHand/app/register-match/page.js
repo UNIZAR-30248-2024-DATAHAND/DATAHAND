@@ -5,7 +5,7 @@ import Image from "next/image";
 
 // import { useState } from "react"; // Importa useState
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
-import CampoBalonmano from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
+import { CampoBalonmano, PorteriaBalonmano } from "/app/register-match/register-match-controller"; // Importa el componente CampoBalonmano
 import Sidebar from '../components/Sidebar';
 
 export default function Home() {
@@ -722,16 +722,15 @@ export default function Home() {
                             {/* Columna izquierda */}
                             <div className="flex flex-col flex-1 justify-between">
                                 {/* Sección de Posición Gol */}
-                                <div className="bg-gray-200 rounded-lg p-4 mb-4 flex-grow text-center">
-                                    <h3 className="text-lg font-semibold text-black">Posición Gol</h3>
-                                    <p className="text-black">Detalles sobre la posición del gol.</p>
-                                    <CampoBalonmano onClick={handleCampoClick} />
+                                <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4">
+                                    <h3 className="text-sm font-semibold text-black">Posición Gol</h3>
+                                    <PorteriaBalonmano onClick={handleCampoClick} />
+                                    
                                 </div>
-
                                 {/* Sección de Posición Lanzador */}
-                                <div className="bg-gray-200 rounded-lg p-4 flex-grow text-center">
-                                    <h3 className="text-lg font-semibold text-black">Posición Lanzador</h3>
-                                    <p className="text-black">Detalles sobre la posición del lanzador.</p>
+                                <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center">
+                                    <h3 className="text-sm font-semibold text-black mb-4">Posición Lanzador</h3>
+                                    <CampoBalonmano onClick={handleCampoClick} />
                                 </div>
                             </div>
                             
@@ -775,6 +774,16 @@ export default function Home() {
                                             ))}
                                         </div>
                                     </div>
+                                </div>
+                                
+                                {/* Botón de Guardar */}
+                                <div className="flex justify-center">
+                                    <button 
+                                        className="bg-green-500 text-white px-6 py-2 rounded" 
+                                        onClick={handleClosePopup} // Cierra el popup
+                                    >
+                                        Guardar
+                                    </button>
                                 </div>
 
                                 {/* Botón de Cerrar */}

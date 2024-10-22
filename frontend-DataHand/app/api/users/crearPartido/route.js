@@ -22,7 +22,7 @@ export async function POST(req) {
             MarcadorLocal: 0,
             MarcadorVisitante: 0,
             TiempoDeJuego: '0',
-            Parte: ['Parte1'], // Asegúrate de que esto sea un array si lo necesitas
+            Parte: ['Parte1'], // Asegúrate de que esto sea un array si lo necesitas, R: NO TIENE QUE SERLO
             Equipos: {
                 Locales: {
                     Porteros: [],
