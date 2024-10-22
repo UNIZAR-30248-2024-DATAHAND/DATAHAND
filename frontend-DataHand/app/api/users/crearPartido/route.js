@@ -59,3 +59,33 @@ export async function POST(req) {
         });
     }
 }
+
+
+export async function GET(req) {
+    try {
+        // Conectar a la base de datos
+        await connectDB();
+  
+        // Obtener todos los partidos de la base de datos
+        const partidos = await CrearPartidos.find({}, 'IdPartido'); // Obtiene solo el IdPartido
+  
+        // Mapear para obtener solo los IdPartido
+        const idsPartidos = partidos.map(partido => partido.IdPartido);
+  
+        // Devolver la respuesta con el conteo y los IdPartido
+        return new Response(JSON.stringify({ totalPartidos: idsPartidos.length, idsPartidos }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error) {
+        console.error('Error al obtener la lista de partidos:', error);
+        return new Response(JSON.stringify({ error: 'Error al obtener la lista de partidos' }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+  }

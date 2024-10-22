@@ -5,11 +5,51 @@ import Image from 'next/image';
 import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import Sidebar from '../components/Sidebar';
+import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
 //import { crearPartidoNuevo } from "../profile-entrenador/profile-entrenadorController";
 
 ChartJS.register(...registerables);
 
+// Función para obtener la lista de partidos
+export const obtenerPartidos = async () => {
+  try {
+    const res = await fetch('../api/users/crearPartido', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      // Aquí puedes trabajar con los datos de partidos recibidos
+      console.log('Total de partidos:', data.totalPartidos);
+      console.log('IDs de partidos:', data.idsPartidos);
+      return data.idsPartidos;
+    } else {
+      console.error('Error al obtener los partidos');
+    }
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+  }
+};
+
 export default function Home() {
+
+  const [partidos, setPartidos] = useState([]); // Estado para almacenar los partidos
+
+  // Ejecutar obtenerPartidos al iniciar la página
+  useEffect(() => {
+    const fetchPartidos = async () => {
+      const ids = await obtenerPartidos();
+      if (ids) {
+        setPartidos(ids);
+      }
+    };
+
+    fetchPartidos(); // Llama a la función para obtener partidos
+  }, []); // El arreglo vacío asegura que solo se ejecute una vez al montar el componente
+
   const data = {
     labels: [
       'Fuerza',
@@ -36,7 +76,7 @@ export default function Home() {
     ],
   };
 
-  //crearPartidoNuevo();
+
 
   return (
     <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
@@ -89,12 +129,12 @@ export default function Home() {
       {/* Rectángulo debajo de los cuadrados */}
       <div className="w-[85vw] max-w-[1048px] bg-gray-200 rounded-lg flex flex-col justify-center mb-12 p-4">
         {/* Fila de partidos */}
-        {['Partido 1', 'Partido 2', 'Partido 3'].map((partido, index) => (
+        {partidos.map((idPartido, index) => (
           <div
             key={index}
             className="flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded"
           >
-            <p className="text-2xl text-orange-500 font-semibold">{partido}</p>
+            <p className="text-2xl text-orange-500 font-semibold">{idPartido}</p>
             <div className="flex gap-2">
               <button className="bg-blue-500 text-white px-4 py-2 rounded">
                 Editar
