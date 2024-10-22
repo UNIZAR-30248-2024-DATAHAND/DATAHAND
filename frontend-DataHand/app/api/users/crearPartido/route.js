@@ -91,3 +91,59 @@ export async function GET(req) {
   }
 
 // CREAR PUT PARA MODIFICAR DATOS
+export async function PUT(req) {
+    try {
+        // Conectar a la base de datos
+        await connectDB();
+
+        // Obtener los datos del cuerpo de la solicitud (presumiblemente en formato JSON)
+        const { idPartido, ...actualizaciones } = await req.json();
+
+        // Verificar que se proporcione el Id del partido
+        if (!idPartido) {
+            return new Response(JSON.stringify({ error: 'Falta el Id del partido' }), {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Buscar el partido en la base de datos
+        const partido = await CrearPartidos.findOne({ IdPartido: idPartido });
+
+        // Verificar si el partido existe
+        if (!partido) {
+            return new Response(JSON.stringify({ error: 'Partido no encontrado' }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Actualizar los campos del partido
+        Object.keys(actualizaciones).forEach(key => {
+            partido[key] = actualizaciones[key];
+        });
+
+        // Guardar los cambios en la base de datos
+        await partido.save();
+
+        // Devolver respuesta exitosa
+        return new Response(JSON.stringify({ message: 'Partido actualizado exitosamente', partido }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error) {
+        console.error('Error al actualizar el partido:', error);
+        return new Response(JSON.stringify({ error: 'Error al actualizar el partido' }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+}
