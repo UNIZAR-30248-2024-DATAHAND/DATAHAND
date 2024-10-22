@@ -127,9 +127,13 @@ const PorteriaBalonmano = ({ onClick }) => {
   );
 };
 
-const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias }) => {
+const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias, seleccionado }) => {
   if (!showPopup) return null; // Si no se debe mostrar el popup, no renderizar nada
-
+  const jugadoresAMostrar = seleccionado.equipo === 'local' ? asistencias.slice(0, 7) : asistencias.slice(7, 14);
+  // Filtrar para excluir el jugador seleccionado
+  const jugadoresFiltrados = jugadoresAMostrar.filter((jugador, index) => 
+    seleccionado.index === null || index !== seleccionado.index
+  );
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       {/* Popup ocupa una gran parte de la pantalla y es naranja */}
@@ -160,7 +164,7 @@ const PopUpAccion = ({ showPopup, onClose, handleCampoClick, asistencias }) => {
                   <div className="mb-4 flex flex-col">
                       <h3 className="text-lg font-semibold text-black mb-2">Asistencias</h3>
                       <div className="flex justify-between mb-2">
-                        {asistencias.map((jugador, index) => (
+                        {jugadoresFiltrados.map((jugador, index) => (
                         <button key={index} className="bg-blue-500 text-white px-4 py-2 rounded text-sm">
                           Jugador {jugador}
                         </button>

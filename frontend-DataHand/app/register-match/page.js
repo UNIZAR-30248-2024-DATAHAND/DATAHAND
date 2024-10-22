@@ -729,7 +729,7 @@ export default function Home() {
             </div>
 
             {/* Popup para Gol */}
-            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} handleCampoClick={handleCampoClick} asistencias={asistencias}/>
+            <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} handleCampoClick={handleCampoClick} asistencias={asistencias} seleccionado={seleccionado}/>
         </div>
     );
 }
