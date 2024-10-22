@@ -9,8 +9,7 @@ import { PopUpAccion } from "../register-match-controller"; // Importa el compon
 import Sidebar from '../../components/Sidebar';
 import { set } from "mongoose";
 import { useParams } from 'next/navigation';
-
-
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
@@ -21,6 +20,12 @@ export default function Home() {
     - Marcar jugador, fase de juego y accion/suspension para guardar dato
     - Falta que el cronometro se actualize cada segundo en tiempoDeJuego
     */
+    const router = useRouter();
+
+    const handleNavigateStats = () => {
+        // Navegar a la URL con idPartido
+        router.push(`/statsGen/${idPartido}`);
+      };
 
     const { idPartido } = useParams(); // Obtener el idPartido de los parámetros
 
@@ -393,9 +398,12 @@ export default function Home() {
                 </div>
 
                 <button className="bg-gray-300 text-black px-4 py-2 rounded">UNDO</button>
-                <Link href="/statsGen">
-                <button className="bg-gray-300 text-black px-4 py-2 rounded">Eventos</button>
-                </Link>
+                <button
+                onClick={handleNavigateStats}
+                className="bg-gray-300 text-black px-4 py-2 rounded"
+                >
+                Eventos
+                </button>
                 <Link href="/">
                     <button
                         className="bg-red-600 text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">

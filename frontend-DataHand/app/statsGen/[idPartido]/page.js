@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 export const obtenerEventos = async () => {
     try {
-      const res = await fetch('../api/users/eventos', {
+      const res = await fetch('../../api/users/eventos', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
