@@ -10,8 +10,8 @@ import React, { useState, useEffect } from "react"; // Asegúrate de importar us
 
 ChartJS.register(...registerables);
 
-// Función para obtener la lista de partidos
-export const obtenerPartidos = async () => {
+// Función para obtener la lista de partidos, ESTO DEJA DE FUNCIONAR, hay que ver si podemos hacer un doble GET o lo sacamos de un GET entrenador o algo asi
+/*export const obtenerPartidos = async () => {
   try {
     const res = await fetch('../api/users/crearPartido', {
       method: 'GET',
@@ -32,7 +32,7 @@ export const obtenerPartidos = async () => {
   } catch (error) {
     console.error('Error en la solicitud:', error);
   }
-};
+};*/
 
 //ESTO DEJARA DE IR AQUI E IRA REGISTER MACTH PARA EDITAR NOMBRE LOCAL Y VISITANTE
 async function actualizarEquipoLocal(idPartido, nuevoNombreEquipoLocal) {
@@ -87,6 +87,7 @@ export default function Home() {
 
   const [partidos, setPartidos] = useState([]); // Estado para almacenar los partidos
 
+  /*
   // Ejecutar obtenerPartidos al iniciar la página
   useEffect(() => {
     const fetchPartidos = async () => {
@@ -98,7 +99,7 @@ export default function Home() {
 
     fetchPartidos(); // Llama a la función para obtener partidos
   }, []); // El arreglo vacío asegura que solo se ejecute una vez al montar el componente
-
+  */
   const data = {
     labels: [
       'Fuerza',

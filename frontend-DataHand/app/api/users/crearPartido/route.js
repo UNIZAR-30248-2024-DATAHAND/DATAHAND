@@ -22,17 +22,17 @@ export async function POST(req) {
             MarcadorLocal: 0,
             MarcadorVisitante: 0,
             TiempoDeJuego: '0',
-            Parte: ['Parte1'], // Asegúrate de que esto sea un array si lo necesitas, R: NO TIENE QUE SERLO
+            Parte: 'Parte1', 
             Equipos: {
                 Locales: {
-                    Porteros: [],
-                    Jugadores: [],
-                    Banquillo: [],
+                    Porteros: [15, 16],
+                    Jugadores: [1, 2, 3, 4, 5, 6],
+                    Banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
                 },
                 Visitantes: {
-                    Porteros: [],
-                    Jugadores: [],
-                    Banquillo: [],
+                    Porteros: [31, 32], 
+                    Jugadores: [17, 18, 19, 20, 21, 22],
+                    Banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
                 },
             },
             SistemaDefensivoLocal: '6:0',
@@ -66,14 +66,35 @@ export async function GET(req) {
         // Conectar a la base de datos
         await connectDB();
   
-        // Obtener todos los partidos de la base de datos
-        const partidos = await CrearPartidos.find({}, 'IdPartido'); // Obtiene solo el IdPartido
-  
-        // Mapear para obtener solo los IdPartido
-        const idsPartidos = partidos.map(partido => partido.IdPartido);
-  
-        // Devolver la respuesta con el conteo y los IdPartido
-        return new Response(JSON.stringify({ totalPartidos: idsPartidos.length, idsPartidos }), {
+        // Obtener el parámetro `IdPartido` de la solicitud
+        const url = new URL(req.url);
+        const IdPartido = url.searchParams.get("IdPartido");
+
+        // Verificar si se proporcionó `IdPartido`
+        if (!IdPartido) {
+            return new Response(JSON.stringify({ error: 'Debe proporcionar un IdPartido' }), {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Buscar el partido en la base de datos por `IdPartido`
+        const partido = await CrearPartidos.findOne({ IdPartido });
+
+        // Verificar si se encontró el partido
+        if (!partido) {
+            return new Response(JSON.stringify({ error: 'No se encontró el partido con el IdPartido especificado' }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Devolver los datos del partido encontrado
+        return new Response(JSON.stringify(partido), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',

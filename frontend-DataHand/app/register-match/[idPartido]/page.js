@@ -12,15 +12,31 @@ import { set } from "mongoose";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
+export const obtenerPartido = async (idPartido) => {
+    try {
+      const res = await fetch('../api/users/crearPartido?IdPartido=${IdPartido}', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (res.ok) {
+        const data = await res.json();
+        // Aquí puedes trabajar con los datos de partidos recibidos
+        console.log('Datos del partido:', data);
+        return data;
+      } else {
+        const errorText = await res.text();
+        console.error('Error al obtener el partido:', errorText); // Muestra el mensaje de error
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
+  };
+
 export default function Home() {
 
-    /*
-    Cosas TO DO:
-    - Cambiar los paths de las imágenes de los escudos
-    - Marcar jugador, fase de juego y resultado para que salga PopUp
-    - Marcar jugador, fase de juego y accion/suspension para guardar dato
-    - Falta que el cronometro se actualize cada segundo en tiempoDeJuego
-    */
     const router = useRouter();
 
     const handleNavigateStats = () => {
@@ -28,11 +44,11 @@ export default function Home() {
         router.push(`/statsGen/${idPartido}`);
       };
 
-    const { idPartido } = useParams(); // Obtener el idPartido de los parámetros
+    const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
-    // Estado inicial para ambos equipos, con 2 porteros
+    // Estamos usando esto para intercambiar jugadores y porteros, habra que hacerlo desde el crear partido
     const [equipos, setEquipos] = useState({
             IdPartido: '1',                  // Identificador del partido
             Fecha: new Date(),               // Fecha del partido
@@ -69,6 +85,18 @@ export default function Home() {
     //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
     const [asistencias, setAsistencias] = useState([]);
     
+    // Llama a obtenerPartido al montar el componente
+    useEffect(() => {
+        const cargarPartido = async () => {
+            console.log('ID del partido:', idPartido);
+            const datosPartido = await obtenerPartido(idPartido);
+            if (datosPartido) {
+                setEquipos(datosPartido); // Guarda los datos del partido en el estado
+            }
+        };
+        cargarPartido();
+    }, []);
+
     useEffect(() => {
         // Crear un nuevo array con los jugadores y el primer portero
         const nuevasAsistencias = [

@@ -32,8 +32,7 @@ const crearPartidoSchema = new mongoose.Schema(
       required: true,
     },
     Parte: {
-      type: [String],
-      enum: ['Parte1', 'Parte2', 'Prórroga'],
+      type: String,
       required: true,
     },
     Equipos: {
