@@ -20,21 +20,23 @@ export default function Login() {
 
     // Usuario ficticio que será enviado
     const nuevoUsuario = {
-      nombreCompleto: 'c',
-      correoElectronico: 'c@example.com',
+      nombreCompleto: 'AlejandroSanz',
+      correoElectronico: 'alex@example.com',
       contrasena: 'c',
       fechaNacimiento: '1985-11-15T00:00:00.000Z',
       tipoUsuario: 'jugador',
       fotoPerfil: 'url_a_la_foto_pedro.jpg',
       club: 'Club Deportivo Ejemplo',
       pais: 'España',
-      posicion: 'delantero',
+      posicion: 'POR',
       atributos: {
-        velocidad: 7,
-        fuerza: 8,
-        resistencia: 9,
+        goles: 7,
+        asistencias: 8,
+        efectividad: 9,
+        blocajes: 10,
+        recuperaciones: 4,
       },
-      historialPartidos: [], // Puede estar vacío para este ejemplo
+      historialPartidos: [], // NO SE COMO SE METEN
     };
 
     try {

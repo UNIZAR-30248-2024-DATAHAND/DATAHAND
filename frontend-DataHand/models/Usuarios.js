@@ -22,7 +22,7 @@ const usuariosSchema = new mongoose.Schema(
     },
     tipoUsuario: {
       type: String,
-      enum: ['jugador', 'entrenador'], // Ajusta según tus necesidades
+      enum: ['jugador', 'entrenador', 'ambos'], // Ajusta según tus necesidades
       required: true,
     },
     fotoPerfil: {
@@ -42,14 +42,16 @@ const usuariosSchema = new mongoose.Schema(
       required: true,
     },
     atributos: {
-      velocidad: { type: Number, required: true },
-      fuerza: { type: Number, required: true },
-      resistencia: { type: Number, required: true },
+      goles: { type: Number, required: true },
+      asistencias: { type: Number, required: true },
+      efectividad: { type: Number, required: true },
+      blocajes: { type: Number, required: true },
+      recuperaciones: { type: Number, required: true },
     },
     historialPartidos: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Partidos', // Asume que tienes un modelo Partido
+        ref: 'CrearPartido', // Asume que tienes un modelo Partido
       },
     ],
   },

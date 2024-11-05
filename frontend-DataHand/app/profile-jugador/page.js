@@ -15,6 +15,8 @@ export default function Home() {
   const [switchOn, setSwitchOn] = useState(true); // Estado para el switch
   const router = useRouter();
   const showSwitch = true;
+  const [usuarios, setUsuarios] = useState([]); // Estado para almacenar usuarios
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null); // Estado para almacenar el usuario seleccionado
 
   const toggleSwitch = () => {
     setSwitchOn(!switchOn);
@@ -24,30 +26,66 @@ export default function Home() {
     }
   };
 
+  const fetchUsuarios = async () => {
+    try {
+        const response = await fetch('../api/users/usuarios');
+        if (!response.ok) {
+            throw new Error('Error al obtener usuarios');
+        }
+        const usuariosData = await response.json();
+        setUsuarios(usuariosData);
+
+      //HABRA QUE CAMBIARLO PARA QUE SAQUE EL DE ID
+      if (usuariosData.length > 0) {
+        setUsuarioSeleccionado(usuariosData[0]); // Asigna el primer usuario 
+      }        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+  useEffect(() => {
+    fetchUsuarios(); // Llama a la función al montar el componente
+  }, []); 
+  console.log(usuarioSeleccionado);
+
   const data = {
     labels: [
-      'Fuerza',
-      'Resistencia',
-      'Velocidad',
-      'Habilidad Técnica',
-      'Estrategia',
+      'Goles',
+      'Asistencias',
+      'Efectividad',
+      'Blocajes',
+      'Recuperaciones',
     ],
     datasets: [
       {
-        label: 'Atleta A',
-        data: [7, 8, 6, 9, 5],
+        label: usuarioSeleccionado ? usuarioSeleccionado.nombreCompleto : 'Atleta A', // Cambia el label si hay un usuario seleccionado
+        data: usuarioSeleccionado 
+          ? [
+              usuarioSeleccionado.atributos.goles,
+              usuarioSeleccionado.atributos.asistencias,
+              usuarioSeleccionado.atributos.efectividad,
+              usuarioSeleccionado.atributos.blocajes,
+              usuarioSeleccionado.atributos.recuperaciones,
+            ]
+          : [0, 0, 0, 0, 0], // Valores por defecto si no hay usuario seleccionado
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
       },
-      {
-        label: 'Atleta B',
-        data: [6, 7, 8, 5, 9],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
     ],
+  };
+
+  // Opciones para el gráfico de radar
+  const options = {
+    scales: {
+      r: {
+        min: 0, // Establece el valor mínimo en 0
+        ticks: {
+          stepSize: 2, // Espaciado entre ticks
+        },
+      },
+    },
   };
 
   return (
@@ -81,10 +119,8 @@ export default function Home() {
         <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
           {/* Parte superior: Nombre y Nacionalidad */}
           <div className="flex justify-between">
-            <p className="text-xl font-semibold text-orange-500">
-              Alejandro Sanz
-            </p>
-            <p className="text-xl font-semibold text-orange-500">ESP</p>
+            <p className="text-xl font-semibold text-orange-500">{usuarioSeleccionado ? usuarioSeleccionado.nombreCompleto || '' : ''}</p>
+            <p className="text-xl font-semibold text-orange-500">{usuarioSeleccionado ? usuarioSeleccionado.pais || '' : ''}</p>
           </div>
 
           {/* Imagen centrada */}
@@ -100,13 +136,11 @@ export default function Home() {
 
           {/* Parte inferior: Nombre del equipo */}
           <div className="flex justify-center">
-            <p className="text-2xl font-bold text-orange-500">
-              Balonmano Zaragoza
-            </p>
+            <p className="text-2xl font-bold text-orange-500">{usuarioSeleccionado ? usuarioSeleccionado.club || '' : ''}</p>
           </div>
         </div>
         <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex items-center justify-center">
-          <Radar data={data} />
+          <Radar data={data} options={options}/>
         </div>
       </div>
 
