@@ -6,6 +6,7 @@ import { Radar } from 'react-chartjs-2';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import Sidebar from '../components/Sidebar';
 import React, { useState, useEffect } from "react"; // Asegúrate de importar useEffect y useState
+import { useRouter } from 'next/navigation';
 //import { crearPartidoNuevo } from "../profile-entrenador/profile-entrenadorController";
 
 ChartJS.register(...registerables);
@@ -86,7 +87,18 @@ async function actualizarEquipoVisitante(idPartido, nuevoNombreEquipoVisitante) 
 export default function Home() {
 
   const [partidos, setPartidos] = useState([]); // Estado para almacenar los partidos
+  const [switchOn, setSwitchOn] = useState(false); // Estado para el switch
+  const router = useRouter();
+  const showSwitch = true; //ESTA ES LA VARIABLE QUE DETERMINA SI SE MUESTRA EL SWITCH O NO, LO QUE SAQUEMOS DE LA BASE DE DATOS DEBERIA IR AQUI
 
+  const toggleSwitch = () => {
+    setSwitchOn(!switchOn);
+
+    if (!switchOn) {
+      router.push('/profile-jugador');
+    }
+  };
+  
   /*
   // Ejecutar obtenerPartidos al iniciar la página
   useEffect(() => {
@@ -137,6 +149,21 @@ export default function Home() {
       >
         Perfil Entrenador
       </h1>
+
+      {/* Switch Button */}
+      {showSwitch && (
+        <button 
+          onClick={toggleSwitch} 
+          className={`mb-8 w-16 h-8 rounded-full ${switchOn ? 'bg-green-500' : 'bg-blue-500'} flex items-center p-1`}
+        >
+          <div
+            className={`w-8 h-8 bg-white rounded-full transform transition-transform ${switchOn ? 'translate-x-8' : 'translate-x-0'} flex items-center justify-center`}
+          >
+            <span className="text-sm font-bold text-black">{switchOn ? 'J' : 'E'}</span>
+          </div>
+        </button>
+      )}
+
 
       {/* Contenedor para los cuadrados grandes con borde redondeado */}
       <div className="flex justify-center gap-8 mb-12 flex-wrap">
