@@ -12,29 +12,6 @@ import { set } from "mongoose";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-export const obtenerPartido = async (idPartido) => {
-    try {
-      const res = await fetch('../api/users/crearPartido?IdPartido=${IdPartido}', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-  
-      if (res.ok) {
-        const data = await res.json();
-        // Aquí puedes trabajar con los datos de partidos recibidos
-        console.log('Datos del partido:', data);
-        return data;
-      } else {
-        const errorText = await res.text();
-        console.error('Error al obtener el partido:', errorText); // Muestra el mensaje de error
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
-  };
-
 export default function Home() {
 
     const router = useRouter();
@@ -50,27 +27,85 @@ export default function Home() {
 
     // Estamos usando esto para intercambiar jugadores y porteros, habra que hacerlo desde el crear partido
     const [equipos, setEquipos] = useState({
-            IdPartido: '1',                  // Identificador del partido
-            Fecha: new Date(),               // Fecha del partido
-            EquipoLocal: 'Equipo A',         // Nombre del equipo local
-            EquipoVisitante: 'Equipo B',     // Nombre del equipo visitante
-            MarcadorLocal: 2,                // Marcador del equipo local
-            MarcadorVisitante: 1,            // Marcador del equipo visitante
-            TiempoDeJuego: 0,                // Tiempo de juego transcurrido en minutos
-            Parte: 'Segunda parte',                // Parte actual del juego (Parte 1, Parte 2, Prórroga)
-            local: {
-                jugadores: [1, 2, 3, 4, 5, 6],
-                banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
-                porteros: [15, 16], // Dos porteros
-            },
-            visitante: {
-                jugadores: [17, 18, 19, 20, 21, 22],
-                banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
-                porteros: [31, 32], // Dos porteros
-            },
-            sistemaDefensivoLocal: "6:0", // Sistema defensivo del equipo local
-            sistemaDefensivoVisitante: "5:1", // Sistema defensivo del equipo visitante
-        });
+        IdPartido: '1',                  // Identificador del partido
+        Fecha: new Date(),               // Fecha del partido
+        EquipoLocal: 'Local',         // Nombre del equipo local
+        EquipoVisitante: 'Visitante',     // Nombre del equipo visitante
+        MarcadorLocal: 0,                // Marcador del equipo local
+        MarcadorVisitante: 0,            // Marcador del equipo visitante
+        TiempoDeJuego: 0,                // Tiempo de juego transcurrido en minutos
+        Parte: 'Primera parte',                // Parte actual del juego (Parte 1, Parte 2, Prórroga)
+        local: {
+            jugadores: [],
+            banquillo: [],
+            porteros: [], // Dos porteros
+        },
+        visitante: {
+            jugadores: [],
+            banquillo: [],
+            porteros: [], // Dos porteros
+        },
+        sistemaDefensivoLocal: "", // Sistema defensivo del equipo local
+        sistemaDefensivoVisitante: "", // Sistema defensivo del equipo visitante
+    });
+    
+    const obtenerPartido = async () => {
+        try {
+            console.log(`Solicitando partido con IdPartido: ${idPartido}`);
+            const res = await fetch(`../api/users/crearPartido?IdPartido=${idPartido}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (res.ok) {
+                const data = await res.json();
+                console.log('Datos recibidos:', data); // Mostrar los datos recibidos del backend
+    
+                // Mapear los datos recibidos directamente al estado de `equipos`
+                setEquipos({
+                    IdPartido: data.IdPartido || '',
+                    Fecha: new Date(data.Fecha) || new Date(),
+                    EquipoLocal: data.EquipoLocal || '',
+                    EquipoVisitante: data.EquipoVisitante || '',
+                    MarcadorLocal: data.MarcadorLocal || 0,
+                    MarcadorVisitante: data.MarcadorVisitante || 0,
+                    TiempoDeJuego: data.TiempoDeJuego || 0,
+                    Parte: data.Parte || '',
+                    local: {
+                        jugadores: data.local?.jugadores || [],
+                        banquillo: data.local?.banquillo || [],
+                        porteros: data.local?.porteros || []
+                    },
+                    visitante: {
+                        jugadores: data.visitante?.jugadores || [],
+                        banquillo: data.visitante?.banquillo || [],
+                        porteros: data.visitante?.porteros || []
+                    },
+                    sistemaDefensivoLocal: data.sistemaDefensivoLocal || '',
+                    sistemaDefensivoVisitante: data.sistemaDefensivoVisitante || ''
+                });
+            } else {
+                const errorText = await res.text();
+                console.error('Error al obtener los datos del partido:', errorText); // Muestra el mensaje de error
+            }
+        } catch (error) {
+            console.error('Error en la solicitud GET:', error);
+        }
+    };
+
+    // useEffect para obtener partido al montar el componente
+    useEffect(() => {
+        if (idPartido) {
+            obtenerPartido();
+        }
+    }, [idPartido]);
+
+    // useEffect para verificar cambios en equipos
+    useEffect(() => {
+        console.log('Estado de equipos actualizado:', equipos); // Monitorear cambios en el estado de `equipos`
+    }, [equipos]);
 
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
     const [faseDeJuego, setFaseDeJuego] = useState(null);
@@ -84,18 +119,6 @@ export default function Home() {
     //Para pasarle los jugadores que hay en el campo al PopUp
     //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
     const [asistencias, setAsistencias] = useState([]);
-    
-    // Llama a obtenerPartido al montar el componente
-    useEffect(() => {
-        const cargarPartido = async () => {
-            console.log('ID del partido:', idPartido);
-            const datosPartido = await obtenerPartido(idPartido);
-            if (datosPartido) {
-                setEquipos(datosPartido); // Guarda los datos del partido en el estado
-            }
-        };
-        cargarPartido();
-    }, []);
 
     useEffect(() => {
         // Crear un nuevo array con los jugadores y el primer portero
