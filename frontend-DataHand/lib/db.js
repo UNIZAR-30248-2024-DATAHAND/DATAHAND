@@ -12,21 +12,26 @@ if (!MONGODB_URI) {
   );
 }
 
-let isConnected; // Estado de la conexión
+let isConnected = false; // Estado de la conexión
+const connectionOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  maxPoolSize: 10, // Tamaño del pool de conexiones
+  maxIdleTimeMS: 10000, // Tiempo máximo de inactividad en milisegundos antes de liberar la conexión
+};
 
 export async function connectDB() {
-  console.log('Tratando de conectar a MongoDB');
   if (isConnected) {
+    console.log('Ya existe una conexión activa a MongoDB.');
     return; // Si ya estamos conectados, no hacemos nada
   }
 
   try {
-    // Conectamos a la base de datos
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(MONGODB_URI, connectionOptions);
     isConnected = true; // Marcamos la conexión como exitosa
-    console.log('Conectado a MongoDB');
+    console.log('Conectado a MongoDB con pool de conexiones');
   } catch (error) {
     console.error('Error al conectar a MongoDB', error);
-    throw new Error('Error al conectar a MongoDB'); // Lanza un error si la conexión falla
+    throw new Error('Error al conectar a MongoDB');
   }
 }
