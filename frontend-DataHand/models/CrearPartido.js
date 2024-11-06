@@ -28,55 +28,53 @@ const crearPartidoSchema = new mongoose.Schema(
       required: true,
     },
     TiempoDeJuego: {
-      type: String,
+      type: Number, 
       required: true,
     },
     Parte: {
       type: String,
       required: true,
     },
-    Equipos: {
-      Locales: {
-        Porteros: {
-          type: [String],
-          required: true,
-        },
-        Jugadores: {
-          type: [String],
-          required: true,
-        },
-        Banquillo: {
-          type: [String],
-          required: true,
-        },
+    local: {  
+      porteros: {
+        type: [Number],
+        required: true,
       },
-      Visitantes: {
-        Porteros: {
-          type: [String],
-          required: true,
-        },
-        Jugadores: {
-          type: [String],
-          required: true,
-        },
-        Banquillo: {
-          type: [String],
-          required: true,
-        },
+      jugadores: {
+        type: [Number],
+        required: true,
+      },
+      banquillo: {
+        type: [Number],
+        required: true,
       },
     },
-    SistemaDefensivoLocal: {
+    visitante: {  
+      porteros: {
+        type: [Number],
+        required: true,
+      },
+      jugadores: {
+        type: [Number],
+        required: true,
+      },
+      banquillo: {
+        type: [Number],
+        required: true,
+      },
+    },
+    sistemaDefensivoLocal: {
       type: String,
       required: true,
     },
-    SistemaDefensivoVisitante: {
+    sistemaDefensivoVisitante: {
       type: String,
       required: true,
     },
   },
   {
-    collection: 'CrearPartido', // Asegúrate de que la colección en la base de datos es 'partidos'
-    timestamps: true, // Esto agregará las propiedades createdAt y updatedAt
+    collection: 'CrearPartido',
+    timestamps: true,
   }
 );
 

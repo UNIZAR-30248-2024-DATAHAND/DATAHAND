@@ -17,26 +17,24 @@ export async function POST(req) {
         const partidoVacio = new CrearPartidos({
             IdPartido: `Partido-${IdPartido}`,
             Fecha: fechaActual,
-            EquipoLocal: 'Local',
-            EquipoVisitante: 'Visitante',
+            EquipoLocal: 'Equipo A',
+            EquipoVisitante: 'Equipo B',
             MarcadorLocal: 0,
             MarcadorVisitante: 0,
-            TiempoDeJuego: '0',
-            Parte: 'Parte1', 
-            Equipos: {
-                Locales: {
-                    Porteros: [15, 16],
-                    Jugadores: [1, 2, 3, 4, 5, 6],
-                    Banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
-                },
-                Visitantes: {
-                    Porteros: [31, 32], 
-                    Jugadores: [17, 18, 19, 20, 21, 22],
-                    Banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
-                },
+            TiempoDeJuego: 0,
+            Parte: 'Primera parte',
+            local: {
+                porteros: [15, 16], // Dos porteros
+                jugadores: [1, 2, 3, 4, 5, 6],
+                banquillo: [7, 8, 9, 10, 11, 12, 13, 14],
             },
-            SistemaDefensivoLocal: '6:0',
-            SistemaDefensivoVisitante: '6:0',
+            visitante: {
+                porteros: [31, 32], // Dos porteros
+                jugadores: [17, 18, 19, 20, 21, 22],
+                banquillo: [23, 24, 25, 26, 27, 28, 29, 30],
+            },
+            sistemaDefensivoLocal: '6:0',
+            sistemaDefensivoVisitante: '5:1',
         });
 
         // Guardar en la base de datos
@@ -66,7 +64,7 @@ export async function GET(req) {
         // Conectar a la base de datos
         await connectDB();
   
-        // Obtener el parámetro `IdPartido` de la solicitud
+        // Obtener el parámetro `IdPartido` de la URL
         const url = new URL(req.url);
         const IdPartido = url.searchParams.get("IdPartido");
 
@@ -101,15 +99,15 @@ export async function GET(req) {
             },
         });
     } catch (error) {
-        console.error('Error al obtener la lista de partidos:', error);
-        return new Response(JSON.stringify({ error: 'Error al obtener la lista de partidos' }), {
+        console.error('Error al obtener el partido:', error);
+        return new Response(JSON.stringify({ error: 'Error al obtener el partido' }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
     }
-  }
+}
 
 // CREAR PUT PARA MODIFICAR DATOS
 export async function PUT(req) {
