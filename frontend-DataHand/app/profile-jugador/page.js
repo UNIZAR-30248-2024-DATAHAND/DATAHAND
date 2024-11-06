@@ -14,7 +14,7 @@ export default function Home() {
 
   const [switchOn, setSwitchOn] = useState(true); // Estado para el switch
   const router = useRouter();
-  const showSwitch = true;
+  const [showSwitch, setShowSwitch] = useState(false);
   const [usuarios, setUsuarios] = useState([]); // Estado para almacenar usuarios
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null); // Estado para almacenar el usuario seleccionado
 
@@ -25,6 +25,10 @@ export default function Home() {
       router.push('/profile-entrenador');
     }
   };
+
+  const irEstadisitcas = () => {
+    router.push('/statsJug');
+  }
 
   const fetchUsuarios = async () => {
     try {
@@ -37,7 +41,7 @@ export default function Home() {
 
       //HABRA QUE CAMBIARLO PARA QUE SAQUE EL DE ID
       if (usuariosData.length > 0) {
-        setUsuarioSeleccionado(usuariosData[0]); // Asigna el primer usuario 
+        setUsuarioSeleccionado(usuariosData[1]); // Asigna el primer usuario 
       }        
     } catch (error) {
         console.error('Error:', error);
@@ -48,6 +52,15 @@ export default function Home() {
     fetchUsuarios(); // Llama a la función al montar el componente
   }, []); 
   console.log(usuarioSeleccionado);
+
+  useEffect(() => {
+    // Actualiza el estado de showSwitch basado en tipoUsuario
+    if (usuarioSeleccionado && usuarioSeleccionado.tipoUsuario === "ambos") {
+      setShowSwitch(true);
+    } else {
+      setShowSwitch(false);
+    }
+  }, [usuarioSeleccionado]);
 
   const data = {
     labels: [
@@ -154,9 +167,12 @@ export default function Home() {
           >
             <p className="text-2xl text-orange-500 font-semibold">{partido}</p>
             <div className="flex gap-2">
-              <button className="bg-green-500 text-white px-4 py-2 rounded">
+            <button
+                onClick={irEstadisitcas}
+                className="bg-green-500 text-white px-4 py-2 rounded"
+            >
                 Ver
-              </button>
+            </button>
             </div>
           </div>
         ))}

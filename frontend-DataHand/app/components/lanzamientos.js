@@ -90,20 +90,20 @@ export default function Lanzamientos() {
                 </div>
 
                 {/* Nuevas etiquetas añadidas */}
-                <div className="absolute left-[32%] top-[73%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Centro I - 12M</div> {/* Nombre encima */}
+                <div className="absolute left-[34%] top-[80%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
+                    <div className="text-xs">7 Metros</div> {/* Nombre encima */}
                     <div>1/1</div>
                 </div>
-                <div className="absolute left-[63%] top-[73%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Centro D - 12M</div> {/* Nombre encima */}
+                <div className="absolute left-[63%] top-[80%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
+                    <div className="text-xs">Campo Contrario</div> {/* Nombre encima */}
                     <div>2/3</div>
                 </div>
 
                 {/* Nuevas etiquetas añadidas */}
-                <div className="absolute left-1/2 top-[86%] -translate-x-1/2 bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Centro 15M</div> {/* Nombre encima */}
-                    <div>1/1</div>
-                </div>
+                {/* <div className="absolute left-1/2 top-[86%] -translate-x-1/2 bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
+                    <div className="text-xs">Centro 15M</div> 
+                    {/* <div>1/1</div>
+                </div> */}
 
                 {/* Etiqueta de fondo */}
                 <div className="absolute left-1/2 top-[55%] -translate-x-1/2 bg-gray-500 text-white rounded-full px-3 py-1 z-[-1]">
@@ -189,20 +189,20 @@ export default function Lanzamientos() {
                     </div>
 
                     {/* Nuevas etiquetas añadidas */}
-                    <div className="absolute left-[32%] top-[73%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Centro I - 12M</div> {/* Nombre encima */}
+                    <div className="absolute left-[34%] top-[80%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
+                        <div className="text-xs">7 Metros</div> {/* Nombre encima */}
                         <div>1/1</div>
                     </div>
-                    <div className="absolute left-[63%] top-[73%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Centro D - 12M</div> {/* Nombre encima */}
+                    <div className="absolute left-[63%] top-[80%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
+                        <div className="text-xs">Campo Contrario</div> {/* Nombre encima */}
                         <div>2/3</div>
                     </div>
 
-                    {/* Nuevas etiquetas añadidas */}
+                    {/* Nuevas etiquetas añadidas
                     <div className="absolute left-1/2 top-[86%] -translate-x-1/2 bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Centro 15M</div> {/* Nombre encima */}
-                        <div>1/1</div>
-                    </div>
+                        <div className="text-xs">Centro 15M</div> {/* Nombre encima
+                        {/* <div>1/1</div>
+                    </div> */}
 
                     {/* Etiqueta de fondo */}
                     <div className="absolute left-1/2 top-[55%] -translate-x-1/2 bg-gray-500 text-white rounded-full px-3 py-1 z-[-1]">

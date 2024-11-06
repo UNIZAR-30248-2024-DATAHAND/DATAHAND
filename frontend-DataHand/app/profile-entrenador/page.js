@@ -89,7 +89,9 @@ export default function Home() {
   const [partidos, setPartidos] = useState([]); // Estado para almacenar los partidos
   const [switchOn, setSwitchOn] = useState(false); // Estado para el switch
   const router = useRouter();
-  const showSwitch = true; //ESTA ES LA VARIABLE QUE DETERMINA SI SE MUESTRA EL SWITCH O NO, LO QUE SAQUEMOS DE LA BASE DE DATOS DEBERIA IR AQUI
+  const [showSwitch, setShowSwitch] = useState(false);
+  const [usuarios, setUsuarios] = useState([]); // Estado para almacenar usuarios
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null); // Estado para almacenar el usuario seleccionado
 
   const toggleSwitch = () => {
     setSwitchOn(!switchOn);
@@ -99,6 +101,37 @@ export default function Home() {
     }
   };
   
+  const fetchUsuarios = async () => {
+    try {
+        const response = await fetch('../api/users/usuarios');
+        if (!response.ok) {
+            throw new Error('Error al obtener usuarios');
+        }
+        const usuariosData = await response.json();
+        setUsuarios(usuariosData);
+
+      //HABRA QUE CAMBIARLO PARA QUE SAQUE EL DE ID
+      if (usuariosData.length > 0) {
+        setUsuarioSeleccionado(usuariosData[1]); // Asigna el primer usuario 
+      }        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+  useEffect(() => {
+    fetchUsuarios(); // Llama a la función al montar el componente
+  }, []); 
+  console.log(usuarioSeleccionado);
+
+  useEffect(() => {
+    // Actualiza el estado de showSwitch basado en tipoUsuario
+    if (usuarioSeleccionado && usuarioSeleccionado.tipoUsuario === "ambos") {
+      setShowSwitch(true);
+    } else {
+      setShowSwitch(false);
+    }
+  }, [usuarioSeleccionado]);
   /*
   // Ejecutar obtenerPartidos al iniciar la página
   useEffect(() => {
