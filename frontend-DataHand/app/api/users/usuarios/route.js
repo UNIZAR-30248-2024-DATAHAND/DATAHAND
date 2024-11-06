@@ -50,3 +50,60 @@ export async function GET(request) {
         return new Response('Error al obtener los usuarios', { status: 500 });
     }
 }
+
+export async function PUT(req) {
+    try {
+        // Conectar a la base de datos
+        await connectDB();
+
+        // Obtener los datos del cuerpo de la solicitud
+        const { idUsuario, ...actualizaciones } = await req.json();
+
+        // Verificar que se proporcione el ID del usuario
+        if (!idUsuario) {
+            return new Response(JSON.stringify({ error: 'Falta el ID del usuario' }), {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Buscar el usuario en la base de datos
+        const usuario = await Usuario.findById(idUsuario);
+
+        // Verificar si el usuario existe
+        if (!usuario) {
+            return new Response(JSON.stringify({ error: 'Usuario no encontrado' }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Actualizar los campos del usuario
+        Object.keys(actualizaciones).forEach(key => {
+            usuario[key] = actualizaciones[key];
+        });
+
+        // Guardar los cambios en la base de datos
+        await usuario.save();
+
+        // Devolver respuesta exitosa
+        return new Response(JSON.stringify({ message: 'Usuario actualizado exitosamente', usuario }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        return new Response(JSON.stringify({ error: 'Error al actualizar el usuario' }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+}
