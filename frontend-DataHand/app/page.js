@@ -20,11 +20,11 @@ export default function Login() {
 
     // Usuario ficticio que será enviado
     const nuevoUsuario = {
-      nombreCompleto: 'AlejandroSanz',
-      correoElectronico: 'alex@example.com',
+      nombreCompleto: 'Marcos Perez',
+      correoElectronico: 'perez@example.com',
       contrasena: 'c',
       fechaNacimiento: '1985-11-15T00:00:00.000Z',
-      tipoUsuario: 'jugador',
+      tipoUsuario: 'ambos',
       fotoPerfil: 'url_a_la_foto_pedro.jpg',
       club: 'Club Deportivo Ejemplo',
       pais: 'España',
