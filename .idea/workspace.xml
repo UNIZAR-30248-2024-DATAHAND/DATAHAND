@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/gestion_tiempo.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/crear_partido.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/register-match/[idPartido]/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/register-match/[idPartido]/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/page.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/inicio.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +110,7 @@
       <workItem from="1728985183275" duration="3261000" />
       <workItem from="1729266967520" duration="17859000" />
       <workItem from="1730128671215" duration="715000" />
-      <workItem from="1731316952451" duration="20124000" />
+      <workItem from="1731316952451" duration="21380000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />
