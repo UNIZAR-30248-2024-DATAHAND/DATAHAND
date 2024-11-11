@@ -57,3 +57,22 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Setting Up Jest for Testing
+
+1. Install necessary dependencies: Run the following command to install Jest and related testing libraries in 'frontend-Datahand' directory:
+
+    ```bash
+    npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event babel-jest
+    
+    npm install --save-dev jest-environment-jsdom
+   
+    npm install --save-dev babel-jest @babel/preset-env @babel/preset-react
+
+    npm install --save-dev @testing-library/react @testing-library/jest-dom
+    
+    npm install util
+2. Create a test in directory 'test'.
+3. To run tests, use the following command:
+   ```bash
+   npm test

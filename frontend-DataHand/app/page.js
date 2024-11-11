@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react'; // Importamos useState para gestionar el estado
 import { useRouter } from 'next/navigation'; // Importamos useRouter desde next/navigation
-import { connectDB } from '/lib/db.js';
+import { connectDB } from '../lib/db.js';
 
 export default function Login() {
   const router = useRouter(); // Inicializamos el enrutador

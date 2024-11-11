@@ -1,6 +1,7 @@
 'use client'; // Esto marca el componente como Client Component
 
 import { useState } from 'react';
+import React from 'react'; // Este import será global en tus pruebas
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
