@@ -21,7 +21,8 @@ export default function Home() {
         router.push(`/statsGen/${idPartido}`);
       };
 
-    const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
+    // Obtener el idPartido desde router.query
+    const { idPartido } = router.query;
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 

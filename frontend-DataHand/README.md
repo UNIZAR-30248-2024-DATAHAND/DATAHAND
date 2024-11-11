@@ -72,7 +72,19 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     npm install --save-dev @testing-library/react @testing-library/jest-dom
     
     npm install util
-2. Create a test in directory 'test'.
-3. To run tests, use the following command:
+   
+2. Create a file called 'babel.config.js' with the following content:
+   ```js
+   module.exports = {
+    presets: [
+        'next/babel',
+        '@babel/preset-react',
+    ],
+   };
+   ```
+   This file can only exist for testing. It cannot exist when running 'npm run dev'.
+
+3. Create a test in directory 'test'.
+4. To run tests, use the following command:
    ```bash
    npm test
