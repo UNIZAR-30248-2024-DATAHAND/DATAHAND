@@ -14,4 +14,7 @@ module.exports = {
     globals: {
         __DEV__: true,
     },
+    collectCoverage: true, // Activa la cobertura de código
+    coverageDirectory: "coverage", // Define el directorio donde se guardará el reporte de cobertura
+    coverageReporters: ["text", "html"], // Define el formato de los reportes (texto en consola y HTML)
 };

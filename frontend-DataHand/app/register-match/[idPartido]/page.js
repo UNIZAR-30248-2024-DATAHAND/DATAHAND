@@ -22,7 +22,9 @@ export default function Home() {
       };
 
     // Obtener el idPartido desde router.query
-    const { idPartido } = router.query;
+    //const { idPartido } = router.query || {};
+
+    const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
