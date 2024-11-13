@@ -109,18 +109,18 @@ export async function GET(req) {
     }
 }
 
-// CREAR PUT PARA MODIFICAR DATOS
 export async function PUT(req) {
     try {
         // Conectar a la base de datos
         await connectDB();
 
-        // Obtener los datos del cuerpo de la solicitud (presumiblemente en formato JSON)
-        const { idPartido, ...actualizaciones } = await req.json();
+        // Obtener los datos del partido del cuerpo de la solicitud
+        const partidoData = await req.json();
+        const { IdPartido } = partidoData;
 
-        // Verificar que se proporcione el Id del partido
-        if (!idPartido) {
-            return new Response(JSON.stringify({ error: 'Falta el Id del partido' }), {
+        // Verificar que `IdPartido` está presente
+        if (!IdPartido) {
+            return new Response(JSON.stringify({ error: 'Debe proporcionar un IdPartido' }), {
                 status: 400,
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,12 +128,15 @@ export async function PUT(req) {
             });
         }
 
-        // Buscar el partido en la base de datos
-        const partido = await CrearPartidos.findOne({ IdPartido: idPartido });
+        // Buscar y actualizar el partido en la base de datos
+        const partidoActualizado = await CrearPartidos.findOneAndUpdate(
+            { IdPartido },
+            { $set: partidoData },
+            { new: true } // Devuelve el partido actualizado
+        );
 
-        // Verificar si el partido existe
-        if (!partido) {
-            return new Response(JSON.stringify({ error: 'Partido no encontrado' }), {
+        if (!partidoActualizado) {
+            return new Response(JSON.stringify({ error: 'No se encontró el partido' }), {
                 status: 404,
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,16 +144,8 @@ export async function PUT(req) {
             });
         }
 
-        // Actualizar los campos del partido
-        Object.keys(actualizaciones).forEach(key => {
-            partido[key] = actualizaciones[key];
-        });
-
-        // Guardar los cambios en la base de datos
-        await partido.save();
-
-        // Devolver respuesta exitosa
-        return new Response(JSON.stringify({ message: 'Partido actualizado exitosamente', partido }), {
+        // Respuesta de éxito
+        return new Response(JSON.stringify({ message: 'Partido actualizado exitosamente', partido: partidoActualizado }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',

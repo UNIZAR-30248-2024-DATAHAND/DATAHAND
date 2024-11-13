@@ -21,10 +21,8 @@ export default function Home() {
         router.push(`/statsGen/${idPartido}`);
       };
 
-    // Obtener el idPartido desde router.query
-    //const { idPartido } = router.query || {};
-
     const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
+
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
@@ -95,6 +93,26 @@ export default function Home() {
             }
         } catch (error) {
             console.error('Error en la solicitud GET:', error);
+        }
+    };
+
+    const actualizarPartido = async () => {
+        try {
+            const response = await fetch('/api/users/crearPartido', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(equipos), // Se envía todo el estado actual del partido
+            });
+
+            if (response.ok) {
+                console.log("Partido actualizado exitosamente.");
+            } else {
+                console.error("Error al actualizar el partido.");
+            }
+        } catch (error) {
+            console.error("Error en la llamada a la API:", error);
         }
     };
 
@@ -219,6 +237,9 @@ export default function Home() {
             }
         }
 
+        // Llama a la función actualizarPartido para realizar la solicitud
+        actualizarPartido();
+
         // Reiniciar selección después de intercambiar
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
@@ -226,6 +247,26 @@ export default function Home() {
     // Función para determinar si un jugador es portero (números fijos para porteros)
     const esPortero = (jugador) => {
         return equipos.local.porteros.includes(jugador) || equipos.visitante.porteros.includes(jugador);
+    };
+
+    // Función para marcar gol
+    const marcarGol = (equipo) => {
+        setEquipos((prevEquipos) => {
+            if (equipo === "local") {
+                return {
+                    ...prevEquipos,
+                    MarcadorLocal: prevEquipos.MarcadorLocal + 1,
+                };
+            } else if (equipo === "visitante") {
+                return {
+                    ...prevEquipos,
+                    MarcadorVisitante: prevEquipos.MarcadorVisitante + 1,
+                };
+            } else {
+                console.warn("Equipo desconocido al intentar marcar gol:", equipo);
+                return prevEquipos; // Devuelve el estado anterior si el equipo no es válido
+            }
+        });
     };
 
     useEffect(() => {
@@ -260,6 +301,7 @@ export default function Home() {
             ...prevEquipos,
             sistemaDefensivoLocal: opcion, // Actualiza el sistema defensivo local en el estado
         }));
+        actualizarPartido();
     };
     
     const seleccionarSistemaDefensivoVisitante = (opcion) => {
@@ -267,7 +309,32 @@ export default function Home() {
             ...prevEquipos,
             sistemaDefensivoVisitante: opcion, // Actualiza el sistema defensivo visitante en el estado
         }));
+        actualizarPartido();
     };
+
+    // Almacenar el estado del partido periodicamente para dar consistencia
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            // Aquí llama al PUT para enviar el estado actual del partido
+            const response = await fetch('/api/users/crearPartido', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(equipos),
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                console.log('Partido actualizado exitosamente:', result);
+            } else {
+                console.error('Error al actualizar el partido:', result.error);
+            }
+        }, 30000); // 30 segundos
+    
+        // Limpia el intervalo al desmontar el componente
+        return () => clearInterval(intervalId);
+    }, [equipos]); // Dependencia para que siempre envíe el estado actual
     
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
@@ -596,7 +663,7 @@ export default function Home() {
 
             {/* Popup para Gol */}
             <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} asistencias={asistencias}
-             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} />   {/*Me falta pasarle el IdPartido*/}
+             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} equipos={equipos} />   {/*Me falta pasarle el IdPartido*/}
         </div>
     );
 }

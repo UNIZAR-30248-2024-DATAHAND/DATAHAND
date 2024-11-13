@@ -10,6 +10,26 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
 
+    const actualizarPartido = async () => {
+        try {
+            const response = await fetch('/api/users/crearPartido', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(equipos), // Se envía todo el estado actual del partido
+            });
+
+            if (response.ok) {
+                console.log("Partido actualizado exitosamente.");
+            } else {
+                console.error("Error al actualizar el partido.");
+            }
+        } catch (error) {
+            console.error("Error en la llamada a la API:", error);
+        }
+    };
+
     // Efecto para manejar el cronómetro
     useEffect(() => {
         let intervalo;
@@ -68,6 +88,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         detenerCronometro(); // Detiene el cronómetro si estaba activo
         setTextoBoton("Fin del partido"); // Cambia el texto del botón
         setPrimerTiempoFinalizado(true); // Marca que el primer tiempo ha terminado
+        actualizarPartido();
     };
 
     // Maneja el fin del partido
@@ -79,6 +100,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         }));
         setTextoBoton("Partido acabado"); // Cambia el texto del botón
         detenerCronometro(); // Detiene el cronómetro
+        actualizarPartido();
     };
 
     const manejarClickFinPartido = async () => {
@@ -86,7 +108,6 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             finalizarPrimerTiempo(); // Si el primer tiempo no ha finalizado, lo finaliza
         } else {
             await finalizarPartido(); // Si el primer tiempo ya ha finalizado, finaliza el partido
-            //await enviarDatosAPartido(); // Enviar los datos a la API
         }
     };
 
