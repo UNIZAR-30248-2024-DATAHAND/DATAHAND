@@ -278,22 +278,24 @@ export default function Home() {
           console.log("Suspension:", suspension);
 
         if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado !== null) {
-          console.log("Muestro PopUp");
-          setShowPopup(true); // Mostrar el popup
-        } else if (resultado === "Gol") {
-          console.log("Gol detectado");
-          // marcarGol(); // Llamar a la función de marcar gol si el resultado es "Gol"
+            console.log("Muestro PopUp");
+            setShowPopup(true); // Mostrar el popup
         } else {
           console.log("Condiciones no cumplidas, no se muestra el popup.");
         }
-      }, [resultado, faseDeJuego, accion, suspension, seleccionado]); // Se ejecuta cada vez que `resultado` cambia
+    }, [resultado, faseDeJuego, accion, suspension, seleccionado]); // Se ejecuta cada vez que `resultado` cambia
 
     const handleClosePopup = () => {
+        if (resultado === "Gol") {
+            console.log("Gol detectado");
+            marcarGol(seleccionado.equipo);
+        }
         setShowPopup(false); // Oculta el popup
         // Opcional: Resetear estados si es necesario
         setFaseDeJuego(null);
         setResultado(null);
         setSeleccionado({ equipo: null, index: null, tipo: null });
+        actualizarPartido();
     };
     
     const seleccionarSistemaDefensivoLocal = (opcion) => {
