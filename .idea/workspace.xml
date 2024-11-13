@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/historico_partidos.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/register-match/[idPartido]/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/register-match/[idPartido]/page.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-DataHand/jest.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/jest.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,60 +53,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.page.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/lukita5/Documents/GitHub/DATAHAND/frontend-DataHand/test/unit&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/jaime/.local/share/JetBrains/Toolbox/apps/intellij-idea-ultimate/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.page.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/lukita5/Documents/GitHub/DATAHAND/frontend-DataHand",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "ts.external.directory.path": "/home/jaime/.local/share/JetBrains/Toolbox/apps/intellij-idea-ultimate/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mongo&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mongo"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/frontend-DataHand" />
+      <recent name="$PROJECT_DIR$/frontend-DataHand/almacen_babel" />
       <recent name="$PROJECT_DIR$/frontend-DataHand/test/unit" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/frontend-DataHand/app/api/users" />
-      <recent name="$PROJECT_DIR$/frontend-DataHand/api" />
-      <recent name="$PROJECT_DIR$/frontend-DataHand/public/images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/frontend-DataHand/lib" />
       <recent name="$PROJECT_DIR$/frontend-DataHand/public" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="DATAHAND" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="DATAHAND" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -128,6 +116,7 @@
       <workItem from="1730128671215" duration="715000" />
       <workItem from="1731316952451" duration="21380000" />
       <workItem from="1731436448556" duration="1048000" />
+      <workItem from="1731519762719" duration="3924000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />
