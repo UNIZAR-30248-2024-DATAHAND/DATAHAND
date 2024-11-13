@@ -1,30 +1,15 @@
-// models/Equipos.js
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-// Define el esquema para la colección 'equipos'
-const equiposSchema = new mongoose.Schema(
-  {
-    nombre: {
-      type: String,
-      required: true,
-    },
-    jugadores: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Jugador', // Si tienes un modelo de jugador
-      },
-    ],
-    entrenadorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Entrenador', // Si tienes un modelo de entrenador
-    },
-  },
-  {
-    collection: 'equipos', // Especifica aquí el nombre de la colección
-  }
-);
+const EquipoSchema = new mongoose.Schema({
+  nombre: String,
+  entrenador: String,
+  imagen: String, // Para el URL de la imagen del equipo
+  porteros: [String], // Almacenamos como strings
+  jugadores: [String], // Almacenamos como strings
+  banquillo: [String], // Almacenamos como strings
+  sistemaDefensivoLocal: String,
+});
 
-// Exporta el modelo, asegurando que se use la colección 'equipos'
-const Equipos =
-  mongoose.models.Equipos || mongoose.model('Equipos', equiposSchema);
-export default Equipos;
+const Equipo = mongoose.models.Equipo || mongoose.model('Equipo', EquipoSchema);
+
+module.exports = mongoose.model('Equipo', EquipoSchema); 

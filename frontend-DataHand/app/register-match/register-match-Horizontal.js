@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
+import styles from '../styles/PopupTeams.module.css';
+
 
 // <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado}/>
 const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats}) => {
@@ -9,6 +11,57 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
+
+    // Lógica equipos
+    const [showEquipoSelector, setShowEquipoSelector] = useState(false); // Controla la visibilidad del popup de selección
+    const [equiposList, setEquiposList] = useState([]); // Lista de equipos para seleccionar
+    const [equipoSeleccionado, setEquipoSeleccionado] = useState(null); // Estado para saber si es equipo local o visitante
+
+    // Cargar lista de equipos al montar el componente
+    useEffect(() => {
+        const fetchEquipos = async () => {
+            try {
+                const response = await fetch('/api/users/equipos'); // Cambia la ruta si es necesario
+                const data = await response.json();
+                setEquiposList(data); // Guarda la lista de equipos en el estado
+            } catch (error) {
+                console.error("Error al obtener los equipos:", error);
+            }
+        };
+        fetchEquipos();
+    }, []);
+
+    // Función para seleccionar el equipo (local o visitante)
+    const seleccionarEquipo = (equipo) => {
+        // Determina si es local o visitante basándose en el estado equipoSeleccionado
+        if (equipoSeleccionado === 'local') {
+            setEquipos((prevEquipos) => ({
+                ...prevEquipos,
+                EquipoLocal: equipo.nombre,
+                local: {
+                    ...prevEquipos.local,
+                    jugadores: equipo.jugadores,
+                    banquillo: equipo.banquillo,
+                    porteros: equipo.porteros,
+                },
+                sistemaDefensivoLocal: equipo.sistemaDefensivo,
+            }));
+        } else if (equipoSeleccionado === 'visitante') {
+            setEquipos((prevEquipos) => ({
+                ...prevEquipos,
+                EquipoVisitante: equipo.nombre,
+                visitante: {
+                    ...prevEquipos.visitante,
+                    jugadores: equipo.jugadores,
+                    banquillo: equipo.banquillo,
+                    porteros: equipo.porteros,
+                },
+                sistemaDefensivoVisitante: equipo.sistemaDefensivo,
+            }));
+        }
+        actualizarPartido();
+        setShowEquipoSelector(false); // Cierra el popup
+    };
 
     const actualizarPartido = async () => {
         try {
@@ -28,6 +81,12 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         } catch (error) {
             console.error("Error en la llamada a la API:", error);
         }
+    };
+
+    // Maneja el click en los equipos (local o visitante)
+    const manejarClickEquipo = (tipoEquipo) => {
+        setEquipoSeleccionado(tipoEquipo); // Establece si es equipo local o visitante
+        setShowEquipoSelector(true); // Muestra el popup para seleccionar el equipo
     };
 
     // Efecto para manejar el cronómetro
@@ -115,10 +174,10 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         <div className="w-full h-32 bg-white rounded-lg flex items-center justify-between p-4 mb-8 shadow-md">
             {/* Escudos y Nombres de Equipos */}
             <div className="flex items-center">
-                {/* Equipo 1 */}
-                <div className="flex items-center mr-8">
+                {/* Equipo Local */}
+                <div className="flex items-center mr-8" onClick={() => manejarClickEquipo('local')}>
                     <Image 
-                        src="/path/to/escudo1.png" // Cambiar este path 
+                        src="/path/to/escudo1.png" 
                         alt="Escudo Equipo 1"
                         width={50}
                         height={50}
@@ -127,10 +186,10 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                     <span className="text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
                 </div>
 
-                {/* Equipo 2 */}
-                <div className="flex items-center">
+                {/* Equipo Visitante */}
+                <div className="flex items-center" onClick={() => manejarClickEquipo('visitante')}>
                     <Image 
-                        src="/path/to/escudo2.png" // Cambiar este path 
+                        src="/path/to/escudo2.png" 
                         alt="Escudo Equipo 2"
                         width={50}
                         height={50}
@@ -198,6 +257,32 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                     Salir
                 </button>
             </Link>
+
+            {/* Popup de Selección de Equipos */}
+            {showEquipoSelector && (
+                <div className={styles.popup}>
+                    <div className={styles.popupContent}>
+                        <h2 className={styles.popupTitle}>Selecciona un Equipo</h2>
+                        {equiposList.length > 0 ? (
+                            equiposList.map((equipo) => (
+                                <div key={equipo.id} className={styles.equipoItem}>
+                                    <button
+                                        className={styles.equipoButton}
+                                        onClick={() => seleccionarEquipo(equipo)}
+                                    >
+                                        {equipo.nombre}
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <p>Cargando equipos...</p>
+                        )}
+                        <button className={styles.closeButton} onClick={() => setShowEquipoSelector(false)}>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
         );
 };
