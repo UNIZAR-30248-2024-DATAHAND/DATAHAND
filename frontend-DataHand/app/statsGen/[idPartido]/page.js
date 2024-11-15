@@ -3,38 +3,43 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useParams } from 'next/navigation';
 
-export const obtenerEventos = async () => {
-    try {
-      const res = await fetch('../../api/users/eventos', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+export const obtenerEventos = async (idPartido) => {
+  try {
+      const url = idPartido
+          ? `../../api/users/eventos?idPartido=${idPartido}`
+          : `../../api/users/eventos`;
+      const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
       });
-  
+
       if (res.ok) {
-        const data = await res.json();
-        // Aquí puedes trabajar con los datos de partidos recibidos
-        console.log('Total de eventos:', data.totalEventos);
-        console.log('Datos eventos:', data.eventos);
-        return data.eventos;
+          const data = await res.json();
+          console.log('Total de eventos:', data.totalEventos);
+          console.log('Datos eventos:', data.eventos);
+          return data.eventos;
       } else {
-        console.error('Error al obtener los eventos');
+          console.error('Error al obtener los eventos');
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Error en la solicitud:', error);
-    }
-  };
+  }
+};
 
 
   export default function Home() {
     const [eventos, setEventos] = useState([]);
     const [cantidadMostrar, setCantidadMostrar] = useState(5); // Estado para controlar cuántos eventos mostrar
+    const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
+    
   
     // Función para manejar la obtención de eventos
     const manejarObtenerEventos = async () => {
-      const eventosObtenidos = await obtenerEventos();
+      const eventosObtenidos = await obtenerEventos(idPartido);
       setEventos(eventosObtenidos);
       setCantidadMostrar(5); // Reiniciar a 5 eventos cuando se obtienen nuevos
     };

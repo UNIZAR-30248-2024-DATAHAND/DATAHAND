@@ -61,29 +61,36 @@ export async function POST(req) {
     }
   }
 
-//HAY QUE EDITARLO PARA SACAR EVENTOS 
+//HAY QUE EDITARLO PARA SACAR EVENTOS  
 export async function GET(req) {
-    try {
-        // Conectar a la base de datos
-        await connectDB();
-  
-        // Obtener todos los partidos de la base de datos
-        const eventos = await Eventos.find({}); 
-    
-        // Devolver la respuesta con el conteo y los IdPartido
-        return new Response(JSON.stringify({ totalEventos: eventos.length, eventos }), {
-            status: 200,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-    } catch (error) {
-        console.error('Error al obtener la lista de eventos:', error);
-        return new Response(JSON.stringify({ error: 'Error al obtener la lista de eventos' }), {
-            status: 500,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-    }
+  try {
+      // Conectar a la base de datos
+      await connectDB();
+
+      // Obtener el parámetro idPartido de la consulta
+      const url = new URL(req.url);
+      const idPartido = url.searchParams.get('idPartido'); // Obtener el valor del query param
+
+      // Construir el filtro
+      const filtro = idPartido ? { IdPartido: idPartido } : {};
+
+      // Obtener los eventos filtrados
+      const eventos = await Eventos.find(filtro);
+
+      // Devolver la respuesta con el conteo y los eventos filtrados
+      return new Response(JSON.stringify({ totalEventos: eventos.length, eventos }), {
+          status: 200,
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+  } catch (error) {
+      console.error('Error al obtener la lista de eventos:', error);
+      return new Response(JSON.stringify({ error: 'Error al obtener la lista de eventos' }), {
+          status: 500,
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
   }
+}
