@@ -123,11 +123,71 @@ export const contarContrataqueConGol = (dataEventos) => {
   }
 };
 
+export const contarContrataqueConParada = (dataEventos) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde la fase de juego es "Contrataque" y el resultado es "Gol"
+    const eventosContrataqueGol = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Parada'
+    );
+    
+    // Devuelve la cantidad de eventos que cumplen ambas condiciones
+    return eventosContrataqueGol.length;
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+export const contarContrataqueConPalo = (dataEventos) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde la fase de juego es "Contrataque" y el resultado es "Gol"
+    const eventosContrataqueGol = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Palo/Fuera'
+    );
+    
+    // Devuelve la cantidad de eventos que cumplen ambas condiciones
+    return eventosContrataqueGol.length;
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
 export const contarContragolConGol = (dataEventos) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
     const eventosContragolGol = dataEventos.filter(evento => 
       evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Gol'
+    );
+    
+    // Devuelve la cantidad de eventos que cumplen ambas condiciones
+    return eventosContragolGol.length;
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+export const contarContragolConParada = (dataEventos) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
+    const eventosContragolGol = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Parada'
+    );
+    
+    // Devuelve la cantidad de eventos que cumplen ambas condiciones
+    return eventosContragolGol.length;
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+export const contarContragolConPalo = (dataEventos) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
+    const eventosContragolGol = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Palo/Fuera'
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -150,5 +210,60 @@ export const contarAtaquePosicionalConGol = (dataEventos) => {
   } else {
     console.error('dataEventos no es un vector');
     return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+export const obtenerSistemaAtaque = (dataEventos) => {
+  // Verifica que dataEventos sea un arreglo
+  if (Array.isArray(dataEventos)) {
+    // Utilizamos un Set para obtener solo los valores únicos de SistemaDeJuego
+    const valoresUnicos = new Set(dataEventos.map(evento => evento.SistemaDeAtaque));
+    return [...valoresUnicos]; // Convertimos el Set a un array
+  } else {
+    console.error('dataEventos no es un arreglo');
+    return [];  // Retorna un array vacío si no es un arreglo
+  }
+};
+
+
+export const filtrarGolPorSistema = (dataEventos, sistemaDeAtaque) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincide con 'sistemaDeAtaque' y el 'Resultado' sea 'Gol'
+    const eventosGol = dataEventos.filter(evento => 
+      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Gol'
+    );
+    
+    return eventosGol.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrarParadasPorSistema = (dataEventos, sistemaDeAtaque) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Parada'
+    const eventosParada = dataEventos.filter(evento => 
+      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Parada'
+    );
+    
+    return eventosParada.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrarPalosPorSistema = (dataEventos, sistemaDeAtaque) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Palo/Fuera'
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
   }
 };

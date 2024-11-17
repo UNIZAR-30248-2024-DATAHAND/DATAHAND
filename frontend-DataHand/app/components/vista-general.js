@@ -43,20 +43,20 @@ function StatBar({ value, text }) {
   export default function VistaGeneral({dataEventos,dataEquipos}) {
     
     const [datosVistaGeneral, setdatosVistaGeneral] = useState({  //AQUI PODEMOS AÑADER SUPERIORIDAD, IGUALDAD Y 7 METROS
-      posesionesLocal: '48',
-      posesionesVisitante: '49',
-      effLocal: '32 / 48',
-      effVisitante: '19 / 49',
-      effLanzamientoLocal: '68',
-      effLanzamientoVisitante: '49',
-      balonesPerdidosLocal: '10',
-      balonesPerdidosVisitante: '22',
-      ataquePosicionalLocal: '65',
-      ataquePosicionalVisitante: '40',
-      contraataqueLocal: '71',
-      contraataqueVisitante: '20',
-      contragolLocal: '50',
-      contragolVisitante: '0',
+      posesionesLocal: '',
+      posesionesVisitante: '',
+      effLocal: '',
+      effVisitante: '',
+      effLanzamientoLocal: '',
+      effLanzamientoVisitante: '',
+      balonesPerdidosLocal: '',
+      balonesPerdidosVisitante: '',
+      ataquePosicionalLocal: '',
+      ataquePosicionalVisitante: '',
+      contraataqueLocal: '',
+      contraataqueVisitante: '',
+      contragolLocal: '',
+      contragolVisitante: '',
     });
       
     if (!dataEquipos || !dataEquipos.EquipoLocal || !dataEquipos.EquipoVisitante) {
@@ -91,7 +91,7 @@ function StatBar({ value, text }) {
     useEffect(() => {  
       // Solo actualizamos si el valor es diferente al actual
       calcularEstadisticas();
-    }, []); // Solo se ejecutará cuando dataEventos cambie
+    }, []); 
 
     return (
       <div className="p-6">

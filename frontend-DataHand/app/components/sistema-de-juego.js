@@ -9,39 +9,29 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+import { contarContragolConGol, contarContrataqueConGol, obtenerSistemaAtaque, filtrarGolPorSistema,
+filtrarPalosPorSistema, filtrarParadasPorSistema, contarContragolConParada, contarContragolConPalo, contarContrataqueConParada, contarContrataqueConPalo}  from '../utils/calculosEstadistica';  // Ajusta la ruta según la ubicación del archivo
+import { useState , useEffect} from 'react';
 
-export default function SistemaDeJuego({dataEventos}) {
+export default function SistemaDeJuego({dataEventos,dataEquipos}) {
+  //TO DO FALTAN LAS ACCIONES QUE ESTA HACIENDO JUANJO
+  const valoresUnicosSistemaAtaque = obtenerSistemaAtaque(dataEventos);
+
   return (
     <div className="w-full bg-white">
       {/* Contenido de la pestaña Sistema de Juego */}
       <Tabs defaultValue="sistema-de-juego" className="w-full">
         {/* Pestañas secundarias dentro de Sistema de Juego */}
         <Tabs defaultValue="equipo" className="w-full">
-          <TabsList className="w-full justify-center mt-4 mb-4"> {/* Centrado y márgenes */}
-            <TabsTrigger 
-              value="equipo" 
-              className="flex-1 bg-gray-200 text-gray-600 text-center py-2 transition-colors duration-200 data-[state=active]:bg-[#45b6e5] data-[state=active]:text-white" // Cambios en el estado activo
-            >
-              EQUIPO
-            </TabsTrigger>
-            <TabsTrigger 
-              value="individual"
-              className="flex-1 bg-gray-200 text-gray-600 text-center py-2 transition-colors duration-200 data-[state=active]:bg-[#45b6e5] data-[state=active]:text-white" // Cambios en el estado activo
-            >
-              INDIVIDUAL
-            </TabsTrigger>
-          </TabsList>
-
           {/* Contenido de la pestaña Equipo */}
           <TabsContent value="equipo" className="mt-6">
             <div className="text-center text-xl font-bold mb-4">
-              ZARAGOZA BALONMANO
+              {dataEquipos.EquipoLocal}
             </div>
             <Table>
               <TableHeader className="bg-[#e6f7ff]">
                 <TableRow>
                   <TableHead className="w-[200px] font-bold">ACCIÓN</TableHead>
-                  <TableHead className="font-bold">TIEMPO JUGADO</TableHead>
                   <TableHead className="font-bold">Nº GOLES</TableHead>
                   <TableHead className="font-bold">Nº PARADAS</TableHead>
                   <TableHead className="font-bold">Nº POSTE/FUERA</TableHead>
@@ -55,22 +45,9 @@ export default function SistemaDeJuego({dataEventos}) {
                   <TableCell className="font-bold text-[#ffa500]">
                     TRANSICIONES - CONTRAATAQUE DIRECTO
                   </TableCell>
-                  <TableCell className="font-bold">12</TableCell>
-                  <TableCell className="font-bold">8</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-[#ffa500]">
-                    TRANSICIONES - SEGUNDA OLEADA
-                  </TableCell>
-                  <TableCell className="font-bold">10</TableCell>
-                  <TableCell className="font-bold">7</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConGol(dataEventos)}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConParada(dataEventos)}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConPalo(dataEventos)}</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
@@ -79,110 +56,26 @@ export default function SistemaDeJuego({dataEventos}) {
                   <TableCell className="font-bold text-[#ffa500]">
                     TRANSICIONES - CONTRAGOL
                   </TableCell>
-                  <TableCell className="font-bold">5</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
+                  <TableCell className="font-bold">{contarContragolConGol(dataEventos)}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConParada(dataEventos)}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConPalo(dataEventos)}</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">1</TableCell>
                 </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-red-500">
-                    ATAQUE - AMPLITUD
-                  </TableCell>
-                  <TableCell className="font-bold">11</TableCell>
-                  <TableCell className="font-bold">7</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-red-500">
-                    ATAQUE - 7
-                  </TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-red-500">
-                    ATAQUE - 0 o 1x1
-                  </TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
+                {valoresUnicosSistemaAtaque.map((sistema, index) => (
+                <TableRow className="bg-white" key={index}>
                   <TableCell className="font-bold text-[#ffa500]">
-                    ATAQUE 1
+                    ATAQUE {sistema} {/* Aquí usamos el valor del sistema de ataque dinámicamente */}
                   </TableCell>
-                  <TableCell className="font-bold">9</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
+                  <TableCell className="font-bold">{filtrarGolPorSistema(dataEventos,sistema)}</TableCell>
+                  <TableCell className="font-bold">{filtrarParadasPorSistema(dataEventos,sistema)} </TableCell>
+                  <TableCell className="font-bold">{filtrarPalosPorSistema(dataEventos,sistema)}</TableCell>
                   <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">8</TableCell>
-                  <TableCell className="font-bold">3</TableCell>
+                  <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                 </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-[#ffa500]">
-                    ATAQUE 2
-                  </TableCell>
-                  <TableCell className="font-bold">9</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">8</TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-[#ffa500]">
-                    ATAQUE 3
-                  </TableCell>
-                  <TableCell className="font-bold">9</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">8</TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-[#ffa500]">
-                    ATAQUE 4
-                  </TableCell>
-                  <TableCell className="font-bold">9</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">8</TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
-                <TableRow className="bg-white">
-                  <TableCell className="font-bold text-[#ffa500]">
-                    ATAQUE 5
-                  </TableCell>
-                  <TableCell className="font-bold">9</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
-                  <TableCell className="font-bold">2</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">8</TableCell>
-                  <TableCell className="font-bold">3</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                </TableRow>
+              ))}
               </TableBody>
             </Table>
           </TabsContent>
