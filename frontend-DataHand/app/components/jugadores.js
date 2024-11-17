@@ -8,7 +8,7 @@ import { Tabs } from "@radix-ui/react-tabs";
 // organizando los datos en columnas que representan el rendimiento a lo largo del tiempo y diversas métricas.
 // Este componente es útil para visualizar el desempeño de los jugadores en un formato claro y accesible.
 
-export default function Jugadores() {
+export default function Jugadores({dataEventos}) {
   return (
     <div className="w-full bg-white">
       {/* Team Header */}

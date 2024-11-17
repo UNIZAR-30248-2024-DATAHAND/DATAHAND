@@ -11,7 +11,7 @@ import { Card } from "../components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { X } from "lucide-react";
 
-export default function EspecificoJugadores() {
+export default function EspecificoJugadores({dataEventos}) {
     
     return (
         <div className="w-full max-w-full mx-auto p-0 overflow-y-auto h-screen">

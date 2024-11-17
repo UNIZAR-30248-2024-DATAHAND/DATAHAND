@@ -21,7 +21,9 @@
   - Las métricas se presentan en un formato claro y organizado, lo que facilita la comparación
     directa entre los dos equipos.
 */
-
+import { contarEventos, contarGoles, contarAtaquePosicional, contarAtaquePosicionalConGol, contarContragol,contarContragolConGol,contarContrataque,
+  contarContrataqueConGol,contarLanzamientosTotal,contarLanzamientosYPerdidas,contarPerdidasDeBalon}  from '../utils/calculosEstadistica';  // Ajusta la ruta según la ubicación del archivo
+import { useState , useEffect} from 'react';
 
 function StatBar({ value, text }) {
     return (
@@ -38,7 +40,59 @@ function StatBar({ value, text }) {
     );
   }
   
-  export default function VistaGeneral() {
+  export default function VistaGeneral({dataEventos,dataEquipos}) {
+    
+    const [datosVistaGeneral, setdatosVistaGeneral] = useState({  //AQUI PODEMOS AÑADER SUPERIORIDAD, IGUALDAD Y 7 METROS
+      posesionesLocal: '48',
+      posesionesVisitante: '49',
+      effLocal: '32 / 48',
+      effVisitante: '19 / 49',
+      effLanzamientoLocal: '68',
+      effLanzamientoVisitante: '49',
+      balonesPerdidosLocal: '10',
+      balonesPerdidosVisitante: '22',
+      ataquePosicionalLocal: '65',
+      ataquePosicionalVisitante: '40',
+      contraataqueLocal: '71',
+      contraataqueVisitante: '20',
+      contragolLocal: '50',
+      contragolVisitante: '0',
+    });
+      
+    if (!dataEquipos || !dataEquipos.EquipoLocal || !dataEquipos.EquipoVisitante) {
+      return (
+        <div className="text-center text-gray-500 p-4">
+          Cargando datos de equipos...
+        </div>
+      );
+    }
+    
+    const calcularEstadisticas = () => {
+      const varPosesionesLocal = contarLanzamientosYPerdidas(dataEventos);
+      const varEficaciaLocal = 100*contarGoles(dataEventos) / varPosesionesLocal;
+      const varEficaciaLanzamientoLocal =  100* contarGoles(dataEventos) / contarLanzamientosTotal(dataEventos);
+      const varPerdidasLocal = 100*contarPerdidasDeBalon(dataEventos) / varPosesionesLocal;
+      const varAtaquePosicionalLocal = 100*contarAtaquePosicionalConGol(dataEventos) / contarAtaquePosicional(dataEventos);
+      const varContraataqueLocal = 100*contarContrataqueConGol(dataEventos) / contarContrataque(dataEventos);
+      const varContragolLocal = 100*contarContragolConGol(dataEventos) / contarContragol(dataEventos);
+
+      setdatosVistaGeneral(prevState => ({
+        ...prevState,
+        posesionesLocal: varPosesionesLocal, 
+        effLanzamientoLocal: varEficaciaLanzamientoLocal,
+        effLocal: varEficaciaLocal,
+        balonesPerdidosLocal: varPerdidasLocal,
+        ataquePosicionalLocal: varAtaquePosicionalLocal,
+        contraataqueLocal: varContraataqueLocal,
+        contragolLocal: varContragolLocal
+      }));
+    };
+
+    useEffect(() => {  
+      // Solo actualizamos si el valor es diferente al actual
+      calcularEstadisticas();
+    }, []); // Solo se ejecutará cuando dataEventos cambie
+
     return (
       <div className="p-6">
         <h2 className="text-xl font-bold mb-4 text-center mx-auto">Vista General</h2>
@@ -53,39 +107,30 @@ function StatBar({ value, text }) {
             <div className="font-semibold">Ataque Posicional %</div>
             <div className="font-semibold">Contraataque %</div>
             <div className="font-semibold">Contragol %</div>
-            <div className="font-semibold">Superioridad %</div>
-            <div className="font-semibold">Igualdad %</div>
-            <div className="font-semibold">7 Metros Goal %</div>
           </div>
   
           {/* Zaragoza Column */}
           <div className="space-y-6">
-            <div className="bg-[#0f2d50] text-white p-2 rounded">ZARAGOZA BALONMANO</div>
-            <div className="font-semibold">48</div>
-            <StatBar value={67} text="32 / 48" />
-            <StatBar value={68} text="32 / 47" />
-            <StatBar value={10} text="5 / 45" />
-            <StatBar value={65} text="15 / 23 (23)" />
-            <StatBar value={71} text="15 / 21 (22)" />
-            <StatBar value={50} text="2 / 4 (5)" />
-            <StatBar value={100} text="2 / 2" />
-            <StatBar value={63} text="30 / 48" />
-            <StatBar value={100} text="2 / 2" />
+            <div className="bg-[#0f2d50] text-white p-2 rounded">{dataEquipos.EquipoLocal}</div>
+            <div className="font-semibold">{datosVistaGeneral.posesionesLocal}</div>
+            <StatBar value={datosVistaGeneral.effLocal} text={datosVistaGeneral.effLocal} />
+            <StatBar value={datosVistaGeneral.effLanzamientoLocal} text={datosVistaGeneral.effLanzamientoLocal}/>
+            <StatBar value={datosVistaGeneral.balonesPerdidosLocal} text={datosVistaGeneral.balonesPerdidosLocal}/>
+            <StatBar value={datosVistaGeneral.ataquePosicionalLocal} text={datosVistaGeneral.ataquePosicionalLocal} />
+            <StatBar value={datosVistaGeneral.contraataqueLocal} text={datosVistaGeneral.contraataqueLocal}/>
+            <StatBar value={datosVistaGeneral.contragolLocal} text={datosVistaGeneral.contragolLocal} />
           </div>
   
           {/* Soria Column */}
           <div className="space-y-6">
-            <div className="bg-[#45e5d6] text-white p-2 rounded">SORIA</div>
-            <div className="font-semibold">49</div>
-            <StatBar value={39} text="19 / 49" />
-            <StatBar value={49} text="19 / 39" />
-            <StatBar value={22} text="11 / 49" />
-            <StatBar value={40} text="17 / 43 (43)" />
-            <StatBar value={20} text="1 / 5 (5)" />
-            <StatBar value={100} text="1 / 1 (5)" />
-            <StatBar value={0} text="0 / 0" />
-            <StatBar value={33} text="18 / 55" />
-            <StatBar value={86} text="6 / 7" />
+            <div className="bg-[#45e5d6] text-white p-2 rounded">{dataEquipos.EquipoVisitante}</div>
+            <div className="font-semibold">{datosVistaGeneral.posesionesVisitante}</div>
+            <StatBar value={datosVistaGeneral.effVisitante} text={datosVistaGeneral.effVisitante} />
+            <StatBar value={datosVistaGeneral.effLanzamientoVisitante} text={datosVistaGeneral.effLanzamientoVisitante}/>
+            <StatBar value={datosVistaGeneral.balonesPerdidosVisitante} text={datosVistaGeneral.balonesPerdidosVisitante}/>
+            <StatBar value={datosVistaGeneral.ataquePosicionalVisitante} text={datosVistaGeneral.ataquePosicionalVisitante} />
+            <StatBar value={datosVistaGeneral.contraataqueVisitante} text={datosVistaGeneral.contraataqueVisitante}/>
+            <StatBar value={datosVistaGeneral.contragolVisitante} text={datosVistaGeneral.contragolVisitante} />
           </div>
         </div>
       </div>
