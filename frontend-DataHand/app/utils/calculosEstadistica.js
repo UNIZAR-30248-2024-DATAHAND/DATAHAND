@@ -152,3 +152,58 @@ export const contarAtaquePosicionalConGol = (dataEventos) => {
     return 0;  // Si no es un vector, devuelve 0
   }
 };
+
+export const obtenerSistemaAtaque = (dataEventos) => {
+  // Verifica que dataEventos sea un arreglo
+  if (Array.isArray(dataEventos)) {
+    // Utilizamos un Set para obtener solo los valores únicos de SistemaDeJuego
+    const valoresUnicos = new Set(dataEventos.map(evento => evento.SistemaDeAtaque));
+    return [...valoresUnicos]; // Convertimos el Set a un array
+  } else {
+    console.error('dataEventos no es un arreglo');
+    return [];  // Retorna un array vacío si no es un arreglo
+  }
+};
+
+
+export const filtrarGolPorSistema = (dataEventos, sistemaDeAtaque) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincide con 'sistemaDeAtaque' y el 'Resultado' sea 'Gol'
+    const eventosGol = dataEventos.filter(evento => 
+      evento.SistemaDeJuego === sistemaDeAtaque && evento.Resultado === 'Gol'
+    );
+    
+    return eventosGol;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrarParadasPorSistema = (dataEventos, sistemaDeAtaque) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Parada'
+    const eventosParada = dataEventos.filter(evento => 
+      evento.SistemaDeJuego === sistemaDeAtaque && evento.Resultado === 'Parada'
+    );
+    
+    return eventosParada;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrarPalosPorSistema = (dataEventos, sistemaDeAtaque) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.SistemaDeJuego === sistemaDeAtaque && evento.Resultado === 'Palo/Fuera'
+    );
+    
+    return eventosPalo;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
