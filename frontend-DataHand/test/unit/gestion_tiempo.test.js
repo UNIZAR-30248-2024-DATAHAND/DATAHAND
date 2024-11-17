@@ -123,4 +123,80 @@ describe('BarraHorizontal', () => {
         const botonTextoModificado = screen.getByText('Fin del partido');
         expect(botonTextoModificado).toBeInTheDocument();
     });
+
+    it('debe mostrar el popup de selección de equipos al hacer clic en un equipo', async () => {
+        render(
+            <BarraHorizontal
+                equipos={equipos}
+                setEquipos={mockSetEquipos}
+                tiempoJugado={equipos.TiempoDeJuego}
+                setTiempoJugado={mockSetTiempoJugado}
+                handleNavigateStats={() => {}}
+            />
+        );
+    
+        const equipoLocal = screen.getByText('Equipo Local');
+        fireEvent.click(equipoLocal);
+    
+        const popup = await screen.findByText('Selecciona un Equipo');
+        expect(popup).toBeInTheDocument();
+    });
+    
+    it('debe formatear correctamente el tiempo', () => {
+        render(
+            <BarraHorizontal
+                equipos={equipos}
+                setEquipos={mockSetEquipos}
+                tiempoJugado={equipos.TiempoDeJuego}
+                setTiempoJugado={mockSetTiempoJugado}
+                handleNavigateStats={() => {}}
+            />
+        );
+    
+        const tiempoFormateado = screen.getByText('Cronómetro: 00:00');
+        expect(tiempoFormateado).toBeInTheDocument();
+    });
+    
+    it('debe redirigir al presionar el botón "Salir"', () => {
+        render(
+            <BarraHorizontal
+                equipos={equipos}
+                setEquipos={mockSetEquipos}
+                tiempoJugado={equipos.TiempoDeJuego}
+                setTiempoJugado={mockSetTiempoJugado}
+                handleNavigateStats={() => {}}
+            />
+        );
+    
+        const botonSalir = screen.getByText('Salir');
+        expect(botonSalir.closest('a')).toHaveAttribute('href', '/');
+    });
+    
+    // it('debe actualizar correctamente el marcador local', () => {
+    //     mockSetEquipos.mockImplementation((callback) => {
+    //         const nuevoEstado = callback(equipos);
+    //         expect(nuevoEstado.MarcadorLocal).toBe(1);
+    //     });
+    
+    //     render(
+    //         <BarraHorizontal
+    //             equipos={equipos}
+    //             setEquipos={mockSetEquipos}
+    //             tiempoJugado={equipos.TiempoDeJuego}
+    //             setTiempoJugado={mockSetTiempoJugado}
+    //             handleNavigateStats={() => {}}
+    //         />
+    //     );
+    
+    //     act(() => {
+    //         mockSetEquipos((prevState) => ({
+    //             ...prevState,
+    //             MarcadorLocal: 1,
+    //         }));
+    //     });
+    
+    //     const marcador = screen.getByText('Marcador: 1 - 0');
+    //     expect(marcador).toBeInTheDocument();
+    // });
+    
 });
