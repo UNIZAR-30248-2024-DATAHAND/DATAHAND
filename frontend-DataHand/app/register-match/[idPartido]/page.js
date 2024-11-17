@@ -23,6 +23,8 @@ export default function Home() {
 
     const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
 
+    //Para tiempo de juego al calcularlo en register-match-Horizontal.js habra que ver como lo pasamos al PopUp
+    const [tiempoJugado, setTiempoJugado] = useState(null);
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
@@ -49,7 +51,52 @@ export default function Home() {
         sistemaDefensivoLocal: "", // Sistema defensivo del equipo local
         sistemaDefensivoVisitante: "", // Sistema defensivo del equipo visitante
     });
+
+    const [datosEvento, setDatosEvento] = useState({
+        IdPartido: null,
+        idJugador: null,
+        MinSeg: null,
+        Accion: null,
+        Suspension: null,
+      });
     
+
+    const registrarEvento = async () => {
+        try {
+          const res = await fetch('../api/users/eventos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datosEvento), // Convertir el objeto a una cadena JSON
+          });
+    
+          if (res.ok) {
+            const data = await res.json();
+            console.log('Evento registrado:', data);
+    
+          } else {
+            console.error('Error al registrar el evento');
+          }
+        } catch (error) {
+          console.error('Error en la solicitud:', error);
+        }
+      };
+
+    const handleAccionClick = () =>{ //FALTAN ESOS EVENTOS TO DO
+        setDatosEvento({
+            IdPartido: idPartido,
+            IdJugador: seleccionado.index,
+            MinSeg: equipos.TiempoDeJuego, //Como le paso el tiempo aqui??? JJJ
+            Accion: accion,
+            Suspension: suspension,
+        });
+        console.log("Datos del evento:", datosEvento);
+        registrarEvento();
+        setAccion(null);
+        setSuspension(null);
+    };
+
     const obtenerPartido = async () => {
         try {
             console.log(`Solicitando partido con IdPartido: ${idPartido}`);
@@ -159,8 +206,6 @@ export default function Home() {
     const [accion, setAccion] = useState(null);
     const [suspension, setSuspension] = useState(null);
 
-    //Para tiempo de juego al calcularlo en register-match-Horizontal.js habra que ver como lo pasamos al PopUp
-    const [tiempoJugado, setTiempoJugado] = useState(null);
 
     //Para pasarle los jugadores que hay en el campo al PopUp
     //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
