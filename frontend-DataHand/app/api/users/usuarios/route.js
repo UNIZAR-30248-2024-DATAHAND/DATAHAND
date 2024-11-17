@@ -1,24 +1,18 @@
-// app/api/usuarios/route.js
 import { connectDB } from '../../../../lib/db'; // Ruta relativa para db.js
 import Usuario from '../../../../models/Usuarios'; // Ruta relativa para Usuario.js
 
+// Método POST para crear un nuevo usuario
 export async function POST(request) {
-    // Conectar a la base de datos
     await connectDB();
 
-    // Obtener los datos del usuario desde la solicitud
     const data = await request.json();
-
-    // Crear una nueva instancia del modelo Usuario
     const nuevoUsuario = new Usuario(data);
 
     try {
-        // Guardar el nuevo usuario en la base de datos
         const usuarioGuardado = await nuevoUsuario.save();
 
-        // Retornar una respuesta con el usuario guardado
         return new Response(JSON.stringify(usuarioGuardado), {
-            status: 201, // Estado HTTP para creación exitosa
+            status: 201,
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -29,48 +23,26 @@ export async function POST(request) {
     }
 }
 
-// Método GET para obtener todos los usuarios
-export async function GET(request) {
-    // Conectar a la base de datos
-    await connectDB();
+// Método GET para obtener un usuario por su userID
+export async function GET(req) {
+    // Obtener el parámetro 'userID' de la URL (desde la consulta)
+    const url = new URL(req.url);
+    const userID = url.searchParams.get("userID");  // Obtiene el parámetro `userID` de la URL
 
-    try {
-        // Obtener todos los usuarios de la base de datos
-        const usuarios = await Usuario.find(); // Devuelve todos los documentos en la colección
-
-        // Retornar una respuesta con la lista de usuarios
-        return new Response(JSON.stringify(usuarios), {
-            status: 200, // Estado HTTP para solicitud exitosa
+    if (!userID) {
+        return new Response(JSON.stringify({ error: 'Falta el userID' }), {
+            status: 400,
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-    } catch (error) {
-        console.error('Error al obtener usuarios:', error);
-        return new Response('Error al obtener los usuarios', { status: 500 });
     }
-}
 
-export async function PUT(req) {
+    await connectDB();
+
     try {
-        // Conectar a la base de datos
-        await connectDB();
-
-        // Obtener los datos del cuerpo de la solicitud
-        const { idUsuario, ...actualizaciones } = await req.json();
-
-        // Verificar que se proporcione el ID del usuario
-        if (!idUsuario) {
-            return new Response(JSON.stringify({ error: 'Falta el ID del usuario' }), {
-                status: 400,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        }
-
-        // Buscar el usuario en la base de datos
-        const usuario = await Usuario.findById(idUsuario);
+        // Buscar el usuario por su userID
+        const usuario = await Usuario.findOne({ userID });
 
         // Verificar si el usuario existe
         if (!usuario) {
@@ -82,15 +54,52 @@ export async function PUT(req) {
             });
         }
 
-        // Actualizar los campos del usuario
+        // Retornar el usuario encontrado
+        return new Response(JSON.stringify(usuario), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error) {
+        console.error('Error al obtener el usuario por userID:', error);
+        return new Response('Error al obtener el usuario', { status: 500 });
+    }
+}
+
+// Método PUT para actualizar un usuario
+export async function PUT(req) {
+    try {
+        await connectDB();
+
+        const { idUsuario, ...actualizaciones } = await req.json();
+
+        if (!idUsuario) {
+            return new Response(JSON.stringify({ error: 'Falta el ID del usuario' }), {
+                status: 400,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        const usuario = await Usuario.findById(idUsuario);
+
+        if (!usuario) {
+            return new Response(JSON.stringify({ error: 'Usuario no encontrado' }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
         Object.keys(actualizaciones).forEach(key => {
             usuario[key] = actualizaciones[key];
         });
 
-        // Guardar los cambios en la base de datos
         await usuario.save();
 
-        // Devolver respuesta exitosa
         return new Response(JSON.stringify({ message: 'Usuario actualizado exitosamente', usuario }), {
             status: 200,
             headers: {
@@ -100,6 +109,69 @@ export async function PUT(req) {
     } catch (error) {
         console.error('Error al actualizar el usuario:', error);
         return new Response(JSON.stringify({ error: 'Error al actualizar el usuario' }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+}
+
+// Método DELETE para eliminar un partido del historial de un usuario
+export async function DELETE(req) {
+    // Obtener los parámetros userID y partidoID de la URL
+    const url = new URL(req.url);
+    const userID = url.searchParams.get("userID");  // Obtiene el parámetro `userID` de la URL
+    const partidoID = url.searchParams.get("partidoID");  // Obtiene el parámetro `partidoID` de la URL
+
+    if (!userID || !partidoID) {
+        return new Response(JSON.stringify({ error: 'Faltan los parámetros userID o partidoID' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+
+    try {
+        await connectDB();
+
+        // Buscar el usuario por su userID
+        const usuario = await Usuario.findOne({ userID });
+
+        if (!usuario) {
+            return new Response(JSON.stringify({ error: 'Usuario no encontrado' }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        // Eliminar el partido del historial
+        const result = await Usuario.updateOne(
+            { userID },
+            { $pull: { historialPartidos: partidoID } }  // $pull elimina el partidoID del historial
+        );
+
+        if (result.modifiedCount === 0) {
+            return new Response(JSON.stringify({ error: 'No se pudo eliminar el partido' }), {
+                status: 404,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+        }
+
+        return new Response(JSON.stringify({ message: 'Partido eliminado exitosamente' }), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error) {
+        console.error('Error al eliminar el partido del historial:', error);
+        return new Response(JSON.stringify({ error: 'Error al eliminar el partido' }), {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',

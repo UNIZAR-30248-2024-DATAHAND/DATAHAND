@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Home() {
+  const userEntrenador = "1"
+  const userJugador = "2"
   return (
     <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 overflow-hidden">
       <h1
@@ -23,8 +25,8 @@ export default function Home() {
       <div className="grid grid-cols-2 gap-6 w-3/4 mb-10">
         {' '}
         {/* Espacio añadido */}
-        <Link href="/profile-entrenador">
-          <button
+        <Link href={`/profile/${userEntrenador}`}>
+        <button
             className="flex items-center justify-center bg-transparent text-white border-2 border-white py-10 px-5 text-4xl rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
@@ -38,7 +40,7 @@ export default function Home() {
             Entrenador
           </button>
         </Link>
-        <Link href="/profile-jugador">
+        <Link href={`/profile/${userJugador}`}>
           <button
             className="flex items-center justify-center bg-transparent text-white border-2 border-white py-10 px-5 text-4xl rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
             style={{ fontFamily: 'var(--font-geist-sans)' }}

@@ -12,4 +12,4 @@ const EquipoSchema = new mongoose.Schema({
 
 const Equipo = mongoose.models.Equipo || mongoose.model('Equipo', EquipoSchema);
 
-module.exports = mongoose.model('Equipo', EquipoSchema); 
+module.exports = Equipo; // Exporta el modelo directamente

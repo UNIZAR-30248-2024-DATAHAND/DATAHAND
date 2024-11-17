@@ -1,8 +1,12 @@
-// models/Usuarios.js
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const usuariosSchema = new mongoose.Schema(
+const UsuarioSchema = new mongoose.Schema(
   {
+    userID: { 
+      type: Number, 
+      required: true, 
+      unique: true 
+    },
     nombreCompleto: {
       type: String,
       required: true,
@@ -50,8 +54,8 @@ const usuariosSchema = new mongoose.Schema(
     },
     historialPartidos: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'CrearPartido', // Asume que tienes un modelo Partido
+        type: String,  // Usamos String porque IdPartido es una cadena
+        required: true,
       },
     ],
   },
@@ -60,6 +64,7 @@ const usuariosSchema = new mongoose.Schema(
   }
 );
 
-const Usuarios =
-  mongoose.models.Usuarios || mongoose.model('Usuarios', usuariosSchema);
-export default Usuarios;
+// Comprobar si el modelo ya está definido y usarlo, o definirlo si no lo está
+const Usuario = mongoose.models.Usuarios || mongoose.model('Usuarios', UsuarioSchema);
+
+module.exports = Usuario;

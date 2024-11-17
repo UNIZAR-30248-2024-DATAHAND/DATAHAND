@@ -270,6 +270,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
       setEventoRegistrado(true);
       console.log("Evento registrado:", datosEvento);
 
+      // Otra función de llamada para gol - SANZSANZ
+
       // Llamar a la función para registrar el evento
       registrarEvento(); 
     }
