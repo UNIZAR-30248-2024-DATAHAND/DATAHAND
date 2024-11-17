@@ -17,20 +17,6 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     const [equiposList, setEquiposList] = useState([]); // Lista de equipos para seleccionar
     const [equipoSeleccionado, setEquipoSeleccionado] = useState(null); // Estado para saber si es equipo local o visitante
 
-    // Cargar lista de equipos al montar el componente
-    useEffect(() => {
-        const fetchEquipos = async () => {
-            try {
-                const response = await fetch('/api/users/equipos'); // Cambia la ruta si es necesario
-                const data = await response.json();
-                setEquiposList(data); // Guarda la lista de equipos en el estado
-            } catch (error) {
-                console.error("Error al obtener los equipos:", error);
-            }
-        };
-        fetchEquipos();
-    }, []);
-
     // Función para seleccionar el equipo (local o visitante)
     const seleccionarEquipo = (equipo) => {
         // Determina si es local o visitante basándose en el estado equipoSeleccionado
@@ -84,9 +70,21 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     };
 
     // Maneja el click en los equipos (local o visitante)
-    const manejarClickEquipo = (tipoEquipo) => {
+    const manejarClickEquipo = async (tipoEquipo) => {
         setEquipoSeleccionado(tipoEquipo); // Establece si es equipo local o visitante
-        setShowEquipoSelector(true); // Muestra el popup para seleccionar el equipo
+
+        try {
+            // Realiza la llamada a la API para obtener los equipos
+            const response = await fetch('/api/users/equipos'); // Cambia la URL si es necesario
+            if (!response.ok) {
+                throw new Error('Error al obtener los equipos');
+            }
+            const data = await response.json(); // Convierte la respuesta a JSON
+            setEquiposList(data); // Guarda los equipos en el estado
+            setShowEquipoSelector(true); // Muestra el popup para seleccionar el equipo después de obtener los datos
+        } catch (error) {
+            console.error('Error al obtener los equipos:', error);
+        }
     };
 
     // Efecto para manejar el cronómetro

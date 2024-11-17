@@ -48,3 +48,7 @@ body {
 .input-field::placeholder {
   color: white;
 }
+
+.radar-chart .chartjs-render-monitor {
+  font-size: 24px !important; /* Aumenta el tamaño de la fuente de las etiquetas */
+}
