@@ -54,7 +54,8 @@ export default function Home() {
 
     const [datosEvento, setDatosEvento] = useState({
         IdPartido: null,
-        idJugador: null,
+        IdJugador: null,
+        EquipoJugador: null,
         MinSeg: null,
         Accion: null,
         Suspension: null,
@@ -63,7 +64,7 @@ export default function Home() {
 
     const registrarEvento = async () => {
         try {
-          const res = await fetch('../api/users/eventos', {
+          const res = await fetch('../../api/users/eventos', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -82,20 +83,6 @@ export default function Home() {
           console.error('Error en la solicitud:', error);
         }
       };
-
-    const handleAccionClick = () =>{ //FALTAN ESOS EVENTOS TO DO
-        setDatosEvento({
-            IdPartido: idPartido,
-            IdJugador: seleccionado.index,
-            MinSeg: equipos.TiempoDeJuego, //Como le paso el tiempo aqui??? JJJ
-            Accion: accion,
-            Suspension: suspension,
-        });
-        console.log("Datos del evento:", datosEvento);
-        registrarEvento();
-        setAccion(null);
-        setSuspension(null);
-    };
 
     const obtenerPartido = async () => {
         try {
@@ -342,21 +329,98 @@ export default function Home() {
         });
     };
 
+    // REGISTRAR EVENTOS
     useEffect(() => {
-        console.log("Intentando registrar una accion...");
-          console.log("Tipo seleccionado:", seleccionado.tipo);
-          console.log("Fase de juego:", faseDeJuego);
-          console.log("Resultado:", resultado);
-          console.log("Accion:", accion);
-          console.log("Suspension:", suspension);
 
-        if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado !== null) {
-            console.log("Muestro PopUp");
-            setShowPopup(true); // Mostrar el popup
-        } else {
-          console.log("Condiciones no cumplidas, no se muestra el popup.");
+    
+        // Verifica si hay eventos incompatibles activos
+        if (
+            (accion && (resultado || suspension)) ||
+            (resultado && (accion || suspension)) ||
+            (suspension && (accion || resultado))
+        ) {
+            console.log("Error: No se puede tener acción, resultado o suspensión al mismo tiempo.");
+            
+            // Reset
+            setFaseDeJuego(null);
+            setAccion(null);
+            setSuspension(null);
+    
+            return; // Salimos de la función si hay un conflicto
         }
-    }, [resultado, faseDeJuego, accion, suspension, seleccionado]); // Se ejecuta cada vez que `resultado` cambia
+    
+        // Registrar evento con Resultado
+        if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado !== null && accion === null && suspension === null) {
+            console.log("Muestro PopUp para registrar resultado");
+            setShowPopup(true); // Mostrar el popup para resultado
+        // Registrar evento con Acción
+        } else if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado === null && accion !== null && suspension === null) {
+            console.log("Quiero guardar una accion: ", accion);
+
+            // Asegurarse de que todos los valores estén presentes
+            if (!idPartido || !seleccionado.index || !equipos.TiempoDeJuego) {
+                console.log(idPartido, seleccionado.index, equipos.TiempoDeJuego)
+                console.error("Error: Faltan datos necesarios para registrar el evento.");
+                return; // Salir si faltan datos
+            }
+            
+            // Actualizar el estado con los datos del evento
+            setDatosEvento({
+                IdPartido: idPartido,
+                IdJugador: seleccionado.index,
+                EquipoJugador: seleccionado.equipo,
+                MinSeg: equipos.TiempoDeJuego,  // Suponiendo que 'faseDeJuego' es el tiempo
+                Accion: accion,       // La acción seleccionada
+                Suspension: null,     // No hay suspensión en este caso
+            });
+
+        // Registrar evento con Suspensión
+        } else if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado === null && accion === null && suspension !== null) {
+            console.log("Quiero guardar una suspension: ", suspension);
+
+            // Asegurarse de que todos los valores estén presentes
+            if (!idPartido || !seleccionado.index || !equipos.TiempoDeJuego) {
+                console.error("Error: Faltan datos necesarios para registrar el evento.");
+                return; // Salir si faltan datos
+            }
+            
+            // Actualizar el estado con los datos del evento
+            setDatosEvento({
+                IdPartido: idPartido,
+                IdJugador: seleccionado.index,
+                EquipoJugador: seleccionado.equipo,
+                MinSeg: equipos.TiempoDeJuego,  // Suponiendo que 'faseDeJuego' es el tiempo
+                Accion: null,       // La acción seleccionada
+                Suspension: suspension,     // No hay suspensión en este caso
+            });
+        } else {
+            console.log("Condiciones no cumplidas, no se muestra el popup.");
+        }
+    }, [resultado, faseDeJuego, accion, suspension, seleccionado]); // Se ejecuta cada vez que alguno de estos estados cambia
+
+    const resetearDatosEvento = () => {
+        setFaseDeJuego(null);
+        setAccion(null);
+        setSuspension(null);
+        setSeleccionado({ equipo: null, index: null, tipo: null });
+        setDatosEvento({ IdPartido: null, IdJugador: null, MinSeg: null, Accion: null, Suspension: null });
+    };
+
+    useEffect(() => {
+        const handleEvento = async () => {
+            if (datosEvento.IdPartido && datosEvento.IdJugador) {
+                try {
+                    await registrarEvento(); // Esperar a que se complete el registro del evento
+                    // Resetear variables solo después de registrar el evento
+                    resetearDatosEvento();
+                } catch (error) {
+                    console.error("Error al registrar el evento:", error);
+                }
+            }
+        };
+    
+        handleEvento();
+    }, [datosEvento]); // Solo se ejecuta cuando 'datosEvento' cambia
 
     const handleClosePopup = () => {
         if (resultado === "Gol") {
@@ -587,7 +651,6 @@ export default function Home() {
                                     console.log("Sección acciones");
                                     console.log(accionItem);
                                     setAccion(accionItem); // Actualiza el estado
-                                    handleAccionClick(); // Llama a la función correspondiente
                                 }}
                             >
                                 {accionItem}
@@ -608,7 +671,6 @@ export default function Home() {
                                     console.log("Sección suspensiones");
                                     console.log(suspensionItem);
                                     setSuspension(suspensionItem); // Actualiza el estado
-                                    handleAccionClick();
                                 }}
                             >
                                 {suspensionItem}

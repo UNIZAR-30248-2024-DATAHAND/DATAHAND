@@ -19,7 +19,8 @@ export async function POST(req) {
       const nuevoEvento = new Eventos({
         IdEvento: `Evento-${IdEvento}`,
         IdPartido: datos.IdPartido,
-        IdJugador: datos.idJugador,
+        IdJugador: datos.IdJugador,
+        EquipoJugador: datos.EquipoJugador,
         MinSeg: datos.MinSeg,
         FaseDeJuego: datos.faseDeJuego,
         Resultado: datos.resultado,
@@ -28,8 +29,8 @@ export async function POST(req) {
         Asistencia: datos.asistenciaDada,
         SistemaDeAtaque: datos.sistemaAtaque,
         SistemaDeDefensa: datos.sistemaDefensa,
-        Accion: datos.accion,
-        Suspension: datos.suspension,
+        Accion: datos.Accion,
+        Suspension: datos.Suspension,
       });
   
       console.log("Estoy en el POST de eventos");
