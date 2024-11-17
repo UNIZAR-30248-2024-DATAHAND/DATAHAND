@@ -34,23 +34,23 @@ import Lanzamientos from './lanzamientos'; // Importa el componente de Lanzamien
 import EspecificasJugadores from './especifico-jugadores'; // Importa el componente de Especificas Jugadores (debes crearlo)
 import Jugadores from './jugadores'; // Importa el componente de Jugadores (debes crearlo)
 
-export default function Component() {
+export default function Component({dataEventos, dataEquipos}) {
   const [activeTab, setActiveTab] = useState("vista-general"); // Estado para controlar la pestaña activa
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "vista-general":
-        return <VistaGeneral />;
+        return <VistaGeneral dataEventos={dataEventos} dataEquipos={dataEquipos}/>;
       case "sistema-de-juego":
-        return <SistemaDeJuego />; // Renderiza el componente correspondiente
+        return <SistemaDeJuego dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
       case "lanzamientos":
-        return <Lanzamientos />; // Renderiza el componente correspondiente
+        return <Lanzamientos dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
       case "especificas-jugadores":
-        return <EspecificasJugadores />; // Renderiza el componente correspondiente
+        return <EspecificasJugadores dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
       case "jugadores":
-        return <Jugadores />; // Renderiza el componente correspondiente
+        return <Jugadores dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
       default:
-        return <VistaGeneral />; // Por defecto, mostrar Vista General
+        return <VistaGeneral dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Por defecto, mostrar Vista General
     }
   };
 

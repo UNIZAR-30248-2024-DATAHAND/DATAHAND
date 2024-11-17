@@ -10,7 +10,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 
-export default function SistemaDeJuego() {
+export default function SistemaDeJuego({dataEventos}) {
   return (
     <div className="w-full bg-white">
       {/* Contenido de la pestaña Sistema de Juego */}

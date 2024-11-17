@@ -1,4 +1,4 @@
-'use client'; // Esto marca el componente como Client Component
+'use client'; // Marca el componente como un Client Component
 
 import { useState } from 'react';
 import React from 'react'; // Este import será global en tus pruebas
@@ -6,10 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-
 const Sidebar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
+  const [error, setError] = useState('');
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -27,12 +27,12 @@ const Sidebar = () => {
 
       if (res.ok) {
         const data = await res.json();
-        // Redirigir al usuario a la página del partido registrado con su ID
         router.push(`/register-match/${data.partido.IdPartido}`);
       } else {
-        console.error('Error al registrar el partido');
+        setError('Error al registrar el partido');
       }
     } catch (error) {
+      setError('Error en la solicitud');
       console.error('Error en la solicitud:', error);
     }
   };
@@ -40,6 +40,7 @@ const Sidebar = () => {
   return (
     <div
       className={`fixed top-0 left-0 h-full bg-gradient-to-b from-purple-600 to-purple-400 shadow-lg flex flex-col items-center py-6 rounded-r-3xl border-r-8 border-black transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      role="complementary" // Añadido para mejorar la accesibilidad y facilitar las pruebas
     >
       {/* Logo y título */}
       <div className="flex items-center mb-10 mr-2">
@@ -69,19 +70,22 @@ const Sidebar = () => {
           </button>
         </Link>
 
-          <button
-            onClick={registrarPartido} // Cambiado de Link a botón
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
-            style={{ fontFamily: 'var(--font-geist-sans)' }}
-          >
-            <Image
-              src="/images/icon_plus.svg"
-              alt="Registrar partido"
-              width={30}
-              height={30}
-            />
-            Registrar partido
-          </button>
+        <button
+          onClick={registrarPartido}
+          aria-label="Registrar partido"  // Atributo de accesibilidad añadido
+          className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+          style={{ fontFamily: 'var(--font-geist-sans)' }}
+        >
+          <Image
+            src="/images/icon_plus.svg"
+            alt="Registrar partido"
+            width={30}
+            height={30}
+          />
+          Registrar partido
+        </button>
+
+        {error && <div className="text-red-500">{error}</div>} {/* Mensaje de error */}
 
         <Link href="/stats">
           <button
@@ -90,7 +94,7 @@ const Sidebar = () => {
           >
             <Image
               src="/images/icon_stats.svg"
-              alt="Estadisticas"
+              alt="Estadísticas"
               width={30}
               height={30}
             />

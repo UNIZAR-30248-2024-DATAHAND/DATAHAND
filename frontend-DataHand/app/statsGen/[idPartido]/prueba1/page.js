@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Component from '../../../components/component'; // Asegúrate de que la ruta sea correcta
+import Component from '../../../components/component'; // Asegúrate de que la ruta sea correcta 
 
 export default function Home() {
   const [mostrarComponent, setMostrarComponent] = useState(false); // Estado para mostrar/ocultar el componente

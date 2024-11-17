@@ -23,6 +23,8 @@ export default function Home() {
 
     const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
 
+    //Para tiempo de juego al calcularlo en register-match-Horizontal.js habra que ver como lo pasamos al PopUp
+    const [tiempoJugado, setTiempoJugado] = useState(null);
 
     const [showPopup, setShowPopup] = useState(false); // Estado para controlar el popup
 
@@ -49,7 +51,52 @@ export default function Home() {
         sistemaDefensivoLocal: "", // Sistema defensivo del equipo local
         sistemaDefensivoVisitante: "", // Sistema defensivo del equipo visitante
     });
+
+    const [datosEvento, setDatosEvento] = useState({
+        IdPartido: null,
+        idJugador: null,
+        MinSeg: null,
+        Accion: null,
+        Suspension: null,
+      });
     
+
+    const registrarEvento = async () => {
+        try {
+          const res = await fetch('../api/users/eventos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datosEvento), // Convertir el objeto a una cadena JSON
+          });
+    
+          if (res.ok) {
+            const data = await res.json();
+            console.log('Evento registrado:', data);
+    
+          } else {
+            console.error('Error al registrar el evento');
+          }
+        } catch (error) {
+          console.error('Error en la solicitud:', error);
+        }
+      };
+
+    const handleAccionClick = () =>{ //FALTAN ESOS EVENTOS TO DO
+        setDatosEvento({
+            IdPartido: idPartido,
+            IdJugador: seleccionado.index,
+            MinSeg: equipos.TiempoDeJuego, //Como le paso el tiempo aqui??? JJJ
+            Accion: accion,
+            Suspension: suspension,
+        });
+        console.log("Datos del evento:", datosEvento);
+        registrarEvento();
+        setAccion(null);
+        setSuspension(null);
+    };
+
     const obtenerPartido = async () => {
         try {
             console.log(`Solicitando partido con IdPartido: ${idPartido}`);
@@ -116,6 +163,31 @@ export default function Home() {
         }
     };
 
+    const obtenerEventos = async (idPartido) => {
+        try {
+            const url = idPartido
+                ? `../../api/users/eventos?idPartido=${idPartido}`
+                : `../../api/users/eventos`;
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+      
+            if (res.ok) {
+                const data = await res.json();
+                console.log('Total de eventos:', data.totalEventos);
+                console.log('Datos eventos:', data.eventos);
+                return data.eventos;
+            } else {
+                console.error('Error al obtener los eventos');
+            }
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+        }
+      };
+    
     // useEffect para obtener partido al montar el componente
     useEffect(() => {
         if (idPartido) {
@@ -134,13 +206,14 @@ export default function Home() {
     const [accion, setAccion] = useState(null);
     const [suspension, setSuspension] = useState(null);
 
-    //Para tiempo de juego al calcularlo en register-match-Horizontal.js habra que ver como lo pasamos al PopUp
-    const [tiempoJugado, setTiempoJugado] = useState(null);
 
     //Para pasarle los jugadores que hay en el campo al PopUp
     //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
     const [asistencias, setAsistencias] = useState([]);
 
+    //Variables para mostrar los eventos en la tabla
+    const [eventos, setEventos] = useState([]);
+    
     useEffect(() => {
         // Crear un nuevo array con los jugadores y el primer portero
         const nuevasAsistencias = [
@@ -337,6 +410,16 @@ export default function Home() {
         // Limpia el intervalo al desmontar el componente
         return () => clearInterval(intervalId);
     }, [equipos]); // Dependencia para que siempre envíe el estado actual
+
+    
+    //useEfect para el evento de la tabla
+    useEffect(() => {   
+        const fetchEventos = async () => {
+            const eventosObtenidos = await obtenerEventos(idPartido);
+            setEventos(eventosObtenidos);
+        };
+        fetchEventos();
+    }, []);  //Hay que ver como lo actualizamos para que cuando se añada uno se ponga bien
     
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
@@ -536,26 +619,35 @@ export default function Home() {
 
                     {/* Tabla */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Tabla</h2>
+                        <h2 className="text-lg font-semibold text-black mb-2">Tabla de Últimos Eventos</h2>
                         <table className="w-full text-left border border-gray-300">
                             <thead>
                                 <tr className="bg-gray-100">
-                                    <th className="border border-gray-300 px-4 py-2">Jugador</th>
-                                    <th className="border border-gray-300 px-4 py-2">Acción</th>
-                                    <th className="border border-gray-300 px-4 py-2">Resultado</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">ID Jugador</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Resultado</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Asistencia</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {[1, 2, 3].map((fila) => (
-                                    <tr key={fila}>
-                                        <td className="border border-gray-300 px-4 py-2">Jugador {fila}</td>
-                                        <td className="border border-gray-300 px-4 py-2">Acción {fila}</td>
-                                        <td className="border border-gray-300 px-4 py-2">Resultado {fila}</td>
+                                {eventos.length > 0 ? (
+                                    eventos.slice(-4).map((evento, index) => ( // Solo los últimos 4 eventos
+                                        <tr key={index}>
+                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
+                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.Resultado || 'No especificado'}</td>
+                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.Asistencia || 'No especificado'}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="3" className="border border-gray-300 px-4 py-2 text-black text-center">
+                                            No hay eventos para mostrar.
+                                        </td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>
+
                 </div>
                 
                 {/* Rectángulo 3 */}

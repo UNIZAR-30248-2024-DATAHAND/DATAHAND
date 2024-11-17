@@ -16,8 +16,41 @@ describe('Sidebar', () => {
         fetch.mockClear();
     });
 
+    // Test de accesibilidad
+    it('debe tener atributos de accesibilidad correctos', () => {
+        render(<Sidebar />);
+        
+        // Buscar el botón "Registrar partido"
+        const botonRegistrarPartido = screen.getByText('Registrar partido');
+        
+        // Verificar que el botón tiene el atributo 'aria-label' correcto para accesibilidad
+        expect(botonRegistrarPartido).toHaveAttribute('aria-label', 'Registrar partido');
+    });
+
+    // Test para fallos en la API
+    it('debe manejar errores al registrar un partido', async () => {
+        // Simulamos una respuesta fallida de la API
+        fetch.mockResolvedValueOnce({
+            ok: false, // Simula un fallo en la respuesta
+            json: async () => ({ message: 'Error al registrar el partido' }),
+        });
+
+        render(<Sidebar />);
+
+        // Buscar y hacer clic en el botón para registrar un partido
+        const botonRegistrarPartido = screen.getByText('Registrar partido');
+        fireEvent.click(botonRegistrarPartido);
+
+        // Esperamos que no se haya llamado a router.push (no debe redirigir si hay error)
+        await waitFor(() => expect(mockRouterPush).not.toHaveBeenCalled());
+
+        // Verificar que se muestra el mensaje de error
+        expect(screen.getByText('Error al registrar el partido')).toBeInTheDocument();
+    });
+
+    // Test para el registro exitoso del partido
     it('debe registrar un partido y redirigir al usuario', async () => {
-        // Simulando la respuesta de la API cuando se registra el partido
+        // Simulamos la respuesta de la API cuando se registra el partido
         fetch.mockResolvedValueOnce({
             ok: true,
             json: async () => ({
@@ -42,5 +75,22 @@ describe('Sidebar', () => {
 
         // Verificar que el router hizo un push a la página correcta con un ID genérico (sin 'Partido-')
         expect(mockRouterPush).toHaveBeenCalledWith('/register-match/75');
+    });
+
+    // Test de Estados Iniciales
+    it('debe tener el estado inicial correctamente', () => {
+        render(<Sidebar />);
+
+        // Verificar que el sidebar está inicialmente abierto (translate-x-0)
+        const sidebar = screen.getByRole('complementary');
+        expect(sidebar).toHaveClass('translate-x-0'); // Verifica que la clase indica que está abierto
+
+        // Verificar que el botón de error no está visible al principio
+        const errorMessage = screen.queryByText('Error al registrar el partido');
+        expect(errorMessage).not.toBeInTheDocument();
+
+        // Verificar que el botón "Registrar partido" está presente
+        const botonRegistrarPartido = screen.getByText('Registrar partido');
+        expect(botonRegistrarPartido).toBeInTheDocument();
     });
 });

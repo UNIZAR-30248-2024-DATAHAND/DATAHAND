@@ -7,7 +7,7 @@
 // El diseño es responsivo, con una cuadrícula que se ajusta a pantallas más grandes.
 
 
-export default function Lanzamientos() {
+export default function Lanzamientos({dataEventos}) {
     return (
       <div className="w-full bg-white">
         {/* Courts Container */}
