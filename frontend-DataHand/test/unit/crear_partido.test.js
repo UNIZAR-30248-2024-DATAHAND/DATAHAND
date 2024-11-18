@@ -27,7 +27,7 @@ describe('Sidebar', () => {
         expect(botonRegistrarPartido).toHaveAttribute('aria-label', 'Registrar partido');
     });
 
-    // Test para fallos en la API
+    // Test de integracion
     it('debe manejar errores al registrar un partido', async () => {
         // Simulamos una respuesta fallida de la API
         fetch.mockResolvedValueOnce({
@@ -48,7 +48,7 @@ describe('Sidebar', () => {
         expect(screen.getByText('Error al registrar el partido')).toBeInTheDocument();
     });
 
-    // Test para el registro exitoso del partido
+    // Test de integracion    
     it('debe registrar un partido y redirigir al usuario', async () => {
         // Simulamos la respuesta de la API cuando se registra el partido
         fetch.mockResolvedValueOnce({
@@ -77,7 +77,7 @@ describe('Sidebar', () => {
         expect(mockRouterPush).toHaveBeenCalledWith('/register-match/75');
     });
 
-    // Test de Estados Iniciales
+    // Test unitario
     it('debe tener el estado inicial correctamente', () => {
         render(<Sidebar />);
 
