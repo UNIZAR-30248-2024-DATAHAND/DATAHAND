@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import Home from '../../app/profile-jugador/page'; // Ajusta la ruta si es necesario
+import Home from '../../app/profile/[userID]/page';
 
 // Mock de ResizeObserver para evitar errores durante las pruebas
 global.ResizeObserver = class {
@@ -9,8 +9,10 @@ global.ResizeObserver = class {
     disconnect() {}
 };
 
+// Mock de las funciones de navegación de Next.js
 jest.mock('next/navigation', () => ({
     useRouter: jest.fn(),
+    useParams: jest.fn(() => ({ userID: '123' })), // Simula un userID
 }));
 
 describe('Home Page', () => {
@@ -19,17 +21,33 @@ describe('Home Page', () => {
         global.fetch = jest.fn(() =>
             Promise.resolve({
                 ok: true,
-                json: () => Promise.resolve([{ id: 1, nombre: 'Partido 1' }]), // Asegúrate de que esto sea lo que la API retorna
+                json: () =>
+                    Promise.resolve({
+                        atributos: {
+                            goles: 10,
+                            asistencias: 5,
+                            efectividad: 80,
+                            blocajes: 3,
+                        },
+                        historialPartidos: ["Partido-81"], // Simula el historial de partidos con el formato "Partido-81"
+                        tipoUsuario: 'entrenador', // Simula el tipo de usuario
+                    }),
             })
         );
     });
 
-    it('debe mostrar historico de partidos', async () => {
+    afterEach(() => {
+        jest.clearAllMocks(); // Limpia los mocks entre pruebas
+    });
+
+    it('debe mostrar al menos un partido en el historial', async () => {
         render(<Home />);
 
-        // Esperamos que el partido aparezca en la pantalla
+        // Esperamos que el contenedor de partidos tenga al menos un hijo
         await waitFor(() => {
-            expect(screen.getByText('Partido 1')).toBeInTheDocument(); // Verificamos que el nombre del partido aparezca
+            // Busca el texto "Partido-81" directamente
+            const partidos = screen.getAllByText('Partido-81'); // Coincide con el texto exacto
+            expect(partidos.length).toBeGreaterThan(0); // Verifica que haya al menos un partido
         });
     });
 });
