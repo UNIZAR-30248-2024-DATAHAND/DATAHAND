@@ -1,160 +1,218 @@
-// ProfileForm.js
-
-// Este código define un formulario de edición de perfil en React, estructurado para ocupar un ancho amplio en pantalla (80% del ancho con un máximo de 800px). 
-// Al cargar, los campos se rellenan con datos predefinidos, y el texto cambia de color al enfocarse. 
-// También maneja el envío del formulario sin recargar la página, registrando los datos ingresados en la consola.
-
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from "react";
 
 export default function ProfileForm() {
   const [userData, setUserData] = useState({
-    fullName: "John Doe",
-    id: "123456",
-    email: "john.doe@example.com",
-    password: "********",
-    username: "johndoe"
+    nombreCompleto: "Carlos Pérez",
+    contrasena: "password123",
+    fotoPerfil: "https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-user-icon-i…",
+    club: "Club Deportivo Ejemplo",
   });
 
-  useEffect(() => {
-    // Populate form with initial data
-    const inputs = document.querySelectorAll('input:not([type="submit"])');
-    inputs.forEach(input => {
-      input.style.color = '#999';
-    });
-  }, []);
-
-  const handleFocus = (e) => {
-    e.target.style.color = '#000';
-  };
+  const [previewImage, setPreviewImage] = useState(userData.fotoPerfil);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setUserData({
       ...userData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleImageDrop = (e) => {
     e.preventDefault();
-    console.log('Form submitted');
-    console.log(userData);
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImage(reader.result);
+        setUserData({ ...userData, fotoPerfil: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Llamada a la función PUT del backend
+      const response = await fetch("/api/users/usuarios", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID: "2", // Reemplaza con el ID real del usuario
+          nombre: userData.nombreCompleto,
+          contrasenia: userData.contrasena,
+          foto: userData.fotoPerfil,
+          club: userData.club,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Usuario actualizado:", data);
+      } else {
+        console.error("Error al actualizar usuario:", data.error);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
   };
 
   return (
-    <div style={styles.body}>
-      <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
-        <h1 style={styles.heading}>Edit Profile</h1>
-        
-        <label style={styles.label} htmlFor="fullName">Full Name:</label>
-        <input 
-          type="text" 
-          id="fullName" 
-          name="fullName" 
-          required 
-          value={userData.fullName} 
-          onFocus={handleFocus} 
-          onChange={handleChange} 
-          style={styles.input}
-        />
-        
-        <label style={styles.label} htmlFor="id">ID:</label>
-        <input 
-          type="text" 
-          id="id" 
-          name="id" 
-          required 
-          value={userData.id} 
-          onFocus={handleFocus} 
-          onChange={handleChange} 
-          style={styles.input}
-        />
+    <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
+      <h1 style={styles.heading}>Editar Perfil</h1>
 
-        <label style={styles.label} htmlFor="email">Email:</label>
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          required 
-          value={userData.email} 
-          onFocus={handleFocus} 
-          onChange={handleChange} 
-          style={styles.input}
-        />
+      <label style={styles.label} htmlFor="nombreCompleto">
+        Nombre Completo:
+      </label>
+      <input
+        type="text"
+        id="nombreCompleto"
+        name="nombreCompleto"
+        required
+        value={userData.nombreCompleto}
+        onChange={handleChange}
+        style={styles.input}
+      />
 
-        <label style={styles.label} htmlFor="password">Password:</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          required 
-          value={userData.password} 
-          onFocus={handleFocus} 
-          onChange={handleChange} 
-          style={styles.input}
-        />
+      <label style={styles.label} htmlFor="contrasena">
+        Contraseña:
+      </label>
+      <input
+        type="password"
+        id="contrasena"
+        name="contrasena"
+        required
+        value={userData.contrasena}
+        onChange={handleChange}
+        style={styles.input}
+      />
 
-        <label style={styles.label} htmlFor="username">Username:</label>
-        <input 
-          type="text" 
-          id="username" 
-          name="username" 
-          required 
-          value={userData.username} 
-          onFocus={handleFocus} 
-          onChange={handleChange} 
-          style={styles.input}
-        />
+      <label style={styles.label}>Foto de Perfil:</label>
+      <div
+        style={styles.imageDropZone}
+        onDrop={handleImageDrop}
+        onDragOver={(e) => e.preventDefault()}
+      >
+        {previewImage ? (
+          <img
+            src={previewImage}
+            alt="Vista previa"
+            style={styles.imagePreview}
+          />
+        ) : (
+          <p>Arrastra una imagen aquí o haz clic para seleccionar</p>
+        )}
+      </div>
 
-        <input type="submit" value="Save Changes" style={styles.submit} />
-      </form>
-    </div>
+      <label style={styles.label} htmlFor="club">
+        Club:
+      </label>
+      <input
+        type="text"
+        id="club"
+        name="club"
+        required
+        value={userData.club}
+        onChange={handleChange}
+        style={styles.input}
+      />
+
+      <input
+        type="submit"
+        value="Guardar Cambios"
+        style={{ ...styles.submit }}
+        onMouseEnter={(e) => (e.target.style.backgroundColor = styles.submitHover.backgroundColor)}
+        onMouseLeave={(e) => (e.target.style.backgroundColor = styles.submit.backgroundColor)}
+      />
+    </form>
   );
 }
 
 const styles = {
   body: {
-    fontFamily: 'Arial, sans-serif',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
+    fontFamily: "'Poppins', sans-serif",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
     margin: 0,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f3f3f3",
   },
   form: {
-    backgroundColor: 'white',
-    padding: '2rem',
-    borderRadius: '8px',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    width: '80%', // Cambiado a 80% para ocupar más espacio horizontal
-    maxWidth: '800px', // Limita el ancho máximo a 800px en pantallas grandes
+    position: "relative",
+    border: "6px solid white",
+    padding: "2rem",
+    borderRadius: "25px", // Más redondeado
+    width: "90%",
+    maxWidth: "500px",
+    background: "url('/images/waves_bg_edit_profile.svg') no-repeat center center / cover",
+    color: "#000", // Color negro para el texto general
+    boxShadow: "none", // Elimina los bordes blancos
   },
   heading: {
-    textAlign: 'center',
-    color: '#333',
+    textAlign: "center",
+    fontWeight: "700",
+    marginBottom: "1.5rem",
+    fontSize: "2rem",
+    color: "#000", // Negro para el encabezado
   },
   label: {
-    display: 'block',
-    marginTop: '1rem',
-    color: '#666',
+    display: "block",
+    marginTop: "1.5rem",
+    fontSize: "1.1rem",
+    fontWeight: "600",
+    color: "#000", // Negro para las etiquetas
   },
   input: {
-    width: '100%',
-    padding: '0.5rem',
-    marginTop: '0.25rem',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    fontSize: '1rem',
+    width: "100%",
+    padding: "0.8rem",
+    marginTop: "0.5rem",
+    border: "1px solid #ccc",
+    borderRadius: "12px", // Más redondeado
+    fontSize: "1rem",
+    color: "#000", // Negro para el texto
+    backgroundColor: "#fff", // Fondo blanco para el campo
+    boxSizing: "border-box",
+    transition: "border-color 0.3s ease",
+  },
+  imageDropZone: {
+    marginTop: "1rem",
+    width: "100%",
+    height: "200px",
+    border: "2px dashed #ccc",
+    borderRadius: "15px", // Más redondeado
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    backgroundColor: "#f9f9f9",
+    color: "#555",
+    cursor: "pointer",
+  },
+  imagePreview: {
+    maxWidth: "100%",
+    maxHeight: "100%",
+    objectFit: "cover",
+    borderRadius: "15px", // Coincide con la zona de imagen
   },
   submit: {
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    cursor: 'pointer',
-    marginTop: '1.5rem',
-    width: '100%',
-    padding: '0.5rem',
-    borderRadius: '4px',
+    backgroundColor: "#f57c00", // Naranja para el botón
+    color: "white",
+    border: "none",
+    cursor: "pointer",
+    marginTop: "2rem",
+    width: "100%",
+    padding: "0.8rem",
+    borderRadius: "20px", // Botón con bordes más suaves
+    fontWeight: "700",
+    fontSize: "1.1rem",
+    textTransform: "uppercase",
+  },
+  submitHover: {
+    backgroundColor: "#ff9800", // Un tono más claro de naranja al pasar el cursor
   },
 };

@@ -67,24 +67,47 @@ export async function GET(req) {
     }
 }
 
-// Método PUT para actualizar un usuario
+// Método PUT para actualizar un usuario usando el userID desde el cuerpo de la solicitud (JSON)
 export async function PUT(req) {
+    // Obtener los datos desde el cuerpo de la solicitud (JSON)
+    const { userID, nombre, contrasenia, foto, club } = await req.json();
+
+        // Imprimir las variables para verificar su contenido
+        console.log('userID:', userID);
+        console.log('nombre:', nombre);
+        console.log('contrasenia:', contrasenia);
+        console.log('foto:', foto);
+        console.log('club:', club);
+
+    // Validar que se proporcione el userID
+    if (!userID) {
+        return new Response(JSON.stringify({ error: 'Falta el userID' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+
+    // Asegurarnos de que userID sea un número válido
+    const userIDInt = parseInt(userID);
+    if (isNaN(userIDInt)) {
+        return new Response(JSON.stringify({ error: 'El userID debe ser un número válido' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    }
+
+    // Conectar a la base de datos
+    await connectDB();
+
     try {
-        await connectDB();
+        // Buscar el usuario por su userID (como entero)
+        const usuario = await Usuario.findOne({ userID: userIDInt });
 
-        const { idUsuario, ...actualizaciones } = await req.json();
-
-        if (!idUsuario) {
-            return new Response(JSON.stringify({ error: 'Falta el ID del usuario' }), {
-                status: 400,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        }
-
-        const usuario = await Usuario.findById(idUsuario);
-
+        // Verificar si el usuario existe
         if (!usuario) {
             return new Response(JSON.stringify({ error: 'Usuario no encontrado' }), {
                 status: 404,
@@ -94,13 +117,19 @@ export async function PUT(req) {
             });
         }
 
-        Object.keys(actualizaciones).forEach(key => {
-            usuario[key] = actualizaciones[key];
-        });
+        // Actualizar solo los campos permitidos si se proporcionan
+        if (nombre !== undefined) usuario.nombreCompleto = nombre;
+        if (contrasenia !== undefined) usuario.contrasena = contrasenia;
+        if (foto !== undefined) usuario.fotoPerfil = foto;
+        if (club !== undefined) usuario.club = club;
 
+        // Guardar los cambios en la base de datos
         await usuario.save();
 
-        return new Response(JSON.stringify({ message: 'Usuario actualizado exitosamente', usuario }), {
+        return new Response(JSON.stringify({ 
+            message: 'Usuario actualizado exitosamente', 
+            usuario 
+        }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',
@@ -116,6 +145,8 @@ export async function PUT(req) {
         });
     }
 }
+
+
 
 // Método DELETE para eliminar un partido del historial de un usuario
 export async function DELETE(req) {
