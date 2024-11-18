@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function ProfileForm() {
-  const [userData, setUserData] = useState({
-    nombreCompleto: "Carlos Pérez",
-    contrasena: "password123",
-    fotoPerfil: "https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-user-icon-i…",
-    club: "Club Deportivo Ejemplo",
-  });
-
+export default function ProfileForm({ userData, setUserData }) {
   const [previewImage, setPreviewImage] = useState(userData.fotoPerfil);
+  const [password, setPassword] = useState(userData.contrasena || "");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMatchError, setPasswordMatchError] = useState(false);
+
+  // Si los datos del usuario cambian, actualiza la vista previa de la imagen
+  useEffect(() => {
+    setPreviewImage(userData.fotoPerfil);
+  }, [userData.fotoPerfil]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,18 @@ export default function ProfileForm() {
       ...userData,
       [name]: value,
     });
+  };
+
+  const handlePasswordChange = (e) => {
+    const { value } = e.target;
+    setPassword(value);
+    setPasswordMatchError(value !== confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const { value } = e.target;
+    setConfirmPassword(value);
+    setPasswordMatchError(value !== password);
   };
 
   const handleImageDrop = (e) => {
@@ -33,6 +46,11 @@ export default function ProfileForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setPasswordMatchError(true);
+      return;
+    }
+
     try {
       // Llamada a la función PUT del backend
       const response = await fetch("/api/users/usuarios", {
@@ -41,9 +59,9 @@ export default function ProfileForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userID: "2", // Reemplaza con el ID real del usuario
+          userID: userData.userID, // Reemplaza con el ID real del usuario
           nombre: userData.nombreCompleto,
-          contrasenia: userData.contrasena,
+          contrasenia: password,
           foto: userData.fotoPerfil,
           club: userData.club,
         }),
@@ -63,8 +81,6 @@ export default function ProfileForm() {
 
   return (
     <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
-      <h1 style={styles.heading}>Editar Perfil</h1>
-
       <label style={styles.label} htmlFor="nombreCompleto">
         Nombre Completo:
       </label>
@@ -86,10 +102,26 @@ export default function ProfileForm() {
         id="contrasena"
         name="contrasena"
         required
-        value={userData.contrasena}
-        onChange={handleChange}
+        value={password}
+        onChange={handlePasswordChange}
         style={styles.input}
       />
+
+      <label style={styles.label} htmlFor="confirmarContrasena">
+        Repite la Contraseña:
+      </label>
+      <input
+        type="password"
+        id="confirmarContrasena"
+        name="confirmarContrasena"
+        required
+        value={confirmPassword}
+        onChange={handleConfirmPasswordChange}
+        style={styles.input}
+      />
+      {passwordMatchError && (
+        <p style={styles.errorText}>Las contraseñas no coinciden.</p>
+      )}
 
       <label style={styles.label}>Foto de Perfil:</label>
       <div
@@ -148,7 +180,7 @@ const styles = {
     padding: "2rem",
     borderRadius: "25px", // Más redondeado
     width: "90%",
-    maxWidth: "500px",
+    maxWidth: "1300px",
     background: "url('/images/waves_bg_edit_profile.svg') no-repeat center center / cover",
     color: "#000", // Color negro para el texto general
     boxShadow: "none", // Elimina los bordes blancos
@@ -158,14 +190,14 @@ const styles = {
     fontWeight: "700",
     marginBottom: "1.5rem",
     fontSize: "2rem",
-    color: "#000", // Negro para el encabezado
+    color: "#FFF", // Negro para el encabezado
   },
   label: {
     display: "block",
     marginTop: "1.5rem",
     fontSize: "1.1rem",
     fontWeight: "600",
-    color: "#000", // Negro para las etiquetas
+    color: "#FFF", // Negro para las etiquetas
   },
   input: {
     width: "100%",
@@ -182,7 +214,7 @@ const styles = {
   imageDropZone: {
     marginTop: "1rem",
     width: "100%",
-    height: "200px",
+    height: "160px",
     border: "2px dashed #ccc",
     borderRadius: "15px", // Más redondeado
     display: "flex",
@@ -214,5 +246,10 @@ const styles = {
   },
   submitHover: {
     backgroundColor: "#ff9800", // Un tono más claro de naranja al pasar el cursor
+  },
+  errorText: {
+    color: "red",
+    fontSize: "0.9rem",
+    marginTop: "0.5rem",
   },
 };

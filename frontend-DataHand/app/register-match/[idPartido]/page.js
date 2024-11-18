@@ -488,7 +488,7 @@ export default function Home() {
     
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
-            <Sidebar />
+            <Sidebar userID={userID}  />
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Partido
             </h1>
