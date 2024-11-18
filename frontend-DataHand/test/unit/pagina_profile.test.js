@@ -45,6 +45,7 @@ describe('Página de Perfil - Profile Page', () => {
         jest.clearAllMocks(); // Limpia los mocks después de cada prueba
     });
 
+    // Test Unitario
     it('debe mostrar el nombre completo del usuario', async () => {
         render(<Home />);
 
@@ -55,6 +56,7 @@ describe('Página de Perfil - Profile Page', () => {
         });
     });
 
+    // Test de Integracion
     it('debe mostrar las estadísticas del jugador en el radar chart', async () => {
         render(<Home />); // Renderiza la página
         
@@ -68,7 +70,8 @@ describe('Página de Perfil - Profile Page', () => {
         const context = canvas.getContext('2d');
         expect(context).toBeTruthy(); // Si el contexto es true, significa que el gráfico se renderizó
     });
-                
+
+    // Test de Integracion            
     it('debe mostrar al menos un partido en el historial', async () => {
         render(<Home />);
 
@@ -79,6 +82,7 @@ describe('Página de Perfil - Profile Page', () => {
         });
     });
 
+    // Test Unitario    
     it('debe mostrar la imagen de perfil del usuario', async () => {
         render(<Home />);
     
@@ -87,7 +91,8 @@ describe('Página de Perfil - Profile Page', () => {
             expect(imagenPerfil.src).toContain('http://localhost/_next/image?url=https%3A%2F%2Fexample.com%2Ffoto.jpg&w=828&q=75');
         });
     });
-
+    
+    // Test de Integracion            
     it('debe mostrar el país y el club del usuario', async () => {
         render(<Home />);
 
