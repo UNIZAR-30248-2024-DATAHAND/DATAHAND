@@ -31,79 +31,104 @@ export default function ProfileForm() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos enviados:", userData);
+    try {
+      // Llamada a la función PUT del backend
+      const response = await fetch("/api/users/usuarios", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userID: "2", // Reemplaza con el ID real del usuario
+          nombre: userData.nombreCompleto,
+          contrasenia: userData.contrasena,
+          foto: userData.fotoPerfil,
+          club: userData.club,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Usuario actualizado:", data);
+      } else {
+        console.error("Error al actualizar usuario:", data.error);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
   };
 
   return (
-      <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
-        <h1 style={styles.heading}>Editar Perfil</h1>
+    <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
+      <h1 style={styles.heading}>Editar Perfil</h1>
 
-        <label style={styles.label} htmlFor="nombreCompleto">
-          Nombre Completo:
-        </label>
-        <input
-          type="text"
-          id="nombreCompleto"
-          name="nombreCompleto"
-          required
-          value={userData.nombreCompleto}
-          onChange={handleChange}
-          style={styles.input}
-        />
+      <label style={styles.label} htmlFor="nombreCompleto">
+        Nombre Completo:
+      </label>
+      <input
+        type="text"
+        id="nombreCompleto"
+        name="nombreCompleto"
+        required
+        value={userData.nombreCompleto}
+        onChange={handleChange}
+        style={styles.input}
+      />
 
-        <label style={styles.label} htmlFor="contrasena">
-          Contraseña:
-        </label>
-        <input
-          type="password"
-          id="contrasena"
-          name="contrasena"
-          required
-          value={userData.contrasena}
-          onChange={handleChange}
-          style={styles.input}
-        />
+      <label style={styles.label} htmlFor="contrasena">
+        Contraseña:
+      </label>
+      <input
+        type="password"
+        id="contrasena"
+        name="contrasena"
+        required
+        value={userData.contrasena}
+        onChange={handleChange}
+        style={styles.input}
+      />
 
-        <label style={styles.label}>Foto de Perfil:</label>
-        <div
-          style={styles.imageDropZone}
-          onDrop={handleImageDrop}
-          onDragOver={(e) => e.preventDefault()}
-        >
-          {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Vista previa"
-              style={styles.imagePreview}
-            />
-          ) : (
-            <p>Arrastra una imagen aquí o haz clic para seleccionar</p>
-          )}
-        </div>
+      <label style={styles.label}>Foto de Perfil:</label>
+      <div
+        style={styles.imageDropZone}
+        onDrop={handleImageDrop}
+        onDragOver={(e) => e.preventDefault()}
+      >
+        {previewImage ? (
+          <img
+            src={previewImage}
+            alt="Vista previa"
+            style={styles.imagePreview}
+          />
+        ) : (
+          <p>Arrastra una imagen aquí o haz clic para seleccionar</p>
+        )}
+      </div>
 
-        <label style={styles.label} htmlFor="club">
-          Club:
-        </label>
-        <input
-          type="text"
-          id="club"
-          name="club"
-          required
-          value={userData.club}
-          onChange={handleChange}
-          style={styles.input}
-        />
+      <label style={styles.label} htmlFor="club">
+        Club:
+      </label>
+      <input
+        type="text"
+        id="club"
+        name="club"
+        required
+        value={userData.club}
+        onChange={handleChange}
+        style={styles.input}
+      />
 
-        <input
-          type="submit"
-          value="Guardar Cambios"
-          style={{ ...styles.submit }}
-          onMouseEnter={(e) => (e.target.style.backgroundColor = styles.submitHover.backgroundColor)}
-          onMouseLeave={(e) => (e.target.style.backgroundColor = styles.submit.backgroundColor)}
-        />
-      </form>
+      <input
+        type="submit"
+        value="Guardar Cambios"
+        style={{ ...styles.submit }}
+        onMouseEnter={(e) => (e.target.style.backgroundColor = styles.submitHover.backgroundColor)}
+        onMouseLeave={(e) => (e.target.style.backgroundColor = styles.submit.backgroundColor)}
+      />
+    </form>
   );
 }
 
@@ -119,6 +144,7 @@ const styles = {
   },
   form: {
     position: "relative",
+    border: "6px solid white",
     padding: "2rem",
     borderRadius: "25px", // Más redondeado
     width: "90%",
