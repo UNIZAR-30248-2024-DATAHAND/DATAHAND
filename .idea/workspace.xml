@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/babel.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/gestion_tiempo.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/gestion_tiempo.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/historico_partidos.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/historico_partidos.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +115,8 @@
       <workItem from="1731519762719" duration="3924000" />
       <workItem from="1731523773235" duration="152000" />
       <workItem from="1731882751373" duration="809000" />
-      <workItem from="1731924753440" duration="4237000" />
+      <workItem from="1731924753440" duration="6925000" />
+      <workItem from="1731942219873" duration="2980000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />
