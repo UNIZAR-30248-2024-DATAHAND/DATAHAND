@@ -293,7 +293,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
 
   const [datosEvento, setDatosEvento] = useState({
     IdPartido: null,
-    idJugador: null,
+    IdJugador: null,
+    EquipoJugador: null,
     MinSeg: null,
     faseDeJuego: null,
     resultado: null,
@@ -336,7 +337,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     ) {
       console.log("Valores actuales antes de la actualización:", {
         IdPartido: idPartido,
-        idJugador: seleccionado.index,
+        IdJugador: seleccionado.index,
+        EquipoJugador: seleccionado.equipo,
         MinSeg: tiempoJugado,
         faseDeJuego,
         resultado,
@@ -350,7 +352,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
       // Actualizar el estado de datosEvento
       setDatosEvento({
         IdPartido: idPartido,
-        idJugador: seleccionado.index,
+        IdJugador: seleccionado.index,
+        EquipoJugador: seleccionado.equipo,
         MinSeg: tiempoJugado,
         faseDeJuego,
         resultado,
@@ -380,7 +383,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
 
     // Verificar si todos los datos del evento están completos
     if (
-      datosEvento.idJugador !== undefined &&
+      datosEvento.IdJugador !== undefined &&
+      datosEvento.EquipoJugador !== undefined &&
       datosEvento.MinSeg &&
       datosEvento.faseDeJuego &&
       datosEvento.resultado &&

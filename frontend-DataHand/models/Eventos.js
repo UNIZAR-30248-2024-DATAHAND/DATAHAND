@@ -34,6 +34,10 @@ const eventosSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
+    EquipoJugador: {
+      type: String,
+      required: false,
+    },
     MinSeg: {
       type: String,
       required: true,
