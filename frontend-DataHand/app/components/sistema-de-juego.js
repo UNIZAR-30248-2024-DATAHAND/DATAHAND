@@ -45,9 +45,9 @@ export default function SistemaDeJuego({dataEventos,dataEquipos}) {
                   <TableCell className="font-bold text-[#ffa500]">
                     TRANSICIONES - CONTRAATAQUE DIRECTO
                   </TableCell>
-                  <TableCell className="font-bold">{contarContrataqueConGol(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContrataqueConParada(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContrataqueConPalo(dataEventos)}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConGol(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConParada(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConPalo(dataEventos, "local")}</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
@@ -56,9 +56,9 @@ export default function SistemaDeJuego({dataEventos,dataEquipos}) {
                   <TableCell className="font-bold text-[#ffa500]">
                     TRANSICIONES - CONTRAGOL
                   </TableCell>
-                  <TableCell className="font-bold">{contarContragolConGol(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContragolConParada(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContragolConPalo(dataEventos)}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConGol(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConParada(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConPalo(dataEventos, "local")}</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">1</TableCell>
@@ -68,9 +68,9 @@ export default function SistemaDeJuego({dataEventos,dataEquipos}) {
                   <TableCell className="font-bold text-[#ffa500]">
                     ATAQUE {sistema} {/* Aquí usamos el valor del sistema de ataque dinámicamente */}
                   </TableCell>
-                  <TableCell className="font-bold">{filtrarGolPorSistema(dataEventos,sistema)}</TableCell>
-                  <TableCell className="font-bold">{filtrarParadasPorSistema(dataEventos,sistema)} </TableCell>
-                  <TableCell className="font-bold">{filtrarPalosPorSistema(dataEventos,sistema)}</TableCell>
+                  <TableCell className="font-bold">{filtrarGolPorSistema(dataEventos,sistema, "local")}</TableCell>
+                  <TableCell className="font-bold">{filtrarParadasPorSistema(dataEventos,sistema, "local")} </TableCell>
+                  <TableCell className="font-bold">{filtrarPalosPorSistema(dataEventos,sistema, "local")}</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>
                   <TableCell className="font-bold">0</TableCell>

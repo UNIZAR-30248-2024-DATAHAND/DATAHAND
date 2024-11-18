@@ -68,13 +68,21 @@ function StatBar({ value, text }) {
     }
     
     const calcularEstadisticas = () => {
-      const varPosesionesLocal = contarLanzamientosYPerdidas(dataEventos);
-      const varEficaciaLocal = 100*contarGoles(dataEventos) / varPosesionesLocal;
-      const varEficaciaLanzamientoLocal =  100* contarGoles(dataEventos) / contarLanzamientosTotal(dataEventos);
-      const varPerdidasLocal = 100*contarPerdidasDeBalon(dataEventos) / varPosesionesLocal;
-      const varAtaquePosicionalLocal = 100*contarAtaquePosicionalConGol(dataEventos) / contarAtaquePosicional(dataEventos);
-      const varContraataqueLocal = 100*contarContrataqueConGol(dataEventos) / contarContrataque(dataEventos);
-      const varContragolLocal = 100*contarContragolConGol(dataEventos) / contarContragol(dataEventos);
+      const varPosesionesLocal = contarLanzamientosYPerdidas(dataEventos, "local");
+      const varEficaciaLocal = 100*contarGoles(dataEventos, "local") / varPosesionesLocal;
+      const varEficaciaLanzamientoLocal =  100* contarGoles(dataEventos, "local") / contarLanzamientosTotal(dataEventos, "local");
+      const varPerdidasLocal = 100*contarPerdidasDeBalon(dataEventos, "local") / varPosesionesLocal;
+      const varAtaquePosicionalLocal = 100*contarAtaquePosicionalConGol(dataEventos, "local") / contarAtaquePosicional(dataEventos, "local");
+      const varContraataqueLocal = 100*contarContrataqueConGol(dataEventos, "local") / contarContrataque(dataEventos, "local");
+      const varContragolLocal = 100*contarContragolConGol(dataEventos, "local") / contarContragol(dataEventos, "local");
+
+      const varPosesionesVisitante = contarLanzamientosYPerdidas(dataEventos, "visitante");
+      const varEficaciaVisitante = 100*contarGoles(dataEventos, "visitante") / varPosesionesVisitante;
+      const varEficaciaLanzamientoVisitante = 100* contarGoles(dataEventos, "visitante") / contarLanzamientosTotal(dataEventos, "visitante");
+      const varPerdidasVisitante = 100*contarPerdidasDeBalon(dataEventos, "visitante") / varPosesionesVisitante;
+      const varAtaquePosicionalVisitante = 100*contarAtaquePosicionalConGol(dataEventos, "visitante") / contarAtaquePosicional(dataEventos, "visitante");
+      const varContraataqueVisitnate = 100*contarContrataqueConGol(dataEventos, "visitante") / contarContrataque(dataEventos, "visitante");
+      const varContragolVisitante = 100*contarContragolConGol(dataEventos, "visitante") / contarContragol(dataEventos, "visitante");
 
       setdatosVistaGeneral(prevState => ({
         ...prevState,
@@ -84,7 +92,14 @@ function StatBar({ value, text }) {
         balonesPerdidosLocal: varPerdidasLocal,
         ataquePosicionalLocal: varAtaquePosicionalLocal,
         contraataqueLocal: varContraataqueLocal,
-        contragolLocal: varContragolLocal
+        contragolLocal: varContragolLocal,
+        posesionesVisitante: varPosesionesVisitante,
+        effVisitante:varEficaciaVisitante,
+        effLanzamientoVisitante:varEficaciaLanzamientoVisitante,
+        balonesPerdidosVisitante:varPerdidasVisitante,
+        ataquePosicionalVisitante:varAtaquePosicionalVisitante,
+        contraataqueVisitante:varContraataqueVisitnate,
+        contragolVisitante:varContragolVisitante,
       }));
     };
 
