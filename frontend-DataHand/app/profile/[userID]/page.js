@@ -155,7 +155,7 @@ export default function Home() {
 
   return (
     <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
-      <Sidebar />
+      <Sidebar userID={userID}  />
       <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
         {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
       </h1>

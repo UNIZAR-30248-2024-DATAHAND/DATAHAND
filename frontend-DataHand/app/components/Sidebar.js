@@ -5,11 +5,14 @@ import React from 'react'; // Este import será global en tus pruebas
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Formulario from './profileform'; // Asegúrate de que la ruta sea correcta
 
-const Sidebar = () => {
+
+const Sidebar = ({ userID }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(true);
   const [error, setError] = useState('');
+  const [mostrarFormulario, setMostrarFormulario] = useState(false); // Estado para mostrar/ocultar el formulario
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -55,7 +58,7 @@ const Sidebar = () => {
 
       {/* Botones */}
       <div className="mt-6 w-full px-4">
-        <Link href="/profile-entrenador">
+      <Link href={`/profile/${userID}`}>
           <button
             className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
@@ -67,6 +70,21 @@ const Sidebar = () => {
               height={30}
             />
             Perfil
+          </button>
+        </Link>
+
+        <Link href={`/editProfile/${userID}`}>
+          <button
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            <Image
+              src="/images/icon_edit.svg"
+              alt="Editar perfil"
+              width={30}
+              height={30}
+            />
+            Editar perfil
           </button>
         </Link>
 
