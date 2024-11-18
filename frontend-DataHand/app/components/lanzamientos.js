@@ -4,10 +4,22 @@
 // Cada cancha incluye una sección superior con un sistema de cuadrícula para visualizar datos
 // de rendimiento (goles/intentados) y una sección inferior que representa la cancha.
 // Se utilizan etiquetas para mostrar posiciones específicas de los jugadores y sus estadísticas.
-// El diseño es responsivo, con una cuadrícula que se ajusta a pantallas más grandes.
+// El diseño es responsivo, con una cuadrícula que se ajusta a pantallas más grandes. 
 
 
-export default function Lanzamientos({dataEventos}) {
+export default function Lanzamientos({dataEventos, dataEquipos}) {
+
+    //const lanzamientosExtremoDerecho = ;
+    //const lanzamientosExtremoIzquierdo = ;
+    //const lanzamientosLateralDerecho = ;
+    //const lanzamientosLateralIzquierdo = ;
+    //const lanzamientosPivote = ;
+    //const lanzamientosCentral = ;
+    //const lanzamientosCampoContrario = ;
+    //const lanzamientos7M = ;
+    //const lanzamientosLateralDerecho6M = ;
+    //const lanzamientosLateralIzquierdo6M = ;
+
     return (
       <div className="w-full bg-white">
         {/* Courts Container */}
@@ -15,7 +27,7 @@ export default function Lanzamientos({dataEventos}) {
           
           {/* Zaragoza Court */}
           <div className="space-y-4">
-            <h2 className="text-center font-bold text-[#0f2d50]">ZARAGOZA BALONMANO</h2>
+            <h2 className="text-center font-bold text-[#0f2d50]">{dataEquipos.EquipoLocal}</h2>
             <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
               
               {/* Top Section with Grid */}
@@ -115,7 +127,7 @@ export default function Lanzamientos({dataEventos}) {
   
           {/* Soria Court */}
           <div className="space-y-4">
-            <h2 className="text-center font-bold text-[#45e5d6]">SORIA</h2>
+            <h2 className="text-center font-bold text-[#45e5d6]">{dataEquipos.EquipoVisitante}</h2>
               <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
                 {/* Top Section with Grid */}
                 <div className="relative h-[45%] border-b-4 border-white">

@@ -9,10 +9,14 @@ const CampoBalonmano = ({ onClick }) => {
   const posicionesPredefinidas = [
     { nombre: 'Ext Izq'},
     { nombre: 'Ext Der'},
+    { nombre: 'Lat Izq 6M'},
     { nombre: 'Piv'},
-    { nombre: 'Lat Izq'},
+    { nombre: 'Lat Der 6M'},
+    { nombre: 'Lat Izq 9M'},
     { nombre: 'Cen'},
-    { nombre: 'Lat Der'},
+    { nombre: 'Lat Der 9M'},
+    { nombre: '7M'},
+    { nombre: 'Campo Contrario'},
   ];
 
   const handleSeleccionarPosicion = (posicion) => {
@@ -53,8 +57,8 @@ const CampoBalonmano = ({ onClick }) => {
       </div>
 
       {/* Segunda fila (1 botón con separación adicional respecto a la fila anterior) */}
-      <div className="flex w-full justify-center mb-12">
-        {posicionesPredefinidas.slice(2, 3).map((posicion) => (
+      <div className="flex w-full justify-center mb-8 space-x-12">
+        {posicionesPredefinidas.slice(2, 5).map((posicion) => (
           <button
             key={posicion.nombre}
             onClick={() => handleSeleccionarPosicion(posicion)}
@@ -69,8 +73,23 @@ const CampoBalonmano = ({ onClick }) => {
       </div>
 
       {/* Tercera fila (3 botones con más separación entre filas) */}
-      <div className="flex w-full justify-center space-x-8">
-        {posicionesPredefinidas.slice(3).map((posicion) => (
+      <div className="flex w-full justify-center mb-8 space-x-12">
+        {posicionesPredefinidas.slice(5,8).map((posicion) => (
+          <button
+            key={posicion.nombre}
+            onClick={() => handleSeleccionarPosicion(posicion)}
+            className={`${
+              selectedButton === posicion.nombre ? 'bg-blue-700' : 'bg-blue-500'
+            } text-white px-3 py-1 rounded text-xs transition duration-200 ease-in-out transform hover:scale-105`}
+            style={{ width: '70px' }} // Tamaño reducido de los botones
+          >
+            {posicion.nombre}
+          </button>
+        ))}
+      </div>
+      {/* Cuarta fila (2 botones con más separación entre filas) */}
+      <div className="flex w-full justify-center mb-8 space-x-12">
+        {posicionesPredefinidas.slice(8).map((posicion) => (
           <button
             key={posicion.nombre}
             onClick={() => handleSeleccionarPosicion(posicion)}

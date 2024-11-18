@@ -397,3 +397,31 @@ export const filtrar2MPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
     return [];  // Si dataEventos no es un array, devuelve un array vacío
   }
 };
+
+export const filtrarResultadoPorLocalizacion = (dataEventos, resultado, localizacion, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.LocalizacionLanzamiento === localizacion && evento.Resultado === resultado && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrarResultadoPorPosicion = (dataEventos, resultado, posicion, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.PosicionLanzador === posicion && evento.Resultado === resultado && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
