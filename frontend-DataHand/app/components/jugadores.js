@@ -8,12 +8,12 @@ import { Tabs } from "@radix-ui/react-tabs";
 // organizando los datos en columnas que representan el rendimiento a lo largo del tiempo y diversas métricas.
 // Este componente es útil para visualizar el desempeño de los jugadores en un formato claro y accesible.
 
-export default function Jugadores({dataEventos}) {
+export default function Jugadores({dataEventos, dataEquipos}) {
   return (
     <div className="w-full bg-white">
       {/* Team Header */}
       <div className="bg-[#45b6e5] text-white text-center py-2 font-bold">
-        ZARAGOZA BALONMANO
+        {dataEquipos.EquipoLocal}
       </div>
 
       {/* Legend */}
@@ -84,16 +84,12 @@ export default function Jugadores({dataEventos}) {
               <th className="px-2 py-2 border border-gray-300">20 min</th>
               <th className="px-2 py-2 border border-gray-300">25 min</th>
               <th className="px-2 py-2 border border-gray-300">30 min</th>
-              <th className="px-2 py-2 border border-gray-300">OT</th>
               <th className="px-2 py-2 border border-gray-300">40 min</th>
               <th className="px-2 py-2 border border-gray-300">50 min</th>
               <th className="px-2 py-2 border border-gray-300">55 min</th>
               <th className="px-2 py-2 border border-gray-300">60 min</th>
-              <th className="px-2 py-2 border border-gray-300">OT</th>
-              <th className="px-2 py-2 border border-gray-300">LB %</th>
-              <th className="px-2 py-2 border border-gray-300">EF %</th>
               <th className="px-2 py-2 border border-gray-300">SHO %</th>
-              <th className="px-2 py-2 border border-gray-300">2m in</th>
+              <th className="px-2 py-2 border border-gray-300">2m</th>
               <th className="px-2 py-2 border border-gray-300">A</th>
             </tr>
           </thead>
@@ -120,7 +116,7 @@ export default function Jugadores({dataEventos}) {
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                 </div>
               </td>
-              <td className="px-2 py-2 border border-gray-300"></td>
+              
               <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300"></td>
@@ -131,57 +127,13 @@ export default function Jugadores({dataEventos}) {
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                 </div>
               </td>
-              <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300">50 %</td>
-              <td className="px-2 py-2 border border-gray-300">0 %</td>
-              <td className="px-2 py-2 border border-gray-300">0 %</td>
               <td className="px-2 py-2 border border-gray-300">0</td>
               <td className="px-2 py-2 border border-gray-300">4</td>
             </tr>
-            {/* Field Players */}
-            <tr className="border-b">
-              <td className="px-2 py-2 border border-gray-300">
-                <div className="flex gap-2">
-                  <span>7</span>
-                  <span>FEDE</span>
-                  <span className="text-gray-500">LB</span>
-                </div>
-              </td>
-              <td className="px-2 py-2 border border-gray-300">
-                <div className="flex gap-1">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                </div>
-              </td>
-              <td className="px-2 py-2 border border-gray-300">
-                <div className="flex gap-1">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                </div>
-              </td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300">
-                <div className="flex gap-1">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                </div>
-              </td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300">50 %</td>
-              <td className="px-2 py-2 border border-gray-300">0 %</td>
-              <td className="px-2 py-2 border border-gray-300">0 %</td>
-              <td className="px-2 py-2 border border-gray-300">0</td>
-              <td className="px-2 py-2 border border-gray-300">4</td>
-            </tr>
+            
             {/* Add more players following the same pattern */}
           </tbody>
           {/* Goalkeepers Section */}
@@ -206,13 +158,9 @@ export default function Jugadores({dataEventos}) {
               <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
-              <td className="px-2 py-2 border border-gray-300"></td>
               <td className="px-2 py-2 border border-gray-300">75 %</td>
               <td className="px-2 py-2 border border-gray-300">60 %</td>
               <td className="px-2 py-2 border border-gray-300">50 %</td>
-              <td className="px-2 py-2 border border-gray-300">0</td>
-              <td className="px-2 py-2 border border-gray-300">0</td>
             </tr>
           </tbody>
         </table>
