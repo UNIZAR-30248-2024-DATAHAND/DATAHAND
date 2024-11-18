@@ -153,6 +153,50 @@ export const contarContrataqueConPalo = (dataEventos, equipo) => {
   }
 };
 
+export const contarContrataqueConFalta = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+
+export const contarContrataqueCon7M = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' &&  (evento.Accion === '7m provocado' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const contarContrataqueConSuspension = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && (evento.Accion === '2 Minutos' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+
 export const contarContragolConGol = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
@@ -195,6 +239,49 @@ export const contarContragolConPalo = (dataEventos, equipo) => {
   } else {
     console.error('dataEventos no es un vector');
     return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+export const contarContragolConFalta = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+
+export const contarContragolCon7M = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' &&  (evento.Accion === '7m provocado' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const contarContragolConSuspension = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && (evento.Accion === '2 Minutos' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
   }
 };
 
@@ -272,7 +359,7 @@ export const filtrarFaltasPorSistema = (dataEventos, sistemaDeAtaque, equipo) =>
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
     const eventosPalo = dataEventos.filter(evento => 
-      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
+      evento.FaseDeJuego === 'Ataque Posicional' && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
     );
     
     return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
@@ -287,7 +374,7 @@ export const filtrar7MPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
     const eventosPalo = dataEventos.filter(evento => 
-      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Accion === '7m' && evento.EquipoJugador === equipo
+      evento.FaseDeJuego === 'Ataque Posicional' && (evento.Accion === '7m provocado' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
     );
     
     return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
@@ -301,7 +388,7 @@ export const filtrar2MPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
     const eventosPalo = dataEventos.filter(evento => 
-      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Suspension === '2 Minutos' && evento.EquipoJugador === equipo
+      evento.FaseDeJuego === 'Ataque Posicional' && (evento.Accion === '2 Minutos' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
     );
     
     return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
