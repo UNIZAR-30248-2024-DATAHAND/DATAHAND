@@ -3,7 +3,7 @@ import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import { useRouter } from 'next/router';
 
 const CampoBalonmano = ({ onClick }) => {
-  const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
+  //const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
   const [selectedButton, setSelectedButton] = useState(null); // Para saber qué botón está seleccionado
 
   const posicionesPredefinidas = [
@@ -17,12 +17,12 @@ const CampoBalonmano = ({ onClick }) => {
 
   const handleSeleccionarPosicion = (posicion) => {
     if (onClick) {
-      onClick(posicion.coordenadas);
+      onClick(posicion.nombre);
     }
     setSelectedButton(posicion.nombre); // Marcar el botón como seleccionado
   };
 
-  const handleClick = (event) => {
+  /*const handleClick = (event) => {
     const stage = event.target.getStage();
     if (stage) {
       const { x, y } = stage.getPointerPosition();
@@ -31,7 +31,7 @@ const CampoBalonmano = ({ onClick }) => {
         onClick({ x, y });
       }
     }
-  };
+  };*/
 
   return (
     <div style={{ position: 'relative', width: '300px', height: '300px' }}>
@@ -85,7 +85,7 @@ const CampoBalonmano = ({ onClick }) => {
       </div>
     </div>
 
-      <Stage width={300} height={300} onClick={handleClick}>
+      <Stage width={300} height={300} onClick={handleSeleccionarPosicion}>
         <Layer>
           {/* Rectángulo del medio campo de balonmano orientado hacia arriba */}
           <Rect
@@ -117,16 +117,6 @@ const CampoBalonmano = ({ onClick }) => {
 
           {/* Círculo central (si es necesario) */}
           <Circle x={150} y={300} radius={50} fill="transparent" stroke="white" strokeWidth={5} />
-
-          {/* Dibujar la cruz en la posición del clic */}
-          {cruzPosicion && (
-            <>
-              {/* Línea vertical */}
-              <Line points={[cruzPosicion.x, cruzPosicion.y - 10, cruzPosicion.x, cruzPosicion.y + 10]} stroke="red" strokeWidth={2} />
-              {/* Línea horizontal */}
-              <Line points={[cruzPosicion.x - 10, cruzPosicion.y, cruzPosicion.x + 10, cruzPosicion.y]} stroke="red" strokeWidth={2} />
-            </>
-          )}
         </Layer>
       </Stage>
     </div>
@@ -139,7 +129,6 @@ const PorteriaBalonmano = ({ onClick }) => {
   const postThickness = 15; // Grosor de los postes
   const stripeHeight = height / 10; // Alto de cada franja
   
-  const [cruzPorteria, setCruzPorteria] = useState(null); // Para guardar la posición de la cruz
   const [selectedButton, setSelectedButton] = useState(null); // Botón seleccionado
 
   const botonesPorFilas = [
@@ -149,22 +138,10 @@ const PorteriaBalonmano = ({ onClick }) => {
     [{ id: 10 }, { id: 11 }, { id: 12 }],
   ];
 
-  // Maneja el click en el Stage
-  const handleClick = (event) => {
-    const stage = event.target.getStage();
-    if (stage) {
-      const { x, y } = stage.getPointerPosition();  
-      setCruzPorteria({ x, y });
-      if (onClick) {
-        onClick({ x, y }); // Pasa las coordenadas a la función onClick que recibes por props
-      }
-    }
-  };
-
   const handleSeleccionarBoton = (id) => {
     setSelectedButton(id);
     if (onClick) {
-      onClick({ id });
+      onClick(id);
     }
   };
   
@@ -220,7 +197,7 @@ const PorteriaBalonmano = ({ onClick }) => {
   </div>
 
   {/* Portería (Stage) */}
-  <Stage width={350} height={250} onClick={handleClick}>
+  <Stage width={350} height={250} onClick={handleSeleccionarBoton}>
     <Layer>
       {/* Fondo del área donde está la portería */}
       <Rect x={25} y={0} width={width} height={height} fill="transparent" />
@@ -251,23 +228,6 @@ const PorteriaBalonmano = ({ onClick }) => {
       <Line points={[25, 100, 375, 100]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
       <Line points={[25, 160, 375, 160]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
 
-      {/* Dibujar la cruz en la posición del clic */}
-      {cruzPorteria && (
-        <>
-          {/* Línea vertical */}
-          <Line
-            points={[cruzPorteria.x, cruzPorteria.y - 10, cruzPorteria.x, cruzPorteria.y + 10]}
-            stroke="red"
-            strokeWidth={2}
-          />
-          {/* Línea horizontal */}
-          <Line
-            points={[cruzPorteria.x - 10, cruzPorteria.y, cruzPorteria.x + 10, cruzPorteria.y]}
-            stroke="red"
-            strokeWidth={2}
-          />
-        </>
-      )}
     </Layer>
   </Stage>
 </div>
