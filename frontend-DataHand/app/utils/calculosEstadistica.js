@@ -12,10 +12,10 @@ export const contarEventos = (dataEventos) => {
   }
 };
 
-export const contarGoles = (dataEventos) => {  
+export const contarGoles = (dataEventos, equipo) => {  
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos cuyo campo 'Resultado' sea igual a "gol"
-    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol');
+    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol' && evento.EquipoJugador === equipo);
     return eventosGol.length;  // Devuelve el número de goles
   } else {
     console.error('dataEventos no es un vector');
@@ -23,12 +23,12 @@ export const contarGoles = (dataEventos) => {
   }
 };
 
-export const contarLanzamientosTotal = (dataEventos) => {
+export const contarLanzamientosTotal = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos por cada tipo y cuenta cuántos hay de cada uno
-    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol');
-    const eventosParada = dataEventos.filter(evento => evento.Resultado === 'Parada');
-    const eventosPaloFuera = dataEventos.filter(evento => evento.Resultado === 'Palo/Fuera');
+    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol' && evento.EquipoJugador === equipo);
+    const eventosParada = dataEventos.filter(evento => evento.Resultado === 'Parada' && evento.EquipoJugador === equipo);
+    const eventosPaloFuera = dataEventos.filter(evento => evento.Resultado === 'Palo/Fuera' && evento.EquipoJugador === equipo);
     
     // Devuelve la suma total de todos los eventos
     const totalEventos = eventosGol.length + eventosParada.length + eventosPaloFuera.length;
@@ -39,10 +39,10 @@ export const contarLanzamientosTotal = (dataEventos) => {
   }
 };
 
-export const contarPerdidasDeBalon = (dataEventos) => {
+export const contarPerdidasDeBalon = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la acción es "Perdida de balon"
-    const eventosPerdidaDeBalon = dataEventos.filter(evento => evento.Resultado === 'Perdida de balon');
+    const eventosPerdidaDeBalon = dataEventos.filter(evento => evento.Resultado === 'Perdida de balon' && evento.EquipoJugador === equipo);
     
     // Devuelve la cantidad de eventos con esa acción
     return eventosPerdidaDeBalon.length;
@@ -52,13 +52,13 @@ export const contarPerdidasDeBalon = (dataEventos) => {
   }
 };
 
-export const contarLanzamientosYPerdidas = (dataEventos) => {
+export const contarLanzamientosYPerdidas = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos por cada tipo y cuenta cuántos hay de cada uno
-    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol');
-    const eventosParada = dataEventos.filter(evento => evento.Resultado === 'Parada');
-    const eventosPaloFuera = dataEventos.filter(evento => evento.Resultado === 'Palo/Fuera');
-    const eventosPerdidaDeBalon = dataEventos.filter(evento => evento.Resultado === 'Perdida de balon');
+    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol' && evento.EquipoJugador === equipo);
+    const eventosParada = dataEventos.filter(evento => evento.Resultado === 'Parada' && evento.EquipoJugador === equipo);
+    const eventosPaloFuera = dataEventos.filter(evento => evento.Resultado === 'Palo/Fuera' && evento.EquipoJugador === equipo);
+    const eventosPerdidaDeBalon = dataEventos.filter(evento => evento.Resultado === 'Perdida de balon' && evento.EquipoJugador === equipo);
     
     // Devuelve la suma total de todos los eventos
     const totalEventos = eventosGol.length + eventosParada.length + eventosPaloFuera.length + eventosPerdidaDeBalon.length;
@@ -69,10 +69,10 @@ export const contarLanzamientosYPerdidas = (dataEventos) => {
   }
 };
 
-export const contarAtaquePosicional = (dataEventos) => {
+export const contarAtaquePosicional = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Ataque Posicional"
-    const eventosAtaquePosicional = dataEventos.filter(evento => evento.FaseDeJuego === 'Ataque Posicional');
+    const eventosAtaquePosicional = dataEventos.filter(evento => evento.FaseDeJuego === 'Ataque Posicional' && evento.EquipoJugador === equipo);
     
     // Devuelve la cantidad de eventos con esa fase de juego
     return eventosAtaquePosicional.length;
@@ -82,10 +82,10 @@ export const contarAtaquePosicional = (dataEventos) => {
   }
 };
 
-export const contarContragol = (dataEventos) => {
+export const contarContragol = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contragol"
-    const eventosContragol = dataEventos.filter(evento => evento.FaseDeJuego === 'Contragol');
+    const eventosContragol = dataEventos.filter(evento => evento.FaseDeJuego === 'Contragol' && evento.EquipoJugador === equipo);
     
     // Devuelve la cantidad de eventos con esa fase de juego
     return eventosContragol.length;
@@ -95,10 +95,10 @@ export const contarContragol = (dataEventos) => {
   }
 };
 
-export const contarContrataque = (dataEventos) => {
+export const contarContrataque = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contrataque"
-    const eventosContrataque = dataEventos.filter(evento => evento.FaseDeJuego === 'Contrataque');
+    const eventosContrataque = dataEventos.filter(evento => evento.FaseDeJuego === 'Contrataque' && evento.EquipoJugador === equipo);
     
     // Devuelve la cantidad de eventos con esa fase de juego
     return eventosContrataque.length;
@@ -108,11 +108,11 @@ export const contarContrataque = (dataEventos) => {
   }
 };
 
-export const contarContrataqueConGol = (dataEventos) => {
+export const contarContrataqueConGol = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contrataque" y el resultado es "Gol"
     const eventosContrataqueGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Gol'
+      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Gol' && evento.EquipoJugador === equipo
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -123,11 +123,11 @@ export const contarContrataqueConGol = (dataEventos) => {
   }
 };
 
-export const contarContrataqueConParada = (dataEventos) => {
+export const contarContrataqueConParada = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contrataque" y el resultado es "Gol"
     const eventosContrataqueGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Parada'
+      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Parada' && evento.EquipoJugador === equipo
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -138,11 +138,11 @@ export const contarContrataqueConParada = (dataEventos) => {
   }
 };
 
-export const contarContrataqueConPalo = (dataEventos) => {
+export const contarContrataqueConPalo = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contrataque" y el resultado es "Gol"
     const eventosContrataqueGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Palo/Fuera'
+      evento.FaseDeJuego === 'Contrataque' && evento.Resultado === 'Palo/Fuera' && evento.EquipoJugador === equipo
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -153,11 +153,70 @@ export const contarContrataqueConPalo = (dataEventos) => {
   }
 };
 
-export const contarContragolConGol = (dataEventos) => {
+export const contarContrataqueConFalta = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+
+export const contarContrataqueCon7M = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' &&  (evento.Accion === '7m provocado' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const contarContrataqueConSuspension = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && (evento.Accion === '2 Minutos' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+
+export const contarContragolConGol = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
     const eventosContragolGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Gol'
+      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Gol' && evento.EquipoJugador === equipo
+    ); 
+    
+    // Devuelve la cantidad de eventos que cumplen ambas condiciones
+    return eventosContragolGol.length;
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+export const contarContragolConParada = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
+    const eventosContragolGol = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Parada' && evento.EquipoJugador === equipo
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -168,11 +227,11 @@ export const contarContragolConGol = (dataEventos) => {
   }
 };
 
-export const contarContragolConParada = (dataEventos) => {
+export const contarContragolConPalo = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
     const eventosContragolGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Parada'
+      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Palo/Fuera' && evento.EquipoJugador === equipo
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -183,26 +242,54 @@ export const contarContragolConParada = (dataEventos) => {
   }
 };
 
-export const contarContragolConPalo = (dataEventos) => {
+export const contarContragolConFalta = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
-    // Filtra los eventos donde la fase de juego es "Contragol" y el resultado es "Gol"
-    const eventosContragolGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Contragol' && evento.Resultado === 'Palo/Fuera'
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
     );
     
-    // Devuelve la cantidad de eventos que cumplen ambas condiciones
-    return eventosContragolGol.length;
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
   } else {
     console.error('dataEventos no es un vector');
-    return 0;  // Si no es un vector, devuelve 0
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
   }
 };
 
-export const contarAtaquePosicionalConGol = (dataEventos) => {
+
+export const contarContragolCon7M = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' &&  (evento.Accion === '7m provocado' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const contarContragolConSuspension = (dataEventos, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Contragol' && (evento.Accion === '2 Minutos' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const contarAtaquePosicionalConGol = (dataEventos, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde la fase de juego es "Ataque Posicional" y el resultado es "Gol"
     const eventosAtaquePosicionalGol = dataEventos.filter(evento => 
-      evento.FaseDeJuego === 'Ataque Posicional' && evento.Resultado === 'Gol'
+      evento.FaseDeJuego === 'Ataque Posicional' && evento.Resultado === 'Gol' && evento.EquipoJugador === equipo
     );
     
     // Devuelve la cantidad de eventos que cumplen ambas condiciones
@@ -213,7 +300,7 @@ export const contarAtaquePosicionalConGol = (dataEventos) => {
   }
 };
 
-export const obtenerSistemaAtaque = (dataEventos) => {
+export const obtenerSistemaAtaque = (dataEventos, equipo) => {
   // Verifica que dataEventos sea un arreglo
   if (Array.isArray(dataEventos)) {
     // Utilizamos un Set para obtener solo los valores únicos de SistemaDeJuego
@@ -226,11 +313,11 @@ export const obtenerSistemaAtaque = (dataEventos) => {
 };
 
 
-export const filtrarGolPorSistema = (dataEventos, sistemaDeAtaque) => {
+export const filtrarGolPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincide con 'sistemaDeAtaque' y el 'Resultado' sea 'Gol'
     const eventosGol = dataEventos.filter(evento => 
-      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Gol'
+      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Gol' && evento.EquipoJugador === equipo
     );
     
     return eventosGol.length;  // Devuelve el array de eventos que cumplen con las condiciones
@@ -240,11 +327,11 @@ export const filtrarGolPorSistema = (dataEventos, sistemaDeAtaque) => {
   }
 };
 
-export const filtrarParadasPorSistema = (dataEventos, sistemaDeAtaque) => {
+export const filtrarParadasPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Parada'
     const eventosParada = dataEventos.filter(evento => 
-      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Parada'
+      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Parada' && evento.EquipoJugador === equipo
     );
     
     return eventosParada.length;  // Devuelve el array de eventos que cumplen con las condiciones
@@ -254,11 +341,54 @@ export const filtrarParadasPorSistema = (dataEventos, sistemaDeAtaque) => {
   }
 };
 
-export const filtrarPalosPorSistema = (dataEventos, sistemaDeAtaque) => {
+export const filtrarPalosPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
     const eventosPalo = dataEventos.filter(evento => 
-      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Palo/Fuera'
+      evento.SistemaDeAtaque === sistemaDeAtaque && evento.Resultado === 'Palo/Fuera' && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrarFaltasPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Ataque Posicional' && evento.Accion === 'Falta' && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+
+export const filtrar7MPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Ataque Posicional' && (evento.Accion === '7m provocado' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const filtrar2MPorSistema = (dataEventos, sistemaDeAtaque, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.FaseDeJuego === 'Ataque Posicional' && (evento.Accion === '2 Minutos' || evento.Accion === '7m + 2min') && evento.EquipoJugador === equipo
     );
     
     return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones

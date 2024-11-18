@@ -56,6 +56,7 @@ export default function Home() {
         IdPartido: null,
         IdJugador: null,
         EquipoJugador: null,
+        faseDeJuego:null,
         MinSeg: null,
         Accion: null,
         Suspension: null,
@@ -331,8 +332,6 @@ export default function Home() {
 
     // REGISTRAR EVENTOS
     useEffect(() => {
-
-    
         // Verifica si hay eventos incompatibles activos
         if (
             (accion && (resultado || suspension)) ||
@@ -369,6 +368,7 @@ export default function Home() {
                 IdPartido: idPartido,
                 IdJugador: seleccionado.index,
                 EquipoJugador: seleccionado.equipo,
+                faseDeJuego: faseDeJuego,
                 MinSeg: equipos.TiempoDeJuego,  // Suponiendo que 'faseDeJuego' es el tiempo
                 Accion: accion,       // La acción seleccionada
                 Suspension: null,     // No hay suspensión en este caso
@@ -389,6 +389,7 @@ export default function Home() {
                 IdPartido: idPartido,
                 IdJugador: seleccionado.index,
                 EquipoJugador: seleccionado.equipo,
+                faseDeJuego: faseDeJuego,
                 MinSeg: equipos.TiempoDeJuego,  // Suponiendo que 'faseDeJuego' es el tiempo
                 Accion: null,       // La acción seleccionada
                 Suspension: suspension,     // No hay suspensión en este caso

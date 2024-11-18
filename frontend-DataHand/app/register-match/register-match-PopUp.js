@@ -3,9 +3,26 @@ import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import { useRouter } from 'next/router';
 
 const CampoBalonmano = ({ onClick }) => {
-  const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
+  //const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
+  const [selectedButton, setSelectedButton] = useState(null); // Para saber qué botón está seleccionado
 
-  const handleClick = (event) => {
+  const posicionesPredefinidas = [
+    { nombre: 'Ext Izq'},
+    { nombre: 'Ext Der'},
+    { nombre: 'Piv'},
+    { nombre: 'Lat Izq'},
+    { nombre: 'Cen'},
+    { nombre: 'Lat Der'},
+  ];
+
+  const handleSeleccionarPosicion = (posicion) => {
+    if (onClick) {
+      onClick(posicion.nombre);
+    }
+    setSelectedButton(posicion.nombre); // Marcar el botón como seleccionado
+  };
+
+  /*const handleClick = (event) => {
     const stage = event.target.getStage();
     if (stage) {
       const { x, y } = stage.getPointerPosition();
@@ -14,52 +31,95 @@ const CampoBalonmano = ({ onClick }) => {
         onClick({ x, y });
       }
     }
-  };
+  };*/
 
   return (
-    <Stage width={300} height={300} onClick={handleClick}>
-      <Layer>
-        {/* Rectángulo del medio campo de balonmano orientado hacia arriba */}
-        <Rect
-          x={0}
-          y={0}
-          width={300}  // Ancho del medio campo
-          height={300}  // Altura extendida del campo
-          fill="lightblue"
-          stroke="white"
-          strokeWidth={5}
-        />
-        
-        {/* Líneas del campo */}
-        <Rect x={0} y={0} width={300} height={300} fill="transparent" stroke="white" strokeWidth={5} />
+    <div style={{ position: 'relative', width: '300px', height: '300px' }}>
+      <div className="flex flex-wrap justify-center absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+      {/* Primera fila (2 botones con más separación entre ellos) */}
+      <div className="flex w-full justify-center space-x-40 mb-14">
+        {posicionesPredefinidas.slice(0, 2).map((posicion) => (
+          <button
+            key={posicion.nombre}
+            onClick={() => handleSeleccionarPosicion(posicion)}
+            className={`${
+              selectedButton === posicion.nombre ? 'bg-blue-700' : 'bg-blue-500'
+            } text-white px-3 py-1 rounded text-xs transition duration-200 ease-in-out transform hover:scale-105`}
+            style={{ width: '70px' }} // Tamaño reducido de los botones
+          >
+            {posicion.nombre}
+          </button>
+        ))}
+      </div>
 
-        {/* Portería en la parte superior (norte) */}
-        <Rect x={100} y={0} width={100} height={10} fill="white" />
+      {/* Segunda fila (1 botón con separación adicional respecto a la fila anterior) */}
+      <div className="flex w-full justify-center mb-12">
+        {posicionesPredefinidas.slice(2, 3).map((posicion) => (
+          <button
+            key={posicion.nombre}
+            onClick={() => handleSeleccionarPosicion(posicion)}
+            className={`${
+              selectedButton === posicion.nombre ? 'bg-blue-700' : 'bg-blue-500'
+            } text-white px-3 py-1 rounded text-xs transition duration-200 ease-in-out transform hover:scale-105`}
+            style={{ width: '70px' }} // Tamaño reducido de los botones
+          >
+            {posicion.nombre}
+          </button>
+        ))}
+      </div>
 
-        {/* Líneas 4 metros */}
-        <Rect x={140} y={60} width={15} height={5} fill="white" />
-        {/* Líneas 7 metros */}
-        <Rect x={135} y={135} width={30} height={5} fill="white" />
+      {/* Tercera fila (3 botones con más separación entre filas) */}
+      <div className="flex w-full justify-center space-x-8">
+        {posicionesPredefinidas.slice(3).map((posicion) => (
+          <button
+            key={posicion.nombre}
+            onClick={() => handleSeleccionarPosicion(posicion)}
+            className={`${
+              selectedButton === posicion.nombre ? 'bg-blue-700' : 'bg-blue-500'
+            } text-white px-3 py-1 rounded text-xs transition duration-200 ease-in-out transform hover:scale-105`}
+            style={{ width: '70px' }} // Tamaño reducido de los botones
+          >
+            {posicion.nombre}
+          </button>
+        ))}
+      </div>
+    </div>
 
-        {/* Área de 6 metros (rectángulo cerca de la portería) */}
-        <Circle x={150} y={0} radius={120} fill="transparent" stroke="white" strokeWidth={5} />
+      <Stage width={300} height={300} onClick={handleSeleccionarPosicion}>
+        <Layer>
+          {/* Rectángulo del medio campo de balonmano orientado hacia arriba */}
+          <Rect
+            x={0}
+            y={0}
+            width={300}  // Ancho del medio campo
+            height={300}  // Altura extendida del campo
+            fill="lightblue"
+            stroke="white"
+            strokeWidth={5}
+          />
 
-        {/* Área de 9 metros (arco) */}
-        <Circle x={150} y={0} radius={160} fill="transparent" stroke="white" strokeWidth={5} dash={[10, 10]}/>
+          {/* Líneas del campo */}
+          <Rect x={0} y={0} width={300} height={300} fill="transparent" stroke="white" strokeWidth={5} />
 
-        {/* Círculo central (si es necesario) */}
-        <Circle x={150} y={300} radius={50} fill="transparent" stroke="white" strokeWidth={5} />
-        {/* Dibujar la cruz en la posición del clic */}
-        {cruzPosicion && (
-          <>
-            {/* Línea vertical */}
-            <Line points={[cruzPosicion.x, cruzPosicion.y - 10, cruzPosicion.x, cruzPosicion.y + 10]} stroke="red" strokeWidth={2}/>
-            {/* Línea horizontal */}
-            <Line points={[cruzPosicion.x - 10, cruzPosicion.y, cruzPosicion.x + 10, cruzPosicion.y]} stroke="red" strokeWidth={2}/>
-          </>
-        )}
-      </Layer>
-    </Stage>
+          {/* Portería en la parte superior (norte) */}
+          <Rect x={100} y={0} width={100} height={10} fill="white" />
+
+          {/* Líneas 4 metros */}
+          <Rect x={140} y={60} width={15} height={5} fill="white" />
+          {/* Líneas 7 metros */}
+          <Rect x={135} y={135} width={30} height={5} fill="white" />
+
+          {/* Área de 6 metros (rectángulo cerca de la portería) */}
+          <Circle x={150} y={0} radius={120} fill="transparent" stroke="white" strokeWidth={5} />
+
+          {/* Área de 9 metros (arco) */}
+          <Circle x={150} y={0} radius={160} fill="transparent" stroke="white" strokeWidth={5} dash={[10, 10]} />
+
+          {/* Círculo central (si es necesario) */}
+          <Circle x={150} y={300} radius={50} fill="transparent" stroke="white" strokeWidth={5} />
+        </Layer>
+      </Stage>
+    </div>
   );
 };
 
@@ -69,20 +129,22 @@ const PorteriaBalonmano = ({ onClick }) => {
   const postThickness = 15; // Grosor de los postes
   const stripeHeight = height / 10; // Alto de cada franja
   
-  const [cruzPorteria, setCruzPorteria] = useState(null); // Para guardar la posición de la cruz
+  const [selectedButton, setSelectedButton] = useState(null); // Botón seleccionado
 
-  // Maneja el click en el Stage
-  const handleClick = (event) => {
-    const stage = event.target.getStage();
-    if (stage) {
-      const { x, y } = stage.getPointerPosition();  
-      setCruzPorteria({ x, y });
-      if (onClick) {
-        onClick({ x, y }); // Pasa las coordenadas a la función onClick que recibes por props
-      }
+  const botonesPorFilas = [
+    [{ id: 1 }],
+    [{ id: 2 }, { id: 3 }, { id: 4 }],
+    [{ id: 5 }, { id: 6 }, { id: 7 }, { id: 8 }, { id: 9 }],
+    [{ id: 10 }, { id: 11 }, { id: 12 }],
+  ];
+
+  const handleSeleccionarBoton = (id) => {
+    setSelectedButton(id);
+    if (onClick) {
+      onClick(id);
     }
   };
-
+  
   // Función para generar las franjas rojo-blanco alternadas
   const createStripedPost = (x, y) => {
     const stripes = [];
@@ -104,49 +166,71 @@ const PorteriaBalonmano = ({ onClick }) => {
   };
 
   return (
-    <Stage width={350} height={250} onClick={handleClick}>
-      <Layer>
-        {/* Fondo del área donde está la portería */}
-        <Rect x={25} y={0} width={width} height={height} fill="transparent" />
-
-        {/* Poste izquierdo */}
-        {createStripedPost(35, 25)}
-
-        {/* Poste derecho */}
-        {createStripedPost(321, 25)}
-
-        {/* Traversa superior */}
-        {Array.from({ length: 10 }).map((_, i) => (
-          <Rect
-            key={i}
-            x={35 + i * (width / 10)} // Dividir la barra superior en franjas
-            y={25}
-            width={width / 10}
-            height={postThickness}
-            fill={i % 2 === 0 ? "red" : "white"} // Alternar entre rojo y blanco
-            stroke="black"
-            strokeWidth={2}
-          />
+    <div style={{ position: 'relative', width: '350px', height: '250px' }}>
+  {/* Contenedor de botones */}
+  <div
+    className="absolute w-full flex flex-col z-10 space-y-9" // Incrementa el margen entre filas
+    style={{
+      top: "0px", // Ajusta la altura inicial de los botones
+      pointerEvents: "none", // Evitar interferencias al clicar en el Stage
+    }}
+  >
+    {botonesPorFilas.map((fila, index) => (
+      <div
+        key={index}
+        className="flex justify-center space-x-16"
+        style={{ pointerEvents: "auto" }} // Reactivar interacción para botones
+      >
+        {fila.map(({ id }) => (
+          <button
+            key={id}
+            onClick={() => handleSeleccionarBoton(id)}
+            className={`${
+              selectedButton === id ? "bg-blue-700" : "bg-blue-500"
+            } text-white px-2 py-1 rounded text-xs transition transform hover:scale-105`}
+          >
+            {id}
+          </button>
         ))}
+      </div>
+    ))}
+  </div>
 
-        {/* Líneas franja porteria */}
-        <Line points={[138, 0, 138, 225]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
-        <Line points={[238, 0, 238, 225]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
-        <Line points={[25, 100, 375, 100]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
-        <Line points={[25, 160, 375, 160]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
-        
-        {/* Dibujar la cruz en la posición del clic */}
-        {cruzPorteria && (
-          <>
-            {/* Línea vertical */}
-            <Line points={[cruzPorteria.x, cruzPorteria.y - 10, cruzPorteria.x, cruzPorteria.y + 10]} stroke="red" strokeWidth={2}/>
-            {/* Línea horizontal */}
-            <Line points={[cruzPorteria.x - 10, cruzPorteria.y, cruzPorteria.x + 10, cruzPorteria.y]} stroke="red" strokeWidth={2}/>
-          </>
-        )}
+  {/* Portería (Stage) */}
+  <Stage width={350} height={250} onClick={handleSeleccionarBoton}>
+    <Layer>
+      {/* Fondo del área donde está la portería */}
+      <Rect x={25} y={0} width={width} height={height} fill="transparent" />
 
-      </Layer>
-    </Stage>
+      {/* Poste izquierdo */}
+      {createStripedPost(35, 25)}
+
+      {/* Poste derecho */}
+      {createStripedPost(321, 25)}
+
+      {/* Traversa superior */}
+      {Array.from({ length: 10 }).map((_, i) => (
+        <Rect
+          key={i}
+          x={35 + i * (width / 10)} // Dividir la barra superior en franjas
+          y={25}
+          width={width / 10}
+          height={postThickness}
+          fill={i % 2 === 0 ? "red" : "white"} // Alternar entre rojo y blanco
+          stroke="black"
+          strokeWidth={2}
+        />
+      ))}
+
+      {/* Líneas franja porteria */}
+      <Line points={[138, 0, 138, 225]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
+      <Line points={[238, 0, 238, 225]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
+      <Line points={[25, 100, 375, 100]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
+      <Line points={[25, 160, 375, 160]} stroke="grey" strokeWidth={3} dash={[10, 5]} />
+
+    </Layer>
+  </Stage>
+</div>
   );
 };
 

@@ -9,8 +9,10 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import { contarContragolConGol, contarContrataqueConGol, obtenerSistemaAtaque, filtrarGolPorSistema,
-filtrarPalosPorSistema, filtrarParadasPorSistema, contarContragolConParada, contarContragolConPalo, contarContrataqueConParada, contarContrataqueConPalo}  from '../utils/calculosEstadistica';  // Ajusta la ruta según la ubicación del archivo
+import { contarContragolConGol, contarContrataqueConGol, contarContrataqueConFalta, contarContrataqueCon7M, contarContrataqueConSuspension,
+  obtenerSistemaAtaque, filtrarGolPorSistema, contarContragolConFalta, contarContragolCon7M, contarContragolConSuspension,
+filtrarPalosPorSistema, filtrarParadasPorSistema, contarContragolConParada, contarContragolConPalo,
+filtrarFaltasPorSistema, filtrar7MPorSistema, filtrar2MPorSistema, contarContrataqueConParada, contarContrataqueConPalo}  from '../utils/calculosEstadistica';  // Ajusta la ruta según la ubicación del archivo
 import { useState , useEffect} from 'react';
 
 export default function SistemaDeJuego({dataEventos,dataEquipos}) {
@@ -45,35 +47,35 @@ export default function SistemaDeJuego({dataEventos,dataEquipos}) {
                   <TableCell className="font-bold text-[#ffa500]">
                     TRANSICIONES - CONTRAATAQUE DIRECTO
                   </TableCell>
-                  <TableCell className="font-bold">{contarContrataqueConGol(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContrataqueConParada(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContrataqueConPalo(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConGol(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConParada(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConPalo(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueCon7M(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConFalta(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContrataqueConSuspension(dataEventos, "local")}</TableCell>
                 </TableRow>
                 <TableRow className="bg-white">
                   <TableCell className="font-bold text-[#ffa500]">
                     TRANSICIONES - CONTRAGOL
                   </TableCell>
-                  <TableCell className="font-bold">{contarContragolConGol(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContragolConParada(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">{contarContragolConPalo(dataEventos)}</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">1</TableCell>
+                  <TableCell className="font-bold">{contarContragolConGol(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConParada(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConPalo(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolCon7M(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConFalta(dataEventos, "local")}</TableCell>
+                  <TableCell className="font-bold">{contarContragolConSuspension(dataEventos, "local")}</TableCell>
                 </TableRow>
                 {valoresUnicosSistemaAtaque.map((sistema, index) => (
                 <TableRow className="bg-white" key={index}>
                   <TableCell className="font-bold text-[#ffa500]">
                     ATAQUE {sistema} {/* Aquí usamos el valor del sistema de ataque dinámicamente */}
                   </TableCell>
-                  <TableCell className="font-bold">{filtrarGolPorSistema(dataEventos,sistema)}</TableCell>
-                  <TableCell className="font-bold">{filtrarParadasPorSistema(dataEventos,sistema)} </TableCell>
-                  <TableCell className="font-bold">{filtrarPalosPorSistema(dataEventos,sistema)}</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
-                  <TableCell className="font-bold">0</TableCell>
+                  <TableCell className="font-bold">{filtrarGolPorSistema(dataEventos,sistema, "local")}</TableCell>
+                  <TableCell className="font-bold">{filtrarParadasPorSistema(dataEventos,sistema, "local")} </TableCell>
+                  <TableCell className="font-bold">{filtrarPalosPorSistema(dataEventos,sistema, "local")}</TableCell>
+                  <TableCell className="font-bold">{filtrar7MPorSistema(dataEventos,sistema, "local")}</TableCell>
+                  <TableCell className="font-bold">{filtrarFaltasPorSistema(dataEventos,sistema, "local")}</TableCell>
+                  <TableCell className="font-bold">{filtrar2MPorSistema(dataEventos,sistema, "local")}</TableCell>
                 </TableRow>
               ))}
               </TableBody>
