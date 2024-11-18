@@ -7,3 +7,7 @@ global.fetch = fetch;
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
 process.env.SUPPRESS_JEST_WARNINGS = 'true';
+
+// Para tests de Jest con canvas
+import 'jest-canvas-mock';
+
