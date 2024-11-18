@@ -33,6 +33,7 @@ describe('BarraHorizontal', () => {
         jest.useRealTimers(); // Restaura temporizadores reales
     });
 
+    // Test de Integracion
     it('debe iniciar el cronómetro cuando se presiona el botón "Iniciar"', async () => {
         mockSetEquipos.mockImplementation((callback) => {
             const nuevoEstado = callback(equipos);
@@ -59,6 +60,7 @@ describe('BarraHorizontal', () => {
         });
     });
 
+    // Test de Integracion
     it('debe parar el cronómetro cuando se presiona el botón "Detener"', async () => {
         let tiempoAntesDetener;
 
@@ -98,6 +100,7 @@ describe('BarraHorizontal', () => {
         });
     });
 
+    // Test de Integracion
     it('debe finalizar el primer tiempo cuando se presiona el botón "Fin del Primer Tiempo"', async () => {
         mockSetEquipos.mockImplementation((callback) => callback(equipos));
 
@@ -124,6 +127,7 @@ describe('BarraHorizontal', () => {
         expect(screen.getByText('Fin del partido')).toBeInTheDocument();
     });
 
+    // Test de Integracion
     it('debería mostrar y cerrar el popup al hacer clic en un equipo', async () => {
         render(
             <BarraHorizontal
@@ -156,6 +160,7 @@ describe('BarraHorizontal', () => {
         });
     });
 
+    // Test Unitarios
     it('debe formatear correctamente el tiempo', () => {
         render(
             <BarraHorizontal
@@ -170,6 +175,7 @@ describe('BarraHorizontal', () => {
         expect(screen.getByText('Cronómetro: 00:00')).toBeInTheDocument();
     });
 
+    // Test de Integracion
     it('debe redirigir al presionar el botón "Salir"', () => {
         render(
             <BarraHorizontal
@@ -185,6 +191,7 @@ describe('BarraHorizontal', () => {
         expect(botonSalir.closest('a')).toHaveAttribute('href', '/');
     });
 
+    // Test Unitario
     // it('debe actualizar correctamente el marcador local', () => {
     //     mockSetEquipos.mockImplementation((callback) => {
     //         const nuevoEstado = callback(equipos);
