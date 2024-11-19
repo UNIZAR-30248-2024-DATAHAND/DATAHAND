@@ -246,7 +246,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             onClick={handleNavigateStats}
             className="bg-gray-300 text-black px-4 py-2 rounded"
             >
-            Eventos
+            Estadísticas
             </button>
             <Link href="/">
                 <button

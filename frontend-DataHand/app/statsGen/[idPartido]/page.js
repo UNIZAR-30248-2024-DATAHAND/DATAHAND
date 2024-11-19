@@ -124,7 +124,7 @@ import Component from '../../components/component'; // Asegúrate de que la ruta
     }
   
     return (
-      <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 overflow-hidden">
+      <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 ">
         <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
           Estadísticas Generales
         </h1>
