@@ -6,7 +6,7 @@
 // Se utilizan etiquetas para mostrar posiciones específicas de los jugadores y sus estadísticas.
 // El diseño es responsivo, con una cuadrícula que se ajusta a pantallas más grandes. 
 
-import { filtrarResultadoPorPosicion}  from '../utils/calculosEstadistica'; 
+import { filtrarResultadoPorLocalizacion, filtrarResultadoPorPosicion}  from '../utils/calculosEstadistica'; 
 
 export default function Lanzamientos({dataEventos, dataEquipos}) {
 
@@ -74,6 +74,76 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
     const totalLanzamientosLateralIzquierdo6MVisitante = filtrarResultadoPorPosicion(dataEventos,"Parada","\"Lat Izq 6M\"", "visitante") +
         filtrarResultadoPorPosicion(dataEventos,"Palo/Fuera","\"Lat Izq 6M\"", "visitante") + lanzamientosLateralIzquierdo6MVisitante;
 
+    //Variables del equipo local por Localizacion
+    const totalLocalizacion1Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","1","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","1","local");
+    const localizacion2Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","2","local");
+    const totalLocalizacion2Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","2","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","2","local") + localizacion2Local;
+    const localizacion3Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","3","local");
+    const totalLocalizacion3Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","3","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","3","local") + localizacion3Local;
+    const localizacion4Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","4","local");
+    const totalLocalizacion4Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","4","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","4","local") + localizacion4Local;
+    const totalLocalizacion5Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","5","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","5","local");
+    const localizacion6Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","6","local");
+    const totalLocalizacion6Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","6","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","6","local") + localizacion6Local;
+    const localizacion7Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","7","local");
+    const totalLocalizacion7Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","7","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","7","local") + localizacion7Local;
+    const localizacion8Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","8","local");
+    const totalLocalizacion8Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","8","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","8","local") + localizacion8Local;
+    const totalLocalizacion9Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","9","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","9","local");
+    const localizacion10Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","10","local");
+    const totalLocalizacion10Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","10","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","10","local") + localizacion10Local;
+    const localizacion11Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","11","local");
+    const totalLocalizacion11Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","11","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","11","local") + localizacion11Local;
+    const localizacion12Local = filtrarResultadoPorLocalizacion(dataEventos,"Gol","12","local");
+    const totalLocalizacion12Local = filtrarResultadoPorLocalizacion(dataEventos,"Parada","12","local") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","12","local") + localizacion12Local;
+
+    //Variables del equipo visitante por Localizacion    
+    const totalLocalizacion1Visitante = filtrarResultadoPorLocalizacion(dataEventos,"Parada","1","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","1","visitante");
+    const localizacion2Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","2","visitante");
+    const totalLocalizacion2Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","2","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","2","visitante") + localizacion2Visitante;
+    const localizacion3Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","3","visitante");
+    const totalLocalizacion3Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","3","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","3","visitante") + localizacion3Visitante;
+    const localizacion4Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","4","visitante");
+    const totalLocalizacion4Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","4","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","4","visitante") + localizacion4Visitante;
+    const totalLocalizacion5Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","5","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","5","visitante");
+    const localizacion6Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","6","visitante");
+    const totalLocalizacion6Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","6","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","6","visitante") + localizacion6Visitante;
+    const localizacion7Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","7","visitante");
+    const totalLocalizacion7Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","7","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","7","visitante") + localizacion7Visitante;
+    const localizacion8Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","8","visitante");
+    const totalLocalizacion8Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","8","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","8","visitante") + localizacion8Visitante;
+    const totalLocalizacion9Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","9","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","9","visitante");
+    const localizacion10Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","10","visitante");
+    const totalLocalizacion10Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","10","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","10","visitante") + localizacion10Visitante;
+    const localizacion11Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","11","visitante");
+    const totalLocalizacion11Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","11","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","11","visitante") + localizacion11Visitante;
+    const localizacion12Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Gol","12","visitante");
+    const totalLocalizacion12Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","12","visitante") +
+        filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","12","visitante") + localizacion12Visitante;
+
     return (
       <div className="w-full bg-white">
         {/* Courts Container */}
@@ -88,21 +158,21 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
               <div className="relative h-[45%] border-b-4 border-white">
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                     {/* Aumentar la altura de los cuadrados */}
-                    <div className="bg-red-500 text-white text-center p-5">3/3</div>
-                    <div className="bg-red-500 text-white text-center p-5">3/3</div>
-                    <div className="bg-yellow-500 text-white text-center p-5">2/3</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">0/1</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">0/0</div>
-                    <div className="bg-yellow-500 text-white text-center p-5">2/3</div>
-                    <div className="bg-red-500 text-white text-center p-5">12/12</div>
-                    <div className="bg-orange-500 text-white text-center p-5">3/4</div>
-                    <div className="bg-red-500 text-white text-center p-5">7/7</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion2Local}/{totalLocalizacion2Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion3Local}/{totalLocalizacion3Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion4Local}/{totalLocalizacion4Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion6Local}/{totalLocalizacion6Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion7Local}/{totalLocalizacion7Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion8Local}/{totalLocalizacion8Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion10Local}/{totalLocalizacion10Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion11Local}/{totalLocalizacion11Local}</div>
+                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion12Local}/{totalLocalizacion12Local}</div>
                 </div>
                 
                 {/* Side Numbers - Bajar un poco los números de los lados */}
-                <div className="absolute left-8 top-[50%] -translate-y-1/2 text-white">4</div>
-                <div className="absolute right-8 top-[50%] -translate-y-1/2 text-white">3</div>
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 text-white">4</div>
+                <div className="absolute left-8 top-[50%] -translate-y-1/2 text-white">{totalLocalizacion5Local}</div>
+                <div className="absolute right-8 top-[50%] -translate-y-1/2 text-white">{totalLocalizacion9Local}</div>
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 text-white">{totalLocalizacion1Local}</div>
               </div>
 
 
@@ -187,21 +257,21 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
                 <div className="relative h-[45%] border-b-4 border-white">
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                         {/* Aumentar la altura de los cuadrados */}
-                        <div className="bg-red-500 text-white text-center p-5">3/3</div>
-                        <div className="bg-red-500 text-white text-center p-5">3/3</div>
-                        <div className="bg-yellow-500 text-white text-center p-5">2/3</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">0/1</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">0/0</div>
-                        <div className="bg-yellow-500 text-white text-center p-5">2/3</div>
-                        <div className="bg-red-500 text-white text-center p-5">12/12</div>
-                        <div className="bg-orange-500 text-white text-center p-5">3/4</div>
-                        <div className="bg-red-500 text-white text-center p-5">7/7</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion2Visitante}/{totalLocalizacion2Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion3Visitante}/{totalLocalizacion3Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion4Visitante}/{totalLocalizacion4Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion6Visitante}/{totalLocalizacion6Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion7Visitante}/{totalLocalizacion7Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white" >{localizacion8Visitante}/{totalLocalizacion8Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion10Visitante}/{totalLocalizacion10Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion11Visitante}/{totalLocalizacion11Visitante}</div>
+                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion12Visitante}/{totalLocalizacion12Visitante}</div>
                     </div>
                     
                     {/* Side Numbers - Bajar un poco los números de los lados */}
-                    <div className="absolute left-8 top-[50%] -translate-y-1/2 text-white">4</div>
-                    <div className="absolute right-8 top-[50%] -translate-y-1/2 text-white">3</div>
-                    <div className="absolute top-2 left-1/2 -translate-x-1/2 text-white">4</div>
+                    <div className="absolute left-8 top-[50%] -translate-y-1/2 text-white">{totalLocalizacion5Visitante}</div>
+                    <div className="absolute right-8 top-[50%] -translate-y-1/2 text-white">{totalLocalizacion9Visitante}</div>
+                    <div className="absolute top-2 left-1/2 -translate-x-1/2 text-white">{totalLocalizacion1Visitante}</div>
                 </div>
 
 
