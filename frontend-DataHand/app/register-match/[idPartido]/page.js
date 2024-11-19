@@ -382,13 +382,6 @@ export default function Home() {
                 console.error("Error: Faltan datos necesarios para registrar el evento.");
                 return; // Salir si faltan datos
             }
-
-            console.log("Aqui llego")
-
-            console.log("Quiero guardar una accion - INDEX: ", seleccionado.index);
-            console.log("Quiero guardar una accion - EQYUOIJGUADOR: ", seleccionado.equipo);
-
-
             
             // Actualizar el estado con los datos del evento
             setDatosEvento({
@@ -439,6 +432,9 @@ export default function Home() {
             if (datosEvento.IdPartido && datosEvento.IdJugador !== null) {
                 try {
                     await registrarEvento(); // Esperar a que se complete el registro del evento
+                    // Una vez que el evento se ha registrado correctamente, actualizamos el estado
+                    const eventosObtenidos = await obtenerEventos(idPartido);
+                    setEventos(eventosObtenidos);
                     // Resetear variables solo después de registrar el evento
                     resetearDatosEvento();
                 } catch (error) {
@@ -471,16 +467,6 @@ export default function Home() {
             sistemaDefensivoVisitante: opcion, // Actualiza el sistema defensivo visitante en el estado
         }));
     };
-
-    
-    //useEfect para el evento de la tabla
-    useEffect(() => {   
-        const fetchEventos = async () => {
-            const eventosObtenidos = await obtenerEventos(idPartido);
-            setEventos(eventosObtenidos);
-        };
-        fetchEventos();
-    }, []);  //Hay que ver como lo actualizamos para que cuando se añada uno se ponga bien
     
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
