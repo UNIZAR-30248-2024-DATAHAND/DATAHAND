@@ -19,6 +19,12 @@ export default function Home() {
     const router = useRouter();
     const [contador, setContador] = useState(0);
 
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    };
+
     // Efecto para incrementar el contador cada 30 segundos
     useEffect(() => {
         // Crear el intervalo para incrementar el contador cada 30 segundos
@@ -200,11 +206,23 @@ export default function Home() {
         }
       };
     
-    // useEffect para obtener partido al montar el componente
     useEffect(() => {
-        if (idPartido) {
-            obtenerPartido();
-        }
+        const cargarDatos = async () => {
+            if (idPartido) {
+                try {
+                    const [partido, eventosObtenidos] = await Promise.all([
+                        obtenerPartido(), // Obtener datos del partido
+                        obtenerEventos(idPartido), // Obtener eventos del partido
+                    ]);
+                    console.log('Eventos obtenidos:', eventosObtenidos); // Verificar datos
+                    setEventos(eventosObtenidos); // Actualizar el estado
+                } catch (error) {
+                    console.error('Error al cargar datos:', error);
+                }
+            }
+        };
+    
+        cargarDatos();
     }, [idPartido]);
 
     // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
@@ -446,9 +464,12 @@ export default function Home() {
         handleEvento();
     }, [datosEvento]); // Solo se ejecuta cuando 'datosEvento' cambia
 
-    const handleClosePopup = () => {
+    const handleClosePopup = async () => {
         setShowPopup(false); // Oculta el popup
-        // Opcional: Resetear estados si es necesario
+        // Actualizar eventos
+        const eventosObtenidos = await obtenerEventos(idPartido);
+        setEventos(eventosObtenidos);
+        // Resetear estados
         setFaseDeJuego(null);
         setResultado(null);
         setSeleccionado({ equipo: null, index: null, tipo: null });
@@ -669,17 +690,22 @@ export default function Home() {
                             <thead>
                                 <tr className="bg-gray-100">
                                     <th className="border border-gray-300 px-4 py-2 text-black">ID Jugador</th>
-                                    <th className="border border-gray-300 px-4 py-2 text-black">Resultado</th>
-                                    <th className="border border-gray-300 px-4 py-2 text-black">Asistencia</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Accion del juego</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Tiempo</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {eventos.length > 0 ? (
-                                    eventos.slice(-4).map((evento, index) => ( // Solo los últimos 4 eventos
+                                    eventos.slice(-4).reverse().map((evento, index) => ( // Solo los últimos 4 eventos
                                         <tr key={index}>
                                             <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.Resultado || 'No especificado'}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.Asistencia || 'No especificado'}</td>
+                                            <td className="border border-gray-300 px-4 py-2 text-black">
+                                                {evento.Resultado 
+                                                    ? `${evento.Resultado}${evento.Asistencia ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
+                                                    : evento.Accion || evento.Suspension || 'No especificado'}
+                                            </td>
+
+                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.MinSeg ? formatTime(evento.MinSeg) : 'No especificado'}</td>
                                         </tr>
                                     ))
                                 ) : (
