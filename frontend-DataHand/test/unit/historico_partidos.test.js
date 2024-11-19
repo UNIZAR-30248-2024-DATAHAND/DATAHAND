@@ -105,4 +105,22 @@ describe('Home Page', () => {
             expect(partidoEliminado).toBeNull(); // El partido ya no debe estar en el DOM
         });
     });
+
+    it('debe mostrar las estadísticas del partido del historial al hacer clic en el botón de editar', async () => {
+        const useRouter = require('next/navigation').useRouter;
+        const mockPush = jest.fn();
+        useRouter.mockReturnValue({ push: mockPush });
+
+        render(<Home />);
+
+        // Esperamos a que se renderice el partido
+        await waitFor(() => screen.getByText('Partido-81'));
+
+        // Simulamos un clic en el botón de editar
+        const editButton = screen.getByText('Ver');
+        fireEvent.click(editButton);
+
+        // Verificamos que se haya llamado a `push` con la URL correcta
+        expect(mockPush).toHaveBeenCalledWith('/statsGen/Partido-81');
+    });
 });
