@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
+    // VARIABLE PREDETERMINADA PARA USERID PENDIENTE DE LOGIN   
+    const userID = 1;
     const router = useRouter();
 
     const handleNavigateStats = () => {
