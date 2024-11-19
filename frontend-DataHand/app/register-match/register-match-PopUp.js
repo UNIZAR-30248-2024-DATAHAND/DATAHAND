@@ -324,8 +324,26 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   // useEffect para actualizar datosEvento solo si todos los datos están completos
   useEffect(() => {
     // Solo actualizar datosEvento si todos los datos están completos y no se ha registrado un evento
+    console.log("Valores actuales antes de la actualización:", {
+      IdPartido: idPartido,
+      IdJugador: equipos[seleccionado.equipo].jugadores[seleccionado.index],
+      IdPortero: seleccionado.equipo === 'local' 
+          ? equipos.visitante.porteros[0] 
+          : equipos.local.porteros[0], 
+      EquipoJugador: seleccionado.equipo,
+      MinSeg: tiempoJugado,
+      faseDeJuego,
+      resultado,
+      posicionLanzador,
+      localizacionLanzamiento,
+      asistenciaDada,
+      sistemaAtaque,
+      sistemaDefensa,
+      eventoRegistrado
+    });
+
     if (!eventoRegistrado && 
-        seleccionado.index !== null &&
+        equipos[seleccionado.equipo].jugadores[seleccionado.index] !== null &&
         tiempoJugado &&
         faseDeJuego &&
         resultado &&
@@ -335,13 +353,15 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         sistemaAtaque &&
         sistemaDefensa
     ) {
+      console.log('Entro en el if');
       // Actualizar el estado de datosEvento
       setDatosEvento({
         IdPartido: idPartido,
         IdJugador: equipos[seleccionado.equipo].jugadores[seleccionado.index],
         IdPortero: seleccionado.equipo === 'local' 
-          ? equipos.visitante.porteros[0] // Portero visitante titular
-          : equipos.local.porteros[0], // Portero local visitante
+          ? equipos.visitante.porteros[0] 
+          : equipos.local.porteros[0],
+        EquipoJugador: seleccionado.equipo,
         MinSeg: tiempoJugado,
         faseDeJuego,
         resultado,
@@ -351,12 +371,10 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         sistemaAtaque,
         sistemaDefensa
       });
-
       console.log('Datos del evento a registrar:', datosEvento);
     }
   }, [
     seleccionado.index,
-    tiempoJugado,
     faseDeJuego,
     resultado,
     posicionLanzador,
