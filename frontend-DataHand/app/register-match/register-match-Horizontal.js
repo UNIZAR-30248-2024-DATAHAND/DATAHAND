@@ -11,6 +11,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
     const [textoBoton, setTextoBoton] = useState("Fin del Primer Tiempo"); // Texto del botón
     const [primerTiempoFinalizado, setPrimerTiempoFinalizado] = useState(false); // Estado para saber si el primer tiempo ha terminado
+    const [tiempo, setTiempo] = useState(false);
 
     // Lógica equipos
     const [showEquipoSelector, setShowEquipoSelector] = useState(false); // Controla la visibilidad del popup de selección
@@ -66,15 +67,26 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         }
     };
 
+    // Efecto para manejar las partes
+    useEffect(() => {
+        if (equipos.Parte === "Primera parte") {
+            finalizarPrimerTiempo();
+        } else if (equipos.Parte === "Segunda parte") {
+            finalizarPartido();
+        }
+    }, [tiempo]);
+
     // Efecto para manejar el cronómetro
     useEffect(() => {
         let intervalo;
-
         if (cronometroActivo) {
             intervalo = setInterval(() => {
                 // Usa setEquipos para actualizar el tiempo de juego
                 setEquipos((prevState) => {
                     const nuevoTiempo = prevState.TiempoDeJuego + 1;
+                    if (nuevoTiempo === 1800 || nuevoTiempo === 3600) {
+                        setTiempo(true);
+                    }
                     // Actualiza el tiempo jugado
                     setTiempoJugado(nuevoTiempo);
                     // Retorna el nuevo estado con el tiempo actualizado
@@ -103,10 +115,14 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             alert("Debes seleccionar un sistema defensivo antes de comenzar el partido.");
             return;
         }
+        if (equipos.Parte === "Fin del primer tiempo") {
+            setEquipos((prevState) => ({
+                ...prevState,
+                Parte: 'Segunda parte', // Cambia el estado de la parte
+            }));
+        }
         // Lógica para iniciar el partido si ambos sistemas defensivos están seleccionados
-        console.log("Partido iniciado con los sistemas defensivos:");
-        console.log("Local:", equipos.sistemaDefensivoLocal);
-        console.log("Visitante:", equipos.sistemaDefensivoVisitante);
+        console.log("Se inicia el cronometro");
         setCronometroActivo(true);
     };
 
@@ -124,6 +140,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         detenerCronometro(); // Detiene el cronómetro si estaba activo
         setTextoBoton("Fin del partido"); // Cambia el texto del botón
         setPrimerTiempoFinalizado(true); // Marca que el primer tiempo ha terminado
+        setTiempo(false);
     };
 
     // Maneja el fin del partido
@@ -133,8 +150,9 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             TiempoDeJuego: 0, // Establece el tiempo a 00:00
             Parte: 'Fin del partido', // Cambia el estado a 'Fin del partido'
         }));
+        detenerCronometro(); // Detiene el cronómetro si estaba activo
         setTextoBoton("Partido acabado"); // Cambia el texto del botón
-        detenerCronometro(); // Detiene el cronómetro
+        setTiempo(false);
     };
 
     const manejarClickFinPartido = async () => {
@@ -183,7 +201,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             {/* Cronómetro */}
             <div className="flex items-center">
                 <div className="flex flex-col mr-4">
-                    <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(equipos.TiempoDeJuego)}</span>
+                <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(equipos.Parte === "Segunda parte" ? equipos.TiempoDeJuego - 1800 : equipos.TiempoDeJuego)}</span>
                     <span className="text-md font-semibold text-black">{equipos.Parte}</span>
                 </div>
                 <div className="flex gap-2">
@@ -196,26 +214,30 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                     >
                         {textoBoton}
                     </button>
-                
-                    <button 
-                        className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
-                            (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                        // className="bg-green-500 text-white px-4 py-2 rounded"
-                        onClick={iniciarCronometro} // Inicia el cronómetro
-                        disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
-                    >
-                        Iniciar
-                    </button>
-                    <button 
-                        className={`mt-4 px-4 py-2 rounded bg-red-500 text-white ${
-                            (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                        onClick={detenerCronometro} // Detiene el cronómetro
-                        disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
-                    >
-                        Detener
-                    </button>
+                    {
+                        equipos.Parte !== 'Fin del partido' && (
+                            <>
+                                <button 
+                                    className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
+                                        (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    onClick={iniciarCronometro} // Inicia el cronómetro
+                                    disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
+                                >
+                                    Iniciar
+                                </button>
+                                <button 
+                                    className={`mt-4 px-4 py-2 rounded bg-red-500 text-white ${
+                                        (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    onClick={detenerCronometro} // Detiene el cronómetro
+                                    disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
+                                >
+                                    Detener
+                                </button>
+                            </>
+                        )
+                    }
                 </div>
             </div>
 
