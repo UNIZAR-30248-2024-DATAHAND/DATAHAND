@@ -92,3 +92,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 4. To run tests, use the following command:
    ```bash
    npm test
+
+
+Tema happy test selenium(lo primero actualizar con install para tener selenium y geckodriver):
+- los test se crean en la carpeta app/tests/
+- hay que lanzar npm run dev en una terminal
+- en otra terminal node app/tests/"testLogin.js"
+- aparecera una pantalla ejecutando el test dejar que acabe y revisar en terminal si ha sido exitoso

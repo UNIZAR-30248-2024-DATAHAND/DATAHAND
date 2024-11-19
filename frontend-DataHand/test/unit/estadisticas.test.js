@@ -63,4 +63,24 @@ describe("BarraHorizontal Component", () => {
         const generalStatsText = await screen.findByText(/estadísticas generales/i);
         expect(generalStatsText).toBeInTheDocument();
     });
+
+    it("muestra elementos relevantes en la página StatsGen", async () => {
+        // Mock de useParams con un idPartido ficticio
+        useParams.mockReturnValue({ idPartido: "129" });
+
+        // Renderizar el componente StatsGen
+        render(<StatsGen />);
+
+        // Verificar que los elementos esperados estén en la página después de cargar
+        const vistageneralText = await screen.findByText("VISTA GENERAL");
+        expect(vistageneralText).toBeInTheDocument();
+        const sistjuegoText = await screen.findByText(/sistema de juego/i);
+        expect(sistjuegoText).toBeInTheDocument();
+        const lanzamientosText = await screen.findByText(/lanzamientos/i);
+        expect(lanzamientosText).toBeInTheDocument();
+        const especjugText = await screen.findByText(/específicas jugadores/i);
+        expect(especjugText).toBeInTheDocument();
+        const jugadoresText = await screen.findByText("JUGADORES");
+        expect(jugadoresText).toBeInTheDocument();
+    });
 });
