@@ -94,9 +94,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
    npm test
 
 
-Tema happy test cypress(lo primero actualizar con install para tener cypress):
-- los test se crean en la carpeta cypress/e2e tenéis uno de ejemplo de como se ve la pantalla 
-- tenéis que tener el proyecto runeado y aparte deberéis abrir otra terminal para cypress
-- para tirar cypress: npx cypress open
-- os saldrá una página pues le dais a e2e y a hacerlo con firefox y le dais a start
-- os tiene que salir una carpeta con los test( ahora solo está login) pues le dais al test que queréis hacer
+Tema happy test selenium(lo primero actualizar con install para tener selenium y geckodriver):
+- los test se crean en la carpeta app/tests/
+- hay que lanzar npm run dev en una terminal
+- en otra terminal node app/tests/"testLogin.js"
+- aparecera una pantalla ejecutando el test dejar que acabe y revisar en terminal si ha sido exitoso
