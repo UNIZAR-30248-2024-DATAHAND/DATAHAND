@@ -20,6 +20,7 @@ export async function POST(req) {
         IdEvento: `Evento-${IdEvento}`,
         IdPartido: datos.IdPartido,
         IdJugador: datos.IdJugador,
+        IdPortero: datos.IdPortero,
         EquipoJugador: datos.EquipoJugador,
         MinSeg: datos.MinSeg,
         FaseDeJuego: datos.faseDeJuego,

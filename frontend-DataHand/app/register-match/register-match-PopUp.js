@@ -273,6 +273,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   const [datosEvento, setDatosEvento] = useState({
     IdPartido: null,
     IdJugador: null,
+    IdPortero: null,
     EquipoJugador: null,
     MinSeg: null,
     faseDeJuego: null,
@@ -334,25 +335,13 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         sistemaAtaque &&
         sistemaDefensa
     ) {
-      console.log("Valores actuales antes de la actualización:", {
-        IdPartido: idPartido,
-        IdJugador: seleccionado.index,
-        EquipoJugador: seleccionado.equipo,
-        MinSeg: tiempoJugado,
-        faseDeJuego,
-        resultado,
-        posicionLanzador,
-        localizacionLanzamiento,
-        asistenciaDada,
-        sistemaAtaque,
-        sistemaDefensa
-      });
-
       // Actualizar el estado de datosEvento
       setDatosEvento({
         IdPartido: idPartido,
         IdJugador: equipos[seleccionado.equipo].jugadores[seleccionado.index],
-        EquipoJugador: seleccionado.equipo,
+        IdPortero: seleccionado.equipo === 'local' 
+          ? equipos.visitante.porteros[0] // Portero visitante titular
+          : equipos.local.porteros[0], // Portero local visitante
         MinSeg: tiempoJugado,
         faseDeJuego,
         resultado,
@@ -363,10 +352,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         sistemaDefensa
       });
 
-      if (resultado === "Gol") {
-        console.log("Gol detectado");
-        marcarGol(seleccionado.equipo);
-      }
+      console.log('Datos del evento a registrar:', datosEvento);
     }
   }, [
     seleccionado.index,
@@ -388,6 +374,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     // Verificar si todos los datos del evento están completos
     if (
       datosEvento.IdJugador !== undefined &&
+      datosEvento.IdPortero !== undefined &&
       datosEvento.EquipoJugador !== undefined &&
       datosEvento.MinSeg &&
       datosEvento.faseDeJuego &&
@@ -398,13 +385,17 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
       datosEvento.sistemaAtaque &&
       datosEvento.sistemaDefensa
     ) {
-      // Marcar el evento como registrado
-      setEventoRegistrado(true);
-      
-      // Otra función de llamada para gol - SANZSANZ
-
       // Llamar a la función para registrar el evento
       registrarEvento(); 
+
+      // Marcar el evento como registrado
+      if (resultado === "Gol") {
+        console.log("Gol detectado");
+        marcarGol(seleccionado.equipo);
+      }
+
+      // Reset de variable
+      setEventoRegistrado(true);
     }
   }, [datosEvento, eventoRegistrado]); // Cambiar solo si cambia datosEvento o eventoRegistrado 
 

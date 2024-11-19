@@ -34,6 +34,10 @@ const eventosSchema = new mongoose.Schema(
         type: String,
         required: true,
     },
+    IdPortero: {
+        type: String,
+        required: false,
+    },
     EquipoJugador: {
       type: String,
       required: false,
@@ -90,3 +94,4 @@ const Eventos =
   mongoose.models.Eventos ||
   mongoose.model('Eventos', eventosSchema);
 export default Eventos;
+
