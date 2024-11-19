@@ -92,3 +92,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 4. To run tests, use the following command:
    ```bash
    npm test
+
+
+Tema happy test cypress(lo primero actualizar con install para tener cypress):
+- los test se crean en la carpeta cypress/e2e tenéis uno de ejemplo de como se ve la pantalla 
+- tenéis que tener el proyecto runeado y aparte deberéis abrir otra terminal para cypress
+- para tirar cypress: npx cypress open
+- os saldrá una página pues le dais a e2e y a hacerlo con firefox y le dais a start
+- os tiene que salir una carpeta con los test( ahora solo está login) pues le dais al test que queréis hacer
