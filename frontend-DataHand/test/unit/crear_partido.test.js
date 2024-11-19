@@ -77,7 +77,7 @@ describe('Sidebar', () => {
         expect(mockRouterPush).toHaveBeenCalledWith('/register-match/75');
     });
 
-    // Test unitario
+    // Test de integracion
     it('debe tener el estado inicial correctamente', () => {
         render(<Sidebar />);
 

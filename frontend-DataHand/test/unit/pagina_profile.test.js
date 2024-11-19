@@ -45,7 +45,7 @@ describe('Página de Perfil - Profile Page', () => {
         jest.clearAllMocks(); // Limpia los mocks después de cada prueba
     });
 
-    // Test Unitario
+    // Test de Integracion
     it('debe mostrar el nombre completo del usuario', async () => {
         render(<Home />);
 
@@ -82,7 +82,7 @@ describe('Página de Perfil - Profile Page', () => {
         });
     });
 
-    // Test Unitario    
+    // Test de Integracion    
     it('debe mostrar la imagen de perfil del usuario', async () => {
         render(<Home />);
     

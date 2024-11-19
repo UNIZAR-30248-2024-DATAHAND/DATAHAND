@@ -47,6 +47,7 @@ describe('Home Page', () => {
         jest.clearAllMocks(); // Limpia los mocks entre pruebas
     });
 
+    // Test de Integracion
     it('debe mostrar al menos un partido en el historial', async () => {
         render(<Home />);
 
@@ -56,6 +57,7 @@ describe('Home Page', () => {
         });
     });
 
+    // Test de Integracion
     it('debe redirigir al usuario al hacer clic en el botón de editar', async () => {
         const useRouter = require('next/navigation').useRouter;
         const mockPush = jest.fn();
@@ -74,6 +76,7 @@ describe('Home Page', () => {
         expect(mockPush).toHaveBeenCalledWith('/register-match/Partido-81');
     });
 
+    // Test de Integracion
     it('debe eliminar un partido del historial al hacer clic en el botón de borrar', async () => {
         // Mock de window.confirm para simular que el usuario hace clic en "Aceptar"
         jest.spyOn(window, 'confirm').mockReturnValue(true);

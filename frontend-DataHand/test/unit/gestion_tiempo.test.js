@@ -160,7 +160,7 @@ describe('BarraHorizontal', () => {
         });
     });
 
-    // Test Unitarios
+    // Test de Integracion
     it('debe formatear correctamente el tiempo', () => {
         render(
             <BarraHorizontal
@@ -191,31 +191,4 @@ describe('BarraHorizontal', () => {
         expect(botonSalir.closest('a')).toHaveAttribute('href', '/');
     });
 
-    // Test Unitario
-    // it('debe actualizar correctamente el marcador local', () => {
-    //     mockSetEquipos.mockImplementation((callback) => {
-    //         const nuevoEstado = callback(equipos);
-    //         expect(nuevoEstado.MarcadorLocal).toBe(1);
-    //     });
-
-    //     render(
-    //         <BarraHorizontal
-    //             equipos={equipos}
-    //             setEquipos={mockSetEquipos}
-    //             tiempoJugado={equipos.TiempoDeJuego}
-    //             setTiempoJugado={mockSetTiempoJugado}
-    //             handleNavigateStats={() => {}}
-    //         />
-    //     );
-
-    //     act(() => {
-    //         mockSetEquipos((prevState) => ({
-    //             ...prevState,
-    //             MarcadorLocal: 1,
-    //         }));
-    //     });
-
-    //     const marcador = screen.getByText('Marcador: 1 - 0');
-    //     expect(marcador).toBeInTheDocument();
-    // });
 });
