@@ -68,40 +68,42 @@ function StatBar({ value, text }) {
     }
     
     const calcularEstadisticas = () => {
+      const formatToTwoDecimals = (value) => parseFloat(value.toFixed(2)); // Formateador reutilizable
+  
       const varPosesionesLocal = contarLanzamientosYPerdidas(dataEventos, "local");
-      const varEficaciaLocal = 100*contarGoles(dataEventos, "local") / varPosesionesLocal;
-      const varEficaciaLanzamientoLocal =  100* contarGoles(dataEventos, "local") / contarLanzamientosTotal(dataEventos, "local");
-      const varPerdidasLocal = 100*contarPerdidasDeBalon(dataEventos, "local") / varPosesionesLocal;
-      const varAtaquePosicionalLocal = 100*contarAtaquePosicionalConGol(dataEventos, "local") / contarAtaquePosicional(dataEventos, "local");
-      const varContraataqueLocal = 100*contarContrataqueConGol(dataEventos, "local") / contarContrataque(dataEventos, "local");
-      const varContragolLocal = 100*contarContragolConGol(dataEventos, "local") / contarContragol(dataEventos, "local");
-
+      const varEficaciaLocal = formatToTwoDecimals(100 * contarGoles(dataEventos, "local") / varPosesionesLocal);
+      const varEficaciaLanzamientoLocal = formatToTwoDecimals(100 * contarGoles(dataEventos, "local") / contarLanzamientosTotal(dataEventos, "local"));
+      const varPerdidasLocal = formatToTwoDecimals(100 * contarPerdidasDeBalon(dataEventos, "local") / varPosesionesLocal);
+      const varAtaquePosicionalLocal = formatToTwoDecimals(100 * contarAtaquePosicionalConGol(dataEventos, "local") / contarAtaquePosicional(dataEventos, "local"));
+      const varContraataqueLocal = formatToTwoDecimals(100 * contarContrataqueConGol(dataEventos, "local") / contarContrataque(dataEventos, "local"));
+      const varContragolLocal = formatToTwoDecimals(100 * contarContragolConGol(dataEventos, "local") / contarContragol(dataEventos, "local"));
+  
       const varPosesionesVisitante = contarLanzamientosYPerdidas(dataEventos, "visitante");
-      const varEficaciaVisitante = 100*contarGoles(dataEventos, "visitante") / varPosesionesVisitante;
-      const varEficaciaLanzamientoVisitante = 100* contarGoles(dataEventos, "visitante") / contarLanzamientosTotal(dataEventos, "visitante");
-      const varPerdidasVisitante = 100*contarPerdidasDeBalon(dataEventos, "visitante") / varPosesionesVisitante;
-      const varAtaquePosicionalVisitante = 100*contarAtaquePosicionalConGol(dataEventos, "visitante") / contarAtaquePosicional(dataEventos, "visitante");
-      const varContraataqueVisitnate = 100*contarContrataqueConGol(dataEventos, "visitante") / contarContrataque(dataEventos, "visitante");
-      const varContragolVisitante = 100*contarContragolConGol(dataEventos, "visitante") / contarContragol(dataEventos, "visitante");
-
+      const varEficaciaVisitante = formatToTwoDecimals(100 * contarGoles(dataEventos, "visitante") / varPosesionesVisitante);
+      const varEficaciaLanzamientoVisitante = formatToTwoDecimals(100 * contarGoles(dataEventos, "visitante") / contarLanzamientosTotal(dataEventos, "visitante"));
+      const varPerdidasVisitante = formatToTwoDecimals(100 * contarPerdidasDeBalon(dataEventos, "visitante") / varPosesionesVisitante);
+      const varAtaquePosicionalVisitante = formatToTwoDecimals(100 * contarAtaquePosicionalConGol(dataEventos, "visitante") / contarAtaquePosicional(dataEventos, "visitante"));
+      const varContraataqueVisitante = formatToTwoDecimals(100 * contarContrataqueConGol(dataEventos, "visitante") / contarContrataque(dataEventos, "visitante"));
+      const varContragolVisitante = formatToTwoDecimals(100 * contarContragolConGol(dataEventos, "visitante") / contarContragol(dataEventos, "visitante"));
+  
       setdatosVistaGeneral(prevState => ({
-        ...prevState,
-        posesionesLocal: varPosesionesLocal, 
-        effLanzamientoLocal: varEficaciaLanzamientoLocal,
-        effLocal: varEficaciaLocal,
-        balonesPerdidosLocal: varPerdidasLocal,
-        ataquePosicionalLocal: varAtaquePosicionalLocal,
-        contraataqueLocal: varContraataqueLocal,
-        contragolLocal: varContragolLocal,
-        posesionesVisitante: varPosesionesVisitante,
-        effVisitante:varEficaciaVisitante,
-        effLanzamientoVisitante:varEficaciaLanzamientoVisitante,
-        balonesPerdidosVisitante:varPerdidasVisitante,
-        ataquePosicionalVisitante:varAtaquePosicionalVisitante,
-        contraataqueVisitante:varContraataqueVisitnate,
-        contragolVisitante:varContragolVisitante,
+          ...prevState,
+          posesionesLocal: varPosesionesLocal,
+          effLanzamientoLocal: varEficaciaLanzamientoLocal,
+          effLocal: varEficaciaLocal,
+          balonesPerdidosLocal: varPerdidasLocal,
+          ataquePosicionalLocal: varAtaquePosicionalLocal,
+          contraataqueLocal: varContraataqueLocal,
+          contragolLocal: varContragolLocal,
+          posesionesVisitante: varPosesionesVisitante,
+          effVisitante: varEficaciaVisitante,
+          effLanzamientoVisitante: varEficaciaLanzamientoVisitante,
+          balonesPerdidosVisitante: varPerdidasVisitante,
+          ataquePosicionalVisitante: varAtaquePosicionalVisitante,
+          contraataqueVisitante: varContraataqueVisitante,
+          contragolVisitante: varContragolVisitante,
       }));
-    };
+  };
 
     useEffect(() => {  
       // Solo actualizamos si el valor es diferente al actual
