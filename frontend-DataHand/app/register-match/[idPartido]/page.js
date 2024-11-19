@@ -14,6 +14,8 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
+    // VARIABLE PREDETERMINADA PARA USERID PENDIENTE DE LOGIN   
+    const userID = 1;
     const router = useRouter();
 
     const handleNavigateStats = () => {
@@ -310,26 +312,6 @@ export default function Home() {
         return equipos.local.porteros.includes(jugador) || equipos.visitante.porteros.includes(jugador);
     };
 
-    // Función para marcar gol
-    const marcarGol = (equipo) => {
-        setEquipos((prevEquipos) => {
-            if (equipo === "local") {
-                return {
-                    ...prevEquipos,
-                    MarcadorLocal: prevEquipos.MarcadorLocal + 1,
-                };
-            } else if (equipo === "visitante") {
-                return {
-                    ...prevEquipos,
-                    MarcadorVisitante: prevEquipos.MarcadorVisitante + 1,
-                };
-            } else {
-                console.warn("Equipo desconocido al intentar marcar gol:", equipo);
-                return prevEquipos; // Devuelve el estado anterior si el equipo no es válido
-            }
-        });
-    };
-
     // REGISTRAR EVENTOS
     useEffect(() => {
         // Verifica si hay eventos incompatibles activos
@@ -357,7 +339,7 @@ export default function Home() {
             console.log("Quiero guardar una accion: ", accion);
 
             // Asegurarse de que todos los valores estén presentes
-            if (!idPartido || !seleccionado.index || !equipos.TiempoDeJuego) {
+            if (!idPartido || seleccionado.index !== null || !equipos.TiempoDeJuego) {
                 console.log(idPartido, seleccionado.index, equipos.TiempoDeJuego)
                 console.error("Error: Faltan datos necesarios para registrar el evento.");
                 return; // Salir si faltan datos
@@ -424,10 +406,6 @@ export default function Home() {
     }, [datosEvento]); // Solo se ejecuta cuando 'datosEvento' cambia
 
     const handleClosePopup = () => {
-        if (resultado === "Gol") {
-            console.log("Gol detectado");
-            marcarGol(seleccionado.equipo);
-        }
         setShowPopup(false); // Oculta el popup
         // Opcional: Resetear estados si es necesario
         setFaseDeJuego(null);
@@ -820,7 +798,7 @@ export default function Home() {
 
             {/* Popup para Gol */}
             <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} asistencias={asistencias}
-             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} equipos={equipos} />   {/*Me falta pasarle el IdPartido*/}
+             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} equipos={equipos} setEquipos={setEquipos} />   {/*Me falta pasarle el IdPartido*/}
         </div>
     );
 }

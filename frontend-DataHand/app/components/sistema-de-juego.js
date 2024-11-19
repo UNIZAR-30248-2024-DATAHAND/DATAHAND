@@ -16,7 +16,7 @@ filtrarFaltasPorSistema, filtrar7MPorSistema, filtrar2MPorSistema, contarContrat
 import { useState , useEffect} from 'react';
 
 export default function SistemaDeJuego({dataEventos,dataEquipos}) {
-  //TO DO FALTAN LAS ACCIONES QUE ESTA HACIENDO JUANJO
+  //TO DO FALTA COMPROBAR QUE CON EQUIPO SALE CORRECTO
   const valoresUnicosSistemaAtaque = obtenerSistemaAtaque(dataEventos);
 
   return (

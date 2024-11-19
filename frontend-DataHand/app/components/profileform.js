@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 export default function ProfileForm({ userData, setUserData }) {
   const [previewImage, setPreviewImage] = useState(userData.fotoPerfil);
   const [password, setPassword] = useState(userData.contrasena || "");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(userData.contrasena || "") ;
   const [passwordMatchError, setPasswordMatchError] = useState(false);
 
   // Si los datos del usuario cambian, actualiza la vista previa de la imagen
@@ -18,6 +18,12 @@ export default function ProfileForm({ userData, setUserData }) {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    // Sincroniza el estado local con el valor de userData.contrasena cuando cambie
+    setPassword(userData.contrasena || "");
+    setConfirmPassword(userData.contrasena || "");
+  }, [userData.contrasena]);
 
   const handlePasswordChange = (e) => {
     const { value } = e.target;

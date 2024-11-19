@@ -253,7 +253,7 @@ const PorteriaBalonmano = ({ onClick }) => {
   );
 };
 
-const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado, idPartido, equipos }) => {
+const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado, idPartido, equipos, setEquipos }) => {
 
   if (!showPopup) return null; // Si no se debe mostrar el popup, no renderizar nada
 
@@ -300,6 +300,26 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   //HASTA AQUI
   const [eventoRegistrado, setEventoRegistrado] = useState(false); // Booleano de control
 
+  // Función para marcar gol
+  const marcarGol = (equipo) => {
+    setEquipos((prevEquipos) => {
+        if (equipo === "local") {
+            return {
+                ...prevEquipos,
+                MarcadorLocal: prevEquipos.MarcadorLocal + 1,
+            };
+        } else if (equipo === "visitante") {
+            return {
+                ...prevEquipos,
+                MarcadorVisitante: prevEquipos.MarcadorVisitante + 1,
+            };
+        } else {
+            console.warn("Equipo desconocido al intentar marcar gol:", equipo);
+            return prevEquipos; // Devuelve el estado anterior si el equipo no es válido
+        }
+    });
+  };
+
   // useEffect para actualizar datosEvento solo si todos los datos están completos
   useEffect(() => {
     // Solo actualizar datosEvento si todos los datos están completos y no se ha registrado un evento
@@ -342,6 +362,11 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         sistemaAtaque,
         sistemaDefensa
       });
+
+      if (resultado === "Gol") {
+        console.log("Gol detectado");
+        marcarGol(seleccionado.equipo);
+      }
     }
   }, [
     seleccionado.index,
