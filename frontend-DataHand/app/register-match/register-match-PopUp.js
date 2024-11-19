@@ -409,26 +409,6 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     }
   }, [datosEvento, eventoRegistrado]); // Cambiar solo si cambia datosEvento o eventoRegistrado 
 
-  const actualizarPartido = async () => {
-    try {
-        const response = await fetch('/api/users/crearPartido', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(equipos), // Se envía todo el estado actual del partido
-        });
-
-        if (response.ok) {
-            console.log("Partido actualizado exitosamente.");
-        } else {
-            console.error("Error al actualizar el partido.");
-        }
-    } catch (error) {
-        console.error("Error en la llamada a la API:", error);
-    }
-  };
-
   // Función para registrar un partido
   const registrarEvento = async () => {
     try {
@@ -445,7 +425,6 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         console.log('Evento registrado:', data);
         // Reiniciar los campos
         reiniciarCampos();
-        actualizarPartido();
 
         // Cerrar el popup
         onClose(); // Asegúrate de invocar la función

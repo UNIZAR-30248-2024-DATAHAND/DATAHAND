@@ -17,6 +17,27 @@ export default function Home() {
     // VARIABLE PREDETERMINADA PARA USERID PENDIENTE DE LOGIN   
     const userID = 1;
     const router = useRouter();
+    const [contador, setContador] = useState(0);
+
+    // Efecto para incrementar el contador cada 30 segundos
+    useEffect(() => {
+        // Crear el intervalo para incrementar el contador cada 30 segundos
+        const intervalId = setInterval(() => {
+            setContador(prevContador => prevContador + 1); // Incrementar el contador
+        }, 30000); // 30 segundos
+
+        // Limpiar el intervalo cuando el componente se desmonte
+        return () => clearInterval(intervalId);
+    }, []); // El intervalo solo se establece una vez cuando el componente se monta
+
+    // Efecto para guardar el partido cuando el contador cambia
+    useEffect(() => {
+        if (contador > 0) {
+            console.log("Guardando el estado del partido, contador:", contador);
+            actualizarPartido(); // Llamar a la función para guardar el partido
+        }
+    }, [contador]); // Se ejecuta cada vez que cambia el contador
+
 
     const handleNavigateStats = () => {
         // Navegar a la URL con idPartido
@@ -133,9 +154,10 @@ export default function Home() {
         }
     };
 
+    // Función para actualizar el partido
     const actualizarPartido = async () => {
         try {
-            const response = await fetch('/api/users/crearPartido', {
+            const response = await fetch(`/api/users/crearPartido`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -185,10 +207,29 @@ export default function Home() {
         }
     }, [idPartido]);
 
-    // useEffect para verificar cambios en equipos
+    // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
     useEffect(() => {
-        console.log('Estado de equipos actualizado:', equipos); // Monitorear cambios en el estado de `equipos`
-    }, [equipos]);
+        const actualizarPartidoAsync = async () => {
+            // Llamar a actualizarPartido y esperar su resolución
+            await actualizarPartido();
+
+            // Solo después de que la actualización se complete, monitoreamos los cambios
+            console.log('Estado de equipos actualizado:', equipos);
+        };
+
+        // Ejecutar la función asíncrona
+        actualizarPartidoAsync();
+    }, [
+        equipos.EquipoLocal, 
+        equipos.EquipoVisitante, 
+        equipos.MarcadorLocal,
+        equipos.MarcadorVisitante, 
+        equipos.Parte, 
+        equipos.local,
+        equipos.visitante,
+        equipos.sistemaDefensivoLocal,
+        equipos.sistemaDefensivoVisitante
+    ]); // Aquí solo se depende de las propiedades que queremos monitorear, excluyendo `TiempoDeJuego`
 
     const [seleccionado, setSeleccionado] = useState({ equipo: null, index: null, tipo: null }); // Para manejar el jugador seleccionado
     const [faseDeJuego, setFaseDeJuego] = useState(null);
@@ -300,9 +341,6 @@ export default function Home() {
             }
         }
 
-        // Llama a la función actualizarPartido para realizar la solicitud
-        actualizarPartido();
-
         // Reiniciar selección después de intercambiar
         setSeleccionado({ equipo: null, index: null, tipo: null });
     };
@@ -339,7 +377,7 @@ export default function Home() {
             console.log("Quiero guardar una accion: ", accion);
 
             // Asegurarse de que todos los valores estén presentes
-            if (!idPartido || seleccionado.index !== null || !equipos.TiempoDeJuego) {
+            if (!idPartido || seleccionado.index === null || !equipos.TiempoDeJuego) {
                 console.log(idPartido, seleccionado.index, equipos.TiempoDeJuego)
                 console.error("Error: Faltan datos necesarios para registrar el evento.");
                 return; // Salir si faltan datos
@@ -361,7 +399,7 @@ export default function Home() {
             console.log("Quiero guardar una suspension: ", suspension);
 
             // Asegurarse de que todos los valores estén presentes
-            if (!idPartido || !seleccionado.index || !equipos.TiempoDeJuego) {
+            if (!idPartido || seleccionado.index === null || !equipos.TiempoDeJuego) {
                 console.error("Error: Faltan datos necesarios para registrar el evento.");
                 return; // Salir si faltan datos
             }
@@ -411,7 +449,6 @@ export default function Home() {
         setFaseDeJuego(null);
         setResultado(null);
         setSeleccionado({ equipo: null, index: null, tipo: null });
-        actualizarPartido();
     };
     
     const seleccionarSistemaDefensivoLocal = (opcion) => {
@@ -419,7 +456,6 @@ export default function Home() {
             ...prevEquipos,
             sistemaDefensivoLocal: opcion, // Actualiza el sistema defensivo local en el estado
         }));
-        actualizarPartido();
     };
     
     const seleccionarSistemaDefensivoVisitante = (opcion) => {
@@ -427,32 +463,7 @@ export default function Home() {
             ...prevEquipos,
             sistemaDefensivoVisitante: opcion, // Actualiza el sistema defensivo visitante en el estado
         }));
-        actualizarPartido();
     };
-
-    // Almacenar el estado del partido periodicamente para dar consistencia
-    useEffect(() => {
-        const intervalId = setInterval(async () => {
-            // Aquí llama al PUT para enviar el estado actual del partido
-            const response = await fetch('/api/users/crearPartido', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(equipos),
-            });
-    
-            const result = await response.json();
-            if (response.ok) {
-                console.log('Partido actualizado exitosamente:', result);
-            } else {
-                console.error('Error al actualizar el partido:', result.error);
-            }
-        }, 30000); // 30 segundos
-    
-        // Limpia el intervalo al desmontar el componente
-        return () => clearInterval(intervalId);
-    }, [equipos]); // Dependencia para que siempre envíe el estado actual
 
     
     //useEfect para el evento de la tabla
@@ -466,7 +477,7 @@ export default function Home() {
     
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
-            <Sidebar />
+            <Sidebar userID={userID}/>
             <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
                 Partido
             </h1>

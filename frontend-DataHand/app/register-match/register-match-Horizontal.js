@@ -45,28 +45,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                 sistemaDefensivoVisitante: equipo.sistemaDefensivo,
             }));
         }
-        actualizarPartido();
         setShowEquipoSelector(false); // Cierra el popup
-    };
-
-    const actualizarPartido = async () => {
-        try {
-            const response = await fetch('/api/users/crearPartido', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(equipos), // Se envía todo el estado actual del partido
-            });
-
-            if (response.ok) {
-                console.log("Partido actualizado exitosamente.");
-            } else {
-                console.error("Error al actualizar el partido.");
-            }
-        } catch (error) {
-            console.error("Error en la llamada a la API:", error);
-        }
     };
 
     // Maneja el click en los equipos (local o visitante)
@@ -145,7 +124,6 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         detenerCronometro(); // Detiene el cronómetro si estaba activo
         setTextoBoton("Fin del partido"); // Cambia el texto del botón
         setPrimerTiempoFinalizado(true); // Marca que el primer tiempo ha terminado
-        actualizarPartido();
     };
 
     // Maneja el fin del partido
@@ -157,7 +135,6 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         }));
         setTextoBoton("Partido acabado"); // Cambia el texto del botón
         detenerCronometro(); // Detiene el cronómetro
-        actualizarPartido();
     };
 
     const manejarClickFinPartido = async () => {
