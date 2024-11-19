@@ -351,7 +351,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
       // Actualizar el estado de datosEvento
       setDatosEvento({
         IdPartido: idPartido,
-        IdJugador: seleccionado.index,
+        IdJugador: equipos[seleccionado.equipo].jugadores[seleccionado.index],
         EquipoJugador: seleccionado.equipo,
         MinSeg: tiempoJugado,
         faseDeJuego,
@@ -400,8 +400,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     ) {
       // Marcar el evento como registrado
       setEventoRegistrado(true);
-      console.log("Evento registrado:", datosEvento);
-
+      
       // Otra función de llamada para gol - SANZSANZ
 
       // Llamar a la función para registrar el evento

@@ -382,11 +382,18 @@ export default function Home() {
                 console.error("Error: Faltan datos necesarios para registrar el evento.");
                 return; // Salir si faltan datos
             }
+
+            console.log("Aqui llego")
+
+            console.log("Quiero guardar una accion - INDEX: ", seleccionado.index);
+            console.log("Quiero guardar una accion - EQYUOIJGUADOR: ", seleccionado.equipo);
+
+
             
             // Actualizar el estado con los datos del evento
             setDatosEvento({
                 IdPartido: idPartido,
-                IdJugador: seleccionado.index,
+                IdJugador: equipos[seleccionado.equipo].jugadores[seleccionado.index],
                 EquipoJugador: seleccionado.equipo,
                 faseDeJuego: faseDeJuego,
                 MinSeg: equipos.TiempoDeJuego,  // Suponiendo que 'faseDeJuego' es el tiempo
@@ -407,7 +414,7 @@ export default function Home() {
             // Actualizar el estado con los datos del evento
             setDatosEvento({
                 IdPartido: idPartido,
-                IdJugador: seleccionado.index,
+                IdJugador: equipos[seleccionado.equipo].jugadores[seleccionado.index],
                 EquipoJugador: seleccionado.equipo,
                 faseDeJuego: faseDeJuego,
                 MinSeg: equipos.TiempoDeJuego,  // Suponiendo que 'faseDeJuego' es el tiempo
@@ -429,7 +436,7 @@ export default function Home() {
 
     useEffect(() => {
         const handleEvento = async () => {
-            if (datosEvento.IdPartido && datosEvento.IdJugador) {
+            if (datosEvento.IdPartido && datosEvento.IdJugador !== null) {
                 try {
                     await registrarEvento(); // Esperar a que se complete el registro del evento
                     // Resetear variables solo después de registrar el evento
