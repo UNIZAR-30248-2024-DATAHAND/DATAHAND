@@ -509,6 +509,38 @@ export const obtenerJugadores = (dataEventos) => {
   }
 };
 
+export const obtenerJugadoresEquipo = (dataEventos, equipo) => {
+  // Verifica que dataEventos sea un arreglo
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos por el equipo proporcionado y obtiene los jugadores únicos
+    const valoresUnicos = new Set(
+      dataEventos
+        .filter((evento) => evento.EquipoJugador === equipo) // Filtra por equipo
+        .map((evento) => evento.IdJugador) // Extrae los IdJugador
+    );
+    return [...valoresUnicos]; // Convierte el Set a un array y lo retorna
+  } else {
+    console.error("dataEventos no es un arreglo");
+    return []; // Retorna un array vacío si no es un arreglo
+  }
+};
+
+export const obtenerPorterosEquipo = (dataEventos, equipo) => { //OJO AQUI EL EQUIPO TIENE QUE IR AL REVES
+  // Verifica que dataEventos sea un arreglo
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos por el equipo proporcionado y obtiene los jugadores únicos
+    const valoresUnicos = new Set(
+      dataEventos
+        .filter((evento) => evento.EquipoJugador === equipo) // Filtra por equipo
+        .map((evento) => evento.IdPortero) // Extrae los IdJugador
+    );
+    return [...valoresUnicos]; // Convierte el Set a un array y lo retorna
+  } else {
+    console.error("dataEventos no es un arreglo");
+    return []; // Retorna un array vacío si no es un arreglo
+  }
+};
+
 export const obtenerResultadoIntervaloJugador = (dataEventos, resultado, inicio, fin, jugador, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
@@ -598,6 +630,34 @@ export const obtenerAsistenciaTotalJugador = (dataEventos, jugadorAsistencia, eq
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
     const eventosPalo = dataEventos.filter(evento => 
       evento.Resultado === "Gol" && evento.EquipoJugador === equipo && evento.Asistencia === jugadorAsistencia
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const obtenerResultadoIntervaloPortero = (dataEventos, resultado, inicio, fin, portero, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.Resultado === resultado && evento.EquipoJugador === equipo && evento.IdPortero === portero && evento.MinSeg >= inicio && evento.MinSeg < fin
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
+export const obtenerResultadoTotalPortero = (dataEventos, resultado, portero, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.Resultado === resultado && evento.IdPortero === portero && evento.EquipoJugador === equipo
     );
     
     return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
