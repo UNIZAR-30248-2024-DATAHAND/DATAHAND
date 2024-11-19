@@ -143,6 +143,11 @@ export default function Home() {
     router.push(`/register-match/${idPartido}`);
   };
 
+  const handleViewClick = (idPartido) => {
+    // Redirige a la página de registro del partido correspondiente
+    router.push(`/statsGen/${idPartido}`);
+  };
+
   const handleDeleteClick = (idPartido) => {
     // Mostrar la alerta de confirmación
     const confirmarEliminacion = window.confirm("¿Está seguro de querer eliminar este partido?");
@@ -221,7 +226,7 @@ export default function Home() {
               )}
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded"
-                onClick={() => actualizarEquipoVisitante(idPartido, 'MaulasFC')}
+                onClick={() => handleViewClick(idPartido)}
               >
                 Ver
               </button>
