@@ -42,7 +42,7 @@ describe("BarraHorizontal Component", () => {
         );
 
         // Verificar que el botón 'Eventos' está en el documento
-        const eventosButton = screen.getByText(/eventos/i);
+        const eventosButton = screen.getByText(/estadísticas/i);
         expect(eventosButton).toBeInTheDocument();
 
         // Simular el click en el botón
