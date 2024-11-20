@@ -32,13 +32,29 @@ const { Builder, By, until } = require('selenium-webdriver');
         const registrarPartidoButton = await driver.findElement(By.css('[aria-label="Registrar partido"]'));
         await registrarPartidoButton.click();
 
-        // Esperar a que el botón "Estadísticas" esté visible utilizando el aria-label
-        await driver.wait(until.elementLocated(By.css('[aria-label="Eventos"]')), 5000);
+        await driver.sleep(2000);
+
+        // Esperar a que el botón "Estadísticas" esté visible
+        await driver.wait(until.elementLocated(By.xpath("//*[text()='Estadísticas']")), 5000);
 
         // Hacer clic en el botón "Estadísticas"
-        const estadisticasButton = await driver.findElement(By.css('[aria-label="Estadísticas"]'));
+        const estadisticasButton = await driver.findElement(By.xpath("(//button[text()='Estadísticas'])[2]"));
         await estadisticasButton.click();
-        console.log('Botón "Estadísticas" clicado exitosamente');
+
+        await driver.sleep(2000);
+
+        // Esperar a que el botón esté visible
+        const vistaGeneralButton = await driver.wait(until.elementLocated(By.id('radix-:r0:-trigger-vista-general')), 5000);
+        
+        // Hacer clic en el botón si se encuentra
+        if (vistaGeneralButton) {
+            console.log("Test logrado: El botón 'VISTA GENERAL' fue encontrado.");
+            console.log('Prueba exitosa: PBI 12 realizada');
+        } else {
+            console.log("El botón 'VISTA GENERAL' no fue encontrado.");
+        }
+
+        
 
     } catch (error) {
         console.error('Prueba fallida:', error);
