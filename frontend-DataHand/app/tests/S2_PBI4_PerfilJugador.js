@@ -67,14 +67,14 @@ const { Builder, By, until } = require('selenium-webdriver');
         );
         const name = await playerInfoContainer.getText();
 
-        // Verificar que el nombre del jugador sea correcto
-        if (name === 'Carlos Pérez') {
-            console.log('Información del jugador verificada correctamente.');
+        // Verificar que el texto del encabezado sea "Estadísticas"
+        if (statsHeaderText === 'Estadísticas') {
+            console.log('Cabecera "Estadísticas" verificada correctamente.');
         } else {
-            console.error('La información del jugador es incorrecta. Nombre encontrado:', name);
+            console.error('La cabecera "Estadísticas" no es la esperada. Se encontró:', statsHeaderText);
         }
 
-        console.log('Prueba exitosa: Perfil del jugador verificado');
+        console.log('Prueba exitosa: Perfil del jugador y sección de estadísticas verificada');
     } catch (error) {
         console.error('Prueba fallida:', error);
     } finally {

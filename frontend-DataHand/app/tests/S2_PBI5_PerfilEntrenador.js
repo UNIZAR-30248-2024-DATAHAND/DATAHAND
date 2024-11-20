@@ -48,36 +48,29 @@ const { Builder, By, until } = require('selenium-webdriver');
         // Hacer clic en el botón de toggle para mostrar el sidebar
         await toggleSidebarButton.click();
 
-        // Esperar 2 segundos
-        await driver.sleep(2000);
-
-        // Verificar que la cabecera "Perfil Entrenador" esté presente
-        const header = await driver.wait(
-            until.elementLocated(By.css('h1.text-5xl.font-bold.mb-4.text-white')),
+        // Verificar que el div con "Partido-81" y los botones esté presente
+        const partidoElement = await driver.wait(
+            until.elementLocated(By.xpath("//div[contains(@class, 'flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded')]//p[contains(text(), 'Partido-81')]")),
             5000
         );
-        const headerText = await header.getText();
-        if (headerText === 'Perfil Entrenador') {
-            console.log('Cabecera "Perfil Entrenador" verificada correctamente.');
+
+        // Verificar que el texto sea "Partido-81"
+        const partidoText = await partidoElement.getText();
+        if (partidoText === 'Partido-81') {
+            console.log('El div con "Partido-81" está presente en la página.');
         } else {
-            console.error('La cabecera no es la esperada. Se encontró: ' + headerText);
+            console.error('No se encontró el partido esperado. Se encontró: ' + partidoText);
         }
 
-        // Verificar la información del entrenador
-        const coachInfoContainer = await driver.wait(
-            until.elementLocated(By.css('p.text-3xl.font-semibold.text-orange-500')),  // Usar un selector CSS más directo
-            5000
-        );
-        const name = await coachInfoContainer.getText();
-
-        // Verificar que el nombre del entrenador sea correcto
-        if (name === 'Jaime Chuletaa') {
-            console.log('Información del entrenador verificada correctamente.');
+        // Verificar que los botones estén presentes (Editar, Borrar, Ver)
+        const buttons = await driver.findElements(By.xpath("//div[contains(@class, 'flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded')]//p[contains(text(), 'Partido-81')]/following-sibling::div//button"));
+        if (buttons.length === 3) {
+            console.log('Los tres botones (Editar, Borrar, Ver) están presentes para "Partido-81".');
         } else {
-            console.error('La información del entrenador es incorrecta. Nombre encontrado:', name);
+            console.error('No se encontraron los tres botones. Número de botones encontrados: ' + buttons.length);
         }
 
-        console.log('Prueba exitosa: Perfil del entrenador verificado');
+        console.log('Prueba exitosa: Perfil entrenador con historial de partidos');
     } catch (error) {
         console.error('Prueba fallida:', error);
     } finally {
