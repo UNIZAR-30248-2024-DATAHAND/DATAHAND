@@ -48,13 +48,11 @@ const { Builder, By, until } = require('selenium-webdriver');
         
         // Hacer clic en el botón si se encuentra
         if (vistaGeneralButton) {
-            console.log("Test logrado: El botón 'VISTA GENERAL' fue encontrado.");
-            console.log('Prueba exitosa: PBI 12 realizada');
+            console.log("Test logrado: El botón estadisticas fue pulsado.");
+            console.log('Prueba exitosa: PBI 8 realizada');
         } else {
-            console.log("El botón 'VISTA GENERAL' no fue encontrado.");
+            console.log("El botón estadisticas no fue encontrado.");
         }
-
-        
 
     } catch (error) {
         console.error('Prueba fallida:', error);
