@@ -60,21 +60,29 @@ const { Builder, By, until } = require('selenium-webdriver');
             console.error('La cabecera no es la esperada. Se encontró: ' + headerText);
         }
 
-        // Verificar la información del jugador
-        const playerInfoContainer = await driver.wait(
-            until.elementLocated(By.css('p.text-3xl.font-semibold.text-orange-500')),  // Usar un selector CSS más directo
+        // Verificar que el div con "Partido-82" y los botones esté presente
+        const partidoElement = await driver.wait(
+            until.elementLocated(By.xpath("//div[contains(@class, 'flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded')]//p[contains(text(), 'Partido-82')]")),
             5000
         );
-        const name = await playerInfoContainer.getText();
 
-        // Verificar que el nombre del jugador sea correcto
-        if (name === 'Carlos Pérez') {
-            console.log('Información del jugador verificada correctamente.');
+        // Verificar que el texto sea "Partido-82"
+        const partidoText = await partidoElement.getText();
+        if (partidoText === 'Partido-82') {
+            console.log('El div con "Partido-82" está presente en la página.');
         } else {
-            console.error('La información del jugador es incorrecta. Nombre encontrado:', name);
+            console.error('No se encontró el partido esperado. Se encontró: ' + partidoText);
         }
 
-        console.log('Prueba exitosa: Perfil del jugador verificado');
+        // Verificar que el botón "Ver" esté presente
+        const buttonVer = await driver.wait(
+            until.elementLocated(By.xpath("//div[contains(@class, 'flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded')]//p[contains(text(), 'Partido-82')]/following-sibling::div//button[contains(text(), 'Ver')]")),
+            5000
+        );
+
+        console.log('El botón "Ver" está presente para "Partido-82".');
+
+        console.log('Prueba exitosa: Perfil jugador con historial de partidos.');
     } catch (error) {
         console.error('Prueba fallida:', error);
     } finally {

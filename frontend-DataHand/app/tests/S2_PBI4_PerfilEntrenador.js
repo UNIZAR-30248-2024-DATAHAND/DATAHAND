@@ -1,6 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
-(async function testPlayerProfile() {
+(async function testCoachProfile() {
     // Inicializar el controlador para Chrome
     let driver = await new Builder().forBrowser('chrome').build();
 
@@ -24,17 +24,17 @@ const { Builder, By, until } = require('selenium-webdriver');
         // Verificar la redirección a "/home"
         await driver.wait(until.urlIs('http://localhost:3000/home'), 5000);
 
-        // Esperar a que el botón "jugador" esté visible
-        const playerButton = await driver.wait(
-            until.elementLocated(By.xpath("//button[contains(text(),'Jugador')]")), // Selector por texto
+        // Esperar a que el botón "Entrenador" esté visible
+        const coachButton = await driver.wait(
+            until.elementLocated(By.xpath("//button[contains(text(),'Entrenador')]")), // Selector por texto
             5000
         );
 
-        // Hacer clic en el botón "jugador"
-        await playerButton.click();
+        // Hacer clic en el botón "Entrenador"
+        await coachButton.click();
 
-        // Verificar la redirección al perfil de jugador
-        await driver.wait(until.urlIs('http://localhost:3000/profile/2'), 5000);
+        // Verificar la redirección al perfil de entrenador
+        await driver.wait(until.urlIs('http://localhost:3000/profile/1'), 5000);
 
         // Esperar a que el botón para activar el sidebar esté visible
         const toggleSidebarButton = await driver.wait(
@@ -48,33 +48,33 @@ const { Builder, By, until } = require('selenium-webdriver');
         // Hacer clic en el botón de toggle para mostrar el sidebar
         await toggleSidebarButton.click();
 
-        // Verificar que la cabecera "Perfil jugador" esté presente
+        // Verificar que la cabecera "Perfil Entrenador" esté presente
         const header = await driver.wait(
             until.elementLocated(By.css('h1.text-5xl.font-bold.mb-4.text-white')),
             5000
         );
         const headerText = await header.getText();
-        if (headerText === 'Perfil Jugador') {
-            console.log('Cabecera "Perfil Jugador" verificada correctamente.');
+        if (headerText === 'Perfil Entrenador') {
+            console.log('Cabecera "Perfil Entrenador" verificada correctamente.');
         } else {
             console.error('La cabecera no es la esperada. Se encontró: ' + headerText);
         }
 
-        // Verificar la información del jugador
-        const playerInfoContainer = await driver.wait(
-            until.elementLocated(By.css('p.text-3xl.font-semibold.text-orange-500')),  // Usar un selector CSS más directo
+        // Verificar la cabecera "Estadísticas"
+        const statsHeader = await driver.wait(
+            until.elementLocated(By.css('h2.text-3xl.font-semibold.text-orange-500')),  // Selector CSS para el h2
             5000
         );
-        const name = await playerInfoContainer.getText();
+        const statsHeaderText = await statsHeader.getText();
 
-        // Verificar que el nombre del jugador sea correcto
-        if (name === 'Carlos Pérez') {
-            console.log('Información del jugador verificada correctamente.');
+        // Verificar que el texto del encabezado sea "Estadísticas"
+        if (statsHeaderText === 'Estadísticas') {
+            console.log('Cabecera "Estadísticas" verificada correctamente.');
         } else {
-            console.error('La información del jugador es incorrecta. Nombre encontrado:', name);
+            console.error('La cabecera "Estadísticas" no es la esperada. Se encontró:', statsHeaderText);
         }
 
-        console.log('Prueba exitosa: Perfil del jugador verificado');
+        console.log('Prueba exitosa: Perfil del entrenador y sección de estadísticas verificada');
     } catch (error) {
         console.error('Prueba fallida:', error);
     } finally {
