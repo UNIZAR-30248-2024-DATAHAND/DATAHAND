@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import styles from './styles/Input1.module.css'; // Ajusta la ruta según tu estructura
 import { useState } from 'react'; // Importamos useState para gestionar el estado
 import { useRouter } from 'next/navigation'; // Importamos useRouter desde next/navigation
 import { connectDB } from '../lib/db.js';
@@ -120,16 +121,16 @@ export default function Login() {
               placeholder="Nombre de usuario"
               value={nombreUsuario}
               onChange={(e) => setNombreUsuario(e.target.value)} // Actualiza el nombre de usuario
-              className="input-field"
-              style={{ fontFamily: 'var(--font-geist-mono)' }}
+              className={styles.input1} // Aplica los estilos del módulo CSS
+              // style={{ fontFamily: 'var(--font-geist-mono)' }}
             />
             <input
               type="password"
               placeholder="Contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)} // Actualiza la contraseña
-              className="input-field"
-              style={{ fontFamily: 'var(--font-geist-mono)' }}
+              className={styles.input1} // Aplica los estilos del módulo CSS
+              // style={{ fontFamily: 'var(--font-geist-mono)' }}
             />
             <button
               className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
