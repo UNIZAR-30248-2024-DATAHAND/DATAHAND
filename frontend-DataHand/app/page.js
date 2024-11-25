@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './styles/Input1.module.css'; // Ajusta la ruta según tu estructura
+import styles2 from './styles/Button1.module.css'; // Ajusta la ruta según tu estructura
 import { useState } from 'react'; // Importamos useState para gestionar el estado
 import { useRouter } from 'next/navigation'; // Importamos useRouter desde next/navigation
 import { connectDB } from '../lib/db.js';
@@ -133,20 +134,65 @@ export default function Login() {
               // style={{ fontFamily: 'var(--font-geist-mono)' }}
             />
             <button
-              className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
-              style={{ fontFamily: 'var(--font-geist-sans)' }}
+              // className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
+              // style={{ fontFamily: 'var(--font-geist-sans)' }}
+              className={styles2['styled-button']} // Aplica los estilos del módulo CSS para Button1.              
               onClick={redirigirAHome} // Aquí redirigimos sin iniciar sesión
             >
               Iniciar Sesión
+              <div className={styles2['inner-button']}>                
+                <svg
+                  id="Arrow"
+                  viewBox="0 0 32 32"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="30px"
+                  width="30px"
+                  className={styles2.icon}                
+                >
+                  <defs>
+                    <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="iconGradient">
+                      <stop style={{ stopColor: '#FFFFFF', stopOpacity: 1 }} offset="0%" />
+                      <stop style={{ stopColor: '#AAAAAA', stopOpacity: 1 }} offset="100%" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    fill="url(#iconGradient)"
+                    d="M4 15a1 1 0 0 0 1 1h19.586l-4.292 4.292a1 1 0 0 0 1.414 1.414l6-6a.99.99 0 0 0 .292-.702V15c0-.13-.026-.26-.078-.382a.99.99 0 0 0-.216-.324l-6-6a1 1 0 0 0-1.414 1.414L24.586 14H5a1 1 0 0 0-1 1z"
+                  />
+                </svg>
+              </div>
+            </button>
+            <button
+              // className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center mt-4"
+              // style={{ fontFamily: 'var(--font-geist-sans)' }}
+              className={`${styles2['styled-button']}`} // Aplica los estilos del módulo CSS para Button1.            
+              onClick={registrarUsuario} // Conectamos la función de registrar usuario
+            >
+              Registrarse
+              <div className={styles2['inner-button']}>            
+                <svg
+                  id="Arrow"
+                  viewBox="0 0 32 32"
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="30px"
+                  width="30px"
+                  className={styles2.icon}              
+                >
+                  <defs>
+                    <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="iconGradient">
+                      <stop style={{ stopColor: '#FFFFFF', stopOpacity: 1 }} offset="0%" />
+                      <stop style={{ stopColor: '#AAAAAA', stopOpacity: 1 }} offset="100%" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    fill="url(#iconGradient)"
+                    d="M4 15a1 1 0 0 0 1 1h19.586l-4.292 4.292a1 1 0 0 0 1.414 1.414l6-6a.99.99 0 0 0 .292-.702V15c0-.13-.026-.26-.078-.382a.99.99 0 0 0-.216-.324l-6-6a1 1 0 0 0-1.414 1.414L24.586 14H5a1 1 0 0 0-1 1z"
+                  />
+                </svg>
+              </div>
             </button>
           </form>
-          <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center mt-4"
-            style={{ fontFamily: 'var(--font-geist-sans)' }}
-            onClick={registrarUsuario} // Conectamos la función de registrar usuario
-          >
-            Registrarse
-          </button>
+          
           {mensaje && <p className="text-white text-center mt-6">{mensaje}</p>}
           <p
             className="text-white text-center mt-6"

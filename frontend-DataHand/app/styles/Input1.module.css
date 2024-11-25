@@ -7,15 +7,15 @@
     background-color: #ccc;
     box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
     transition: 300ms ease-in-out;
-    color: rgb(71, 71, 71); /* Texto negro al escribir */
+    color: rgb(107, 107, 107); /* Texto negro al escribir */
   }
   
   /* Efecto al enfocar */
   .input1:focus {
     background-color: white;
     transform: scale(1.05);
-    box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3); /* Suavizamos el brillo */
-  }
+    box-shadow: 3px 3px 50px #969696,
+    -3px -3px 50px #ffffff;  }
   
   /* Efecto hover opcional */
   .input1:hover {

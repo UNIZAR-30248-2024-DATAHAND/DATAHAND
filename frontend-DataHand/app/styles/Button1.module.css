@@ -1,0 +1,77 @@
+/* From Uiverse.io by elijahgummer */ 
+.styled-button {
+    position: relative;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(to bottom, #5e5e5e, #a6a6a6); /* Gris medios */
+    border-radius: 9999px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(100, 100, 100, 1), 0 10px 20px rgba(100, 100, 100, 0.4); /* Sombra gris */
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #8c8c8c; /* Borde gris medio */
+}
+
+.styled-button::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    background: linear-gradient(to bottom, #8c8c8c, #666666); /* Gris medios */
+    z-index: -1;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+    opacity: 1;
+}
+
+.styled-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 2px rgba(100, 100, 100, 1), 0 5px 10px rgba(100, 100, 100, 0.4); /* Sombra gris */
+}
+
+.styled-button .inner-button {
+    position: relative; /* Ensure relative positioning for pseudo-element */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #7a7a7a, #a6a6a6); /* Gris medios */
+    width: 40px;
+    height: 40px;
+    margin-left: 20px;
+    border-radius: 50%;
+    box-shadow: 0 0 1px rgba(100, 100, 100, 1); /* Sombra gris */
+    border: 1px solid #8c8c8c; /* Borde gris medio */
+    transition: all 0.2s ease;
+}
+
+.styled-button .inner-button::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -1px;
+    bottom: -1px;
+    left: -1px;
+    background: linear-gradient(to bottom, #8c8c8c, #666666); /* Gris medios */
+    z-index: -1;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+    opacity: 1;
+}
+
+.styled-button .inner-button .icon {
+    filter: drop-shadow(0 10px 20px rgba(100, 100, 100, 0.9)) /* Sombra gris */
+      drop-shadow(0 0 4px rgba(100, 100, 100, 1)); /* Sombra gris */
+    transition: all 0.4s ease-in-out;
+}
+
+.styled-button .inner-button .icon:hover {
+    filter: drop-shadow(0 10px 20px rgba(150, 150, 150, 1)) /* Sombra gris */
+      drop-shadow(0 0 20px rgba(100, 100, 100, 1)); /* Sombra gris */
+    transform: rotate(-35deg);
+}
