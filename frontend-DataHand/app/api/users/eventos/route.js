@@ -96,3 +96,63 @@ export async function GET(req) {
       });
   }
 }
+
+export async function DELETE(req) {
+  try {
+    // Conectar a la base de datos
+    await connectDB();
+
+    // Obtener el parámetro `IdEvento` desde la URL
+    const url = new URL(req.url);
+    const idEvento = url.searchParams.get('IdEvento');
+
+    if (!idEvento) {
+      return new Response(
+        JSON.stringify({ error: 'El parámetro IdEvento es requerido' }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
+    // Buscar y eliminar el evento
+    const eventoEliminado = await Eventos.findOneAndDelete({ IdEvento: idEvento });
+
+    if (!eventoEliminado) {
+      return new Response(
+        JSON.stringify({ error: 'Evento no encontrado' }),
+        {
+          status: 404,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+    }
+
+    // Devolver la respuesta exitosa
+    return new Response(
+      JSON.stringify({ message: 'Evento eliminado exitosamente', evento: eventoEliminado }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  } catch (error) {
+    console.error('Error al eliminar el evento:', error);
+    return new Response(
+      JSON.stringify({ error: 'Error al eliminar el evento' }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+}

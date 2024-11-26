@@ -411,7 +411,8 @@ export default function Home() {
                 Accion: accion,       // La acción seleccionada
                 Suspension: null,     // No hay suspensión en este caso
             });
-
+            
+    
         // Registrar evento con Suspensión
         } else if (seleccionado.tipo === "jugador" && faseDeJuego !== null && resultado === null && accion === null && suspension !== null) {
             console.log("Quiero guardar una suspension: ", suspension);
@@ -454,13 +455,17 @@ export default function Home() {
                     const eventosObtenidos = await obtenerEventos(idPartido);
                     setEventos(eventosObtenidos);
                     // Resetear variables solo después de registrar el evento
+                    if(datosEvento.Accion !== null){
+                        window.confirm("Se ha registrado un evento de: "+ datosEvento.Accion + " del jugador: "+ datosEvento.IdJugador);
+                    } else {
+                        window.confirm("Se ha registrado un evento de: "+ datosEvento.Suspension + " del jugador: "+ datosEvento.IdJugador);
+                    }
                     resetearDatosEvento();
                 } catch (error) {
                     console.error("Error al registrar el evento:", error);
                 }
             }
         };
-    
         handleEvento();
     }, [datosEvento]); // Solo se ejecuta cuando 'datosEvento' cambia
 

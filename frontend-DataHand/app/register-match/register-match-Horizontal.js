@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import styles from '../styles/PopupTeams.module.css';
-
+import { useParams } from 'next/navigation';
 
 // <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado}/>
 const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats}) => {
@@ -163,6 +163,84 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         }
     };
 
+    const {idPartido} = useParams();
+
+    const obtenerUltimoEvento = async (idPartido) => {
+        try {
+            const url = idPartido
+                ? `../api/users/eventos?idPartido=${idPartido}`
+                : `../api/users/eventos`;
+            const res = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+      
+            if (res.ok) {
+                const data = await res.json();
+
+                if (data.eventos && data.eventos.length > 0) {
+                    const ultimoEvento = data.eventos[data.eventos.length - 1]; // Obtiene el último evento
+                    return ultimoEvento; // Retorna el último evento
+                } else {
+                    console.log('No hay eventos disponibles.');
+                    return null; // Devuelve null si no hay eventos
+                }
+            } else {
+                console.error('Error al obtener los eventos');
+            }
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+        }
+      };
+
+      const eliminarEvento = async (idEvento) => {
+        try {
+            const res = await fetch(`../api/users/eventos?IdEvento=${idEvento}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (res.ok) {
+                console.log('Evento eliminado correctamente');
+                const data = await res.json(); // Si deseas obtener datos del evento eliminado
+            } else {
+                const errorData = await res.json(); // Captura el mensaje de error del servidor
+                console.error('Error al eliminar el evento:', errorData.error || 'Error desconocido');
+            }
+        } catch (error) {
+            console.error('Error en la solicitud DELETE:', error);
+        }
+    };
+    
+      const handleUndo = async () => {
+        try {
+            const ultimoEvento = await obtenerUltimoEvento(equipos.idPartido); // Asegúrate de que `equipos` contiene `idPartido`
+            
+            if (ultimoEvento) {
+                console.log('Último evento a deshacer:', ultimoEvento);
+                // Aquí puedes realizar la lógica de eliminación o reversión del evento
+                // Ejemplo: Mostrar una alerta para confirmar la acción
+                const confirmar = window.confirm(`¿Deseas deshacer el ultimo evento del jugador `+ ultimoEvento.IdJugador +`?`);
+                
+                if (confirmar) {
+                    // Lógica para deshacer el evento en el backend o frontend
+                    // Por ejemplo, hacer un DELETE en tu API
+                    eliminarEvento(ultimoEvento.IdEvento);
+                    alert('El evento se ha deshecho correctamente.');
+                }
+            } else {
+                alert('No hay eventos para deshacer.');
+            }
+        } catch (error) {
+            console.error('Error al deshacer el último evento:', error);
+            alert('Hubo un error al intentar deshacer el último evento.');
+        }
+    };
+
     return (
         <div className="w-full h-32 bg-white rounded-lg flex items-center justify-between p-4 mb-8 shadow-md">
             {/* Escudos y Nombres de Equipos */}
@@ -241,7 +319,12 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                 </div>
             </div>
 
-            <button className="bg-gray-300 text-black px-4 py-2 rounded">UNDO</button>
+            <button 
+                className="bg-gray-300 text-black px-4 py-2 rounded"
+                onClick={handleUndo}
+            >
+            UNDO
+            </button>
             <button
             onClick={handleNavigateStats}
             className="bg-gray-300 text-black px-4 py-2 rounded"

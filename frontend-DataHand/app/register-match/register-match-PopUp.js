@@ -432,6 +432,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         const data = await res.json();
         console.log('Evento registrado:', data);
         // Reiniciar los campos
+        window.confirm("Se ha registrado un evento de: "+ datosEvento.resultado + " del jugador: "+ datosEvento.IdJugador);
         reiniciarCampos();
 
         // Cerrar el popup
