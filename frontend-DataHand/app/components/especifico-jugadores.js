@@ -30,6 +30,30 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
         { id: 9, nombre: "Jugador 9" },
     ];
 
+    const cambiarColor = (lanzamientos, total) => {
+        // Si el total es 0, asignamos el color azul
+        if (total === 0) {
+            return "bg-[#0f2d50]"; // Azul si no ha habido lanzamientos
+        }
+        
+        // Si el total no es 0, calculamos el porcentaje
+        const porcentaje = (lanzamientos / total) * 100;
+    
+        if (porcentaje === 100) {
+            return "bg-green-800"; // Verde oscuro si es 100%
+        } else if (porcentaje >= 80) {
+            return "bg-green-500"; // Verde claro si es superior o igual a 80%
+        } else if (porcentaje >= 60) {
+            return "bg-yellow-500"; // Amarillo si es entre 60% y 79.99%
+        } else if (porcentaje >= 40) {
+            return "bg-orange-500"; // Naranja si es entre 40% y 59.99%
+        } else if (porcentaje >= 20) {
+            return "bg-red-300"; // Rojo claro si es entre 20% y 39.99%
+        } else {
+            return "bg-red-500"; // Rojo oscuro si es menor al 20%
+        }
+    };
+
     const golesAtaquePosicional = obtenerResultadoJugador(dataEventos, "Gol", "Ataque posicional", jugadorFalso);
     const golesContraataque = obtenerResultadoJugador(dataEventos, "Gol", "Contraataque", jugadorFalso);
     const golesContragol = obtenerResultadoJugador(dataEventos, "Gol", "Contragol", jugadorFalso);
@@ -274,15 +298,33 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
                         <div className="relative h-[45%] border-b-4 border-white">
                             <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                                 {/* Aumentar la altura de los cuadrados */}
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion2Local}/{totalLocalizacion2Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion3Local}/{totalLocalizacion3Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion4Local}/{totalLocalizacion4Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion6Local}/{totalLocalizacion6Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion7Local}/{totalLocalizacion7Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion8Local}/{totalLocalizacion8Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion10Local}/{totalLocalizacion10Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion11Local}/{totalLocalizacion11Local}</div>
-                                <div className="bg-[#0f2d50]  text-white text-center p-5 border border-white">{localizacion12Local}/{totalLocalizacion12Local}</div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion2Local, totalLocalizacion2Local)}`}>
+                                    {localizacion2Local}/{totalLocalizacion2Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion3Local, totalLocalizacion3Local)}`}>
+                                    {localizacion3Local}/{totalLocalizacion3Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion4Local, totalLocalizacion4Local)}`}>
+                                    {localizacion4Local}/{totalLocalizacion4Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion6Local, totalLocalizacion6Local)}`}>
+                                    {localizacion6Local}/{totalLocalizacion6Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion7Local, totalLocalizacion7Local)}`}>
+                                    {localizacion7Local}/{totalLocalizacion7Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion8Local, totalLocalizacion8Local)}`}>
+                                    {localizacion8Local}/{totalLocalizacion8Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion10Local, totalLocalizacion10Local)}`}>
+                                    {localizacion10Local}/{totalLocalizacion10Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion11Local, totalLocalizacion11Local)}`}>
+                                    {localizacion11Local}/{totalLocalizacion11Local}
+                                </div>
+                                <div className={`bg-[#0f2d50] text-white text-center p-5 border border-white ${cambiarColor(localizacion12Local, totalLocalizacion12Local)}`}>
+                                    {localizacion12Local}/{totalLocalizacion12Local}
+                                </div>
                             </div>
                             
                             {/* Side Numbers - Bajar un poco los números de los lados */}
@@ -306,48 +348,44 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
                             </div>
 
                             {/* Etiquetas de posición, ajustadas para la orientación vertical */}
-                            <div className="absolute left-[10%] top-[10%] bg-orange-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Extremo Izquierdo</div> {/* Nombre encima */}
+                            <div className={`absolute left-[10%] top-[10%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesExtIzq, totalExtIzq)}`}>
+                                <div className="text-xs">Extremo Izquierdo</div>
                                 <div>{golesExtIzq}/{totalExtIzq}</div>
                             </div>
-                            <div className="absolute right-[10%] top-[10%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Extremo derecho</div> {/* Nombre encima */}
+                            <div className={`absolute right-[10%] top-[10%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesExtDer, totalExtDer)}`}>
+                                <div className="text-xs">Extremo derecho</div>
                                 <div>{golesExtDer}/{totalExtDer}</div>
                             </div>
-                            <div className="absolute left-[20%] top-[35%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Izquierda 6M</div> {/* Nombre encima */}
+                            <div className={`absolute left-[20%] top-[35%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesLatIzq6M, totalLatIzq6M)}`}>
+                                <div className="text-xs">Izquierda 6M</div>
                                 <div>{golesLatIzq6M}/{totalLatIzq6M}</div>
                             </div>
-                            <div className="absolute left-1/2 top-[35%] -translate-x-1/2 bg-red-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Centro 6M</div> {/* Nombre encima */}
+                            <div className={`absolute left-1/2 top-[35%] -translate-x-1/2 text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesPivote, totalPivote)}`}>
+                                <div className="text-xs">Centro 6M</div>
                                 <div>{golesPivote}/{totalPivote}</div>
                             </div>
-                            <div className="absolute right-[20%] top-[35%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Derecha 6M</div> {/* Nombre encima */}
+                            <div className={`absolute right-[20%] top-[35%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesLatDer6M, totalLatDer6M)}`}>
+                                <div className="text-xs">Derecha 6M</div>
                                 <div>{golesLatDer6M}/{totalLatDer6M}</div>
                             </div>
-
-                            {/* Nuevas etiquetas añadidas */}
-                            <div className="absolute left-[20%] top-[60%] bg-gray-800 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Izquierda 9M</div> {/* Nombre encima */}
+                            <div className={`absolute left-[20%] top-[60%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesLatIzq9M, totalLatIzq9M)}`}>
+                                <div className="text-xs">Izquierda 9M</div>
                                 <div>{golesLatIzq9M}/{totalLatIzq9M}</div>
                             </div>
-                            <div className="absolute left-1/2 top-[60%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Centro 9M</div> {/* Nombre encima */}
+                            <div className={`absolute left-1/2 top-[60%] -translate-x-1/2 text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesCentral, totalCentral)}`}>
+                                <div className="text-xs">Centro 9M</div>
                                 <div>{golesCentral}/{totalCentral}</div>
                             </div>
-                            <div className="absolute right-[20%] top-[60%] bg-green-800 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Derecha 9M</div> {/* Nombre encima */}
+                            <div className={`absolute right-[20%] top-[60%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesLatDer9M, totalLatDer9M)}`}>
+                                <div className="text-xs">Derecha 9M</div>
                                 <div>{golesLatDer9M}/{totalLatDer9M}</div>
                             </div>
-
-                            {/* Nuevas etiquetas añadidas */}
-                            <div className="absolute left-[34%] top-[80%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">7 Metros</div> {/* Nombre encima */}
+                            <div className={`absolute left-[34%] top-[80%] text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(goles7M, total7M)}`}>
+                                <div className="text-xs">7 Metros</div>
                                 <div>{goles7M}/{total7M}</div>
                             </div>
-                            <div className="absolute left-[63%] top-[80%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                                <div className="text-xs">Campo Contrario</div> {/* Nombre encima */}
+                            <div className={`absolute left-[63%] top-[80%] -translate-x-1/2 text-white rounded-full px-3 py-1 flex flex-col items-center ${cambiarColor(golesCampoContrario, totalCampoContrario)}`}>
+                                <div className="text-xs">Campo Contrario</div>
                                 <div>{golesCampoContrario}/{totalCampoContrario}</div>
                             </div>
 

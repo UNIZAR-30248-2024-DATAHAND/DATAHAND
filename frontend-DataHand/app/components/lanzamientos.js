@@ -144,6 +144,30 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
     const totalLocalizacion12Visitante  = filtrarResultadoPorLocalizacion(dataEventos,"Parada","12","visitante") +
         filtrarResultadoPorLocalizacion(dataEventos,"Palo/Fuera","12","visitante") + localizacion12Visitante;
 
+    const cambiarColor = (lanzamientos, total) => {
+        // Si el total es 0, asignamos el color azul
+        if (total === 0) {
+            return "bg-[#0f2d50]"; // Azul si no ha habido lanzamientos
+        }
+        
+        // Si el total no es 0, calculamos el porcentaje
+        const porcentaje = (lanzamientos / total) * 100;
+    
+        if (porcentaje === 100) {
+            return "bg-green-800"; // Verde oscuro si es 100%
+        } else if (porcentaje >= 80) {
+            return "bg-green-500"; // Verde claro si es superior o igual a 80%
+        } else if (porcentaje >= 60) {
+            return "bg-yellow-500"; // Amarillo si es entre 60% y 79.99%
+        } else if (porcentaje >= 40) {
+            return "bg-orange-500"; // Naranja si es entre 40% y 59.99%
+        } else if (porcentaje >= 20) {
+            return "bg-red-300"; // Rojo claro si es entre 20% y 39.99%
+        } else {
+            return "bg-red-500"; // Rojo oscuro si es menor al 20%
+        }
+    };
+        
     return (
       <div className="w-full bg-white">
         {/* Courts Container */}
@@ -158,15 +182,33 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
               <div className="relative h-[45%] border-b-4 border-white">
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                     {/* Aumentar la altura de los cuadrados */}
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion2Local}/{totalLocalizacion2Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion3Local}/{totalLocalizacion3Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion4Local}/{totalLocalizacion4Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion6Local}/{totalLocalizacion6Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion7Local}/{totalLocalizacion7Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion8Local}/{totalLocalizacion8Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion10Local}/{totalLocalizacion10Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion11Local}/{totalLocalizacion11Local}</div>
-                    <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion12Local}/{totalLocalizacion12Local}</div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion2Local, totalLocalizacion2Local)}`}>
+                        {localizacion2Local}/{totalLocalizacion2Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion3Local, totalLocalizacion3Local)}`}>
+                        {localizacion3Local}/{totalLocalizacion3Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion4Local, totalLocalizacion4Local)}`}>
+                        {localizacion4Local}/{totalLocalizacion4Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion6Local, totalLocalizacion6Local)}`}>
+                        {localizacion6Local}/{totalLocalizacion6Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion7Local, totalLocalizacion7Local)}`}>
+                        {localizacion7Local}/{totalLocalizacion7Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion8Local, totalLocalizacion8Local)}`}>
+                        {localizacion8Local}/{totalLocalizacion8Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion10Local, totalLocalizacion10Local)}`}>
+                        {localizacion10Local}/{totalLocalizacion10Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion11Local, totalLocalizacion11Local)}`}>
+                        {localizacion11Local}/{totalLocalizacion11Local}
+                    </div>
+                    <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion12Local, totalLocalizacion12Local)}`}>
+                        {localizacion12Local}/{totalLocalizacion12Local}
+                    </div>
                 </div>
                 
                 {/* Side Numbers - Bajar un poco los números de los lados */}
@@ -190,56 +232,55 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
                 </div>
 
                 {/* Etiquetas de posición, ajustadas para la orientación vertical */}
-                <div className="absolute left-[10%] top-[10%] bg-orange-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Extremo Izquierdo</div> {/* Nombre encima */}
+                <div className={`absolute left-[10%] top-[10%] ${cambiarColor(lanzamientosExtremoIzquierdoLocal, totalLanzamientosExtremoIzquierdoLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Extremo Izquierdo</div>
                     <div>{lanzamientosExtremoIzquierdoLocal}/{totalLanzamientosExtremoIzquierdoLocal}</div>
                 </div>
-                <div className="absolute right-[10%] top-[10%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Extremo derecho</div> {/* Nombre encima */}
+
+                <div className={`absolute right-[10%] top-[10%] ${cambiarColor(lanzamientosExtremoDerechoLocal, totalLanzamientosExtremoDerechoLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Extremo derecho</div>
                     <div>{lanzamientosExtremoDerechoLocal}/{totalLanzamientosExtremoDerechoLocal}</div>
                 </div>
-                <div className="absolute left-[20%] top-[35%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Izquierda 6M</div> {/* Nombre encima */}
+
+                <div className={`absolute left-[20%] top-[35%] ${cambiarColor(lanzamientosLateralIzquierdo6MLocal, totalLanzamientosLateralIzquierdo6MLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Izquierda 6M</div>
                     <div>{lanzamientosLateralIzquierdo6MLocal}/{totalLanzamientosLateralIzquierdo6MLocal}</div>
                 </div>
-                <div className="absolute left-1/2 top-[35%] -translate-x-1/2 bg-red-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Centro 6M</div> {/* Nombre encima */}
+
+                <div className={`absolute left-1/2 top-[35%] -translate-x-1/2 ${cambiarColor(lanzamientosPivoteLocal, totalLanzamientosPivoteLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Centro 6M</div>
                     <div>{lanzamientosPivoteLocal}/{totalLanzamientosPivoteLocal}</div>
                 </div>
-                <div className="absolute right-[20%] top-[35%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Derecha 6M</div> {/* Nombre encima */}
+
+                <div className={`absolute right-[20%] top-[35%] ${cambiarColor(lanzamientosLateralDerecho6MLocal, totalLanzamientosLateralDerecho6MLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Derecha 6M</div>
                     <div>{lanzamientosLateralDerecho6MLocal}/{totalLanzamientosLateralDerecho6MLocal}</div>
                 </div>
 
-                {/* Nuevas etiquetas añadidas */}
-                <div className="absolute left-[20%] top-[60%] bg-gray-800 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Izquierda 9M</div> {/* Nombre encima */}
+                <div className={`absolute left-[20%] top-[60%] ${cambiarColor(lanzamientosLateralIzquierdoLocal, totalLanzamientosLateralIzquierdoLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Izquierda 9M</div>
                     <div>{lanzamientosLateralIzquierdoLocal}/{totalLanzamientosLateralIzquierdoLocal}</div>
                 </div>
-                <div className="absolute left-1/2 top-[60%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Centro 9M</div> {/* Nombre encima */}
+
+                <div className={`absolute left-1/2 top-[60%] -translate-x-1/2 ${cambiarColor(lanzamientosCentralLocal, totalLanzamientosCentralLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Centro 9M</div>
                     <div>{lanzamientosCentralLocal}/{totalLanzamientosCentralLocal}</div>
                 </div>
-                <div className="absolute right-[20%] top-[60%] bg-green-800 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Derecha 9M</div> {/* Nombre encima */}
+
+                <div className={`absolute right-[20%] top-[60%] ${cambiarColor(lanzamientosLateralDerechoLocal, totalLanzamientosLateralDerechoLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Derecha 9M</div>
                     <div>{lanzamientosLateralDerechoLocal}/{totalLanzamientosLateralDerechoLocal}</div>
                 </div>
 
-                {/* Nuevas etiquetas añadidas */}
-                <div className="absolute left-[34%] top-[80%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">7 Metros</div> {/* Nombre encima */}
+                <div className={`absolute left-[34%] top-[80%] ${cambiarColor(lanzamientos7MLocal, totalLanzamientos7MLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">7 Metros</div>
                     <div>{lanzamientos7MLocal}/{totalLanzamientos7MLocal}</div>
                 </div>
-                <div className="absolute left-[63%] top-[80%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Campo Contrario</div> {/* Nombre encima */}
+
+                <div className={`absolute left-[63%] top-[80%] -translate-x-1/2 ${cambiarColor(lanzamientosCampoContrarioLocal, totalLanzamientosCampoContrarioLocal)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                    <div className="text-xs">Campo Contrario</div>
                     <div>{lanzamientosCampoContrarioLocal}/{totalLanzamientosCampoContrarioLocal}</div>
                 </div>
-
-                {/* Nuevas etiquetas añadidas */}
-                {/* <div className="absolute left-1/2 top-[86%] -translate-x-1/2 bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                    <div className="text-xs">Centro 15M</div> 
-                    {/* <div>1/1</div>
-                </div> */}
 
                 {/* Etiqueta de fondo */}
                 <div className="absolute left-1/2 top-[55%] -translate-x-1/2 bg-gray-500 text-white rounded-full px-3 py-1 z-[-1]">
@@ -257,15 +298,33 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
                 <div className="relative h-[45%] border-b-4 border-white">
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                         {/* Aumentar la altura de los cuadrados */}
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion2Visitante}/{totalLocalizacion2Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion3Visitante}/{totalLocalizacion3Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion4Visitante}/{totalLocalizacion4Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion6Visitante}/{totalLocalizacion6Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion7Visitante}/{totalLocalizacion7Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white" >{localizacion8Visitante}/{totalLocalizacion8Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion10Visitante}/{totalLocalizacion10Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion11Visitante}/{totalLocalizacion11Visitante}</div>
-                        <div className="bg-[#0f2d50] text-white text-center p-5 border border-white">{localizacion12Visitante}/{totalLocalizacion12Visitante}</div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion2Visitante, totalLocalizacion2Visitante)}`}>
+                            {localizacion2Visitante}/{totalLocalizacion2Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion3Visitante, totalLocalizacion3Visitante)}`}>
+                            {localizacion3Visitante}/{totalLocalizacion3Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion4Visitante, totalLocalizacion4Visitante)}`}>
+                            {localizacion4Visitante}/{totalLocalizacion4Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion6Visitante, totalLocalizacion6Visitante)}`}>
+                            {localizacion6Visitante}/{totalLocalizacion6Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion7Visitante, totalLocalizacion7Visitante)}`}>
+                            {localizacion7Visitante}/{totalLocalizacion7Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion8Visitante, totalLocalizacion8Visitante)}`}>
+                            {localizacion8Visitante}/{totalLocalizacion8Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion10Visitante, totalLocalizacion10Visitante)}`}>
+                            {localizacion10Visitante}/{totalLocalizacion10Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion11Visitante, totalLocalizacion11Visitante)}`}>
+                            {localizacion11Visitante}/{totalLocalizacion11Visitante}
+                        </div>
+                        <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion12Visitante, totalLocalizacion12Visitante)}`}>
+                            {localizacion12Visitante}/{totalLocalizacion12Visitante}
+                        </div>
                     </div>
                     
                     {/* Side Numbers - Bajar un poco los números de los lados */}
@@ -289,57 +348,55 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
                     </div>
 
                     {/* Etiquetas de posición, ajustadas para la orientación vertical */}
-                    <div className="absolute left-[10%] top-[10%] bg-orange-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Extremo Izquierdo</div> {/* Nombre encima */}
+                    <div className={`absolute left-[10%] top-[10%] ${cambiarColor(lanzamientosExtremoIzquierdoVisitante, totalLanzamientosExtremoIzquierdoVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Extremo Izquierdo</div>
                         <div>{lanzamientosExtremoIzquierdoVisitante}/{totalLanzamientosExtremoIzquierdoVisitante}</div>
                     </div>
-                    <div className="absolute right-[10%] top-[10%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Extremo derecho</div> {/* Nombre encima */}
+
+                    <div className={`absolute right-[10%] top-[10%] ${cambiarColor(lanzamientosExtremoDerechoVisitante, totalLanzamientosExtremoDerechoVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Extremo derecho</div>
                         <div>{lanzamientosExtremoDerechoVisitante}/{totalLanzamientosExtremoDerechoVisitante}</div>
                     </div>
-                    <div className="absolute left-[20%] top-[35%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Izquierda 6M</div> {/* Nombre encima */}
+
+                    <div className={`absolute left-[20%] top-[35%] ${cambiarColor(lanzamientosLateralIzquierdo6MVisitante, totalLanzamientosLateralIzquierdo6MVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Izquierda 6M</div>
                         <div>{lanzamientosLateralIzquierdo6MVisitante}/{totalLanzamientosLateralIzquierdo6MVisitante}</div>
                     </div>
-                    <div className="absolute left-1/2 top-[35%] -translate-x-1/2 bg-red-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Centro 6M</div> {/* Nombre encima */}
+
+                    <div className={`absolute left-1/2 top-[35%] -translate-x-1/2 ${cambiarColor(lanzamientosPivoteVisitante, totalLanzamientosPivoteVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Centro 6M</div>
                         <div>{lanzamientosPivoteVisitante}/{totalLanzamientosPivoteVisitante}</div>
                     </div>
-                    <div className="absolute right-[20%] top-[35%] bg-yellow-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Derecha 6M</div> {/* Nombre encima */}
+
+                    <div className={`absolute right-[20%] top-[35%] ${cambiarColor(lanzamientosLateralDerecho6MVisitante, totalLanzamientosLateralDerecho6MVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Derecha 6M</div>
                         <div>{lanzamientosLateralDerecho6MVisitante}/{totalLanzamientosLateralDerecho6MVisitante}</div>
                     </div>
 
-                    {/* Nuevas etiquetas añadidas */}
-                    <div className="absolute left-[20%] top-[60%] bg-gray-800 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Izquierda 9M</div> {/* Nombre encima */}
+                    <div className={`absolute left-[20%] top-[60%] ${cambiarColor(lanzamientosLateralIzquierdoVisitante, totalLanzamientosLateralIzquierdoVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Izquierda 9M</div>
                         <div>{lanzamientosLateralIzquierdoVisitante}/{totalLanzamientosLateralIzquierdoVisitante}</div>
                     </div>
-                    <div className="absolute left-1/2 top-[60%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Centro 9M</div> {/* Nombre encima */}
+
+                    <div className={`absolute left-1/2 top-[60%] -translate-x-1/2 ${cambiarColor(lanzamientosCentralVisitante, totalLanzamientosCentralVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Centro 9M</div>
                         <div>{lanzamientosCentralVisitante}/{totalLanzamientosCentralVisitante}</div>
                     </div>
-                    <div className="absolute right-[20%] top-[60%] bg-green-800 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Derecha 9M</div> {/* Nombre encima */}
+
+                    <div className={`absolute right-[20%] top-[60%] ${cambiarColor(lanzamientosLateralDerechoVisitante, totalLanzamientosLateralDerechoVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Derecha 9M</div>
                         <div>{lanzamientosLateralDerechoVisitante}/{totalLanzamientosLateralDerechoVisitante}</div>
                     </div>
 
-                    {/* Nuevas etiquetas añadidas */}
-                    <div className="absolute left-[34%] top-[80%] bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">7 Metros</div> {/* Nombre encima */}
+                    <div className={`absolute left-[34%] top-[80%] ${cambiarColor(lanzamientos7MVisitante, totalLanzamientos7MVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">7 Metros</div>
                         <div>{lanzamientos7MVisitante}/{totalLanzamientos7MVisitante}</div>
                     </div>
-                    <div className="absolute left-[63%] top-[80%] -translate-x-1/2 bg-green-500 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Campo Contrario</div> {/* Nombre encima */}
+
+                    <div className={`absolute left-[63%] top-[80%] -translate-x-1/2 ${cambiarColor(lanzamientosCampoContrarioVisitante, totalLanzamientosCampoContrarioVisitante)} text-white rounded-full px-3 py-1 flex flex-col items-center`}>
+                        <div className="text-xs">Campo Contrario</div>
                         <div>{lanzamientosCampoContrarioVisitante}/{totalLanzamientosCampoContrarioVisitante}</div>
                     </div>
-
-                    {/* Nuevas etiquetas añadidas
-                    <div className="absolute left-1/2 top-[86%] -translate-x-1/2 bg-blue-900 text-white rounded-full px-3 py-1 flex flex-col items-center">
-                        <div className="text-xs">Centro 15M</div> {/* Nombre encima
-                        {/* <div>1/1</div>
-                    </div> */}
-
                     {/* Etiqueta de fondo */}
                     <div className="absolute left-1/2 top-[55%] -translate-x-1/2 bg-gray-500 text-white rounded-full px-3 py-1 z-[-1]">
                         Fondo
