@@ -47,7 +47,7 @@ const borrarPartido = async (userID, partidoID, setUsuario) => {
 };
 
 export default function Home() {
-  const { userID } = useParams();
+  const userID = localStorage.getItem('userID');
   const router = useRouter(); // Inicializamos useRouter
 
   const [usuario, setUsuario] = useState({

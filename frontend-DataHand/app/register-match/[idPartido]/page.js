@@ -15,7 +15,8 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
 
     // VARIABLE PREDETERMINADA PARA USERID PENDIENTE DE LOGIN   
-    const userID = 1;
+    const userID = localStorage.getItem('userID');
+
     const router = useRouter();
     const [contador, setContador] = useState(0);
 
