@@ -88,6 +88,21 @@ const Sidebar = ({ userID }) => {
           </button>
         </Link>
 
+        <Link href={`/chat/${userID}`}>
+          <button
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+            style={{ fontFamily: 'var(--font-geist-sans)' }}
+          >
+            <Image
+              src="/images/icon_edit.svg"
+              alt="Chat"
+              width={30}
+              height={30}
+            />
+            Chat
+          </button>
+        </Link>
+
         <button
           onClick={registrarPartido}
           aria-label="Registrar partido"  // Atributo de accesibilidad añadido
