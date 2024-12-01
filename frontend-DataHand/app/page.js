@@ -27,6 +27,40 @@ export default function Login() {
     router.push('/home'); // Cambia la ruta a /home
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMensaje(''); // Limpiamos el mensaje previo
+  
+    const loginData = {
+      correo: nombreUsuario,
+      contrasena: contrasena,
+    };
+  
+    try {
+      const response = await fetch('/api/users/login', {
+        method: 'POST',
+        body: JSON.stringify(loginData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        // Guardar el ID del usuario en el almacenamiento local
+        localStorage.setItem('userID', data.userID);
+        
+        // Redirigir al perfil del usuario
+        router.push(`/profile/${data.userID}`);
+      } else {
+        const data = await response.json();
+        setMensaje(data.message || 'Error en las credenciales.');
+      }
+    } catch (err) {
+      setMensaje('Error al conectar con el servidor.');
+    }
+  };
+
   return (
     <div className="relative h-screen flex bg-orange-500 justify-center overflow-hidden">
       {/* Fondo de olas */}
@@ -72,14 +106,13 @@ export default function Login() {
           >
             Iniciar sesión
           </h2>
-          <form className="flex flex-col gap-6">
+          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="Nombre de usuario"
+              placeholder="Correo electrónico"
               value={nombreUsuario}
-              onChange={(e) => setNombreUsuario(e.target.value)} // Actualiza el nombre de usuario
+              onChange={(e) => setNombreUsuario(e.target.value)} // Actualiza el correo
               className={styles.input1} // Aplica los estilos del módulo CSS
-              // style={{ fontFamily: 'var(--font-geist-mono)' }}
             />
             <input
               type="password"
@@ -87,23 +120,20 @@ export default function Login() {
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)} // Actualiza la contraseña
               className={styles.input1} // Aplica los estilos del módulo CSS
-              // style={{ fontFamily: 'var(--font-geist-mono)' }}
             />
             <button
-              // className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center"
-              // style={{ fontFamily: 'var(--font-geist-sans)' }}
-              className={styles2['styled-button']} // Aplica los estilos del módulo CSS para Button1.              
-              onClick={redirigirAHome} // Aquí redirigimos sin iniciar sesión
+              className={styles2['styled-button']} // Aplica los estilos del módulo CSS para Button1
+              type="submit" // Cambiar el tipo a "submit"
             >
               Iniciar Sesión
-              <div className={styles2['inner-button']}>                
+              <div className={styles2['inner-button']}>
                 <svg
                   id="Arrow"
                   viewBox="0 0 32 32"
                   xmlns="http://www.w3.org/2000/svg"
                   height="30px"
                   width="30px"
-                  className={styles2.icon}                
+                  className={styles2.icon}
                 >
                   <defs>
                     <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="iconGradient">

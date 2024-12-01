@@ -5,9 +5,11 @@ import Image from 'next/image';
 import { useState , useEffect} from 'react';
 import { useParams } from 'next/navigation';
 import Component from '../../components/component'; // Asegúrate de que la ruta sea correcta 
+import Sidebar from '../../components/Sidebar';
+
 
   export default function Home() {
-    
+    const userID = localStorage.getItem('userID');
     const {idPartido} = useParams(); // Obtener el idPartido de los parámetros
     const [eventos, setEventos] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Nuevo estado para gestionar la carga
@@ -125,6 +127,7 @@ import Component from '../../components/component'; // Asegúrate de que la ruta
   
     return (
       <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 ">
+        <Sidebar userID={userID}/>
         <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
           Estadísticas Generales
         </h1>

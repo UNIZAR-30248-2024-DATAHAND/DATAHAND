@@ -24,7 +24,7 @@ const obtenerUsuario = async (userID, setUsuario) => {
 };
 
 export default function EditarPerfil() {
-  const { userID } = useParams();
+  const userID = localStorage.getItem('userID');
   const router = useRouter();
 
   const [usuario, setUsuario] = useState({
