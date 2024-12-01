@@ -16,53 +16,9 @@ export default function Login() {
 
   //connectDB()
 
-  // Función para enviar los datos del usuario para registrar
-  const registrarUsuario = async (e) => {
-    e.preventDefault(); // Evitar el comportamiento predeterminado del botón
-
-    // Usuario ficticio que será enviado
-    const nuevoUsuario = {
-      nombreCompleto: 'Marcos Perez',
-      correoElectronico: 'perez@example.com',
-      contrasena: 'c',
-      fechaNacimiento: '1985-11-15T00:00:00.000Z',
-      tipoUsuario: 'ambos',
-      fotoPerfil: 'url_a_la_foto_pedro.jpg',
-      club: 'Club Deportivo Ejemplo',
-      pais: 'España',
-      posicion: 'POR',
-      atributos: {
-        goles: 7,
-        asistencias: 8,
-        efectividad: 9,
-        blocajes: 10,
-        recuperaciones: 4,
-      },
-      historialPartidos: [], // NO SE COMO SE METEN
-    };
-
-    try {
-      // Enviar una solicitud POST a la API para registrar el usuario
-      const response = await fetch('/api/users/usuarios', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nuevoUsuario),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setMensaje('Usuario registrado con éxito');
-        console.log('Usuario creado:', data);
-      } else {
-        setMensaje('Error al registrar el usuario');
-        console.error('Error:', response.statusText);
-      }
-    } catch (error) {
-      setMensaje('Error de conexión');
-      console.error('Error de conexión:', error);
-    }
+  const registrarUsuario = (e) => {
+    e.preventDefault();
+    router.push('/register-user'); // Redirige directamente
   };
 
   // Nueva función para redirigir al home sin iniciar sesión
@@ -163,8 +119,6 @@ export default function Login() {
               </div>
             </button>
             <button
-              // className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center mt-4"
-              // style={{ fontFamily: 'var(--font-geist-sans)' }}
               className={`${styles2['styled-button']}`} // Aplica los estilos del módulo CSS para Button1.            
               onClick={registrarUsuario} // Conectamos la función de registrar usuario
             >

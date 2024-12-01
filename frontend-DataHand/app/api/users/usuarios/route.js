@@ -4,24 +4,46 @@ import Usuario from '../../../../models/Usuarios'; // Ruta relativa para Usuario
 // Método POST para crear un nuevo usuario
 export async function POST(request) {
     await connectDB();
-
+  
     const data = await request.json();
-    const nuevoUsuario = new Usuario(data);
-
+  
     try {
-        const usuarioGuardado = await nuevoUsuario.save();
-
-        return new Response(JSON.stringify(usuarioGuardado), {
-            status: 201,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+      // 1. Buscar el último usuario creado para obtener el último userID
+      const ultimoUsuario = await Usuario.findOne().sort({ userID: -1 }); // Orden descendente por userID
+  
+      // 2. Si hay usuarios, incrementamos el último userID en 1, si no, asignamos 4
+      const nuevoUserID = ultimoUsuario ? ultimoUsuario.userID + 1 : 4;
+  
+      // 3. Crear el nuevo usuario con el nuevo userID
+      const nuevoUsuario = new Usuario({
+        userID: nuevoUserID, // Asignamos el userID incremental
+        nombreCompleto: data.nombreCompleto,
+        correoElectronico: data.correoElectronico,
+        contrasena: data.contrasena, // Recuerda hashear la contraseña antes de guardarla
+        fechaNacimiento: data.fechaNacimiento,
+        tipoUsuario: data.tipoUsuario, // 'jugador' o 'entrenador'
+        fotoPerfil: data.fotoPerfil, // La URI de la imagen
+        club: data.club,
+        pais: data.pais,
+        posicion: data.posicion, // Usamos 'NA' si es entrenador
+        atributos: data.atributos, // Atributos del jugador o entrenador
+        historialPartidos: data.historialPartidos, // Historial vacío
+      });
+  
+      // Guardamos el nuevo usuario
+      const usuarioGuardado = await nuevoUsuario.save();
+  
+      return new Response(JSON.stringify(usuarioGuardado), {
+        status: 201,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
     } catch (error) {
-        console.error('Error al guardar el usuario:', error);
-        return new Response('Error al crear el usuario', { status: 500 });
+      console.error('Error al guardar el usuario:', error);
+      return new Response('Error al crear el usuario', { status: 500 });
     }
-}
+  }
 
 // Método GET para obtener un usuario por su userID
 export async function GET(req) {
