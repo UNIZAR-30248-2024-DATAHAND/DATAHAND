@@ -28,6 +28,7 @@ export async function POST(request) {
         posicion: data.posicion, // Usamos 'NA' si es entrenador
         atributos: data.atributos, // Atributos del jugador o entrenador
         historialPartidos: data.historialPartidos, // Historial vacío
+        historialNotificaciones: [] // Campo de historialNotificaciones vacío
       });
   
       // Guardamos el nuevo usuario
