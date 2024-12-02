@@ -62,7 +62,7 @@ export default function Login() {
   };
 
   return (
-    <div className="relative h-screen flex flex-col sm:flex-row bg-orange-500 justify-center overflow-hidden">
+    <div className="relative min-h-screen bg-orange-500 flex flex-col lg:flex-row justify-center items-center overflow-hidden overflow-y-auto">
       {/* Fondo de olas */}
       <Image
         src="/images/waves_bg_login.svg"
