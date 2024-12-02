@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import styles2 from '../styles/Input1.module.css'; // Ajusta la ruta según tu estructura
+
 
 export default function ProfileForm({ userData, setUserData }) {
   const [previewImage, setPreviewImage] = useState(userData.fotoPerfil);
