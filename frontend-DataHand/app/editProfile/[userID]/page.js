@@ -52,14 +52,23 @@ export default function EditarPerfil() {
   }, [userID]);
 
   return (
-    <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
+    <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4">
+      <div className="w-full max-w-4xl flex flex-col items-center">
+        <h1
+          className="text-3xl md:text-5xl font-bold mb-4 text-white text-center"
+          style={{ fontFamily: 'var(--font-geist-sans)' }}
+        >
+          {usuario.tipoUsuario === 'entrenador'
+            ? 'Editar Perfil Entrenador'
+            : 'Editar Perfil Jugador'}
+        </h1>
+  
+        {/* Formulario de edición de perfil */}
+        <div className="w-full px-4 md:px-8">
+          <ProfileForm userData={usuario} setUserData={setUsuario} />
+        </div>
+      </div>
       <Sidebar userID={userID} />
-      <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-        {usuario.tipoUsuario === 'entrenador' ? 'Editar Perfil Entrenador' : 'Editar Perfil Jugador'}
-      </h1>
-
-      {/* Formulario de edición de perfil */}
-      <ProfileForm userData={usuario} setUserData={setUsuario} />
     </div>
-  );
+  );  
 }
