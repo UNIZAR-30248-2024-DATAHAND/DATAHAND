@@ -76,10 +76,34 @@ export default function EditarPerfil() {
       }
     };
   
-    const handleInvitacionSubmit = () => {
+    const handleInvitacionSubmit = async () => {
       // Aquí se maneja la lógica para enviar la invitación (actualmente solo se simula con un alert)
       if (invitacionEmail) {
         alert(`Invitación enviada a: ${invitacionEmail}`);
+        try {
+          // Llamada a la función PUT del backend 
+          const response = await fetch("/api/users/usuarios", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              correoElectronico: invitacionEmail,
+              userID: userID,
+              mensajeNotificacion: "Invitacion",
+            }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            console.log("Notifiacion actualizada:", data);
+          } else {
+            console.error("Error al actualizar notifiacion:", data.error);
+          }
+        } catch (error) {
+          console.error("Error en la solicitud:", error);
+        }
         setShowModal(false); // Cierra el modal después de enviar la invitación
         setInvitacionEmail(''); // Limpiar el campo de correo
       } else {
@@ -93,7 +117,88 @@ export default function EditarPerfil() {
       setIsInvitacionSelected(false); // Resetea la selección a las opciones iniciales
       setInvitacionEmail(''); // Limpiar el correo al cerrar el modal
     };
-  
+    
+    const handleAceptarInvitacion = async () => {
+      alert(`Invitación aceptada para el usuario con ID: ${userID}`);
+      try {
+          const response = await fetch('/api/users/usuarios', {
+              method: 'PATCH',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  userID: userID,
+                  chatNoti: selectedChat.id,
+                  mensajeNotificacion: "Invitacion", // El mensaje original de la invitación
+                  mensajeEditado: "Invitación - Aceptada", // El nuevo mensaje para indicar que fue aceptada
+              }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+              console.log('Notificación actualizada a: Invitación - Aceptada', data);
+          } else {
+              console.error('Error al actualizar la notificación:', data.error);
+          }
+      } catch (error) {
+          console.error('Error en la solicitud:', error);
+      }
+
+      try {
+        const response = await fetch('/api/users/equipos', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            entrenadorId: selectedChat.id,
+            userID: userID, 
+            posicion: usuario.posicion, 
+          }), // Pasamos el ID del entrenador, el UserID y la posición
+        });
+      
+        if (!response.ok) {
+          const error = await response.text();
+          console.error('Error al actualizar el equipo:', error);
+        } else {
+          const equipo = await response.json();
+          console.log('Equipo actualizado:', equipo);
+        }
+      } catch (error) {
+        console.error('Error al actualizar el equipo:', error);
+      }
+    };
+    
+    const handleRechazarInvitacion = async () => {
+      alert(`Invitación rechazada para el usuario con ID: ${userID}`);
+      try {
+        const response = await fetch('/api/users/usuarios', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userID: userID,
+                chatNoti: selectedChat.id,
+                mensajeNotificacion: "Invitacion", // El mensaje original de la invitación
+                mensajeEditado: "Invitación - Rechazada", // El nuevo mensaje para indicar que fue rechazada
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log('Notificación actualizada a: Invitación - Rechazada', data);
+        } else {
+            console.error('Error al actualizar la notificación:', data.error);
+        }
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+    }
+    };
+
+    
     return (
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500">
         <Sidebar userID={userID} />
@@ -101,7 +206,15 @@ export default function EditarPerfil() {
           <>
             <h1 className="text-5xl font-bold text-white mb-6">Lista de Chats</h1>
             <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-lg p-6 overflow-y-auto">
-              {usuario.historialNotificaciones.map((notif, index) => (
+            {
+            // Filtrar notificaciones para eliminar duplicados por el primer valor (ID del chat)
+            usuario.historialNotificaciones
+              .filter((value, index, self) => 
+                index === self.findIndex((t) => (
+                  t[0] === value[0] // Asegura que solo se muestre un chat con el mismo ID
+                ))
+              )
+              .map((notif, index) => (
                 <div
                   key={index}
                   onClick={() => setSelectedChat({ id: notif[0], name: `Chat ${notif[0]}` })}
@@ -112,7 +225,8 @@ export default function EditarPerfil() {
                     <h2 className="text-xl text-gray-800 font-bold">Chat {notif[0]}</h2>
                   </div>
                 </div>
-              ))}
+              ))
+          }
             </div>
   
             {/* Mostrar el botón para entrenadores */}
@@ -167,7 +281,7 @@ export default function EditarPerfil() {
                     id="correo"
                     value={invitacionEmail}
                     onChange={(e) => setInvitacionEmail(e.target.value)}
-                    className="w-full p-2 border rounded-md mt-2 mb-4"
+                    className="w-full p-2 border text-gray-800 rounded-md mt-2 mb-4"
                     placeholder="Correo electrónico"
                   />
                   <button
@@ -206,11 +320,28 @@ export default function EditarPerfil() {
               {mensajesFiltrados.map((msg, index) => (
                 <div
                   key={index}
-                  className="w-full max-w-4xl px-4 py-2 rounded-lg bg-blue-500 text-white font-bold text-center mx-auto"
+                  className="w-full max-w-4xl px-4 py-2 rounded-lg bg-blue-500 text-white font-bold flex justify-between items-center mx-auto"
                 >
-                  {msg[1]} {/* Mensaje del historialNotificaciones */}
+                  <span>{msg[1]}</span> {/* Mensaje del historialNotificaciones */}
+                  {msg[1] === "Invitacion" && ( // Mostrar botones solo si el mensaje es una invitación */}
+                    <div className="space-x-2">
+                      <button
+                        onClick={() => handleAceptarInvitacion()}
+                        className="bg-green-500 text-white px-3 py-1 rounded-lg"
+                      >
+                        Aceptar
+                      </button>
+                      <button
+                        onClick={() => handleRechazarInvitacion()}
+                        className="bg-red-500 text-white px-3 py-1 rounded-lg"
+                      >
+                        Rechazar
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
+
             </div>
   
             <div className="mt-4 w-full flex justify-center">
