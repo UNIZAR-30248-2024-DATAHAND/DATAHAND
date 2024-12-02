@@ -170,7 +170,7 @@ export async function PUT(req) {
 }
 
 export async function PATCH(req) {
-    const { correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado } = await req.json();
+    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser} = await req.json();
 
     // Validar los parámetros necesarios
     if ((!correoElectronico && !userID) || (!mensajeNotificacion && !mensajeEditado)) {
@@ -190,11 +190,15 @@ export async function PATCH(req) {
             usuario = await Usuario.findOne({ correoElectronico });
         } 
         // Si se pasa el userID, buscamos al usuario por userID
-        else if (userID) {
+        else if (userID && !statsUser) {
+            usuario = await Usuario.findOne({ userID });
+            console.log('Usuario encontrado:', userID);
+        } else if (statsUser){
             usuario = await Usuario.findOne({ userID });
             console.log('Usuario encontrado:', userID);
         }
-
+        console.log('Llego aqui');
+        console.log(usuario); //AQUI ES DONDE SE VE EL ERROR
         // Si no se encuentra el usuario
         if (!usuario) {
             return new Response(
@@ -202,7 +206,6 @@ export async function PATCH(req) {
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
-
         // Si se pasa el correo, agregamos una nueva notificación
         if (correoElectronico) {
             const nuevaNotificacion = [
@@ -211,9 +214,7 @@ export async function PATCH(req) {
             ];
 
             usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
-        }
-        // Si se pasa el userID, modificamos el mensaje en la tupla correspondiente
-        else if (userID && mensajeEditado) {
+        } else if (userID && mensajeEditado) {
             let notificacionEncontrada = false;
             // Buscamos la tupla que corresponde al userID y actualizamos el mensaje
             for (let notif of usuario.historialNotificaciones) {
@@ -232,6 +233,12 @@ export async function PATCH(req) {
                     { status: 404, headers: { 'Content-Type': 'application/json' } }
                 );
             }
+        } else if (userID && mensajeNotificacion){
+            const nuevaNotificacion = [
+                statsUser,
+                mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
+            ];
+            usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
         }
 
         // Guardamos los cambios en la base de datos

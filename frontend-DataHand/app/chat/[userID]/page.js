@@ -67,15 +67,74 @@ export default function EditarPerfil() {
       setShowModal(true);
     };
   
-    const handleSeleccionarNotificacion = (tipo) => {
+    const handleSeleccionarNotificacion = async (tipo) => {
       // Manejar el tipo seleccionado
       if (tipo === "Invitación") {
         setIsInvitacionSelected(true); // Cuando selecciona invitación, cambia el estado para mostrar el correo
+      } else if (tipo === "Nuevas estadísticas disponibles") {
+        // Mostrar el alert cuando se selecciona "Nuevas estadísticas disponibles"
+        //alert("¡Nuevas estadísticas disponibles!");
+        enviarNotificacionATodosLosJugadores(); 
       } else {
         setIsInvitacionSelected(false); // Vuelve a las opciones normales si selecciona la otra opción
       }
     };
-  
+
+    const enviarNotificacionATodosLosJugadores = async () => {
+      try {
+        // Hacer un GET a la API para obtener todos los equipos
+        const res = await fetch('/api/users/equipos'); 
+        const equipos = await res.json();
+    
+        // Filtrar el equipo donde soy el entrenador
+        const equipo = equipos.find(equipo => equipo.entrenador === userID);
+    
+        if (!equipo) {
+          return alert('No se encontró un equipo con este entrenador.');
+        }
+    
+        // Obtener todos los jugadores del equipo
+        const jugadores = [
+          ...equipo.porteros,
+          ...equipo.jugadores,
+          ...equipo.banquillo
+        ].filter(jugador => !jugador.includes('Portero') && !jugador.includes('Jugador') && !jugador.includes('Banquillo'));
+    
+        if (jugadores.length === 0) {
+          return alert('No hay jugadores para notificar.');
+        }
+        try {
+          // Enviar una notificación a cada jugador
+          for (const jugadorId of jugadores) {
+            const response = await fetch("/api/users/usuarios", {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                userID: jugadorId,
+                statsUser: userID, 
+                mensajeNotificacion: "Nuevas estadisticas disponibles", // Aquí estamos enviando el mensaje
+              }),
+            });
+
+            if (response.ok) {
+              console.log(`Notificación enviada a: ${jugadorId}`);
+            } else {
+              console.error(`Error al enviar notificación a ${jugadorId}`);
+            }
+          }
+      
+          alert('Notificaciones enviadas a todos los jugadores');
+        } catch (error) {
+          console.error('Error al obtener los jugadores:', error);
+        }
+      } catch (error) {
+        console.error('Error al obtener equipos o enviar notificaciones:', error);
+        alert('Error al enviar las notificaciones');
+      }
+    };
+
     const handleInvitacionSubmit = async () => {
       // Aquí se maneja la lógica para enviar la invitación (actualmente solo se simula con un alert)
       if (invitacionEmail) {
@@ -342,14 +401,6 @@ export default function EditarPerfil() {
                 </div>
               ))}
 
-            </div>
-  
-            <div className="mt-4 w-full flex justify-center">
-              <input
-                type="text"
-                placeholder="Escribe un mensaje..."
-                className="w-full max-w-4xl p-2 border rounded-lg outline-none"
-              />
             </div>
           </div>
         )}
