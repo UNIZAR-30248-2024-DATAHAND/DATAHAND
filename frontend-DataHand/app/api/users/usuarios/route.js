@@ -169,6 +169,55 @@ export async function PUT(req) {
     }
 }
 
+// Método PATCH para actualizar un usuario usando el correoElectronico y añadir a historialNotifiaciones
+export async function PATCH(req) {
+    const { correoElectronico, mensajeNotificacion } = await req.json();
+
+    // Validar que se haya proporcionado el correo electrónico y el mensaje de la notificación
+    if (!correoElectronico || !mensajeNotificacion) {
+        return new Response(JSON.stringify({ error: 'Falta el correo electrónico o el mensaje de la notificación' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+
+    await connectDB();
+
+    try {
+        // Buscar al usuario por correo electrónico
+        const usuario = await Usuario.findOne({ correoElectronico });
+
+        if (!usuario) {
+            return new Response(JSON.stringify({ error: 'Usuario no encontrado' }), {
+                status: 404,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        // Agregar una nueva entrada en el historial de notificaciones
+        const nuevaNotificacion = [
+            usuario.userID, // El userID del usuario que envía la notificación
+            mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
+        ];
+
+        usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
+
+        // Guardar los cambios en la base de datos
+        await usuario.save();
+
+        return new Response(JSON.stringify({ message: 'Usuario actualizado exitosamente', usuario }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        return new Response(JSON.stringify({ error: 'Error al actualizar el usuario' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+}
+
 
 
 // Método DELETE para eliminar un partido del historial de un usuario

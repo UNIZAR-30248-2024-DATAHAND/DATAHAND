@@ -76,10 +76,33 @@ export default function EditarPerfil() {
       }
     };
   
-    const handleInvitacionSubmit = () => {
+    const handleInvitacionSubmit = async () => {
       // Aquí se maneja la lógica para enviar la invitación (actualmente solo se simula con un alert)
       if (invitacionEmail) {
         alert(`Invitación enviada a: ${invitacionEmail}`);
+        try {
+          // Llamada a la función PUT del backend 
+          const response = await fetch("/api/users/usuarios", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              correoElectronico: invitacionEmail,
+              mensajeNotificacion: "Invitacion",
+            }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            console.log("Notifiacion actualizada:", data);
+          } else {
+            console.error("Error al actualizar notifiacion:", data.error);
+          }
+        } catch (error) {
+          console.error("Error en la solicitud:", error);
+        }
         setShowModal(false); // Cierra el modal después de enviar la invitación
         setInvitacionEmail(''); // Limpiar el campo de correo
       } else {
@@ -167,7 +190,7 @@ export default function EditarPerfil() {
                     id="correo"
                     value={invitacionEmail}
                     onChange={(e) => setInvitacionEmail(e.target.value)}
-                    className="w-full p-2 border rounded-md mt-2 mb-4"
+                    className="w-full p-2 border text-gray-800 rounded-md mt-2 mb-4"
                     placeholder="Correo electrónico"
                   />
                   <button
