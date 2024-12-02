@@ -186,14 +186,14 @@ const PorteriaBalonmano = ({ onClick }) => {
 
   return (
     <div style={{ position: 'relative', width: '350px', height: '250px' }}>
-  {/* Contenedor de botones */}
-  <div
-    className="absolute w-full flex flex-col z-10 space-y-9" // Incrementa el margen entre filas
-    style={{
-      top: "0px", // Ajusta la altura inicial de los botones
-      pointerEvents: "none", // Evitar interferencias al clicar en el Stage
-    }}
-  >
+      {/* Contenedor de botones */}
+      <div
+        className="absolute w-full flex flex-col z-10 space-y-9" // Incrementa el margen entre filas
+        style={{
+          top: "0px", // Ajusta la altura inicial de los botones
+          pointerEvents: "none", // Evitar interferencias al clicar en el Stage
+        }}
+      >
     {botonesPorFilas.map((fila, index) => (
       <div
         key={index}
@@ -461,93 +461,97 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      {/* Popup ocupa una gran parte de la pantalla y es naranja */}
-      <div className="bg-orange-500 rounded-lg p-6 w-[80vw] h-[80vh] overflow-auto flex items-center justify-center">
-          {/* Rectángulo blanco dentro del popup */}
-          <div className="bg-white rounded-lg p-6 w-[90%] h-[90%] flex flex-row shadow-lg">
-              {/* Columna izquierda */}
-              <div className="flex flex-col flex-1 justify-between">
-                  {/* Sección de Posición Gol */}
-                  <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4">
-                      <h3 className="text-sm font-semibold text-black">Posición Gol</h3>
-                      <PorteriaBalonmano onClick={handlePorteriaClick} />
-                      
-                  </div>
-                  {/* Sección de Posición Lanzador */}
-                  <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center">
-                      <h3 className="text-sm font-semibold text-black mb-4">Posición Lanzador</h3>
-                      <CampoBalonmano onClick={handlePosicionClick} />
-                  </div>
-              </div>
-              
-              {/* Línea separadora */}
-              <div className="w-1 bg-orange-500 mx-4" />
+        {/* Popup ocupa una gran parte de la pantalla y es naranja */}
+        <div className="bg-orange-500 rounded-lg p-6 w-full max-w-5xl h-auto max-h-[90vh] overflow-y-auto flex items-center justify-center">
+            {/* Rectángulo blanco dentro del popup */}
+            <div className="bg-white rounded-lg p-6 w-full h-full flex flex-col md:flex-row shadow-lg">
+                {/* Columna izquierda */}
+                <div className="flex flex-col flex-1 justify-between mb-6 md:mb-0">
+                    {/* Sección de Posición Gol */}
+                    <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4">
+                        <h3 className="text-sm font-semibold text-black">Posición Gol</h3>
+                        <PorteriaBalonmano onClick={handlePorteriaClick} />
+                    </div>
+                    {/* Sección de Posición Lanzador */}
+                    <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center">
+                        <h3 className="text-sm font-semibold text-black mb-4">Posición Lanzador</h3>
+                        <CampoBalonmano onClick={handlePosicionClick} />
+                    </div>
+                </div>
 
-              {/* Columna derecha */}
-              <div className="flex flex-col flex-1">
-                  {/* Sección de Asistencias */}
-                  <div className="mb-4 flex flex-col">
-                      <h3 className="text-lg font-semibold text-black mb-2">Asistencias</h3>
-                      <div className="flex justify-between mb-2">
-                        {jugadoresFiltrados.map((jugador, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setAsistenciaDada(jugador)}  // Guardamos el jugador seleccionado
-                          className={`bg-blue-500 text-white px-4 py-2 rounded text-sm ${asistenciaDada === jugador ? 'opacity-80' : ''}`}  // Aplicamos clase de opacidad si está seleccionado
-                        >
-                          Jugador {jugador}
-                        </button>
-                      ))}
-                      </div>
-                  </div>
+                {/* Línea separadora */}
+                <div className="hidden md:block w-1 bg-orange-500 mx-4" />
 
-                  {/* Sección de Sistema de Juego */}
-                  <div className="flex flex-col mb-4">
-                      <h3 className="text-lg font-semibold text-black mb-2">Sistema de Juego</h3>
-                      <div className="flex flex-col mb-4">
-                          <h4 className="text-md font-semibold text-black mb-2">Ataque</h4>
-                          <div className="grid grid-cols-5 gap-2">
-                              {Array.from({ length: 10 }, (_, index) => (
-                                  <button
+                {/* Columna derecha */}
+                <div className="flex flex-col flex-1">
+                    {/* Sección de Asistencias */}
+                    <div className="mb-4 flex flex-col">
+                        <h3 className="text-lg font-semibold text-black mb-2">Asistencias</h3>
+                        <div className="flex flex-wrap gap-2">
+                            {jugadoresFiltrados.map((jugador, index) => (
+                                <button
                                     key={index}
-                                    onClick={() => setSistemaAtaque(index + 1)}  // Guardar la selección del sistema de ataque
-                                    className={`bg-gray-200 text-black px-3 py-2 rounded text-sm ${sistemaAtaque === index + 1 ? 'opacity-80' : ''}`}  // Aplicar la clase "opacity-80" si está seleccionado
-                                  >
-                                    Ataque {index + 1}
-                                  </button>
-                              ))}
-                          </div>
-                      </div>
-                      <div className="flex flex-col">
-                          <h4 className="text-md font-semibold text-black mb-2">Defensa</h4>
-                          <div className="grid grid-cols-5 gap-2">
-                              {Array.from({ length: 10 }, (_, index) => (
-                                  <button
-                                    key={index + 10}
-                                    onClick={() => setSistemaDefensa(index + 1)}  // Guardar la selección del sistema de defensa
-                                    className={`bg-gray-200 text-black px-3 py-2 rounded text-sm ${sistemaDefensa === index + 1 ? 'opacity-80' : ''}`}  // Aplicar la clase "opacity-80" si está seleccionado
-                                  >
-                                    Defensa {index + 1}
-                                  </button>
-                              ))}
-                          </div>
-                      </div>
-                  </div>
+                                    onClick={() => setAsistenciaDada(jugador)}
+                                    className={`bg-blue-500 text-white px-4 py-2 rounded text-sm ${
+                                        asistenciaDada === jugador ? 'opacity-80' : ''
+                                    }`}
+                                >
+                                    Jugador {jugador}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
 
-                  {/* Botón de Cerrar */}
-                  <div className="flex justify-center">
-                      <button 
-                          className="bg-red-500 text-white px-6 py-2 rounded" 
-                          onClick={onClose} // Cierra el popup
-                      >
-                          Cerrar
-                      </button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+                    {/* Sección de Sistema de Juego */}
+                    <div className="flex flex-col mb-4">
+                        <h3 className="text-lg font-semibold text-black mb-2">Sistema de Juego</h3>
+                        <div className="flex flex-col mb-4">
+                            <h4 className="text-md font-semibold text-black mb-2">Ataque</h4>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                                {Array.from({ length: 10 }, (_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setSistemaAtaque(index + 1)}
+                                        className={`bg-gray-200 text-black px-3 py-2 rounded text-sm ${
+                                            sistemaAtaque === index + 1 ? 'opacity-80' : ''
+                                        }`}
+                                    >
+                                        Ataque {index + 1}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="flex flex-col">
+                            <h4 className="text-md font-semibold text-black mb-2">Defensa</h4>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                                {Array.from({ length: 10 }, (_, index) => (
+                                    <button
+                                        key={index + 10}
+                                        onClick={() => setSistemaDefensa(index + 1)}
+                                        className={`bg-gray-200 text-black px-3 py-2 rounded text-sm ${
+                                            sistemaDefensa === index + 1 ? 'opacity-80' : ''
+                                        }`}
+                                    >
+                                        Defensa {index + 1}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
 
+                    {/* Botón de Cerrar */}
+                    <div className="flex justify-center">
+                        <button
+                            className="bg-red-500 text-white px-6 py-2 rounded"
+                            onClick={onClose}
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   );
 };
 

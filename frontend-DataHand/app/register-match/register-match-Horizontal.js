@@ -242,11 +242,14 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     };
 
     return (
-        <div className="w-full h-32 bg-white rounded-lg flex items-center justify-between p-4 mb-8 shadow-md">
+        <div className="w-full max-w-8xl mx-auto h-auto bg-white rounded-lg flex flex-col md:flex-row items-center justify-between p-4 mb-8 shadow-md">
             {/* Escudos y Nombres de Equipos */}
-            <div className="flex items-center">
+            <div className="flex flex-col md:flex-row items-center mb-4 md:mb-0">
                 {/* Equipo Local */}
-                <div className="flex items-center mr-8" onClick={() => manejarClickEquipo('local')}>
+                <div 
+                    className="flex items-center mb-4 md:mb-0 mr-0 md:mr-8 cursor-pointer" 
+                    onClick={() => manejarClickEquipo('local')}
+                >
                     <Image 
                         src="/path/to/escudo1.png" 
                         alt="Escudo Equipo 1"
@@ -254,11 +257,14 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                         height={50}
                         className="mr-2"
                     />
-                    <span className="text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
+                    <span className="text-lg md:text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
                 </div>
-
+    
                 {/* Equipo Visitante */}
-                <div className="flex items-center" onClick={() => manejarClickEquipo('visitante')}>
+                <div 
+                    className="flex items-center cursor-pointer"
+                    onClick={() => manejarClickEquipo('visitante')}
+                >
                     <Image 
                         src="/path/to/escudo2.png" 
                         alt="Escudo Equipo 2"
@@ -266,78 +272,80 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                         height={50}
                         className="mr-2"
                     />
-                    <span className="text-xl font-semibold text-black">{equipos.EquipoVisitante}</span>
+                    <span className="text-lg md:text-xl font-semibold text-black">{equipos.EquipoVisitante}</span>
                 </div>
             </div>
-
+    
             {/* Marcador y Cronómetro */}
-            <div className="flex flex-col">
-                <span className="text-xl font-semibold text-black">Marcador: {equipos.MarcadorLocal} - {equipos.MarcadorVisitante}</span>
-                {/* <span className="text-xl font-semibold text-black">Marcador: 0 - 0</span> */}
+            <div className="flex flex-col items-center mb-4 md:mb-0">
+                <span className="text-lg md:text-xl font-semibold text-black">Marcador: {equipos.MarcadorLocal} - {equipos.MarcadorVisitante}</span>
             </div>
-            
-            {/* Cronómetro */}
-            <div className="flex items-center">
-                <div className="flex flex-col mr-4">
-                <span className="text-lg font-semibold text-black">Cronómetro: {formatearTiempo(equipos.Parte === "Segunda parte" ? equipos.TiempoDeJuego - 1800 : equipos.TiempoDeJuego)}</span>
-                    <span className="text-md font-semibold text-black">{equipos.Parte}</span>
+    
+            {/* Cronómetro y Botones */}
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+                <div className="flex flex-col items-center text-center">
+                    <span className="text-base md:text-lg font-semibold text-black">
+                        Cronómetro: {formatearTiempo(equipos.Parte === "Segunda parte" ? equipos.TiempoDeJuego - 1800 : equipos.TiempoDeJuego)}
+                    </span>
+                    <span className="text-sm md:text-md font-semibold text-black">{equipos.Parte}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 justify-center">
                     <button 
-                        className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
+                        className={`px-4 py-2 rounded bg-blue-500 text-white ${
                             (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
-                        onClick={manejarClickFinPartido} // Cambia la funcionalidad del botón
+                        onClick={manejarClickFinPartido}
                         disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
                     >
                         {textoBoton}
                     </button>
-                    {
-                        equipos.Parte !== 'Fin del partido' && (
-                            <>
-                                <button 
-                                    className={`mt-4 px-4 py-2 rounded bg-blue-500 text-white ${
-                                        (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
-                                    }`}
-                                    onClick={iniciarCronometro} // Inicia el cronómetro
-                                    disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante} // Deshabilitar si alguno no está seleccionado
-                                >
-                                    Iniciar
-                                </button>
-                                <button 
-                                    className={`mt-4 px-4 py-2 rounded bg-red-500 text-white ${
-                                        (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
-                                    }`}
-                                    onClick={detenerCronometro} // Detiene el cronómetro
-                                    disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
-                                >
-                                    Detener
-                                </button>
-                            </>
-                        )
-                    }
+                    {equipos.Parte !== 'Fin del partido' && (
+                        <>
+                            <button 
+                                className={`px-4 py-2 rounded bg-blue-500 text-white ${
+                                    (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                                onClick={iniciarCronometro}
+                                disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
+                            >
+                                Iniciar
+                            </button>
+                            <button 
+                                className={`px-4 py-2 rounded bg-red-500 text-white ${
+                                    (!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante) ? 'opacity-50 cursor-not-allowed' : ''
+                                }`}
+                                onClick={detenerCronometro}
+                                disabled={!equipos.sistemaDefensivoLocal || !equipos.sistemaDefensivoVisitante}
+                            >
+                                Detener
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
-
-            <button 
-                className="bg-gray-300 text-black px-4 py-2 rounded"
-                onClick={handleUndo}
-            >
-            UNDO
-            </button>
-            <button
-            onClick={handleNavigateStats}
-            className="bg-gray-300 text-black px-4 py-2 rounded"
-            >
-            Estadísticas
-            </button>
-            <Link href="/">
-                <button
-                    className="bg-red-600 text-white border-2 border-white p-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center w-full">
-                    Salir
+    
+            {/* Otros botones */}
+            <div className="flex flex-wrap gap-2 mt-4 md:mt-0">
+                <button 
+                    className="bg-gray-300 text-black px-4 py-2 rounded"
+                    onClick={handleUndo}
+                >
+                    UNDO
                 </button>
-            </Link>
-
+                <button
+                    onClick={handleNavigateStats}
+                    className="bg-gray-300 text-black px-4 py-2 rounded"
+                >
+                    Estadísticas
+                </button>
+                <Link href="/">
+                    <button
+                        className="bg-red-600 text-white border-2 border-white px-4 py-2 rounded font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out w-full md:w-auto">
+                        Salir
+                    </button>
+                </Link>
+            </div>
+            
             {/* Popup de Selección de Equipos */}
             {showEquipoSelector && (
                 <div className={styles.popup}>
@@ -364,7 +372,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                 </div>
             )}
         </div>
-        );
+    );    
 };
 
 export { BarraHorizontal };
