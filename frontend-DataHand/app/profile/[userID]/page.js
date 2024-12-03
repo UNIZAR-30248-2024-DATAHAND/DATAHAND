@@ -8,6 +8,7 @@ import Sidebar from '../../components/Sidebar';
 import React, { useState, useEffect } from "react"; 
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
 
 
 ChartJS.register(...registerables);
@@ -46,9 +47,93 @@ const borrarPartido = async (userID, partidoID, setUsuario) => {
     }
 };
 
+const obtenerEventos = async (idPartido) => {
+  try {
+      const url = idPartido
+          ? `../../api/users/eventos?idPartido=${idPartido}`
+          : `../../api/users/eventos`;
+      const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (res.ok) {
+          const data = await res.json();
+          console.log('Total de eventos:', data.totalEventos);
+          console.log('Datos eventos:', data.eventos);
+          return data.eventos;
+      } else {
+          console.error('Error al obtener los eventos');
+      }
+  } catch (error) {
+      console.error('Error en la solicitud:', error);
+  }
+};
+
 export default function Home() {
-  const userID = localStorage.getItem('userID');
+  //const userID = localStorage.getItem('userID');
+  const { userID } = useParams();
   const router = useRouter(); // Inicializamos useRouter
+  const [partidosProcesados, setPartidosProcesados] = useState(false);
+
+  const procesarPartidos = async (historialPartidos) => {
+    try {
+      let goles = 0;
+      let asistencias = 0;
+      let blocajes = 0;
+      let efectividad = 0;
+      let recuperaciones = 0;
+      
+      console.log('Procesando partidos:', historialPartidos);
+      for (const idPartido of historialPartidos) {
+        // Obtener eventos de cada partido
+        const eventos = await obtenerEventos(idPartido);
+  
+        if (eventos) {
+          goles = goles + contarGoles(eventos, "local");
+          asistencias = asistencias + sacarAsistencias(eventos, "local");
+          efectividad = efectividad +contarLanzamientosTotal(eventos, "local");
+          blocajes = blocajes + sacarBlocajes(eventos, "local");
+          recuperaciones = recuperaciones + contarPerdidasDeBalon(eventos, "local");
+        };
+      }
+      const formatToTwoDecimals = (value) => parseFloat(value.toFixed(2)); // Formateador reutilizable
+      efectividad = formatToTwoDecimals(100 *(goles/efectividad));
+      // Guardar los resultados del partido actual
+
+      try {
+        // Enviar una notificación a cada jugador
+          const response = await fetch("/api/users/usuarios", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userID: userID,
+              goles: goles,
+              asistencias: asistencias,
+              efectividad: efectividad,
+              blocajes: blocajes,
+              recuperaciones: recuperaciones,
+            }),
+          });
+  
+          if (response.ok) {
+            console.log(`Atributos modificados de : ${userID}`);
+          } else {
+            console.error(`Error al modificar atributos de ${userID}`);
+          }
+      } catch (error) {
+        console.error('Error al obtener los jugadores:', error);
+      }
+    } catch (error) {
+      console.error("Error al procesar los partidos:", error);
+      return [];
+    }
+  };
+
 
   const [usuario, setUsuario] = useState({
     nombreCompleto: '',
@@ -68,21 +153,14 @@ export default function Home() {
       recuperaciones: 0,
     },
     historialPartidos: [],
+    historialNotifiaciones: [],
   });
 
-  const data = {
+  const [data, setData] = useState({
     labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Recuperaciones'],
     datasets: [
       {
-        data: usuario 
-          ? [
-              usuario.atributos.goles,
-              usuario.atributos.asistencias,
-              usuario.atributos.efectividad,
-              usuario.atributos.blocajes,
-              usuario.atributos.recuperaciones,
-            ]
-          : [0, 0, 0, 0, 0],
+        data: [0, 0, 0, 0, 0], // Valores iniciales
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 3, 
@@ -93,7 +171,8 @@ export default function Home() {
         pointHoverRadius: 8, 
       },
     ],
-  };
+  });
+  
 
   const options = {
     scales: {
@@ -135,8 +214,48 @@ export default function Home() {
   };
 
   useEffect(() => {
-    obtenerUsuario(userID, setUsuario);
-  }, [userID]); // Asegúrate de que se recarguen los datos si el userID cambia
+    const cargarUsuario = async () => {
+      await obtenerUsuario(userID, setUsuario); // Espera a que termine
+      setPartidosProcesados(true); // Luego actualiza el estado
+    };
+  
+    if (userID) {
+      cargarUsuario(); // Llamar a la función asíncrona
+    }
+  }, [userID]); // Se ejecuta cuando userID cambia
+
+  useEffect(() => {
+    console.log('Procesando partidos...');
+    procesarPartidos(usuario.historialPartidos);
+  }, [partidosProcesados]); // Asegúrate de que se recarguen los datos si el userID cambia
+
+  useEffect(() => {
+    if (partidosProcesados && usuario && usuario.atributos) {
+      setData({
+        labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Recuperaciones'],
+        datasets: [
+          {
+            data: [
+              usuario.atributos.goles || 0,
+              usuario.atributos.asistencias || 0,
+              usuario.atributos.efectividad || 0,
+              usuario.atributos.blocajes || 0,
+              usuario.atributos.recuperaciones || 0,
+            ],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 3, 
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)', 
+            pointBorderColor: '#fff', 
+            pointBorderWidth: 2, 
+            pointRadius: 6, 
+            pointHoverRadius: 8, 
+          },
+        ],
+      });
+    }
+  }, [usuario, partidosProcesados]);
+  
 
   const handleEditClick = (idPartido) => {
     // Redirige a la página de registro del partido correspondiente

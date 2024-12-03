@@ -666,3 +666,26 @@ export const obtenerResultadoTotalPortero = (dataEventos, resultado, portero, eq
     return [];  // Si dataEventos no es un array, devuelve un array vacío
   }
 };
+
+export const sacarAsistencias = (dataEventos, equipo) => {  
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos cuyo campo 'Resultado' sea igual a "gol"
+    const eventosGol = dataEventos.filter(evento => evento.Resultado === 'Gol' && evento.EquipoJugador === equipo);
+    return eventosGol.length;  // Devuelve el número de goles
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};
+
+
+export const sacarBlocajes = (dataEventos, equipo) => {  
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos cuyo campo 'Resultado' sea igual a "gol"
+    const eventosGol = dataEventos.filter(evento => evento.Accion === 'Lanzamiento bloqueado' && evento.EquipoJugador === equipo);
+    return eventosGol.length;  // Devuelve el número de goles
+  } else {
+    console.error('dataEventos no es un vector');
+    return 0;  // Si no es un vector, devuelve 0
+  }
+};

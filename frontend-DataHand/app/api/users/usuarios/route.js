@@ -170,7 +170,7 @@ export async function PUT(req) {
 }
 
 export async function PATCH(req) {
-    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser} = await req.json();
+    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser, goles, asistencias, efectividad, blocajes, recuperaciones} = await req.json();
 
     // Validar los parámetros necesarios
     if ((!correoElectronico && !userID) || (!mensajeNotificacion && !mensajeEditado)) {
@@ -184,21 +184,21 @@ export async function PATCH(req) {
 
     try {
         let usuario;
-
         // Si se pasa el correo electrónico, buscamos al usuario por correo
         if (correoElectronico) {
             usuario = await Usuario.findOne({ correoElectronico });
         } 
         // Si se pasa el userID, buscamos al usuario por userID
-        else if (userID && !statsUser) {
+        else if (userID && !statsUser && !goles) {
             usuario = await Usuario.findOne({ userID });
             console.log('Usuario encontrado:', userID);
         } else if (statsUser){
             usuario = await Usuario.findOne({ userID });
             console.log('Usuario encontrado:', userID);
+        } else if(goles){
+            usuario = await Usuario.findOne({ userID });
+            console.log('Usuario encontrado:', userID);
         }
-        console.log('Llego aqui');
-        console.log(usuario); //AQUI ES DONDE SE VE EL ERROR
         // Si no se encuentra el usuario
         if (!usuario) {
             return new Response(
@@ -224,8 +224,7 @@ export async function PATCH(req) {
                     notificacionEncontrada = true;
                     break;
                 }
-            }
-            
+            }       
             // Si no encontramos la tupla correspondiente al userID y mensajeNotificacion
             if (!notificacionEncontrada) {
                 return new Response(
@@ -233,14 +232,19 @@ export async function PATCH(req) {
                     { status: 404, headers: { 'Content-Type': 'application/json' } }
                 );
             }
-        } else if (userID && mensajeNotificacion){
+        } else if (userID && mensajeNotificacion && !goles) {
             const nuevaNotificacion = [
                 statsUser,
                 mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
             ];
             usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
+        } else if (userID && !mensajeNotificacion && goles ){    
+            usuario.atributos.goles = goles;
+            usuario.atributos.asistencias = asistencias;
+            usuario.atributos.efectividad = efectividad;
+            usuario.atributos.blocajes = blocajes;
+            usuario.atributos.recuperaciones = recuperaciones;
         }
-
         // Guardamos los cambios en la base de datos
         await usuario.save();
 
