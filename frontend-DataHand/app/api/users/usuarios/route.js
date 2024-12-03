@@ -170,15 +170,15 @@ export async function PUT(req) {
 }
 
 export async function PATCH(req) {
-    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser, goles, asistencias, efectividad, blocajes, recuperaciones} = await req.json();
+    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser, goles, asistencias, efectividad, blocajes, recuperaciones, partidoID} = await req.json();
 
     // Validar los parámetros necesarios
-    if ((!correoElectronico && !userID) || (!mensajeNotificacion && !mensajeEditado)) {
+    /*if ((!correoElectronico && !userID) || (!mensajeNotificacion && !mensajeEditado)) {
         return new Response(
             JSON.stringify({ error: 'Faltan parámetros: correo electrónico o userID, y mensaje de notificación' }),
             { status: 400, headers: { 'Content-Type': 'application/json' } }
         );
-    }
+    }*/
 
     await connectDB();
 
@@ -189,7 +189,7 @@ export async function PATCH(req) {
             usuario = await Usuario.findOne({ correoElectronico });
         } 
         // Si se pasa el userID, buscamos al usuario por userID
-        else if (userID && !statsUser && !goles) {
+        else if (userID && !statsUser && !goles && !partidoID) {
             usuario = await Usuario.findOne({ userID });
             console.log('Usuario encontrado:', userID);
         } else if (statsUser){
@@ -197,6 +197,9 @@ export async function PATCH(req) {
             console.log('Usuario encontrado:', userID);
         } else if(goles){
             usuario = await Usuario.findOne({ userID });
+            console.log('Usuario encontrado:', userID);
+        } else if(partidoID){
+            usuario = await Usuario.findOne({ userID});
             console.log('Usuario encontrado:', userID);
         }
         // Si no se encuentra el usuario
@@ -232,18 +235,20 @@ export async function PATCH(req) {
                     { status: 404, headers: { 'Content-Type': 'application/json' } }
                 );
             }
-        } else if (userID && mensajeNotificacion && !goles) {
+        } else if (userID && mensajeNotificacion && !goles && !partidoID) {
             const nuevaNotificacion = [
                 statsUser,
                 mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
             ];
             usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
-        } else if (userID && !mensajeNotificacion && goles ){    
+        } else if (userID && !mensajeNotificacion && goles && !partidoID){    
             usuario.atributos.goles = goles;
             usuario.atributos.asistencias = asistencias;
             usuario.atributos.efectividad = efectividad;
             usuario.atributos.blocajes = blocajes;
             usuario.atributos.recuperaciones = recuperaciones;
+        } else if (userID && !mensajeNotificacion && !goles && partidoID){
+            usuario.historialPartidos.push(partidoID);
         }
         // Guardamos los cambios en la base de datos
         await usuario.save();
