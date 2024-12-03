@@ -5,7 +5,7 @@ import styles from '../styles/PopupTeams.module.css';
 import { useParams } from 'next/navigation';
 
 // <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado}/>
-const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats}) => {
+const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats, setEventosUndo}) => {
 
     // Estado para el cronómetro
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
@@ -232,6 +232,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                     eliminarEvento(ultimoEvento.IdEvento);
                     alert('El evento se ha deshecho correctamente.');
                 }
+                setEventosUndo(true);
             } else {
                 alert('No hay eventos para deshacer.');
             }

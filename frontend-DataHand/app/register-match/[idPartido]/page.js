@@ -494,7 +494,22 @@ export default function Home() {
             sistemaDefensivoVisitante: opcion, // Actualiza el sistema defensivo visitante en el estado
         }));
     };
+
+    const [eventosUndo, setEventosUndo] = useState(null);
     
+    useEffect(() => {
+        const fetchEventos = async () => {
+            if (eventosUndo) {
+                const eventosObtenidos = await obtenerEventos(idPartido);
+                setEventos(eventosObtenidos);
+                setEventosUndo(null);
+            }
+        };
+    
+        fetchEventos(); // Llamamos a la función asíncrona
+    
+    },[eventosUndo]);
+
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
             {/* Sidebar */}
@@ -515,6 +530,7 @@ export default function Home() {
                 tiempoJugado={tiempoJugado}
                 setTiempoJugado={setTiempoJugado}
                 handleNavigateStats={handleNavigateStats}
+                setEventosUndo={setEventosUndo}
             />
 
             {/* Fila de tres rectángulos */}
