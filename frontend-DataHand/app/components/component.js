@@ -1,57 +1,69 @@
-// components/component.js
-
-/*
-  Este componente es una interfaz de usuario que utiliza un sistema de pestañas (tabs)
-  para mostrar diferentes vistas relacionadas con el rendimiento de un equipo en un deporte.
-
-  - Importa varias dependencias de React, incluyendo el hook `useState` para manejar el estado
-    de la pestaña activa.
-  - Usa componentes de la biblioteca de tabs de Radix UI para crear una navegación por pestañas.
-  - Hay cinco pestañas disponibles: 
-    - VISTA GENERAL: Muestra una visión general del rendimiento.
-    - SISTEMA DE JUEGO: Detalla el sistema de juego del equipo.
-    - LANZAMIENTOS: Presenta estadísticas sobre lanzamientos.
-    - ESPECÍFICAS JUGADORES: Muestra estadísticas específicas de los jugadores.
-    - JUGADORES: Proporciona una lista de jugadores del equipo.
-
-  - El estado `activeTab` se utiliza para determinar qué pestaña está activa y, en consecuencia,
-    qué contenido debe renderizarse. 
-  - La función `renderTabContent` decide qué componente se debe mostrar según la pestaña seleccionada.
-  - El contenido de la pestaña activa se renderiza al final del componente.
-
-  El diseño está organizado para que sea responsivo y fácil de usar, con estilos de Tailwind CSS
-  para la apariencia visual.
-*/
-
-// Instalar eso para el Tabs: npm install @radix-ui/react-tabs
-
 import { useState } from 'react';
-// import { Tabs, TabsList, TabsTrigger } from "./ui/tabs"; // Asegúrate de que la ruta sea correcta
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import VistaGeneral from './vista-general'; // Importa el componente de Vista General
-import SistemaDeJuego from './sistema-de-juego'; // Importa el componente del Sistema de Juego (debes crearlo)
-import Lanzamientos from './lanzamientos'; // Importa el componente de Lanzamientos (debes crearlo)
-import EspecificasJugadores from './especifico-jugadores'; // Importa el componente de Especificas Jugadores (debes crearlo)
-import Jugadores from './jugadores'; // Importa el componente de Jugadores (debes crearlo)
+import VistaGeneral from './vista-general';
+import SistemaDeJuego from './sistema-de-juego';
+import Lanzamientos from './lanzamientos';
+import EspecificasJugadores from './especifico-jugadores';
+import Jugadores from './jugadores';
 
-export default function Component({dataEventos, dataEquipos}) {
-  const [activeTab, setActiveTab] = useState("vista-general"); // Estado para controlar la pestaña activa
+export default function Component({ dataEventos, dataEquipos }) {
+  const [activeTab, setActiveTab] = useState("vista-general");
+  const [capturedTabs, setCapturedTabs] = useState([]);
 
+  // Función para renderizar el contenido de la pestaña activa
   const renderTabContent = () => {
     switch (activeTab) {
       case "vista-general":
-        return <VistaGeneral dataEventos={dataEventos} dataEquipos={dataEquipos}/>;
+        return <VistaGeneral dataEventos={dataEventos} dataEquipos={dataEquipos} />;
       case "sistema-de-juego":
-        return <SistemaDeJuego dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
+        return <SistemaDeJuego dataEventos={dataEventos} dataEquipos={dataEquipos} />;
       case "lanzamientos":
-        return <Lanzamientos dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
+        return <Lanzamientos dataEventos={dataEventos} dataEquipos={dataEquipos} />;
       case "especificas-jugadores":
-        return <EspecificasJugadores dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
+        return <EspecificasJugadores dataEventos={dataEventos} dataEquipos={dataEquipos} />;
       case "jugadores":
-        return <Jugadores dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Renderiza el componente correspondiente
+        return <Jugadores dataEventos={dataEventos} dataEquipos={dataEquipos} />;
       default:
-        return <VistaGeneral dataEventos={dataEventos} dataEquipos={dataEquipos}/>; // Por defecto, mostrar Vista General
+        return <VistaGeneral dataEventos={dataEventos} dataEquipos={dataEquipos} />;
     }
+  };
+
+  // Función para capturar la pestaña activa y agregarla al PDF
+  const captureTabForPDF = async () => {
+    const content = document.querySelector(`#${activeTab}-content`); // Asegúrate de usar un id único para cada tab
+    if (content) {
+      // Asegurarse de que el contenido esté renderizado antes de capturarlo
+      await new Promise(resolve => setTimeout(resolve, 500)); // Esperar medio segundo
+
+      // Capturamos el contenido usando html2canvas
+      const canvas = await html2canvas(content);
+      const imgData = canvas.toDataURL("image/png");
+
+      // Agregar la imagen al array de pestañas capturadas
+      setCapturedTabs(prevTabs => [...prevTabs, imgData]);
+    } else {
+      console.error('No se encontró el contenido de la pestaña');
+    }
+  };
+
+  // Función para generar el PDF con todas las pestañas capturadas
+  const generatePDF = () => {
+    if (capturedTabs.length === 0) {
+      alert("No se ha capturado ninguna pestaña. Por favor, seleccione una pestaña para agregar al PDF.");
+      return;
+    }
+
+    const doc = new jsPDF();
+    capturedTabs.forEach((imgData, index) => {
+      if (index > 0) {
+        doc.addPage();
+      }
+      doc.addImage(imgData, 'PNG', 10, 10, 180, 120); // Ajustar las coordenadas y el tamaño si es necesario
+    });
+
+    doc.save('vistas-seleccionadas.pdf');
   };
 
   return (
@@ -59,46 +71,58 @@ export default function Component({dataEventos, dataEquipos}) {
       {/* Header Tabs */}
       <Tabs defaultValue="vista-general" className="w-full">
         <TabsList className="flex space-x-4 border-b">
-          <TabsTrigger 
-            value="vista-general" 
+          <TabsTrigger
+            value="vista-general"
             className={`px-4 py-2 rounded ${activeTab === "vista-general" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
-            onClick={() => setActiveTab("vista-general")} // Cambia a la pestaña de Vista General
+            onClick={() => setActiveTab("vista-general")}
           >
             VISTA GENERAL
           </TabsTrigger>
-          <TabsTrigger 
-            value="sistema-de-juego" 
+          <TabsTrigger
+            value="sistema-de-juego"
             className={`px-4 py-2 rounded ${activeTab === "sistema-de-juego" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
-            onClick={() => setActiveTab("sistema-de-juego")} // Cambia a la pestaña de Sistema de Juego
+            onClick={() => setActiveTab("sistema-de-juego")}
           >
             SISTEMA DE JUEGO
           </TabsTrigger>
-          <TabsTrigger 
-            value="lanzamientos" 
+          <TabsTrigger
+            value="lanzamientos"
             className={`px-4 py-2 rounded ${activeTab === "lanzamientos" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
-            onClick={() => setActiveTab("lanzamientos")} // Cambia a la pestaña de Lanzamientos
+            onClick={() => setActiveTab("lanzamientos")}
           >
             LANZAMIENTOS
           </TabsTrigger>
-          <TabsTrigger 
-            value="especificas-jugadores" 
+          <TabsTrigger
+            value="especificas-jugadores"
             className={`px-4 py-2 rounded ${activeTab === "especificas-jugadores" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
-            onClick={() => setActiveTab("especificas-jugadores")} // Cambia a la pestaña de Específicas Jugadores
+            onClick={() => setActiveTab("especificas-jugadores")}
           >
             ESPECÍFICAS JUGADORES
           </TabsTrigger>
-          <TabsTrigger 
-            value="jugadores" 
+          <TabsTrigger
+            value="jugadores"
             className={`px-4 py-2 rounded ${activeTab === "jugadores" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
-            onClick={() => setActiveTab("jugadores")} // Cambia a la pestaña de Jugadores
+            onClick={() => setActiveTab("jugadores")}
           >
             JUGADORES
           </TabsTrigger>
         </TabsList>
       </Tabs>
 
-      {/* Renderiza el contenido de la pestaña activa */}
-      {renderTabContent()}
+      {/* Contenedor que envuelve el contenido de las pestañas, con ids únicos */}
+      <div id={`${activeTab}-content`}>
+        {renderTabContent()}
+      </div>
+
+      {/* Botón para capturar la pestaña activa y agregarla al PDF */}
+      <button onClick={captureTabForPDF} className="mt-4 px-4 py-2 bg-green-500 text-white rounded">
+        Agregar al PDF
+      </button>
+
+      {/* Botón para generar el PDF con todas las pestañas seleccionadas */}
+      <button onClick={generatePDF} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        Generar PDF con vistas seleccionadas
+      </button>
     </div>
   );
 }
