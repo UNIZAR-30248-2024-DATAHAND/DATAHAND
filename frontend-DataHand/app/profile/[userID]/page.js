@@ -85,8 +85,9 @@ export default function Home() {
       let blocajes = 0;
       let efectividad = 0;
       let recuperaciones = 0;
-      
-      console.log('Procesando partidos:', historialPartidos);
+
+      const totalPartidos = historialPartidos.length;
+      //console.log('Procesando partidos:', historialPartidos);
       for (const idPartido of historialPartidos) {
         // Obtener eventos de cada partido
         const eventos = await obtenerEventos(idPartido);
@@ -102,6 +103,11 @@ export default function Home() {
       const formatToTwoDecimals = (value) => parseFloat(value.toFixed(2)); // Formateador reutilizable
       efectividad = formatToTwoDecimals(100 *(goles/efectividad));
       // Guardar los resultados del partido actual
+      goles = formatToTwoDecimals(goles/totalPartidos);
+      asistencias = formatToTwoDecimals(asistencias/totalPartidos);
+      blocajes = formatToTwoDecimals(blocajes/totalPartidos);
+      recuperaciones = formatToTwoDecimals(recuperaciones/totalPartidos);
+      efectividad = formatToTwoDecimals(efectividad/totalPartidos);
 
       try {
         // Enviar una notificación a cada jugador
@@ -238,7 +244,7 @@ export default function Home() {
             data: [
               usuario.atributos.goles || 0,
               usuario.atributos.asistencias || 0,
-              usuario.atributos.efectividad || 0,
+              usuario.atributos.efectividad/10 || 0,
               usuario.atributos.blocajes || 0,
               usuario.atributos.recuperaciones || 0,
             ],
@@ -311,7 +317,7 @@ export default function Home() {
 
         <div className="w-full sm:w-[40vw] sm:max-w-[500px] sm:max-h-[500px] bg-white rounded-2xl p-4">
           <div className="flex justify-center">
-            <h2 className="text-[4vw] sm:text-2xl font-semibold text-orange-500">Estadísticas</h2>
+            <h2 className="text-[4vw] sm:text-2xl font-semibold text-orange-500">Media de estadísticas por partido</h2>
           </div>
           <div className="flex justify-center items-center">
             <Radar data={data} options={options} />
