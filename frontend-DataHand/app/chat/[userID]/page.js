@@ -376,7 +376,7 @@ export default function EditarPerfil() {
       
             <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center px-4">
               {/* Mostrar los mensajes del chat seleccionado */}
-              {mensajesFiltrados.map((msg, index) => (
+              {mensajesFiltrados.reverse().map((msg, index) => (
                 <div
                   key={index}
                   className="w-full max-w-4xl px-4 py-2 rounded-lg bg-blue-500 text-white font-bold flex justify-between items-center mx-auto"

@@ -1,12 +1,22 @@
 'use client'; // Marca el componente como un Client Component
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react'; // Este import será global en tus pruebas
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Formulario from './profileform'; // Asegúrate de que la ruta sea correcta
 
+const obtenerUsuario = async (userID, setUsuario) => {
+  try {
+    console.log(`Solicitando usuario con userID: ${userID}`);
+    const res = await fetch(`/api/users/usuarios?userID=${userID}`);
+    const data = await res.json();
+    setUsuario(data);
+  } catch (error) {
+    console.error('Error al obtener el usuario', error);
+  }
+};
 
 const Sidebar = ({ userID }) => {
   const router = useRouter();
@@ -17,6 +27,44 @@ const Sidebar = ({ userID }) => {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const [usuario, setUsuario] = useState({
+    nombreCompleto: '',
+    correoElectronico: '',
+    contrasena: '',
+    fechaNacimiento: '',
+    tipoUsuario: '',
+    fotoPerfil: '',
+    club: '',
+    pais: '',
+    posicion: '',
+    atributos: {
+      goles: 0,
+      asistencias: 0,
+      efectividad: 0,
+      blocajes: 0,
+      recuperaciones: 0,
+    },
+    historialPartidos: [],  
+    historialNotificaciones: [],
+  }); 
+
+  useEffect(() => {
+    obtenerUsuario(userID, setUsuario);
+  }, []);
+
+  function tieneIndicador(mensajes) {
+    if (!mensajes || mensajes.length === 0) return false;
+  
+    const ultimoMensaje = mensajes[mensajes.length - 1];
+    console.log('Último mensaje:', ultimoMensaje);
+    return (
+      ultimoMensaje &&
+      (ultimoMensaje[1] === "Nuevas estadisticas disponibles" || 
+       ultimoMensaje[1] === "Invitación")
+    );
+  }
+  
 
   // Función para registrar un partido
   const registrarPartido = async () => {
@@ -90,18 +138,26 @@ const Sidebar = ({ userID }) => {
 
         <Link href={`/chat/${userID}`}>
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-between gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
-            <Image
-              src="/images/icon_edit.svg"
-              alt="Chat"
-              width={30}
-              height={30}
-            />
-            Chat
+            <div className="flex items-center gap-3">
+              <Image
+                src="/images/icon_edit.svg"
+                alt="Chat"
+                width={30}
+                height={30}
+              />
+              Chat
+            </div>
+
+            {/* Puntito verde condicional */}
+            {tieneIndicador(usuario.historialNotificaciones) && (
+              <span className="w-4 h-4 bg-green-500 rounded-full"></span>
+            )}
           </button>
         </Link>
+
 
         <button
           onClick={registrarPartido}
