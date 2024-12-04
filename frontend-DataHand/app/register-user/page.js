@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../styles/Input1.module.css';
 import styles2 from '../styles/Button1.module.css';
+import styles3 from '../styles/Card1.module.css';
+import styles4 from '../styles/Checkbox1.module.css';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -153,14 +156,21 @@ export default function Register() {
           {/* Switch */}
           <div className="col-span-2 flex justify-center items-center gap-4">
             <span className="text-white">Entrenador</span>
-            <div className="relative w-20 h-8 bg-gray-300 rounded-full p-1 flex items-center">
-              <div className={`absolute w-8 h-6 bg-white rounded-full transition-transform ${formData.userType === 'Jugador' ? 'translate-x-10' : ''}`} />
-              <button type="button" onClick={toggleUserType} className="absolute w-full h-full bg-transparent focus:outline-none" />
-            </div>
+            
+            {/* Custom Checkbox */}
+            <input
+              type="checkbox"
+              className={styles4['theme-checkbox']}
+              checked={formData.userType === 'Jugador'}
+              onChange={toggleUserType}
+            />
+            
             <span className="text-white">Jugador</span>
           </div>
 
-          {/* Imagen de perfil */}
+
+
+          {/* Imagen de perfil
           <div className="col-span-2 flex flex-col items-center">
             <label className="text-white text-lg">Foto de Perfil:</label>
             <div className="w-full max-w-xs h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-100" onDrop={handleImageDrop} onDragOver={handleDragOver} onClick={() => document.getElementById('imageUpload').click()}>
@@ -171,7 +181,38 @@ export default function Register() {
               )}
             </div>
             <input id="imageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
+          </div> */}
+
+          {/* Imagen de perfil */}
+          <div className="col-span-2 flex flex-col items-center">
+            <label className="text-white text-lg">Foto de Perfil:</label>
+            <div style={{ marginBottom: '20px' }}></div>
+            <div
+              className={styles3.card} // Usamos la clase del módulo CSS
+              onDrop={handleImageDrop} 
+              onDragOver={handleDragOver} 
+              onClick={() => document.getElementById('imageUpload').click()}
+            >
+              {/* Fondo de la tarjeta */}
+              <div className={styles3.bg}></div> {/* Usamos la clase del módulo CSS */}
+
+              {/* Blobs animados */}
+              <div className={styles3.blob}></div> {/* Usamos la clase del módulo CSS */}
+
+              {/* Vista previa de la imagen o mensaje */}
+              {previewImage ? (
+                <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover z-10" />
+              ) : (
+                <p className="text-gray-500 text-center z-10">Arrastra o selecciona una imagen</p>
+              )}
+            </div>
+            <div style={{ marginBottom: '20px' }}></div>
+            <input id="imageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
           </div>
+          
+
+
+
 
           {/* Campos adicionales */}
           <input type="text" name="country" placeholder="País" value={formData.country} onChange={handleInputChange} className={styles.input1} />

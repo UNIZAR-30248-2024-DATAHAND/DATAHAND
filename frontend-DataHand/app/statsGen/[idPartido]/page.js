@@ -167,7 +167,15 @@ import Sidebar from '../../components/Sidebar';
           </div>
         </div>
       );
-    }    
+    }
+    
+    // if (isLoading) {
+    //   return (
+    //     <div className="flex items-center justify-center h-screen bg-orange-500 text-white">
+    //       <h2 className="text-2xl">Cargando datos...</h2>
+    //     </div>
+    //   );
+    // }
   
     return (
       <div className="relative min-h-screen flex flex-col items-center justify-start bg-orange-500 px-4 sm:px-8">
