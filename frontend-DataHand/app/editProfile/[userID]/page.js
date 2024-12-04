@@ -70,7 +70,9 @@ export default function EditarPerfil() {
           <ProfileForm userData={usuario} setUserData={setUsuario} />
         </div>
       </div>
-      <Sidebar userID={userID} />
+      <div style={{ position: "relative", zIndex: 1500 }}>
+        <Sidebar userID={userID} />
+      </div>
     </div>
   );  
 }

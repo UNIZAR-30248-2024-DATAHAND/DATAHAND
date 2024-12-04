@@ -129,19 +129,24 @@ export default function ProfileForm({ userData, setUserData }) {
       {/* *************** */}
       {/* TIENES QUE METER AQUI LA CARD QUE TOCA */}
       <label style={styles.label}>Foto de Perfil:</label>
+      <div style={{ marginBottom: '20px' }}></div>
       <div
-        style={styles.imageDropZone}
+        className={styles3.card}
         onDrop={handleImageDrop}
         onDragOver={(e) => e.preventDefault()}
       >
+        <div className={styles3.bg}></div>
+        <div className={styles3.blob}></div>
         {previewImage ? (
           <img
             src={previewImage}
             alt="Vista previa"
-            style={styles.imagePreview}
+            style={{ ...styles.imagePreview, zIndex: 10, position: "relative" }}
           />
         ) : (
-          <p>Arrastra una imagen aquí o haz clic para seleccionar</p>
+          <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>
+            Arrastra una imagen aquí o haz clic para seleccionar
+          </p>
         )}
       </div>
 

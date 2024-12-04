@@ -9,7 +9,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 10px 10px 30px #888888, -10px -10px 30px #d3d3d3; /* Menos brillo */
+  box-shadow: 10px 10px 30px #666666, -10px -10px 30px #b3b3b3;
 }
 
 .bg {
