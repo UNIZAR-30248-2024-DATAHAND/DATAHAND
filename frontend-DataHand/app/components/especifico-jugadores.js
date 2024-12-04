@@ -162,8 +162,7 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
     };
     
     return (
-        <div className="w-full max-w-full mx-auto p-0 overflow-y-auto h-screen">
-            {/* Header */}
+        <div className="w-full max-w-full mx-auto p-0 overflow-y-auto min-h-screen">            {/* Header */}
             <div className="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm">
             <h1 className="text-lg font-medium text-center flex-1">
                     {dataEquipos.EquipoLocal} -  {isEntrenador ? `Seleccionado: ${jugadorSeleccionado.nombre}` : "Mario Hernández"}
@@ -389,7 +388,6 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
                                 <div>{golesCampoContrario}/{totalCampoContrario}</div>
                             </div>
 
-
                             {/* Etiqueta de fondo */}
                             <div className="absolute left-1/2 top-[55%] -translate-x-1/2 bg-gray-500 text-white rounded-full px-3 py-1 z-[-1]">
                                 Fondo
@@ -400,5 +398,5 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

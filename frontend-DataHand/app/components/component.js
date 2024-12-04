@@ -67,10 +67,10 @@ export default function Component({ dataEventos, dataEquipos }) {
   };
 
   return (
-    <div className="w-full bg-white text-black">
+    <div className="w-full bg-white text-black h-full">
       {/* Header Tabs */}
       <Tabs defaultValue="vista-general" className="w-full">
-        <TabsList className="flex space-x-4 border-b">
+        <TabsList className="flex flex-wrap space-x-4 border-b">
           <TabsTrigger
             value="vista-general"
             className={`px-4 py-2 rounded ${activeTab === "vista-general" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
@@ -108,21 +108,21 @@ export default function Component({ dataEventos, dataEquipos }) {
           </TabsTrigger>
         </TabsList>
       </Tabs>
-
+  
       {/* Contenedor que envuelve el contenido de las pestañas, con ids únicos */}
       <div id={`${activeTab}-content`}>
         {renderTabContent()}
       </div>
-
+  
       {/* Botón para capturar la pestaña activa y agregarla al PDF */}
       <button onClick={captureTabForPDF} className="mt-4 px-4 py-2 bg-green-500 text-white rounded">
         Agregar al PDF
       </button>
-
+  
       {/* Botón para generar el PDF con todas las pestañas seleccionadas */}
       <button onClick={generatePDF} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         Generar PDF con vistas seleccionadas
       </button>
     </div>
-  );
+  );  
 }
