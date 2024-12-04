@@ -21,4 +21,30 @@
   .input1:hover {
     background-color: #ddd;
   }
+
+/* Estilo principal del input */
+.input2 {
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding: 1em;
+  background-color: #ccc;
+  box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
+  transition: 300ms ease-in-out;
+  color: rgb(107, 107, 107); /* Texto negro al escribir */
+  width: 650px; /* Ancho fijo en píxeles */
+}
+
+/* Efecto al enfocar */
+.input2:focus {
+  background-color: white;
+  transform: scale(1.05);
+  box-shadow: 3px 3px 50px #969696,
+  -3px -3px 50px #ffffff;  }
+
+/* Efecto hover opcional */
+.input2:hover {
+  background-color: #ddd;
+}
+
   

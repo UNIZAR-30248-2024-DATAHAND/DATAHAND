@@ -179,7 +179,7 @@ import Sidebar from '../../components/Sidebar';
   
     return (
       <div className="relative min-h-screen flex flex-col items-center justify-start bg-orange-500 px-4 sm:px-8">
-        <Sidebar userID={userID} />
+        
     
         <h1
           className="text-4xl sm:text-5xl font-bold mb-4 text-white text-center"
@@ -209,6 +209,7 @@ import Sidebar from '../../components/Sidebar';
             animation: gradient 20s ease infinite;
           }
         `}</style>
+         <Sidebar userID={userID} />
       </div>
     );    
 }

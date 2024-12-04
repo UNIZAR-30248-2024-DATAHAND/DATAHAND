@@ -9,6 +9,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import ProfileForm from '../../components/profileform'; // Importamos el componente ProfileForm
+import styles from '../../styles/Input1.module.css';
+
 
 ChartJS.register(...registerables);
 
