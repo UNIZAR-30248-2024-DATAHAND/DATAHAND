@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
+import '../../styles/styles.css';
 
 
 ChartJS.register(...registerables);
@@ -286,11 +287,11 @@ export default function Home() {
   return (
     <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient overflow-y-auto">
       <Sidebar userID={userID} />
-  
-      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-        {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
+
+      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white glow-text">
+          {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
       </h1>
-  
+
       <div className="flex flex-wrap justify-center gap-8 mb-12">
         <div className="w-full sm:w-[40vw] sm:max-w-[500px] sm:h-[40vw] sm:max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
           <div className="flex justify-between">

@@ -535,7 +535,7 @@ export default function Home() {
 
             {/* Fila de tres rectángulos */}
             <div className="flex flex-wrap justify-between items-stretch w-full gap-4 mb-12 flex-grow">
-                <div className="flex-1 h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
+                <div className="flex-1 h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     {/* Título */}
                     <p className="text-lg sm:text-xl font-semibold text-black text-center">Equipo Local</p>
 
@@ -637,7 +637,7 @@ export default function Home() {
                 </div>
                 {/* Aqui nos quedamos */}
                 {/* Rectángulo 2 (más grande) */}
-                <div className="flex-[1.5] h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
+                <div className="flex-[1.5] h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     <p className="text-xl font-semibold text-black text-center">Acciones del juego</p>
 
                     {/* Sección Fases de Juego */}
@@ -756,7 +756,7 @@ export default function Home() {
                 </div>
                 
                 {/* Rectángulo 3 */}
-                <div className="flex-1 h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
+                <div className="flex-1 h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     <p className="text-xl font-semibold text-black text-center">Equipo visitante</p>
 
                     {/* Sección Tiempo Muerto dentro del Rectángulo 1 */}
