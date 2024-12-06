@@ -1,6 +1,47 @@
 import Equipo from '../../../../models/Equipos';
 import { connectDB } from '../../../../lib/db';
 
+export default function handler(req, res) {
+  const { entrenador } = req.query;
+
+  const equipos = [
+    {
+      nombre: 'Zaragoza',
+      entrenador: '1',
+      imagen: 'url-de-imagen-zaragoza',
+      porteros: ['Portero Zaragoza 1 - 1', 'Portero Zaragoza 2 - 13'],
+      jugadores: [
+        'Jugador',
+        'Jugador',
+        'Jugador',
+        '9',
+        'Jugador Zaragoza 5 - 11',
+        'Jugador Zaragoza 6 - 12',
+      ],
+      banquillo: [
+        'Banquillo Zaragoza 1 - 14',
+        'Banquillo Zaragoza 2 - 15',
+        'Banquillo Zaragoza 3 - 16',
+        'Banquillo Zaragoza 4 - 17',
+        'Banquillo Zaragoza 5 - 18',
+        'Banquillo Zaragoza 6 - 19',
+        'Banquillo Zaragoza 7 - 20',
+        'Banquillo Zaragoza 8 - 21',
+      ],
+      sistemaDefensivo: '6:0',
+    },
+  ];
+
+  // Filtra el equipo por el entrenador
+  const equipo = equipos.find((e) => e.entrenador === entrenador);
+
+  if (equipo) {
+    res.status(200).json(equipo);
+  } else {
+    res.status(404).json({ message: 'Equipo no encontrado' });
+  }
+}
+
 export async function GET(req) {
   await connectDB(); // Conéctate a la base de datos
 

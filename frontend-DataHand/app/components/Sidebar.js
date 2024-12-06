@@ -171,7 +171,7 @@ const Sidebar = ({ userID }) => {
           >
             <div className="flex items-center gap-3">
               <Image
-                src="/images/icon_edit.svg"
+                src="/images/icon_chat.svg"
                 alt="Chat"
                 width={30}
                 height={30}
@@ -204,18 +204,18 @@ const Sidebar = ({ userID }) => {
 
         {error && <div className="text-red-500">{error}</div>} {/* Mensaje de error */}
 
-        <Link href="/stats">
+        <Link href="/editTeam">
           <button
             className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
             <Image
-              src="/images/icon_stats.svg"
-              alt="Estadísticas"
+              src="/images/icon_shield.svg"
+              alt="Equipo"
               width={30}
               height={30}
             />
-            Estadísticas
+            Organizar equipo
           </button>
         </Link>
 
