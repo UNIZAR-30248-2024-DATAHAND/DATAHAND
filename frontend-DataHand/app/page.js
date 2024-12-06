@@ -178,18 +178,6 @@ export default function Login() {
           </form>
           
           {mensaje && <p className="text-white text-center mt-6">{mensaje}</p>}
-          <p
-            className="text-white text-center mt-6"
-            style={{ fontFamily: 'var(--font-geist-sans)' }}
-          >
-            ¿Olvidaste tu contraseña?{' '}
-            <Link
-              href="/forgot-password"
-              className="text-purple-600 hover:text-white transition"
-            >
-              Recuperar
-            </Link>
-          </p>
         </div>
       </div>
     </div>
