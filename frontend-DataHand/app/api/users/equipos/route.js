@@ -117,3 +117,70 @@ export async function PATCH(req) {
     return new Response('Error al actualizar el equipo', { status: 500 });
   }
 }
+
+export async function PUT(req) {
+  try {
+    // Conectar a la base de datos
+    await connectDB();
+
+    // Obtener los datos del cuerpo de la solicitud
+    const equipoActualizado = await req.json(); // Estado completo del equipo
+    const { entrenador } = equipoActualizado; // Asegúrate de que el entrenador esté presente
+
+    // Verificar que el campo entrenador esté presente
+    if (!entrenador) {
+      return new Response(
+        JSON.stringify({ error: 'Debe proporcionar un entrenador' }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Buscar el equipo por el ID del entrenador
+    const equipo = await Equipo.findOne({ entrenador });
+
+    if (!equipo) {
+      return new Response(
+        JSON.stringify({ error: 'Equipo no encontrado' }),
+        {
+          status: 404,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+    }
+
+    // Actualizar el equipo con los datos proporcionados
+    equipo.nombre = equipoActualizado.nombre || equipo.nombre;
+    equipo.imagen = equipoActualizado.imagen || equipo.imagen;
+    equipo.porteros = equipoActualizado.porteros || equipo.porteros;
+    equipo.jugadores = equipoActualizado.jugadores || equipo.jugadores;
+    equipo.banquillo = equipoActualizado.banquillo || equipo.banquillo;
+    equipo.sistemaDefensivo = equipoActualizado.sistemaDefensivo || equipo.sistemaDefensivo;
+
+    // Guardar los cambios en la base de datos
+    const equipoGuardado = await equipo.save();
+
+    // Responder con el equipo actualizado
+    return new Response(
+      JSON.stringify({
+        message: 'Equipo actualizado exitosamente',
+        equipo: equipoGuardado,
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  } catch (error) {
+    console.error('Error al guardar los cambios en el equipo:', error);
+    return new Response(
+      JSON.stringify({ error: 'Error al guardar los cambios en el equipo' }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
+}
