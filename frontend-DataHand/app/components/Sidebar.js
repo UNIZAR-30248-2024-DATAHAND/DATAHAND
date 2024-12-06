@@ -187,9 +187,13 @@ const Sidebar = ({ userID }) => {
         </Link>
 
 
+        <>
+    {/* Condicional para mostrar los botones solo si tipoUsuario es 'entrenador' */}
+    {usuario.tipoUsuario === 'entrenador' && (
+      <>
         <button
           onClick={registrarPartido}
-          aria-label="Registrar partido"  // Atributo de accesibilidad añadido
+          aria-label="Registrar partido"
           className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
           style={{ fontFamily: 'var(--font-geist-sans)' }}
         >
@@ -218,6 +222,9 @@ const Sidebar = ({ userID }) => {
             Organizar equipo
           </button>
         </Link>
+      </>
+          )}
+  </>
 
         <button
           onClick={() => {
