@@ -20,7 +20,7 @@ export default function SistemaDeJuego({dataEventos,dataEquipos}) {
   const valoresUnicosSistemaAtaque = obtenerSistemaAtaque(dataEventos);
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white overflow-x-auto">
       {/* Contenido de la pestaña Sistema de Juego */}
       <Tabs defaultValue="sistema-de-juego" className="w-full">
         {/* Pestañas secundarias dentro de Sistema de Juego */}

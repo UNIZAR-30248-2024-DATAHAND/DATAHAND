@@ -169,6 +169,105 @@ export async function PUT(req) {
     }
 }
 
+export async function PATCH(req) {
+    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser, goles, asistencias, efectividad, blocajes, recuperaciones, partidoID} = await req.json();
+
+    // Validar los parámetros necesarios
+    /*if ((!correoElectronico && !userID) || (!mensajeNotificacion && !mensajeEditado)) {
+        return new Response(
+            JSON.stringify({ error: 'Faltan parámetros: correo electrónico o userID, y mensaje de notificación' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
+    }*/
+
+    await connectDB();
+
+    try {
+        let usuario;
+        // Si se pasa el correo electrónico, buscamos al usuario por correo
+        if (correoElectronico) {
+            usuario = await Usuario.findOne({ correoElectronico });
+        } 
+        // Si se pasa el userID, buscamos al usuario por userID
+        else if (userID && !statsUser && !goles && !partidoID) {
+            usuario = await Usuario.findOne({ userID });
+            console.log('Usuario encontrado:', userID);
+        } else if (statsUser){
+            usuario = await Usuario.findOne({ userID });
+            console.log('Usuario encontrado:', userID);
+        } else if(goles){
+            usuario = await Usuario.findOne({ userID });
+            console.log('Usuario encontrado:', userID);
+        } else if(partidoID){
+            usuario = await Usuario.findOne({ userID});
+            console.log('Usuario encontrado:', userID);
+        }
+        // Si no se encuentra el usuario
+        if (!usuario) {
+            return new Response(
+                JSON.stringify({ error: 'Usuario no encontrado' }),
+                { status: 404, headers: { 'Content-Type': 'application/json' } }
+            );
+        }
+        // Si se pasa el correo, agregamos una nueva notificación
+        if (correoElectronico) {
+            const nuevaNotificacion = [
+                userID,
+                mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
+            ];
+
+            usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
+        } else if (userID && mensajeEditado) {
+            let notificacionEncontrada = false;
+            // Buscamos la tupla que corresponde al userID y actualizamos el mensaje
+            for (let notif of usuario.historialNotificaciones) {
+                console.log(notif);
+                if (notif[0] === chatNoti && notif[1] === mensajeNotificacion) {
+                    notif[1] = mensajeEditado; // Actualizamos el mensaje
+                    notificacionEncontrada = true;
+                    break;
+                }
+            }       
+            // Si no encontramos la tupla correspondiente al userID y mensajeNotificacion
+            if (!notificacionEncontrada) {
+                return new Response(
+                    JSON.stringify({ error: 'No se encontró una notificación para el userID y mensaje proporcionados' }),
+                    { status: 404, headers: { 'Content-Type': 'application/json' } }
+                );
+            }
+        } else if (userID && mensajeNotificacion && !goles && !partidoID) {
+            const nuevaNotificacion = [
+                statsUser,
+                mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
+            ];
+            usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
+        } else if (userID && !mensajeNotificacion && goles && !partidoID){    
+            usuario.atributos.goles = goles;
+            usuario.atributos.asistencias = asistencias;
+            usuario.atributos.efectividad = efectividad;
+            usuario.atributos.blocajes = blocajes;
+            usuario.atributos.recuperaciones = recuperaciones;
+        } else if (userID && !mensajeNotificacion && !goles && partidoID){
+            usuario.historialPartidos.push(partidoID);
+        }
+        // Guardamos los cambios en la base de datos
+        await usuario.save();
+
+        return new Response(
+            JSON.stringify({ message: 'Historial de notificaciones actualizado exitosamente', usuario }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        return new Response(
+            JSON.stringify({ error: 'Error al actualizar el usuario' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+    }
+}
+
+
 
 
 // Método DELETE para eliminar un partido del historial de un usuario

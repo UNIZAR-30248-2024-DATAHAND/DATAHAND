@@ -120,41 +120,96 @@ import Sidebar from '../../components/Sidebar';
     if (isLoading) {
       return (
         <div className="flex items-center justify-center h-screen bg-orange-500 text-white">
-          <h2 className="text-2xl">Cargando datos...</h2>
+          <div className="main">
+            <div className="up">
+              <div className="loaders">
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+              </div>
+              <div className="loadersB">
+                <div className="loaderA">
+                  <div className="ball0"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball1"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball2"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball3"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball4"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball5"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball6"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball7"></div>
+                </div>
+                <div className="loaderA">
+                  <div className="ball8"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
+    
+    // if (isLoading) {
+    //   return (
+    //     <div className="flex items-center justify-center h-screen bg-orange-500 text-white">
+    //       <h2 className="text-2xl">Cargando datos...</h2>
+    //     </div>
+    //   );
+    // }
   
     return (
-      <div className="relative h-screen flex flex-col items-center justify-center bg-orange-500 ">
-        <Sidebar userID={userID}/>
-        <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+      <div className="relative min-h-screen flex flex-col items-center justify-start bg-orange-500 px-4 sm:px-8">
+        
+    
+        <h1
+          className="text-4xl sm:text-5xl font-bold mb-4 text-white text-center"
+          style={{ fontFamily: 'var(--font-geist-sans)' }}
+        >
           Estadísticas Generales
         </h1>
-  
-        <Component dataEventos={eventos} dataEquipos={equipos}/>
-
-     
-
-      <style jsx>{`
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
+    
+        <Component dataEventos={eventos} dataEquipos={equipos} />
+    
+        <style jsx>{`
+          @keyframes gradient {
+            0% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+            100% {
+              background-position: 0% 50%;
+            }
           }
-          50% {
-            background-position: 100% 50%;
+    
+          .animate-gradient {
+            background: linear-gradient(270deg, #ffb835, #8a2be2);
+            background-size: 400% 400%;
+            animation: gradient 20s ease infinite;
           }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        .animate-gradient {
-          background: linear-gradient(270deg, #ffb835, #8a2be2);
-          background-size: 400% 400%;
-          animation: gradient 20s ease infinite;
-        }
-      `}</style>
-    </div>
-  );
+        `}</style>
+         <Sidebar userID={userID} />
+      </div>
+    );    
 }

@@ -494,54 +494,82 @@ export default function Home() {
             sistemaDefensivoVisitante: opcion, // Actualiza el sistema defensivo visitante en el estado
         }));
     };
+
+    const [eventosUndo, setEventosUndo] = useState(null);
     
+    useEffect(() => {
+        const fetchEventos = async () => {
+            if (eventosUndo) {
+                const eventosObtenidos = await obtenerEventos(idPartido);
+                setEventos(eventosObtenidos);
+                setEventosUndo(null);
+            }
+        };
+    
+        fetchEventos(); // Llamamos a la función asíncrona
+    
+    },[eventosUndo]);
+
     return (
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
-            <Sidebar userID={userID}/>
-            <h1 className="text-5xl font-bold mb-4 text-black" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+            {/* Sidebar */}
+            <Sidebar userID={userID} />
+
+            {/* Título */}
+            <h1
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-black"
+                style={{ fontFamily: 'var(--font-geist-sans)' }}
+            >
                 Partido
             </h1>
-            
-            <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado} handleNavigateStats={handleNavigateStats}/>
+
+            {/* Barra Horizontal */}
+            <BarraHorizontal
+                equipos={equipos}
+                setEquipos={setEquipos}
+                tiempoJugado={tiempoJugado}
+                setTiempoJugado={setTiempoJugado}
+                handleNavigateStats={handleNavigateStats}
+                setEventosUndo={setEventosUndo}
+            />
 
             {/* Fila de tres rectángulos */}
-            <div className="flex justify-between w-full mb-12 flex-grow">
-                {/* Rectángulo 1 */}
-                <div className="flex-1 h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
-                    <p className="text-xl font-semibold text-black text-center">Equipo Local</p>
+            <div className="flex flex-wrap justify-between items-stretch w-full gap-4 mb-12 flex-grow">
+                <div className="flex-1 h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
+                    {/* Título */}
+                    <p className="text-lg sm:text-xl font-semibold text-black text-center">Equipo Local</p>
 
-                    {/* Sección Tiempo Muerto dentro del Rectángulo 1 */}
+                    {/* Sección Tiempo Muerto */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Tiempo Muerto</h2>
-                        <div className="flex justify-between mb-2">
-                            <button className="bg-blue-500 text-white px-3 py-3 rounded-lg">Primero</button>
-                            <button className="bg-green-500 text-white px-3 py-3 rounded-lg">Segundo</button>
-                            <button className="bg-red-500 text-white px-3 py-3 rounded-lg">Tercero</button>
+                        <h2 className="text-md sm:text-lg font-semibold text-black mb-2">Tiempo Muerto</h2>
+                        <div className="flex flex-wrap justify-between gap-2 mb-2">
+                            <button className="bg-blue-500 text-white px-3 py-2 rounded-lg w-full sm:w-auto">Primero</button>
+                            <button className="bg-green-500 text-white px-3 py-2 rounded-lg w-full sm:w-auto">Segundo</button>
+                            <button className="bg-red-500 text-white px-3 py-2 rounded-lg w-full sm:w-auto">Tercero</button>
                         </div>
                     </div>
-                    
+
                     {/* Sección Porteros */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Porteros</h2>
-                        <div className="grid grid-cols-2 gap-2">
-                            {/* Solo se muestra un portero aquí */}
+                        <h2 className="text-md sm:text-lg font-semibold text-black mb-2">Porteros</h2>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             <button
                                 onClick={() => seleccionarJugador("local", 0, "portero")}
                                 className={`${
                                     seleccionado?.equipo === "local" && seleccionado?.index === 0 && seleccionado?.tipo === "portero"
                                         ? "bg-red-500"
                                         : "bg-blue-500"
-                                } text-white px-3 py-3 rounded-lg`}
+                                } text-white px-3 py-2 rounded-lg`}
                             >
-                                Portero {equipos.local.porteros[0]} {/* Primer portero visible */}
+                                Portero {equipos.local.porteros[0]}
                             </button>
                         </div>
                     </div>
 
-                     {/* Sección Jugadores Locales */}
+                    {/* Sección Jugadores Locales */}
                     <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Jugadores Locales</h2>
-                        <div className="grid grid-cols-3 gap-2">
+                        <h2 className="text-md sm:text-lg font-semibold text-black mb-2">Jugadores Locales</h2>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             {equipos.local.jugadores.map((jugador, index) => (
                                 <button
                                     key={index}
@@ -550,15 +578,15 @@ export default function Home() {
                                         seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "jugador"
                                             ? "bg-red-500"
                                             : "bg-green-500"
-                                    } text-white px-3 py-3 rounded-lg`}
+                                    } text-white px-3 py-2 rounded-lg`}
                                 >
                                     Jugador {jugador}
                                 </button>
                             ))}
                         </div>
 
-                        <h2 className="text-lg font-semibold text-black mt-4 mb-2">Banquillo Local</h2>
-                        <div className="grid grid-cols-3 gap-2">
+                        <h2 className="text-md sm:text-lg font-semibold text-black mt-4 mb-2">Banquillo Local</h2>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                             {equipos.local.banquillo.map((jugador, index) => (
                                 <button
                                     key={index}
@@ -567,49 +595,49 @@ export default function Home() {
                                         seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "banquillo"
                                             ? "bg-red-500"
                                             : "bg-yellow-500"
-                                    } text-white px-3 py-3 rounded-lg`}
+                                    } text-white px-3 py-2 rounded-lg`}
                                 >
                                     Jugador {jugador}
                                 </button>
                             ))}
 
-                            {/* Agregar el segundo portero al banquillo */}
+                            {/* Segundo portero */}
                             <button
                                 onClick={() => seleccionarJugador("local", 1, "portero")}
                                 className={`${
-                                    seleccionado?.equipo === "local" &&  seleccionado?.index === 1 && seleccionado?.tipo === "portero"
+                                    seleccionado?.equipo === "local" && seleccionado?.index === 1 && seleccionado?.tipo === "portero"
                                         ? "bg-red-500"
                                         : "bg-blue-500"
-                                } text-white px-3 py-3 rounded-lg`}
+                                } text-white px-3 py-2 rounded-lg`}
                             >
-                                Portero {equipos.local.porteros[1]} {/* Segundo portero en el banquillo */}
+                                Portero {equipos.local.porteros[1]}
                             </button>
                         </div>
                     </div>
 
-                    {/* Sección Sistema Defensivo del equipo local */}
+                    {/* Sistema Defensivo */}
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold text-black mb-2">Sistema Defensivo Local</h2>
-                        <div className="flex gap-2 flex-wrap">
+                        <h2 className="text-md sm:text-xl font-semibold text-black mb-2">Sistema Defensivo Local</h2>
+                        <div className="flex flex-wrap gap-2">
                             {["6:0", "5:1", "3:2:1", "4:2", "Otros"].map((opcion, index) => (
                                 <div key={index} className="flex items-center">
-                                    <input 
-                                        type="radio" 
+                                    <input
+                                        type="radio"
                                         name="sistemaDefensivoLocal"
-                                        className="mr-2" 
-                                        id={`radio-local-${index}`} 
-                                        onChange={() => seleccionarSistemaDefensivoLocal(opcion)} // Actualiza el estado al seleccionar
-                                        checked={equipos.sistemaDefensivoLocal === opcion} // Verificar cuál está seleccionado
+                                        className="mr-2"
+                                        id={`radio-local-${index}`}
+                                        onChange={() => seleccionarSistemaDefensivoLocal(opcion)}
+                                        checked={equipos.sistemaDefensivoLocal === opcion}
                                     />
-                                    <label htmlFor={`radio-local-${index}`} className="text-black text-lg">{opcion}</label>
+                                    <label htmlFor={`radio-local-${index}`} className="text-black text-sm sm:text-lg">{opcion}</label>
                                 </div>
                             ))}
                         </div>
-                    </div>     
+                    </div>
                 </div>
-                
+                {/* Aqui nos quedamos */}
                 {/* Rectángulo 2 (más grande) */}
-                <div className="flex-[1.5] h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
+                <div className="flex-[1.5] h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     <p className="text-xl font-semibold text-black text-center">Acciones del juego</p>
 
                     {/* Sección Fases de Juego */}
@@ -728,7 +756,7 @@ export default function Home() {
                 </div>
                 
                 {/* Rectángulo 3 */}
-                <div className="flex-1 h-[calc(100vh-256px)] bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
+                <div className="flex-1 h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     <p className="text-xl font-semibold text-black text-center">Equipo visitante</p>
 
                     {/* Sección Tiempo Muerto dentro del Rectángulo 1 */}

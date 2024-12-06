@@ -8,6 +8,8 @@ import Sidebar from '../../components/Sidebar';
 import React, { useState, useEffect } from "react"; 
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
+import '../../styles/styles.css';
 
 
 ChartJS.register(...registerables);
@@ -46,9 +48,99 @@ const borrarPartido = async (userID, partidoID, setUsuario) => {
     }
 };
 
+const obtenerEventos = async (idPartido) => {
+  try {
+      const url = idPartido
+          ? `../../api/users/eventos?idPartido=${idPartido}`
+          : `../../api/users/eventos`;
+      const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (res.ok) {
+          const data = await res.json();
+          console.log('Total de eventos:', data.totalEventos);
+          console.log('Datos eventos:', data.eventos);
+          return data.eventos;
+      } else {
+          console.error('Error al obtener los eventos');
+      }
+  } catch (error) {
+      console.error('Error en la solicitud:', error);
+  }
+};
+
 export default function Home() {
-  const userID = localStorage.getItem('userID');
+  //const userID = localStorage.getItem('userID');
+  const { userID } = useParams();
   const router = useRouter(); // Inicializamos useRouter
+  const [partidosProcesados, setPartidosProcesados] = useState(false);
+
+  const procesarPartidos = async (historialPartidos) => {
+    try {
+      let goles = 0;
+      let asistencias = 0;
+      let blocajes = 0;
+      let efectividad = 0;
+      let recuperaciones = 0;
+
+      const totalPartidos = historialPartidos.length;
+      //console.log('Procesando partidos:', historialPartidos);
+      for (const idPartido of historialPartidos) {
+        // Obtener eventos de cada partido
+        const eventos = await obtenerEventos(idPartido);
+  
+        if (eventos) {
+          goles = goles + contarGoles(eventos, "local");
+          asistencias = asistencias + sacarAsistencias(eventos, "local");
+          efectividad = efectividad +contarLanzamientosTotal(eventos, "local");
+          blocajes = blocajes + sacarBlocajes(eventos, "local");
+          recuperaciones = recuperaciones + contarPerdidasDeBalon(eventos, "local");
+        };
+      }
+      const formatToTwoDecimals = (value) => parseFloat(value.toFixed(2)); // Formateador reutilizable
+      efectividad = formatToTwoDecimals(100 *(goles/efectividad));
+      // Guardar los resultados del partido actual
+      goles = formatToTwoDecimals(goles/totalPartidos);
+      asistencias = formatToTwoDecimals(asistencias/totalPartidos);
+      blocajes = formatToTwoDecimals(blocajes/totalPartidos);
+      recuperaciones = formatToTwoDecimals(recuperaciones/totalPartidos);
+      efectividad = formatToTwoDecimals(efectividad/totalPartidos);
+
+      try {
+        // Enviar una notificación a cada jugador
+          const response = await fetch("/api/users/usuarios", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userID: userID,
+              goles: goles,
+              asistencias: asistencias,
+              efectividad: efectividad,
+              blocajes: blocajes,
+              recuperaciones: recuperaciones,
+            }),
+          });
+  
+          if (response.ok) {
+            console.log(`Atributos modificados de : ${userID}`);
+          } else {
+            console.error(`Error al modificar atributos de ${userID}`);
+          }
+      } catch (error) {
+        console.error('Error al obtener los jugadores:', error);
+      }
+    } catch (error) {
+      console.error("Error al procesar los partidos:", error);
+      return [];
+    }
+  };
+
 
   const [usuario, setUsuario] = useState({
     nombreCompleto: '',
@@ -68,21 +160,14 @@ export default function Home() {
       recuperaciones: 0,
     },
     historialPartidos: [],
+    historialNotifiaciones: [],
   });
 
-  const data = {
+  const [data, setData] = useState({
     labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Recuperaciones'],
     datasets: [
       {
-        data: usuario 
-          ? [
-              usuario.atributos.goles,
-              usuario.atributos.asistencias,
-              usuario.atributos.efectividad,
-              usuario.atributos.blocajes,
-              usuario.atributos.recuperaciones,
-            ]
-          : [0, 0, 0, 0, 0],
+        data: [0, 0, 0, 0, 0], // Valores iniciales
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 3, 
@@ -93,7 +178,8 @@ export default function Home() {
         pointHoverRadius: 8, 
       },
     ],
-  };
+  });
+  
 
   const options = {
     scales: {
@@ -135,8 +221,48 @@ export default function Home() {
   };
 
   useEffect(() => {
-    obtenerUsuario(userID, setUsuario);
-  }, [userID]); // Asegúrate de que se recarguen los datos si el userID cambia
+    const cargarUsuario = async () => {
+      await obtenerUsuario(userID, setUsuario); // Espera a que termine
+      setPartidosProcesados(true); // Luego actualiza el estado
+    };
+  
+    if (userID) {
+      cargarUsuario(); // Llamar a la función asíncrona
+    }
+  }, [userID]); // Se ejecuta cuando userID cambia
+
+  useEffect(() => {
+    console.log('Procesando partidos...');
+    procesarPartidos(usuario.historialPartidos);
+  }, [partidosProcesados]); // Asegúrate de que se recarguen los datos si el userID cambia
+
+  useEffect(() => {
+    if (partidosProcesados && usuario && usuario.atributos) {
+      setData({
+        labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Recuperaciones'],
+        datasets: [
+          {
+            data: [
+              usuario.atributos.goles || 0,
+              usuario.atributos.asistencias || 0,
+              usuario.atributos.efectividad/10 || 0,
+              usuario.atributos.blocajes || 0,
+              usuario.atributos.recuperaciones || 0,
+            ],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 3, 
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)', 
+            pointBorderColor: '#fff', 
+            pointBorderWidth: 2, 
+            pointRadius: 6, 
+            pointHoverRadius: 8, 
+          },
+        ],
+      });
+    }
+  }, [usuario, partidosProcesados]);
+  
 
   const handleEditClick = (idPartido) => {
     // Redirige a la página de registro del partido correspondiente
@@ -159,17 +285,18 @@ export default function Home() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient">
-      <Sidebar userID={userID}  />
-      <h1 className="text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-        {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
+    <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient overflow-y-auto">
+      <Sidebar userID={userID} />
+
+      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white glow-text">
+          {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
       </h1>
 
-      <div className="flex justify-center gap-8 mb-12 flex-wrap">
-        <div className="w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
+      <div className="flex flex-wrap justify-center gap-8 mb-12">
+        <div className="w-full sm:w-[40vw] sm:max-w-[500px] sm:h-[40vw] sm:max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
           <div className="flex justify-between">
-            <p className="text-3xl font-semibold text-orange-500">{usuario.nombreCompleto}</p>
-            <p className="text-3xl font-semibold text-orange-500">{usuario.pais}</p>
+            <p className="text-[4vw] sm:text-2xl font-semibold text-orange-500">{usuario.nombreCompleto}</p>
+            <p className="text-[4vw] sm:text-2xl font-semibold text-orange-500">{usuario.pais}</p>
           </div>
 
           <div className="flex justify-center items-center h-full">
@@ -178,20 +305,20 @@ export default function Home() {
                 ? usuario.fotoPerfil 
                 : "https://png.pngtree.com/png-vector/20191018/ourmid/pngtree-user-icon-isolated-on-abstract-background-png-image_1824979.jpg"}
               alt="Imagen del jugador"
-              width={400}
-              height={400}
-              className="rounded-full"
+              width={200}  // Usamos un ancho máximo pero ajustable
+              height={200} // Usamos un alto máximo pero ajustable
+              className="rounded-full w-[40vw] sm:w-[200px] h-[40vw] sm:h-[200px]"  // La imagen se adapta al tamaño de la ventana
             />
           </div>
 
           <div className="flex justify-center">
-            <p className="text-3xl font-bold text-orange-500">{usuario.club}</p>
+            <p className="text-[4vw] sm:text-2xl font-bold text-orange-500">{usuario.club}</p>
           </div>
         </div>
 
-        <div className="w-[40vw] max-w-[500px] max-h-[500px] bg-white rounded-2xl p-4">
+        <div className="w-full sm:w-[40vw] sm:max-w-[500px] sm:max-h-[500px] bg-white rounded-2xl p-4">
           <div className="flex justify-center">
-            <h2 className="text-3xl font-semibold text-orange-500">Estadísticas</h2>
+            <h2 className="text-[4vw] sm:text-2xl font-semibold text-orange-500">Media de estadísticas por partido</h2>
           </div>
           <div className="flex justify-center items-center">
             <Radar data={data} options={options} />
@@ -199,26 +326,27 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-[85vw] max-w-[1048px] bg-gray-200 rounded-lg flex flex-col justify-center mb-12 p-4">
+
+  
+      <div className="w-full sm:w-[85vw] sm:max-w-[1048px] bg-gray-200 rounded-lg flex flex-col justify-center mb-12 p-4">
         {usuario.historialPartidos.map((idPartido, index) => (
           <div
             key={index}
             className="flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded"
           >
-            <p className="text-2xl text-orange-500 font-semibold">{idPartido}</p>
+            <p className="text-xl sm:text-2xl text-orange-500 font-semibold">{idPartido}</p>
             <div className="flex gap-2">
               {usuario.tipoUsuario === 'entrenador' && (
                 <>
                   <button
                     className="bg-blue-500 text-white px-4 py-2 rounded"
                     onClick={() => handleEditClick(idPartido)}
-                    >
+                  >
                     Editar
                   </button>
                   <button
                     className="bg-red-500 text-white px-4 py-2 rounded"
                     onClick={() => handleDeleteClick(idPartido)}
-
                   >
                     Borrar
                   </button>
@@ -235,5 +363,5 @@ export default function Home() {
         ))}
       </div>
     </div>
-  );
+  );  
 }

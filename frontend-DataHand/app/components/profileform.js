@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import styles2 from "../styles/Input1.module.css"; // Ruta para los estilos de los inputs
+import styles3 from '../styles/Card1.module.css';
+
 
 export default function ProfileForm({ userData, setUserData }) {
   const [previewImage, setPreviewImage] = useState(userData.fotoPerfil);
   const [password, setPassword] = useState(userData.contrasena || "");
-  const [confirmPassword, setConfirmPassword] = useState(userData.contrasena || "") ;
+  const [confirmPassword, setConfirmPassword] = useState(userData.contrasena || "");
   const [passwordMatchError, setPasswordMatchError] = useState(false);
 
-  // Si los datos del usuario cambian, actualiza la vista previa de la imagen
+  // Sincroniza el estado con los datos del usuario
   useEffect(() => {
     setPreviewImage(userData.fotoPerfil);
-  }, [userData.fotoPerfil]);
+    setPassword(userData.contrasena || "");
+    setConfirmPassword(userData.contrasena || "");
+  }, [userData.fotoPerfil, userData.contrasena]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +23,6 @@ export default function ProfileForm({ userData, setUserData }) {
       [name]: value,
     });
   };
-
-  useEffect(() => {
-    // Sincroniza el estado local con el valor de userData.contrasena cuando cambie
-    setPassword(userData.contrasena || "");
-    setConfirmPassword(userData.contrasena || "");
-  }, [userData.contrasena]);
 
   const handlePasswordChange = (e) => {
     const { value } = e.target;
@@ -58,14 +57,13 @@ export default function ProfileForm({ userData, setUserData }) {
     }
 
     try {
-      // Llamada a la función PUT del backend
       const response = await fetch("/api/users/usuarios", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userID: userData.userID, // Reemplaza con el ID real del usuario
+          userID: userData.userID,
           nombre: userData.nombreCompleto,
           contrasenia: password,
           foto: userData.fotoPerfil,
@@ -74,7 +72,6 @@ export default function ProfileForm({ userData, setUserData }) {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         console.log("Usuario actualizado:", data);
       } else {
@@ -97,7 +94,7 @@ export default function ProfileForm({ userData, setUserData }) {
         required
         value={userData.nombreCompleto}
         onChange={handleChange}
-        style={styles.input}
+        className={styles2.input2}
       />
 
       <label style={styles.label} htmlFor="contrasena">
@@ -110,7 +107,7 @@ export default function ProfileForm({ userData, setUserData }) {
         required
         value={password}
         onChange={handlePasswordChange}
-        style={styles.input}
+        className={styles2.input2}
       />
 
       <label style={styles.label} htmlFor="confirmarContrasena">
@@ -123,26 +120,33 @@ export default function ProfileForm({ userData, setUserData }) {
         required
         value={confirmPassword}
         onChange={handleConfirmPasswordChange}
-        style={styles.input}
+        className={styles2.input2}
       />
       {passwordMatchError && (
         <p style={styles.errorText}>Las contraseñas no coinciden.</p>
       )}
 
+      {/* *************** */}
+      {/* TIENES QUE METER AQUI LA CARD QUE TOCA */}
       <label style={styles.label}>Foto de Perfil:</label>
+      <div style={{ marginBottom: '20px' }}></div>
       <div
-        style={styles.imageDropZone}
+        className={styles3.card}
         onDrop={handleImageDrop}
         onDragOver={(e) => e.preventDefault()}
       >
+        <div className={styles3.bg}></div>
+        <div className={styles3.blob}></div>
         {previewImage ? (
           <img
             src={previewImage}
             alt="Vista previa"
-            style={styles.imagePreview}
+            style={{ ...styles.imagePreview, zIndex: 10, position: "relative" }}
           />
         ) : (
-          <p>Arrastra una imagen aquí o haz clic para seleccionar</p>
+          <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>
+            Arrastra una imagen aquí o haz clic para seleccionar
+          </p>
         )}
       </div>
 
@@ -156,19 +160,18 @@ export default function ProfileForm({ userData, setUserData }) {
         required
         value={userData.club}
         onChange={handleChange}
-        style={styles.input}
+        className={styles2.input2}
       />
 
       <input
         type="submit"
         value="Guardar Cambios"
-        style={{ ...styles.submit }}
-        onMouseEnter={(e) => (e.target.style.backgroundColor = styles.submitHover.backgroundColor)}
-        onMouseLeave={(e) => (e.target.style.backgroundColor = styles.submit.backgroundColor)}
+        style={styles.submit}
       />
     </form>
   );
 }
+
 
 const styles = {
   body: {

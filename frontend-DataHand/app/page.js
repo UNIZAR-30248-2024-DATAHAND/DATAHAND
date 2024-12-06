@@ -62,7 +62,7 @@ export default function Login() {
   };
 
   return (
-    <div className="relative h-screen flex bg-orange-500 justify-center overflow-hidden">
+    <div className="relative min-h-screen bg-orange-500 flex flex-col lg:flex-row justify-center items-center overflow-hidden overflow-y-auto">
       {/* Fondo de olas */}
       <Image
         src="/images/waves_bg_login.svg"
@@ -71,11 +71,11 @@ export default function Login() {
         objectFit="cover"
         className="absolute top-0 left-0 transition duration-300 ease-in-out delay-150"
       />
-
+  
       {/* Contenedor de la izquierda */}
-      <div className="relative z-10 flex flex-col items-center justify-center w-1/2 p-8">
+      <div className="relative z-10 flex flex-col items-center justify-center w-full sm:w-1/2 p-8">
         <h1
-          className="text-5xl font-bold mb-4 text-white"
+          className="text-4xl sm:text-5xl font-bold mb-4 text-white"
           style={{ fontFamily: 'var(--font-geist-sans)' }}
         >
           DataHand
@@ -83,12 +83,12 @@ export default function Login() {
         <Image
           src="/images/logo.png"
           alt="Logo"
-          width={280}
-          height={280}
+          width={200} // Ajustado para pantallas pequeñas
+          height={200}
           className="mb-4"
         />
         <p
-          className="mb-6 text-gray-100 text-center text-lg"
+          className="mb-6 text-gray-100 text-center text-sm sm:text-lg"
           style={{ fontFamily: 'var(--font-geist-sans)' }}
         >
           Convierte datos en decisiones.
@@ -96,34 +96,34 @@ export default function Login() {
           ¡Eleva el rendimiento de tu equipo en cada jugada!
         </p>
       </div>
-
+  
       {/* Contenedor de la derecha */}
-      <div className="relative z-10 flex items-center justify-center w-1/2 p-8">
-        <div className="bg-white bg-opacity-20 p-8 rounded-lg shadow-lg w-full max-w-md">
+      <div className="relative z-10 flex items-center justify-center w-full sm:w-1/2 p-4 sm:p-8">
+        <div className="bg-white bg-opacity-20 p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md">
           <h2
-            className="text-3xl font-semibold text-center mb-6 text-white"
+            className="text-2xl sm:text-3xl font-semibold text-center mb-4 sm:mb-6 text-white"
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
             Iniciar sesión
           </h2>
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-4 sm:gap-6" onSubmit={handleSubmit}>
             <input
               type="text"
               placeholder="Correo electrónico"
               value={nombreUsuario}
-              onChange={(e) => setNombreUsuario(e.target.value)} // Actualiza el correo
-              className={styles.input1} // Aplica los estilos del módulo CSS
+              onChange={(e) => setNombreUsuario(e.target.value)}
+              className={styles.input1}
             />
             <input
               type="password"
               placeholder="Contraseña"
               value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)} // Actualiza la contraseña
-              className={styles.input1} // Aplica los estilos del módulo CSS
+              onChange={(e) => setContrasena(e.target.value)}
+              className={styles.input1}
             />
             <button
-              className={styles2['styled-button']} // Aplica los estilos del módulo CSS para Button1
-              type="submit" // Cambiar el tipo a "submit"
+              className={styles2['styled-button']}
+              type="submit"
             >
               Iniciar Sesión
               <div className={styles2['inner-button']}>
@@ -149,18 +149,18 @@ export default function Login() {
               </div>
             </button>
             <button
-              className={`${styles2['styled-button']}`} // Aplica los estilos del módulo CSS para Button1.            
-              onClick={registrarUsuario} // Conectamos la función de registrar usuario
+              className={`${styles2['styled-button']}`}
+              onClick={registrarUsuario}
             >
               Registrarse
-              <div className={styles2['inner-button']}>            
+              <div className={styles2['inner-button']}>
                 <svg
                   id="Arrow"
                   viewBox="0 0 32 32"
                   xmlns="http://www.w3.org/2000/svg"
                   height="30px"
                   width="30px"
-                  className={styles2.icon}              
+                  className={styles2.icon}
                 >
                   <defs>
                     <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="iconGradient">
@@ -181,5 +181,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  );
+  );  
 }

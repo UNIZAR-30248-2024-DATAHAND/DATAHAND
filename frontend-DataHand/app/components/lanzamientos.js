@@ -179,7 +179,7 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
             <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
               
               {/* Top Section with Grid */}
-              <div className="relative h-[45%] border-b-4 border-white">
+              <div className="relative h-[45%] border-b-4 border-white overflow-y-auto">
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                     {/* Aumentar la altura de los cuadrados */}
                     <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion2Local, totalLocalizacion2Local)}`}>
@@ -219,7 +219,7 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
 
 
               {/* Sección inferior con la cancha orientada verticalmente */}
-              <div className="relative h-[55%] bg-blue-500">
+              <div className="relative h-[55%] bg-blue-500 overflow-y-auto">
                 <div className="absolute inset-0 border-2 border-white">
                     {/* Área de gol, ahora ubicada en la parte superior como un semicírculo azul */}
                     <div className="absolute top-0 inset-x-40 h-[30%] bg-blue-800 rounded-b-full" />          
@@ -295,7 +295,7 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
             <h2 className="text-center font-bold text-[#45e5d6]">{dataEquipos.EquipoVisitante}</h2>
               <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
                 {/* Top Section with Grid */}
-                <div className="relative h-[45%] border-b-4 border-white">
+                <div className="relative h-[45%] border-b-4 border-white overflow-y-auto">
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
                         {/* Aumentar la altura de los cuadrados */}
                         <div className={`text-white text-center p-5 border border-white ${cambiarColor(localizacion2Visitante, totalLocalizacion2Visitante)}`}>
@@ -335,7 +335,7 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
 
 
                 {/* Sección inferior con la cancha orientada verticalmente */}
-                <div className="relative h-[55%] bg-blue-500">
+                <div className="relative h-[55%] bg-blue-500 overflow-y-auto">
                     <div className="absolute inset-0 border-2 border-white">
                         {/* Área de gol, ahora ubicada en la parte superior como un semicírculo azul */}
                         <div className="absolute top-0 inset-x-40 h-[30%] bg-blue-800 rounded-b-full" />          
