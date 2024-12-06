@@ -219,20 +219,24 @@ const Sidebar = ({ userID }) => {
           </button>
         </Link>
 
-        <Link href="/">
-          <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3"
-            style={{ fontFamily: 'var(--font-geist-sans)' }}
-          >
-            <Image
-              src="/images/icon_logout.svg"
-              alt="Salir"
-              width={30}
-              height={30}
-            />
-            Salir
-          </button>
-        </Link>
+        <button
+          onClick={() => {
+            // Eliminar el userID de localStorage
+            localStorage.removeItem('userID');
+            // Opcional: redirigir al usuario a la página de inicio si no usas <Link>
+            window.location.href = "/";
+          }}
+          className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3"
+          style={{ fontFamily: 'var(--font-geist-sans)' }}
+        >
+          <Image
+            src="/images/icon_logout.svg"
+            alt="Cerrar sesión"
+            width={30}
+            height={30}
+          />
+          Cerrar sesión
+        </button>
       </div>
 
       {/* Botón de abrir/cerrar (icono flecha derecha) */}
