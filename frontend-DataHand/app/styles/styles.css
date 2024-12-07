@@ -1,16 +1,3 @@
-.glow-text {
-    font-size: 3rem;
-    font-weight: bold;
-    color: white;
-    text-shadow: 0 0 10px #ff7b00, 0 0 20px #ff7b00, 0 0 40px #ff7b00, 0 0 80px #ff7b00;
-    animation: glow 2s infinite alternate;
-}
-
-@keyframes glow {
-    to {
-        text-shadow: 0 0 20px #ffa500, 0 0 30px #ffa500, 0 0 50px #ffa500, 0 0 80px #ffa500;
-    }
-}
 
 .ml7 {
     position: relative;
@@ -30,3 +17,36 @@
     display: inline-block;
     line-height: 1em;
   }
+
+  .ml6 {
+    position: relative;
+    font-weight: 900;
+    font-size: 3.3em;
+  }
+  
+  .ml6 .text-wrapper {
+    position: relative;
+    display: inline-block;
+    padding-top: 0.2em;
+    padding-right: 0.05em;
+    padding-bottom: 0.1em;
+    overflow: hidden;
+  }
+  
+  .ml6 .letter {
+    display: inline-block;
+    line-height: 1em;
+  }
+
+  @font-face {
+    font-family: 'Prociono'; /* Nombre de la fuente */
+    src: url('../fonts/Prociono.ttf') format('truetype'); /* Ruta de la fuente */
+    font-weight: normal; /* Opcional: normal o bold */
+    font-style: normal; /* Opcional: normal, italic, etc. */
+  }
+
+  .titulo-personalizado {
+    font-family: 'Prociono', sans-serif; /* La fuente personalizada */
+  }
+  
+  

@@ -10,7 +10,8 @@ import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
 import '../../styles/styles.css';
-
+import anime from 'animejs';
+import styles2 from '../../styles/Title1.module.css'; // Asegúrate de que la ruta sea correcta
 
 ChartJS.register(...registerables);
 
@@ -221,6 +222,30 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Configurar la animación
+    const textWrapper = document.querySelector('.ml6 .letters');
+    if (textWrapper) {
+      textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+      anime.timeline({ loop: true })
+        .add({
+          targets: '.ml6 .letter',
+          translateY: ["1.1em", 0],
+          translateZ: 0,
+          duration: 1500, // Cambiar a 1500 para ralentizar
+          delay: (el, i) => 100 * i // Incrementar a 100 para más retraso entre letras
+        })
+        .add({
+          targets: '.ml6',
+          opacity: 0,
+          duration: 2000, // Hacer más lento el desvanecimiento
+          easing: "easeOutExpo",
+          delay: 15000 // Incrementar el retraso antes de reiniciar el loop
+        });
+    }
+  }, []);
+
+  useEffect(() => {
     const cargarUsuario = async () => {
       await obtenerUsuario(userID, setUsuario); // Espera a que termine
       setPartidosProcesados(true); // Luego actualiza el estado
@@ -288,11 +313,21 @@ export default function Home() {
     <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient overflow-y-auto">
       <Sidebar userID={userID} />
 
-      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white glow-text">
-          {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
+      {/* <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white glow-text mt-6">
+        {usuario.tipoUsuario === 'entrenador' ? 'Perfil Entrenador' : 'Perfil Jugador'}
+      </h1> */}
+
+      <h1 className="ml6 text-4xl sm:text-5xl font-bold mb-4 text-white mt-6 titulo-personalizado">
+        <span className="text-wrapper">
+          <span className="letters">
+            {usuario.tipoUsuario === 'entrenador' ? 'PERFIL ENTRENADOR' : 'PERFIL JUGADOR'}
+          </span>
+        </span>
       </h1>
 
-      <div className="flex flex-wrap justify-center gap-8 mb-12">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+
+      <div className="flex flex-wrap justify-center gap-8 mb-12 mt-4">
         <div className="w-full sm:w-[40vw] sm:max-w-[500px] sm:h-[40vw] sm:max-h-[500px] bg-white rounded-2xl flex flex-col justify-between p-4">
           <div className="flex justify-between">
             <p className="text-[4vw] sm:text-2xl font-semibold text-orange-500">{usuario.nombreCompleto}</p>
