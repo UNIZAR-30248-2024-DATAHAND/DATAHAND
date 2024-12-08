@@ -118,8 +118,8 @@ const Sidebar = ({ userID }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full bg-gradient-to-b from-purple-600 to-purple-400 shadow-lg flex flex-col items-center py-6 rounded-r-3xl border-r-8 border-black transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
-      role="complementary" // Añadido para mejorar la accesibilidad y facilitar las pruebas
+    className={`fixed top-0 left-0 h-full w-80 bg-gradient-to-b from-purple-600 to-purple-400 shadow-lg flex flex-col items-center py-6 rounded-r-3xl border-r-8 border-black transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+    role="complementary" // Añadido para mejorar la accesibilidad y facilitar las pruebas
     >
       {/* Logo y título */}
       <div className="flex items-center mb-10 mr-2">
@@ -129,7 +129,7 @@ const Sidebar = ({ userID }) => {
           width={80}
           height={80}
         />
-        <h1 className="text-3xl font-bold text-white ml-3">DataHand </h1>
+        <h1 className="text-3xl font-bold text-white ml-2">DataHand </h1>
       </div>
 
       {/* Botones */}

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import '../styles/styles.css';
+
 
 export default function EditarEquipo() {
   const [equipo, setEquipo] = useState();
@@ -128,17 +130,17 @@ export default function EditarEquipo() {
   }
 
   return (
-    <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4">
+    <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4 background-imageEE">
       {/* Sidebar */}
       <Sidebar userID={userID} />
       
-      <div className="w-full max-w-4xl flex flex-col items-center">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white text-center" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-          Editar Equipo
+      <div className="w-full max-w-4xl flex flex-col items-center mt-6">
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white text-center titulo-personalizado">
+          EDITAR EQUIPO
         </h1>
         
         {/* Nombre y Foto del Equipo */}
-        <div className="flex flex-col items-center mt-6 mb-4">
+        <div className="flex flex-col items-center mt-6 mb-4 mt-6">
           {equipo.imagen ? (
             <img src={equipo.imagen} alt={`Logo de ${equipo.nombre}`} className="w-32 h-32 object-cover rounded-full mb-2" />
           ) : (
@@ -151,12 +153,12 @@ export default function EditarEquipo() {
       </div>
 
       {/* Error */}
-      {error && <div className="text-red-500 text-lg mt-4">{error}</div>} {/* Mostrar error si hay uno */}
+      {error && <div className="text-red-500 text-lg mt-4">{error}</div>} Mostrar error si hay uno
 
       {/* Sección Porteros */}
-      <div className="mt-4">
-        <h2 className="text-md sm:text-lg font-semibold text-black mb-2">Porteros</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <div className="mt-10 mr-10">
+        <h2 className="text-md sm:text-lg font-semibold text-white mb-2">Porteros</h2>        
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <button
             onClick={() => seleccionarJugador("local", 0, "portero")}
             className={`${
@@ -172,7 +174,7 @@ export default function EditarEquipo() {
 
       {/* Sección Jugadores */}
       <div className="mt-4">
-        <h2 className="text-md sm:text-lg font-semibold text-black mb-2">Jugadores</h2>
+        <h2 className="text-md sm:text-lg font-semibold text-white mb-2">Jugadores</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {equipo.jugadores && equipo.jugadores.length > 0 ? (
             equipo.jugadores.map((jugador, index) => (
@@ -194,7 +196,7 @@ export default function EditarEquipo() {
         </div>
 
         {/* Sección Banquillo */}
-        <h2 className="text-md sm:text-lg font-semibold text-black mt-4 mb-2 text-left">Banquillo Local</h2>
+        <h2 className="text-md sm:text-lg font-semibold text-white mt-4 mb-2 text-left">Banquillo Local</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {equipo.banquillo && equipo.banquillo.length > 0 ? (
             equipo.banquillo.map((jugador, index) => (
