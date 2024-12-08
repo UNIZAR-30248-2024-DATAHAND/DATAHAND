@@ -147,7 +147,7 @@ const calcularEstadisticasPortero = (inicio, fin, jugador) => {
 
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white" style={{ height: 'calc(70vh - 50px)' }}>
       {/* Team Header */}
       <div className="bg-[#45b6e5] text-white text-center py-2 font-bold">
         {dataEquipos.EquipoLocal}

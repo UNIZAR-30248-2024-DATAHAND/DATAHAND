@@ -11,6 +11,7 @@ import Sidebar from '../../components/Sidebar';
 import { set } from "mongoose";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import '../../styles/styles.css';
 
 export default function Home() {
 
@@ -511,16 +512,15 @@ export default function Home() {
     },[eventosUndo]);
 
     return (
-        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4">
+        <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4 background-imageP">
             {/* Sidebar */}
             <Sidebar userID={userID} />
 
             {/* Título */}
             <h1
-                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-black"
-                style={{ fontFamily: 'var(--font-geist-sans)' }}
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white titulo-personalizado"
             >
-                Partido
+                PARTIDO
             </h1>
 
             {/* Barra Horizontal */}
