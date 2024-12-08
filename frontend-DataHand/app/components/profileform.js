@@ -8,6 +8,7 @@ export default function ProfileForm({ userData, setUserData }) {
   const [password, setPassword] = useState(userData.contrasena || "");
   const [confirmPassword, setConfirmPassword] = useState(userData.contrasena || "");
   const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [imageSmall, setImageSmall] = React.useState(false);
 
   // Sincroniza el estado con los datos del usuario
   useEffect(() => {
@@ -39,15 +40,17 @@ export default function ProfileForm({ userData, setUserData }) {
   const handleImageDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+    
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = () => {
-        setPreviewImage(reader.result);
-        setUserData({ ...userData, fotoPerfil: reader.result });
+        setPreviewImage(reader.result); // Establece la vista previa de la imagen
+        setUserData({ ...userData, fotoPerfil: reader.result }); // Actualiza el usuario con la imagen
+        setImageSmall(true); // Cambia el estado para reducir el tamaño de la imagen
       };
       reader.readAsDataURL(file);
     }
-  };
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -141,7 +144,7 @@ export default function ProfileForm({ userData, setUserData }) {
           <img
             src={previewImage}
             alt="Vista previa"
-            style={{ ...styles.imagePreview, zIndex: 10, position: "relative" }}
+            style={{ ...styles.imagePreview, zIndex: 10, position: "relative", width: "80%", height: "80%" }}
           />
         ) : (
           <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>

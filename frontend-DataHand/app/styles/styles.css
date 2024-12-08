@@ -38,6 +38,18 @@
     line-height: 1em;
   }
 
+  .background-imageJ {
+    background-image: url('../../public/images/f4.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .background-imageE {
+    background-image: url('../../public/images/f3.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
   @font-face {
     font-family: 'Prociono'; /* Nombre de la fuente */
     src: url('../fonts/Prociono.ttf') format('truetype'); /* Ruta de la fuente */
@@ -48,5 +60,16 @@
   .titulo-personalizado {
     font-family: 'Prociono', sans-serif; /* La fuente personalizada */
   }
-  
+
+  @font-face {
+    font-family: 'Vercetti'; /* Nombre de la fuente */
+    src: url('../fonts/Vercetti-Regular.otf') format('truetype'); /* Ruta de la fuente */
+    font-weight: normal; /* Opcional: normal o bold */
+    font-style: normal; /* Opcional: normal, italic, etc. */
+  }
+
+  .letra-normal {
+    font-family: 'Vercetti', sans-serif; /* La fuente personalizada */
+  }
+
   
