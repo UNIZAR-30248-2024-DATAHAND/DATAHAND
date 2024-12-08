@@ -123,11 +123,11 @@ export default function Register() {
         alt="Background Waves"
         layout="fill"
         objectFit="cover"
-        className="absolute top-0 left-0 w-full h-full -z-10"
+        className="absolute top-0 left-0 w-full h-full z-0"
       />
-
+  
       {/* Sección informativa */}
-      <div className="w-full lg:w-1/2 p-8 text-center">
+      <div className="w-full lg:w-1/2 p-8 text-center z-10">  {/* Añadido z-10 */}
         <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
           DataHand
         </h1>
@@ -138,9 +138,9 @@ export default function Register() {
           ¡Eleva el rendimiento de tu equipo en cada jugada!
         </p>
       </div>
-
+  
       {/* Sección del formulario */}
-      <div className="w-full lg:w-1/2 max-w-3xl p-6 bg-white bg-opacity-20 rounded-lg shadow-lg">
+      <div className="w-full lg:w-1/2 max-w-3xl p-6 bg-white bg-opacity-20 rounded-lg shadow-lg z-10">  {/* Añadido z-10 */}
         <h2 className="text-3xl font-semibold text-center mb-6 text-white">
           Registro de Usuario
         </h2>
@@ -152,7 +152,7 @@ export default function Register() {
           <input type="date" name="birthDate" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="confirmPassword" placeholder="Repite contraseña" value={formData.confirmPassword} onChange={handleInputChange} className={styles.input1} />
-
+  
           {/* Switch */}
           <div className="col-span-2 flex justify-center items-center gap-4">
             <span className="text-white">Entrenador</span>
@@ -167,41 +167,28 @@ export default function Register() {
             
             <span className="text-white">Jugador</span>
           </div>
-
-
-
-          {/* Imagen de perfil
-          <div className="col-span-2 flex flex-col items-center">
-            <label className="text-white text-lg">Foto de Perfil:</label>
-            <div className="w-full max-w-xs h-40 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-100" onDrop={handleImageDrop} onDragOver={handleDragOver} onClick={() => document.getElementById('imageUpload').click()}>
-              {previewImage ? (
-                <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover" />
-              ) : (
-                <p className="text-gray-500 text-center">Arrastra o selecciona una imagen</p>
-              )}
-            </div>
-            <input id="imageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
-          </div> */}
-
+  
           {/* Imagen de perfil */}
           <div className="col-span-2 flex flex-col items-center">
             <label className="text-white text-lg">Foto de Perfil:</label>
             <div style={{ marginBottom: '20px' }}></div>
             <div
-              className={styles3.card} // Usamos la clase del módulo CSS
+              className={styles3.card}
               onDrop={handleImageDrop} 
               onDragOver={handleDragOver} 
               onClick={() => document.getElementById('imageUpload').click()}
             >
               {/* Fondo de la tarjeta */}
-              <div className={styles3.bg}></div> {/* Usamos la clase del módulo CSS */}
-
+              <div className={styles3.bg}></div>
+  
               {/* Blobs animados */}
-              <div className={styles3.blob}></div> {/* Usamos la clase del módulo CSS */}
-
+              <div className={styles3.blob}></div>
+  
               {/* Vista previa de la imagen o mensaje */}
               {previewImage ? (
-                <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover z-10" />
+                <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover z-10 " 
+                  style={{ width: '80%', height: '80%' }}
+                />
               ) : (
                 <p className="text-gray-500 text-center z-10">Arrastra o selecciona una imagen</p>
               )}
@@ -209,11 +196,7 @@ export default function Register() {
             <div style={{ marginBottom: '20px' }}></div>
             <input id="imageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
           </div>
-          
-
-
-
-
+  
           {/* Campos adicionales */}
           <input type="text" name="country" placeholder="País" value={formData.country} onChange={handleInputChange} className={styles.input1} />
           {formData.userType === 'Jugador' && (
@@ -228,7 +211,7 @@ export default function Register() {
               <option value="PO">Portero</option>
             </select>
           )}
-
+  
           {/* Botón de registro */}
           <button type="submit" className={`col-span-2 ${styles2['styled-button']}`}>
             Registrarse
@@ -242,4 +225,4 @@ export default function Register() {
       </div>
     </div>
   );
-}
+}  
