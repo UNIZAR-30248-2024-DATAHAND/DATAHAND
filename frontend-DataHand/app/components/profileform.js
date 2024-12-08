@@ -87,7 +87,7 @@ export default function ProfileForm({ userData, setUserData }) {
 
   return (
     <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
-      <label style={styles.label} htmlFor="nombreCompleto">
+      <label style={{ ...styles.label, marginTop: '-15px' }} htmlFor="nombreCompleto" >
         Nombre Completo:
       </label>
       <input

@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
 import '../../styles/styles.css';
 import anime from 'animejs';
-import styles2 from '../../styles/Title1.module.css'; // Asegúrate de que la ruta sea correcta
 
 ChartJS.register(...registerables);
 
