@@ -67,7 +67,7 @@ export default function Component({ dataEventos, dataEquipos }) {
   };
 
   return (
-    <div className="w-full bg-white text-black h-full">
+    <div className="w-full bg-white text-black h-auto mt-6">
       {/* Header Tabs */}
       <Tabs defaultValue="vista-general" className="w-full">
         <TabsList className="flex flex-wrap space-x-4 border-b">
@@ -115,14 +115,23 @@ export default function Component({ dataEventos, dataEquipos }) {
       </div>
   
       {/* Botón para capturar la pestaña activa y agregarla al PDF */}
-      <button onClick={captureTabForPDF} className="mt-4 px-4 py-2 bg-green-500 text-white rounded">
-        Agregar al PDF
-      </button>
-  
-      {/* Botón para generar el PDF con todas las pestañas seleccionadas */}
-      <button onClick={generatePDF} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
-        Generar PDF con vistas seleccionadas
-      </button>
+      <div className="flex flex-col items-center">
+        <button
+          onClick={captureTabForPDF}
+          className="mt-4 px-4 py-2 bg-green-500 text-white rounded active:bg-green-700"
+        >
+          Agregar al PDF
+        </button>
+
+        <button
+          onClick={generatePDF}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded active:bg-blue-700"
+          style={{ marginBottom: '10px' }}
+        >
+          Generar PDF con vistas seleccionadas
+        </button>
+
+      </div>
     </div>
   );  
 }

@@ -111,7 +111,7 @@ function StatBar({ value, text }) {
     }, []); 
 
     return (
-      <div className="p-6">
+      <div className="p-6 ">
         <h2 className="text-xl font-bold mb-4 text-center mx-auto ">Vista General</h2>
         <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr_1fr] gap-5 text-gray-600">          
           {/* Labels Column */}

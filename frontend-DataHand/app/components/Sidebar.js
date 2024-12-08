@@ -129,7 +129,7 @@ const Sidebar = ({ userID }) => {
           width={80}
           height={80}
         />
-        <h1 className="text-3xl font-bold text-white ml-2">DataHand </h1>
+        <h1 className="text-4xl font-bold text-white ml-5">DataHand </h1>
       </div>
 
       {/* Botones */}

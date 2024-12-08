@@ -62,6 +62,12 @@
     background-position: center;
   }
 
+  .background-imageEG {
+    background-image: url('../../public/images/f1.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+
   @font-face {
     font-family: 'Prociono'; /* Nombre de la fuente */
     src: url('../fonts/Prociono.ttf') format('truetype'); /* Ruta de la fuente */

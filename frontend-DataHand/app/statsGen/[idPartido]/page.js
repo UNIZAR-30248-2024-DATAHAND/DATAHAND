@@ -6,6 +6,7 @@ import { useState , useEffect} from 'react';
 import { useParams } from 'next/navigation';
 import Component from '../../components/component'; // Asegúrate de que la ruta sea correcta 
 import Sidebar from '../../components/Sidebar';
+import '../../styles/styles.css';
 
 
   export default function Home() {
@@ -116,58 +117,6 @@ import Sidebar from '../../components/Sidebar';
   
       fetchData();
     }, [idPartido]);
-  
-    if (isLoading) {
-      return (
-        <div className="flex items-center justify-center h-screen bg-orange-500 text-white">
-          <div className="main">
-            <div className="up">
-              <div className="loaders">
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-                <div className="loader"></div>
-              </div>
-              <div className="loadersB">
-                <div className="loaderA">
-                  <div className="ball0"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball1"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball2"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball3"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball4"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball5"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball6"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball7"></div>
-                </div>
-                <div className="loaderA">
-                  <div className="ball8"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
     
     // if (isLoading) {
     //   return (
@@ -178,16 +127,14 @@ import Sidebar from '../../components/Sidebar';
     // }
   
     return (
-      <div className="relative min-h-screen flex flex-col items-center justify-start bg-orange-500 px-4 sm:px-8">
+      <div className="relative min-h-screen flex flex-col items-center justify-start px-4 sm:px-8 background-imageEG">
         
-    
         <h1
-          className="text-4xl sm:text-5xl font-bold mb-4 text-white text-center"
-          style={{ fontFamily: 'var(--font-geist-sans)' }}
+          className="text-4xl sm:text-5xl font-bold mb-4 text-white text-center mt-6 titulo-personalizado"
         >
-          Estadísticas Generales
+          ESTADISTICAS GENERALES
         </h1>
-    
+
         <Component dataEventos={eventos} dataEquipos={equipos} />
     
         <style jsx>{`

@@ -11,6 +11,8 @@ import { useRouter } from 'next/navigation';
 import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
 import '../../styles/styles.css';
 import anime from 'animejs';
+// import styles2 from './styles/Button1.module.css'; // Ajusta la ruta según tu estructura
+
 
 ChartJS.register(...registerables);
 
@@ -373,21 +375,22 @@ export default function Home() {
               {usuario.tipoUsuario === 'entrenador' && (
                 <>
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    className="bg-blue-500 text-white px-4 py-2 rounded active:bg-blue-700"
                     onClick={() => handleEditClick(idPartido)}
                   >
                     Editar
                   </button>
                   <button
-                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    className="bg-red-500 text-white px-4 py-2 rounded active:bg-red-700"
                     onClick={() => handleDeleteClick(idPartido)}
                   >
                     Borrar
                   </button>
+
                 </>
               )}
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded"
+                className="bg-green-500 text-white px-4 py-2 rounded active:bg-green-700"
                 onClick={() => handleViewClick(idPartido)}
               >
                 Ver
