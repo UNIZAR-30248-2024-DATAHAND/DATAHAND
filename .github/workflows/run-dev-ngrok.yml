@@ -35,11 +35,12 @@ jobs:
       working-directory: ./frontend-DataHand
       run: |
         nohup npm run dev & 
-        sleep 5
+        sleep 10  # Aumenta el tiempo de espera para dar tiempo suficiente al servidor
 
     # 6. Verificar servidor local
     - name: Check if Dev Server is Running
-      run: curl --fail localhost:3000 || echo "Server not running"
+      run: |
+        curl --fail localhost:3000 || exit 1  # Si el servidor no está corriendo, falla el paso
 
     # 7. Instalar Ngrok
     - name: Install Ngrok
@@ -56,23 +57,25 @@ jobs:
     # 9. Verificar si hay túneles activos y detenerlos
     - name: Stop active Ngrok tunnels if any
       run: |
-        if pgrep ngrok > /dev/null; then
-          echo "Found active ngrok tunnels. Killing them..."
-          pkill -f ngrok
-        else
-          echo "No active ngrok tunnels found."
-        fi
+        pkill -f ngrok || echo "No active ngrok tunnels found."
 
     # 10. Iniciar el túnel Ngrok
     - name: Start Ngrok
       run: |
         nohup ngrok http 3000 & 
-        sleep 5
-        curl localhost:4040/api/tunnels
+        sleep 10  # Aumenta el tiempo de espera para que Ngrok se inicie
+        curl --fail localhost:4040/api/tunnels || echo "Ngrok tunnel not started yet."
 
-    # 11. Instalar jq y obtener la URL pública
+    # 11. Verificar túneles de Ngrok
+    - name: Check if Ngrok Tunnel is Running
+      run: |
+        curl --silent localhost:4040/api/tunnels | jq '.'
+
+    # 12. Instalar jq y obtener la URL pública
     - name: Install jq
       run: sudo apt-get install -y jq
 
     - name: Print Ngrok URL
-      run: curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+      run: |
+        ngrok_url=$(curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+        echo "Ngrok URL: $ngrok_url"
