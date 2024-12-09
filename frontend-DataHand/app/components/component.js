@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
@@ -7,10 +7,22 @@ import SistemaDeJuego from './sistema-de-juego';
 import Lanzamientos from './lanzamientos';
 import EspecificasJugadores from './especifico-jugadores';
 import Jugadores from './jugadores';
+import LoadingPage from './LoadingPage';
 
 export default function Component({ dataEventos, dataEquipos }) {
   const [activeTab, setActiveTab] = useState("vista-general");
   const [capturedTabs, setCapturedTabs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simula la carga de datos (puedes reemplazarlo con lógica real)
+  useEffect(() => {
+    const loadData = async () => {
+      // Simula un tiempo de carga de datos
+      await new Promise(resolve => setTimeout(resolve, 2000)); // 2 segundos
+      setIsLoading(false);
+    };
+    loadData();
+  }, []);
 
   // Función para renderizar el contenido de la pestaña activa
   const renderTabContent = () => {
@@ -65,6 +77,11 @@ export default function Component({ dataEventos, dataEquipos }) {
 
     doc.save('vistas-seleccionadas.pdf');
   };
+
+  // Si los datos están cargando, muestra el componente de carga
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="w-full bg-white text-black h-auto mt-6">

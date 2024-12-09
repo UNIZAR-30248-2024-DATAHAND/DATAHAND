@@ -1,27 +1,18 @@
 import React from 'react';
-import styles from '../styles/Load1.module.css';
+import styles from '../styles/Load2.module.css';
 
 const LoadingPage = () => {
   return (
-    <div style={{ backgroundColor: 'orange', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className={styles.main}>
-        <div className={styles.up}>
-          <div className={styles.loaders}>
-            {/* Generando las bolas de carga */}
-            {[...Array(10)].map((_, index) => (
-              <div key={index} className={styles.loader}>
-                <div className={`${styles[`ball${index}`]} ${styles.loaderA}`} />
-              </div>
-            ))}
-          </div>
-          <div className={styles.loadersB}>
-            {/* Agregando las bolas A (para animación adicional si es necesario) */}
-            {[...Array(10)].map((_, index) => (
-              <div key={index} className={styles.loaderA}>
-                <div className={styles[`ball${index}`]} />
-              </div>
-            ))}
-          </div>
+    <div className={styles.loadingOverlay}>
+      <div className={styles.hourglassBackground}>
+        <div className={styles.hourglassContainer}>
+          <div className={styles.hourglassCurves}></div>
+          <div className={styles.hourglassCapTop}></div>
+          <div className={styles.hourglassGlassTop}></div>
+          <div className={styles.hourglassSand}></div>
+          <div className={styles.hourglassSandStream}></div>
+          <div className={styles.hourglassCapBottom}></div>
+          <div className={styles.hourglassGlass}></div>
         </div>
       </div>
     </div>
