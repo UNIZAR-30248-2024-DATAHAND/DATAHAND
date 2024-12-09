@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import '../styles/styles.css';
+import LoadingPage from '../components/LoadingPage';
 
 
 export default function EditarEquipo() {
@@ -126,8 +127,54 @@ export default function EditarEquipo() {
   };
 
   if (!equipo) {
-    return <p>Cargando equipo...</p>;
-  }
+    return (
+      <div className="main">
+        <div className="up">
+          <div className="loaders">
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+            <div className="loader"></div>
+          </div>
+          <div className="loadersB">
+            <div className="loaderA">
+              <div className="ball0"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball1"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball2"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball3"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball4"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball5"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball6"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball7"></div>
+            </div>
+            <div className="loaderA">
+              <div className="ball8"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }  
 
   return (
     <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4 background-imageEE">

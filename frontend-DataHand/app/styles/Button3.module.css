@@ -1,0 +1,53 @@
+/* Botón 1 (Verde) */
+.button1 {
+    background-color: #d1fae5; /* Verde claro */
+    color: #10b981; /* Verde más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button1:hover {
+    background-color: #10b981; /* Verde más oscuro */
+    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+/* Botón 2 (Rojo) */
+.button2 {
+    background-color: #fee2e2; /* Rojo claro */
+    color: #ef4444; /* Rojo más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button2:hover {
+    background-color: #ef4444; /* Rojo más oscuro */
+    box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+/* Botón 3 (Azul) */
+.button3 {
+    background-color: #bfdbfe; /* Azul claro */
+    color: #3b82f6; /* Azul más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 100px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button3:hover {
+    background-color: #3b82f6; /* Azul más oscuro */
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6); /* Efecto de sombra */
+    color: #fff;
+}

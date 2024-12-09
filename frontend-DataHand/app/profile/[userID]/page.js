@@ -10,9 +10,9 @@ import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
 import '../../styles/styles.css';
-import anime from 'animejs';
-// import styles2 from './styles/Button1.module.css'; // Ajusta la ruta según tu estructura
-
+import ConfirmModal from '../../components/ConfirmModal'; // Importa la modal
+import styles3 from '../../styles/Button3.module.css';  // Ajusta la ruta según sea necesario
+// import anime from 'animejs';
 
 ChartJS.register(...registerables);
 
@@ -222,29 +222,9 @@ export default function Home() {
     },
   };
 
-  useEffect(() => {
-    // Configurar la animación
-    const textWrapper = document.querySelector('.ml6 .letters');
-    if (textWrapper) {
-      textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-
-      anime.timeline({ loop: true })
-        .add({
-          targets: '.ml6 .letter',
-          translateY: ["1.1em", 0],
-          translateZ: 0,
-          duration: 1500, // Cambiar a 1500 para ralentizar
-          delay: (el, i) => 100 * i // Incrementar a 100 para más retraso entre letras
-        })
-        .add({
-          targets: '.ml6',
-          opacity: 0,
-          duration: 2000, // Hacer más lento el desvanecimiento
-          easing: "easeOutExpo",
-          delay: 15000 // Incrementar el retraso antes de reiniciar el loop
-        });
-    }
-  }, []);
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [idPartidoAEliminar, setIdPartidoAEliminar] = useState(null);
 
   useEffect(() => {
     const cargarUsuario = async () => {
@@ -300,25 +280,43 @@ export default function Home() {
     router.push(`/statsGen/${idPartido}`);
   };
 
-  const handleDeleteClick = (idPartido) => {
-    // Mostrar la alerta de confirmación
-    const confirmarEliminacion = window.confirm("¿Está seguro de querer eliminar este partido?");
+  // const handleDeleteClick = (idPartido) => {
+  //   // Mostrar la alerta de confirmación
+  //   const confirmarEliminacion = window.confirm("¿Está seguro de querer eliminar este partido?");
     
-    if (confirmarEliminacion) {
-      // Si el usuario confirma, llamar a la función para borrar el partido
-      borrarPartido(userID, idPartido, setUsuario);
+  //   if (confirmarEliminacion) {
+  //     // Si el usuario confirma, llamar a la función para borrar el partido
+  //     borrarPartido(userID, idPartido, setUsuario);
+  //   }
+  // };
+
+  const handleDeleteClick = (idPartido) => {
+    setIdPartidoAEliminar(idPartido);
+    setIsModalOpen(true); // Abre la modal
+  };
+
+  const handleConfirmDelete = () => {
+    if (idPartidoAEliminar) {
+      borrarPartido(userID, idPartidoAEliminar, setUsuario);
+      setIsModalOpen(false); // Cierra la modal después de la eliminación
     }
   };
 
   return (
-    // <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient overflow-y-auto"
     <div 
       className={`relative flex flex-col items-center justify-start min-h-screen overflow-hidden animate-gradient overflow-y-auto 
         ${usuario.tipoUsuario === 'entrenador' ? 'background-imageE' : 'background-imageJ'}`}
     >
       <Sidebar userID={userID} />
 
-      <h1 className="ml6 text-4xl sm:text-5xl font-bold mb-4 text-white mt-6 titulo-personalizado">
+      {/* Modal de confirmación */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)} // Cierra la modal al cancelar
+        onConfirm={handleConfirmDelete} // Llama a la función para eliminar el partido
+      />
+
+      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white mt-6 titulo-personalizado">
         <span className="text-wrapper">
           <span className="letters">
             {usuario.tipoUsuario === 'entrenador' ? 'PERFIL ENTRENADOR' : 'PERFIL JUGADOR'}
@@ -375,13 +373,13 @@ export default function Home() {
               {usuario.tipoUsuario === 'entrenador' && (
                 <>
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded active:bg-blue-700"
+                    className={`${styles3.button3} px-4 py-2 rounded active:bg-blue-700`}
                     onClick={() => handleEditClick(idPartido)}
                   >
                     Editar
                   </button>
                   <button
-                    className="bg-red-500 text-white px-4 py-2 rounded active:bg-red-700"
+                    className={`${styles3.button2} px-4 py-2 rounded active:bg-red-700`}
                     onClick={() => handleDeleteClick(idPartido)}
                   >
                     Borrar
@@ -390,7 +388,7 @@ export default function Home() {
                 </>
               )}
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded active:bg-green-700"
+                className={`${styles3.button1} px-4 py-2 rounded active:bg-green-700`}
                 onClick={() => handleViewClick(idPartido)}
               >
                 Ver

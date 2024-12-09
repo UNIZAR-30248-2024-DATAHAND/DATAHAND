@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Formulario from './profileform'; // Asegúrate de que la ruta sea correcta
+import styles2 from '../styles/Button2.module.css';  // Ajusta la ruta según sea necesario
 
 const obtenerUsuario = async (userID, setUsuario) => {
   try {
@@ -134,9 +135,9 @@ const Sidebar = ({ userID }) => {
 
       {/* Botones */}
       <div className="mt-6 w-full px-4">
-      <Link href={`/profile/${userID}`}>
+        <Link href={`/profile/${userID}`}>
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+            className={`${styles2.button2} rounded-full w-full hover:bg-white ease-in-out font-semibold text-center flex items-center justify-start gap-3 mb-4`}
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
             <Image
@@ -150,8 +151,8 @@ const Sidebar = ({ userID }) => {
         </Link>
 
         <Link href={`/editProfile/${userID}`}>
-          <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+        <button
+            className={`${styles2.button2} rounded-full w-full hover:bg-white ease-in-out font-semibold text-center flex items-center justify-start gap-3 mb-4`}
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
             <Image
@@ -166,7 +167,7 @@ const Sidebar = ({ userID }) => {
 
         <Link href={`/chat/${userID}`}>
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-between gap-3 mb-4"
+            className={`${styles2.button2} rounded-full w-full hover:bg-white ease-in-out font-semibold text-center flex items-center justify-start gap-3 mb-4`}
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
             <div className="flex items-center gap-3">
@@ -194,7 +195,7 @@ const Sidebar = ({ userID }) => {
         <button
           onClick={registrarPartido}
           aria-label="Registrar partido"
-          className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+          className={`${styles2.button2} rounded-full w-full hover:bg-white ease-in-out font-semibold text-center flex items-center justify-start gap-3 mb-4`}
           style={{ fontFamily: 'var(--font-geist-sans)' }}
         >
           <Image
@@ -210,7 +211,7 @@ const Sidebar = ({ userID }) => {
 
         <Link href="/editTeam">
           <button
-            className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3 mb-4"
+            className={`${styles2.button2} rounded-full w-full hover:bg-white ease-in-out font-semibold text-center flex items-center justify-start gap-3 mb-4`}
             style={{ fontFamily: 'var(--font-geist-sans)' }}
           >
             <Image
@@ -233,7 +234,7 @@ const Sidebar = ({ userID }) => {
             // Opcional: redirigir al usuario a la página de inicio si no usas <Link>
             window.location.href = "/";
           }}
-          className="bg-transparent text-white border-2 border-white p-3 rounded-full w-full font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out text-center flex items-center justify-start gap-3"
+          className={`${styles2.button2} rounded-full w-full hover:bg-white ease-in-out font-semibold text-center flex items-center justify-start gap-3 mb-4`}
           style={{ fontFamily: 'var(--font-geist-sans)' }}
         >
           <Image
