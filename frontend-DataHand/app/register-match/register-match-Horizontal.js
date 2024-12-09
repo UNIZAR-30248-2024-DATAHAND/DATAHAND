@@ -339,12 +339,6 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                 >
                     Estadísticas
                 </button>
-                <Link href="/">
-                    <button
-                        className="bg-red-600 text-white border-2 border-white px-4 py-2 rounded font-semibold hover:bg-white hover:text-purple-600 transition duration-300 ease-in-out w-full md:w-auto">
-                        Salir
-                    </button>
-                </Link>
             </div>
             
             {/* Popup de Selección de Equipos */}
