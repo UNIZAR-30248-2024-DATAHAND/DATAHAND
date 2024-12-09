@@ -18,12 +18,12 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18 # Recomendado para Next.js 13+
+        node-version: 18
 
     # 3. Navegar al subdirectorio del frontend
     - name: Navigate to frontend directory
       working-directory: ./frontend-DataHand
-      run: pwd # Verifica el directorio actual (opcional)
+      run: pwd
 
     # 4. Instalar dependencias
     - name: Install dependencies
@@ -35,18 +35,25 @@ jobs:
       working-directory: ./frontend-DataHand
       run: |
         nohup npm run dev &
-        sleep 5 # Esperar que el servidor esté listo
+        sleep 5
 
-    # 6. Instalar y ejecutar Ngrok
+    # 6. Verificar servidor local
+    - name: Check if Dev Server is Running
+      run: curl --fail localhost:3000 || echo "Server not running"
+
+    # 7. Instalar y ejecutar Ngrok
     - name: Install and Start Ngrok
       run: |
         curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
         echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list > /dev/null
         sudo apt update && sudo apt install ngrok
-        ngrok http 3000 > /dev/null &
+        nohup ngrok http 3000 &
         sleep 5
-        curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+        curl localhost:4040/api/tunnels
 
-    # 7. Imprimir URL pública
+    # 8. Instalar jq y obtener la URL pública
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
     - name: Print Ngrok URL
       run: curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
