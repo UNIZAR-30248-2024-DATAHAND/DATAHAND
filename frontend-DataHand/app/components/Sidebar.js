@@ -21,7 +21,7 @@ const obtenerUsuario = async (userID, setUsuario) => {
 
 const Sidebar = ({ userID }) => {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(false); // Estado para mostrar/ocultar el formulario
 

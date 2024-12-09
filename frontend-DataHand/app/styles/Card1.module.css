@@ -1,7 +1,7 @@
 .card {
   position: relative;
-  width: 400px; /* Doble de ancho que alto */
-  height: 230px;
+  width: 360px; /* Doble de ancho que alto */
+  height: 190px;
   border-radius: 14px;
   z-index: 1111;
   overflow: hidden;
@@ -16,8 +16,8 @@
   position: absolute;
   top: 5px;
   left: 5px;
-  width: 390px;
-  height: 220px;
+  width: 350px;
+  height: 180px;
   z-index: 2;
   background: rgba(211, 211, 211, 0.95); /* Gris claro */
   backdrop-filter: blur(10px); /* Menos blur */
