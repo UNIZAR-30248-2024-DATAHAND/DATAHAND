@@ -30,7 +30,8 @@ export default function EditarPerfil() {
   const [showModal, setShowModal] = useState(false);  
   const [invitacionEmail, setInvitacionEmail] = useState('');
   const [isInvitacionSelected, setIsInvitacionSelected] = useState(false); 
-
+  const [equipos, setEquipos] = useState([]);
+  const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
 
   const [usuario, setUsuario] = useState({
     nombreCompleto: '',
@@ -56,6 +57,36 @@ export default function EditarPerfil() {
   useEffect(() => {
     obtenerUsuario(userID, setUsuario);
   }, [userID]);
+
+  useEffect(() => {
+    const obtenerEquipos = async () => {
+      try {
+        const res = await fetch('../api/users/equipos');
+        if (!res.ok) throw new Error('Error al obtener equipos');
+        const data = await res.json();
+        setEquipos(data);
+      } catch (error) {
+        console.error('Error al obtener equipos:', error);
+      }
+    };
+    obtenerEquipos();
+  }, []);
+
+  useEffect(() => {
+    if (equipos.length > 0 && selectedChat && selectedChat.id) {
+      // Filtramos el equipo cuyo campo 'entrenador' coincida con 'selectedChat.id'
+      const equipoEncontrado = equipos.find((equipo) => equipo.entrenador === selectedChat.id);
+      console.log('Equipo encontrado:', equipoEncontrado);
+      
+      // Si encontramos un equipo que coincide, actualizamos el estado
+      if (equipoEncontrado) {
+        setEquipoSeleccionado(equipoEncontrado);
+      } else {
+        setEquipoSeleccionado(null);  // Si no encontramos ningún equipo, dejamos el estado en null
+      }
+    }
+  }, [equipos, selectedChat]);
+  
 
   // Filtrar los mensajes del chat seleccionado
   const mensajesFiltrados = selectedChat
@@ -190,6 +221,7 @@ export default function EditarPerfil() {
                   chatNoti: selectedChat.id,
                   mensajeNotificacion: "Invitacion", // El mensaje original de la invitación
                   mensajeEditado: "Invitación - Aceptada", // El nuevo mensaje para indicar que fue aceptada
+                  club: equipoSeleccionado.nombre,
               }),
           });
 

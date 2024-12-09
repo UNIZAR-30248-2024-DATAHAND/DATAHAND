@@ -170,7 +170,7 @@ export async function PUT(req) {
 }
 
 export async function PATCH(req) {
-    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser, goles, asistencias, efectividad, blocajes, recuperaciones, partidoID} = await req.json();
+    const {correoElectronico, userID, chatNoti, mensajeNotificacion, mensajeEditado, statsUser, goles, asistencias, efectividad, blocajes, recuperaciones, partidoID, club} = await req.json();
 
     // Validar los parámetros necesarios
     /*if ((!correoElectronico && !userID) || (!mensajeNotificacion && !mensajeEditado)) {
@@ -224,6 +224,9 @@ export async function PATCH(req) {
                 console.log(notif);
                 if (notif[0] === chatNoti && notif[1] === mensajeNotificacion) {
                     notif[1] = mensajeEditado; // Actualizamos el mensaje
+                    if(club){
+                        usuario.club = club;
+                    }
                     notificacionEncontrada = true;
                     break;
                 }
