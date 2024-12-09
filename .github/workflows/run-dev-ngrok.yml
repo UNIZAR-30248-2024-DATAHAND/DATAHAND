@@ -41,22 +41,26 @@ jobs:
     - name: Check if Dev Server is Running
       run: curl --fail localhost:3000 || echo "Server not running"
 
-    # 7. Configurar Ngrok con el token de autenticación
-    - name: Set up Ngrok Auth Token
-      run: |
-        echo "${{ secrets.NGROK_AUTH_TOKEN }}" | ngrok authtoken
-
-    # 8. Instalar y ejecutar Ngrok
-    - name: Install and Start Ngrok
+    # 7. Instalar Ngrok
+    - name: Install Ngrok
       run: |
         curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
         echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list > /dev/null
         sudo apt update && sudo apt install ngrok
+
+    # 8. Configurar Ngrok con el token de autenticación
+    - name: Set up Ngrok Auth Token
+      run: |
+        echo "${{ secrets.NGROK_AUTH_TOKEN }}" | ngrok authtoken
+
+    # 9. Iniciar el túnel Ngrok
+    - name: Start Ngrok
+      run: |
         nohup ngrok http 3000 & 
         sleep 5
         curl localhost:4040/api/tunnels
 
-    # 9. Instalar jq y obtener la URL pública
+    # 10. Instalar jq y obtener la URL pública
     - name: Install jq
       run: sudo apt-get install -y jq
 
