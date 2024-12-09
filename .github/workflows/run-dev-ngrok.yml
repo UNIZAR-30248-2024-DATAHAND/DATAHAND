@@ -20,17 +20,24 @@ jobs:
       with:
         node-version: 18 # Recomendado para Next.js 13+
 
-    # 3. Instalar dependencias
+    # 3. Navegar al subdirectorio del frontend
+    - name: Navigate to frontend directory
+      working-directory: ./frontend-DataHand
+      run: pwd # Verifica el directorio actual (opcional)
+
+    # 4. Instalar dependencias
     - name: Install dependencies
+      working-directory: ./frontend-DataHand
       run: npm install
 
-    # 4. Iniciar el servidor de desarrollo
+    # 5. Iniciar el servidor de desarrollo
     - name: Start Dev Server in Background
+      working-directory: ./frontend-DataHand
       run: |
         nohup npm run dev &
         sleep 5 # Esperar que el servidor esté listo
 
-    # 5. Instalar y ejecutar Ngrok
+    # 6. Instalar y ejecutar Ngrok
     - name: Install and Start Ngrok
       run: |
         curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
@@ -40,6 +47,6 @@ jobs:
         sleep 5
         curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
 
-    # 6. Imprimir URL pública
+    # 7. Imprimir URL pública
     - name: Print Ngrok URL
       run: curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
