@@ -7,6 +7,7 @@ import LoadingPage from '../components/LoadingPage';
 
 
 export default function EditarEquipo() {
+  const [equipo, setEquipo] = useState();
   const [seleccionado, setSeleccionado] = useState(null);
   const [error, setError] = useState(""); // Estado para manejar el error
   const userID = localStorage.getItem('userID');
