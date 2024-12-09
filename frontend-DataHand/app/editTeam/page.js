@@ -199,9 +199,6 @@ export default function EditarEquipo() {
         </div>
       </div>
 
-      {/* Error */}
-      {error && <div className="text-red-500 text-lg mt-4">{error}</div>} Mostrar error si hay uno
-
       {/* Sección Porteros */}
       <div className="mt-10 mr-10">
         <h2 className="text-md sm:text-lg font-semibold text-white mb-2">Porteros</h2>        

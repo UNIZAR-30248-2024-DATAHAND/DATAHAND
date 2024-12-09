@@ -499,6 +499,15 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                                     Jugador {jugador}
                                 </button>
                             ))}
+                            {/* Botón adicional para "Sin asistencia" */}
+                            <button
+                                onClick={() => setAsistenciaDada("0")}
+                                className={`bg-blue-500 text-white px-4 py-2 rounded text-sm ${
+                                    asistenciaDada === "0" ? 'opacity-80' : ''
+                                }`}
+                            >
+                                Sin asistencia
+                            </button>
                         </div>
                     </div>
 
