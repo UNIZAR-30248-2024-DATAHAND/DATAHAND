@@ -731,16 +731,15 @@ export default function Home() {
                             <tbody>
                                 {eventos.length > 0 ? (
                                     eventos.slice(-4).reverse().map((evento, index) => ( // Solo los últimos 4 eventos
-                                        <tr key={index}>
-                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
-                                            <td className="border border-gray-300 px-4 py-2 text-black">
-                                                {evento.Resultado 
-                                                    ? `${evento.Resultado}${evento.Asistencia ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
-                                                    : evento.Accion || evento.Suspension || 'No especificado'}
-                                            </td>
-
-                                            <td className="border border-gray-300 px-4 py-2 text-black">{evento.MinSeg ? formatTime(evento.MinSeg) : 'No especificado'}</td>
-                                        </tr>
+                                    <tr key={index}>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">
+                                            {evento.Resultado 
+                                                ? `${evento.Resultado}${evento.Asistencia && evento.Asistencia !== '0' ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
+                                                : evento.Accion || evento.Suspension || 'No especificado'}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.MinSeg ? formatTime(evento.MinSeg) : 'No especificado'}</td>
+                                    </tr>
                                     ))
                                 ) : (
                                     <tr>
