@@ -12,6 +12,8 @@ import { set } from "mongoose";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import '../../styles/styles.css';
+import PartidoAlerta from '../../components/PartidoAlerta'; // Importa la modal
+
 
 export default function Home() {
 
@@ -257,7 +259,6 @@ export default function Home() {
     const [accion, setAccion] = useState(null);
     const [suspension, setSuspension] = useState(null);
 
-
     //Para pasarle los jugadores que hay en el campo al PopUp
     //Lo que vamos a hacer es pasarle un array con los jugadores tanto locales como vistantes 
     const [asistencias, setAsistencias] = useState([]);
@@ -286,6 +287,9 @@ export default function Home() {
         }
     };
 
+    const [alertaVisible, setAlertaVisible] = useState(false);
+    const [mensajeAlerta, setMensajeAlerta] = useState('');
+
     // Función para intercambiar posiciones entre jugadores y banquillo
     const intercambiarPosiciones = (equipo, index, tipo) => {
         const equipoSeleccionado = equipos[equipo];
@@ -302,17 +306,20 @@ export default function Home() {
 
         // No permitir el intercambio entre portero y jugador
         if (esPortero(jugadorSeleccionado) && (tipo === "jugador" || tipo === "banquillo")) {
-            alert("No se puede intercambiar un portero con un jugador.");
+            setMensajeAlerta("No se puede intercambiar un portero con un jugador.");
+            setAlertaVisible(true);
             return;
         }
         if (esPortero(jugadorActual) && (seleccionado.tipo === "jugador" || seleccionado.tipo === "banquillo")) {
-            alert("No se puede intercambiar un jugador con un portero.");
+            setMensajeAlerta("No se puede intercambiar un jugador con un portero.");
+            setAlertaVisible(true);
             return;
         }
 
         // Verificar que los jugadores pertenecen al mismo equipo
         if (seleccionado.equipo !== equipo) {
-            alert("No se puede intercambiar jugadores entre equipos diferentes.");
+            setMensajeAlerta("No se puede intercambiar jugadores entre equipos diferentes.");
+            setAlertaVisible(true);
             return;
         }
 
@@ -458,9 +465,12 @@ export default function Home() {
                     setEventos(eventosObtenidos);
                     // Resetear variables solo después de registrar el evento
                     if(datosEvento.Accion !== null){
-                        window.confirm("Se ha registrado un evento de: "+ datosEvento.Accion + " del jugador: "+ datosEvento.IdJugador);
+                        setMensajeAlerta(`Se ha registrado un evento de: ${datosEvento.Accion} del jugador: ${datosEvento.IdJugador}`);
+                        setAlertaVisible(true);
+
                     } else {
-                        window.confirm("Se ha registrado un evento de: "+ datosEvento.Suspension + " del jugador: "+ datosEvento.IdJugador);
+                        setMensajeAlerta(`Se ha registrado un evento de: ${datosEvento.Suspension} del jugador: ${datosEvento.IdJugador}`);
+                        setAlertaVisible(true);
                     }
                     resetearDatosEvento();
                 } catch (error) {
@@ -515,6 +525,13 @@ export default function Home() {
         <div className="relative h-screen flex flex-col items-center justify-start bg-orange-500 overflow-y-auto p-4 background-imageP">
             {/* Sidebar */}
             <Sidebar userID={userID} />
+
+            {alertaVisible && (
+                <PartidoAlerta 
+                    mensaje={mensajeAlerta} 
+                    onClose={() => setAlertaVisible(false)} 
+                />
+            )}
 
             {/* Título */}
             <h1
