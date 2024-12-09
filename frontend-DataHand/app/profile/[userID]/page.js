@@ -8,10 +8,12 @@ import Sidebar from '../../components/Sidebar';
 import React, { useState, useEffect } from "react"; 
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes}  from '../../utils/calculosEstadistica'; 
+import { contarGoles, contarLanzamientosTotal, contarPerdidasDeBalon, sacarAsistencias, sacarBlocajes, 
+  obtenerResultadoTotalJugador, obtenerAccionTotalJugador, obtenerAsistenciaTotalJugador}  from '../../utils/calculosEstadistica'; 
 import '../../styles/styles.css';
 import ConfirmModal from '../../components/ConfirmModal'; // Importa la modal
 import styles3 from '../../styles/Button3.module.css';  // Ajusta la ruta según sea necesario
+import { User } from 'lucide-react';
 // import anime from 'animejs';
 
 ChartJS.register(...registerables);
@@ -81,7 +83,7 @@ export default function Home() {
   const router = useRouter(); // Inicializamos useRouter
   const [partidosProcesados, setPartidosProcesados] = useState(false);
 
-  const procesarPartidos = async (historialPartidos) => {
+  const procesarPartidosEntrenador = async (historialPartidos) => {
     try {
       let goles = 0;
       let asistencias = 0;
@@ -143,8 +145,84 @@ export default function Home() {
     }
   };
 
+  const procesarPartidosJugador = async (historialPartidos) => {
+    try {
+      let goles = 0;
+      let asistencias = 0;
+      let blocajes = 0;
+      let efectividad = 0;
+      let recuperaciones = 0;
+
+      const totalPartidos = historialPartidos.length;
+      //console.log('Procesando partidos:', historialPartidos);
+      for (const idPartido of historialPartidos) {
+        // Obtener eventos de cada partido
+        const eventos = await obtenerEventos(idPartido);
+  
+        if (eventos) {
+          goles = goles + obtenerResultadoTotalJugador(eventos,"Gol", usuario.userID ,"local");
+          asistencias = asistencias + obtenerAsistenciaTotalJugador(eventos, usuario.userID , "local");
+          efectividad = efectividad + obtenerResultadoTotalJugador(eventos,"Gol", usuario.userID ,"local") + 
+          obtenerResultadoTotalJugador(eventos,"Palo/Fuera", usuario.userID ,"local") + obtenerResultadoTotalJugador(eventos,"Parada", usuario.userID ,"local");
+          blocajes = blocajes + obtenerAccionTotalJugador(eventos, 'Lanzamiento bloqueado', usuario.userID, "local");
+          recuperaciones = recuperaciones + obtenerResultadoTotalJugador(eventos,"Perdida de balon", usuario.userID ,"local");
+        };
+      }
+      const formatToTwoDecimals = (value) => parseFloat(value.toFixed(2)); // Formateador reutilizable
+      if(efectividad === 0 && goles === 0){
+        efectividad = 0;
+      } else {
+        efectividad = formatToTwoDecimals(100 *(goles/efectividad));
+      }
+
+      // Guardar los resultados del partido actual
+      goles = formatToTwoDecimals(goles/totalPartidos);
+      asistencias = formatToTwoDecimals(asistencias/totalPartidos);
+      blocajes = formatToTwoDecimals(blocajes/totalPartidos);
+      recuperaciones = formatToTwoDecimals(recuperaciones/totalPartidos);
+      efectividad = formatToTwoDecimals(efectividad/totalPartidos);
+      
+      goles = 0;
+      console.log('Goles:', goles);
+      console.log('Asistencias:', asistencias);
+      console.log('Efectividad:', efectividad);
+      console.log('Blocajes:', blocajes);
+      console.log('Recuperaciones:', recuperaciones);
+      console.log(userID);
+
+      try {
+          const response = await fetch("/api/users/usuarios", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userID: userID,
+              goles: goles,
+              asistencias: asistencias,
+              efectividad: efectividad,
+              blocajes: blocajes,
+              recuperaciones: recuperaciones,
+            }),
+          });
+  
+          if (response.ok) {
+            console.log(`Atributos modificados de : ${userID}`);
+          } else {
+            console.error(`Error al modificar atributos de ${userID}`);
+          }
+      } catch (error) {
+        console.error('Error al obtener los jugadores:', error);
+      }
+    } catch (error) {
+      console.error("Error al procesar los partidos:", error);
+      return [];
+    }
+  };
+
 
   const [usuario, setUsuario] = useState({
+    userID: '',
     nombreCompleto: '',
     correoElectronico: '',
     contrasena: '',
@@ -166,7 +244,7 @@ export default function Home() {
   });
 
   const [data, setData] = useState({
-    labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Recuperaciones'],
+    labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Perdidas de balón'],
     datasets: [
       {
         data: [0, 0, 0, 0, 0], // Valores iniciales
@@ -239,13 +317,18 @@ export default function Home() {
 
   useEffect(() => {
     console.log('Procesando partidos...');
-    procesarPartidos(usuario.historialPartidos);
+    console.log('Usuario:', usuario.tipoUsuario);
+    if(usuario.tipoUsuario === 'entrenador'){
+      procesarPartidosEntrenador(usuario.historialPartidos);
+    } else if(usuario.tipoUsuario === 'jugador'){
+      procesarPartidosJugador(usuario.historialPartidos);
+    }
   }, [partidosProcesados]); // Asegúrate de que se recarguen los datos si el userID cambia
 
   useEffect(() => {
     if (partidosProcesados && usuario && usuario.atributos) {
       setData({
-        labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Recuperaciones'],
+        labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Perdidas de balón'],
         datasets: [
           {
             data: [

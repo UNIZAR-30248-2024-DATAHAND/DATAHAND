@@ -625,6 +625,20 @@ export const obtenerResultadoTotalJugador = (dataEventos, resultado, jugador, eq
   }
 };
 
+export const obtenerAccionTotalJugador = (dataEventos, accion, jugador, equipo) => {
+  if (Array.isArray(dataEventos)) {
+    // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'
+    const eventosPalo = dataEventos.filter(evento => 
+      evento.Accion === accion && evento.IdJugador === jugador && evento.EquipoJugador === equipo
+    );
+    
+    return eventosPalo.length;  // Devuelve el array de eventos que cumplen con las condiciones
+  } else {
+    console.error('dataEventos no es un vector');
+    return [];  // Si dataEventos no es un array, devuelve un array vacío
+  }
+};
+
 export const obtenerAsistenciaTotalJugador = (dataEventos, jugadorAsistencia, equipo) => {
   if (Array.isArray(dataEventos)) {
     // Filtra los eventos donde el 'SistemaDeJuego' coincida con 'sistemaDeAtaque' y el 'Resultado' sea 'Palo/Fuera'

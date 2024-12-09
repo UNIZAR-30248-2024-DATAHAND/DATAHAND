@@ -244,7 +244,7 @@ export async function PATCH(req) {
                 mensajeNotificacion, // El mensaje de la notificación pasado como parámetro
             ];
             usuario.historialNotificaciones.push(nuevaNotificacion); // Añadir al historialNotificaciones
-        } else if (userID && !mensajeNotificacion && goles && !partidoID){    
+        } else if (userID && !mensajeNotificacion && goles!== null && !partidoID){    
             usuario.atributos.goles = goles;
             usuario.atributos.asistencias = asistencias;
             usuario.atributos.efectividad = efectividad;
