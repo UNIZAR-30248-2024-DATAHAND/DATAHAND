@@ -1,0 +1,59 @@
+name: Run Next.js Dev Server with Ngrok
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout del código
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Configurar Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    # 3. Navegar al subdirectorio del frontend
+    - name: Navigate to frontend directory
+      working-directory: ./frontend-DataHand
+      run: pwd
+
+    # 4. Instalar dependencias
+    - name: Install dependencies
+      working-directory: ./frontend-DataHand
+      run: npm install
+
+    # 5. Iniciar el servidor de desarrollo
+    - name: Start Dev Server in Background
+      working-directory: ./frontend-DataHand
+      run: |
+        nohup npm run dev &
+        sleep 5
+
+    # 6. Verificar servidor local
+    - name: Check if Dev Server is Running
+      run: curl --fail localhost:3000 || echo "Server not running"
+
+    # 7. Instalar y ejecutar Ngrok
+    - name: Install and Start Ngrok
+      run: |
+        curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc > /dev/null
+        echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list > /dev/null
+        sudo apt update && sudo apt install ngrok
+        nohup ngrok http 3000 &
+        sleep 5
+        curl localhost:4040/api/tunnels
+
+    # 8. Instalar jq y obtener la URL pública
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
+    - name: Print Ngrok URL
+      run: curl --silent localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
