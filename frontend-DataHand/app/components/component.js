@@ -42,41 +42,52 @@ export default function Component({ dataEventos, dataEquipos }) {
     }
   };
 
-  // Función para capturar la pestaña activa y agregarla al PDF
-  const captureTabForPDF = async () => {
-    const content = document.querySelector(`#${activeTab}-content`); // Asegúrate de usar un id único para cada tab
-    if (content) {
-      // Asegurarse de que el contenido esté renderizado antes de capturarlo
-      await new Promise(resolve => setTimeout(resolve, 500)); // Esperar medio segundo
+  // Captura el contenido de la pestaña activa y la añade o la quita de capturedTabs
+  const toggleTabInPDF = async () => {
+    const tabIndex = capturedTabs.findIndex((tab) => tab.name === activeTab);
 
-      // Capturamos el contenido usando html2canvas
-      const canvas = await html2canvas(content);
-      const imgData = canvas.toDataURL("image/png");
-
-      // Agregar la imagen al array de pestañas capturadas
-      setCapturedTabs(prevTabs => [...prevTabs, imgData]);
+    if (tabIndex > -1) {
+      // Si la pestaña ya está capturada, la eliminamos de capturedTabs
+      setCapturedTabs((prevTabs) => prevTabs.filter((_, index) => index !== tabIndex));
     } else {
-      console.error('No se encontró el contenido de la pestaña');
+      // Si no está capturada, capturamos su contenido
+      const content = document.querySelector(`#${activeTab}-content`);
+      if (content) {
+        // Esperar un momento para asegurarse de que el contenido esté visible
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        const canvas = await html2canvas(content);
+        const imgData = canvas.toDataURL("image/png");
+
+        // Agregamos la nueva pestaña capturada
+        setCapturedTabs((prevTabs) => [
+          ...prevTabs,
+          { name: activeTab, imgData },
+        ]);
+      } else {
+        console.error("No se encontró el contenido de la pestaña");
+      }
     }
   };
 
   // Función para generar el PDF con todas las pestañas capturadas
   const generatePDF = () => {
     if (capturedTabs.length === 0) {
-      alert("No se ha capturado ninguna pestaña. Por favor, seleccione una pestaña para agregar al PDF.");
+      alert("No se ha capturado ninguna pestaña. Por favor, añada pestañas al PDF.");
       return;
     }
 
     const doc = new jsPDF();
-    capturedTabs.forEach((imgData, index) => {
+    capturedTabs.forEach((tab, index) => {
       if (index > 0) {
         doc.addPage();
       }
-      doc.addImage(imgData, 'PNG', 10, 10, 180, 120); // Ajustar las coordenadas y el tamaño si es necesario
+      doc.addImage(tab.imgData, 'PNG', 10, 10, 180, 120);
     });
 
     doc.save('vistas-seleccionadas.pdf');
   };
+
 
   // Si los datos están cargando, muestra el componente de carga
   if (isLoading) {
@@ -134,20 +145,20 @@ export default function Component({ dataEventos, dataEquipos }) {
       {/* Botón para capturar la pestaña activa y agregarla al PDF */}
       <div className="flex flex-col items-center">
         <button
-          onClick={captureTabForPDF}
-          className="mt-4 px-4 py-2 bg-green-500 text-white rounded active:bg-green-700"
+          onClick={toggleTabInPDF}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded active:bg-blue-700"
         >
-          Agregar al PDF
+          {capturedTabs.some((tab) => tab.name === activeTab)
+            ? "Quitar del PDF"
+            : "Añadir al PDF"}
         </button>
-
+        
         <button
           onClick={generatePDF}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded active:bg-blue-700"
-          style={{ marginBottom: '10px' }}
+          className="mt-4 px-4 py-2 bg-green-500 text-white rounded active:bg-green-700"
         >
           Generar PDF con vistas seleccionadas
         </button>
-
       </div>
     </div>
   );  
