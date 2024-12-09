@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Formulario from './profileform'; // Asegúrate de que la ruta sea correcta
 import styles2 from '../styles/Button2.module.css';  // Ajusta la ruta según sea necesario
+//import { eq } from 'cypress/types/lodash';
 
 const obtenerUsuario = async (userID, setUsuario) => {
   try {
@@ -24,6 +25,9 @@ const Sidebar = ({ userID }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState('');
   const [mostrarFormulario, setMostrarFormulario] = useState(false); // Estado para mostrar/ocultar el formulario
+  const [equipos, setEquipos] = useState([]);
+  const [equipoUsuario, setEquipoUsuario] = useState(null); // Estado para almacenar el equipo del usuario
+
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -66,6 +70,53 @@ const Sidebar = ({ userID }) => {
     );
   }
   
+  useEffect(() => {
+    const obtenerEquipos = async () => {
+      try {
+        const res = await fetch('../api/users/equipos');
+        if (!res.ok) throw new Error('Error al obtener equipos');
+        const data = await res.json();
+        setEquipos(data);
+      } catch (error) {
+        console.error('Error al obtener equipos:', error);
+      }
+    };
+    obtenerEquipos();
+  }, []);
+
+  useEffect(() => {
+    if (equipos.length > 0 && usuario.club) {
+      // Encuentra el equipo correspondiente al usuario
+      const equipoEncontrado = equipos.find(
+        (equipo) => equipo.nombre === usuario.club
+      );
+  
+      if (equipoEncontrado) {
+        // Extrae los vectores y filtra los valores
+        const { porteros, jugadores, banquillo } = equipoEncontrado;
+  
+        const valoresFiltrados = [
+          ...porteros,
+          ...jugadores,
+          ...banquillo
+        ].filter(
+          (valor) =>
+            !["jugador", "portero", "banquillo"].some((palabraClave) =>
+              valor.toLowerCase().includes(palabraClave)
+            )
+        );
+  
+        //console.log("Valores filtrados:", valoresFiltrados);
+        setEquipoUsuario({
+          ...equipoEncontrado,
+          valoresFiltrados, // Agregamos los valores filtrados al estado
+        });
+        console.log("Filtrados del usuario:", equipoUsuario);
+      } else {
+        setEquipoUsuario(null); // Si no se encuentra el equipo
+      }
+    }
+  }, [equipos, usuario]);
 
   // Función para registrar un partido
   const registrarPartido = async () => {
@@ -94,7 +145,7 @@ const Sidebar = ({ userID }) => {
       // Llamada a la función PUT del backend 
       console.log("Añadiendo partido al historial del usuario:", userID);
       console.log("Partido:", data2.partido.IdPartido);
-      const response = await fetch("/api/users/usuarios", {
+      const response = await fetch("../api/users/usuarios", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -114,6 +165,39 @@ const Sidebar = ({ userID }) => {
       }
     } catch (error) {
       console.error("Error en la solicitud:", error);
+    }
+
+    if (!equipoUsuario?.valoresFiltrados || equipoUsuario.valoresFiltrados.length === 0) {
+      console.log("No hay jugadores filtrados para añadir a la base de datos.");
+      console.log(equipoUsuario.valoresFiltrados);
+    } else {
+      for (let i = 0; i < equipoUsuario.valoresFiltrados.length; i++) {
+        const valorFiltrado = equipoUsuario.valoresFiltrados[i];
+        try {
+          console.log(`Añadiendo partido al historial del usuario: ${valorFiltrado}`);
+    
+          const response = await fetch("/api/users/usuarios", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userID: valorFiltrado, // Aquí se asigna el valor actual del array como userID
+              partidoID: data2.partido.IdPartido, // Asegúrate de tener data2 definido correctamente
+            }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            console.log(`Partido ${valorFiltrado} añadido correctamente:`, data);
+          } else {
+            console.error(`Error al añadir partido ${valorFiltrado}:`, data.error);
+          }
+        } catch (error) {
+          console.error(`Error al añadir partido ${valorFiltrado} en la solicitud:`, error);
+        }
+      }
     }
   };
 
