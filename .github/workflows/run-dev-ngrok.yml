@@ -54,10 +54,9 @@ jobs:
         ngrok authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
 
     # 9. Verificar si hay túneles activos y detenerlos
-    - name: Check for active tunnels and stop
+    - name: Stop active Ngrok tunnels if any
       run: |
-        active_tunnels=$(ps aux | grep ngrok | grep -v grep)
-        if [ -n "$active_tunnels" ]; then
+        if pgrep ngrok > /dev/null; then
           echo "Found active ngrok tunnels. Killing them..."
           pkill -f ngrok
         else
