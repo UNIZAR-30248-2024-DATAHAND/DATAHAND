@@ -144,7 +144,7 @@ export default function Register() {
         <h2 className="text-3xl font-semibold text-center mb-6 text-white">
           Registro de Usuario
         </h2>
-        <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={handleSubmit}>
+        <form className="grid grid-cols-1 sm:grid-cols-2 gap-2" onSubmit={handleSubmit}>
           {/* Campos de entrada */}
           <input type="text" name="firstName" placeholder="Nombre" value={formData.firstName} onChange={handleInputChange} className={styles.input1} />
           <input type="text" name="lastName" placeholder="Apellido" value={formData.lastName} onChange={handleInputChange} className={styles.input1} />
@@ -171,7 +171,7 @@ export default function Register() {
           {/* Imagen de perfil */}
           <div className="col-span-2 flex flex-col items-center">
             <label className="text-white text-lg">Foto de Perfil:</label>
-            <div style={{ marginBottom: '20px' }}></div>
+            <div style={{ marginBottom: '10px' }}></div>
             <div
               className={styles3.card}
               onDrop={handleImageDrop} 
@@ -187,13 +187,13 @@ export default function Register() {
               {/* Vista previa de la imagen o mensaje */}
               {previewImage ? (
                 <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover z-10 " 
-                  style={{ width: '80%', height: '80%' }}
+                  style={{ width: '90%', height: '90%' }}
                 />
               ) : (
                 <p className="text-gray-500 text-center z-10">Arrastra o selecciona una imagen</p>
               )}
             </div>
-            <div style={{ marginBottom: '20px' }}></div>
+            <div style={{ marginBottom: '10px' }}></div>
             <input id="imageUpload" type="file" accept="image/*" className="hidden" onChange={handleImageSelect} />
           </div>
   
