@@ -280,16 +280,6 @@ export default function Home() {
     router.push(`/statsGen/${idPartido}`);
   };
 
-  // const handleDeleteClick = (idPartido) => {
-  //   // Mostrar la alerta de confirmación
-  //   const confirmarEliminacion = window.confirm("¿Está seguro de querer eliminar este partido?");
-    
-  //   if (confirmarEliminacion) {
-  //     // Si el usuario confirma, llamar a la función para borrar el partido
-  //     borrarPartido(userID, idPartido, setUsuario);
-  //   }
-  // };
-
   const handleDeleteClick = (idPartido) => {
     setIdPartidoAEliminar(idPartido);
     setIsModalOpen(true); // Abre la modal
