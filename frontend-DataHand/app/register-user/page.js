@@ -6,11 +6,14 @@ import styles from '../styles/Input1.module.css';
 import styles2 from '../styles/Button1.module.css';
 import styles3 from '../styles/Card1.module.css';
 import styles4 from '../styles/Checkbox1.module.css';
+import UsuarioCreado from '../components/UsuarioCreado'; // Importa la modal
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Register() {
+
+  const [usuarioCreado, setUsuarioCreado] = useState(null);
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -79,10 +82,8 @@ export default function Register() {
       if (response.ok) {
         const data = await response.json();
         // Mostrar la alerta con el nombre del usuario creado
-        alert(`Registro exitoso. El usuario ${data.nombreCompleto} se ha creado correctamente.`);
-        
+        setUsuarioCreado(data.nombreCompleto); // Mostrar el modal con el nombre del usuario        
         // Redirigir al inicio
-        window.location.href = "/"; // Redirige a la página de inicio
       } else {
         const data = await response.json();
         setMensaje(data.message || 'Error al registrar usuario.');
@@ -126,6 +127,17 @@ export default function Register() {
         className="absolute top-0 left-0 w-full h-full z-0"
       />
   
+      {/* Modal para el usuario creado */}
+      {usuarioCreado && (
+        <UsuarioCreado
+          nombre={usuarioCreado}
+          onClose={() => {
+            setUsuarioCreado(null); // Ocultar el modal
+            router.push('/'); // Redirigir al inicio
+          }}
+        />
+      )}
+
       {/* Sección informativa */}
       <div className="w-full lg:w-1/2 p-8 text-center z-10">  {/* Añadido z-10 */}
         <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
