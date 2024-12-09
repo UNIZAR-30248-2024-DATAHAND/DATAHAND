@@ -8,6 +8,7 @@ import Lanzamientos from './lanzamientos';
 import EspecificasJugadores from './especifico-jugadores';
 import Jugadores from './jugadores';
 import LoadingPage from './LoadingPage';
+import styles2 from '../styles/Button3.module.css';
 
 export default function Component({ dataEventos, dataEquipos }) {
   const [activeTab, setActiveTab] = useState("vista-general");
@@ -146,7 +147,8 @@ export default function Component({ dataEventos, dataEquipos }) {
       <div className="flex flex-col items-center">
         <button
           onClick={toggleTabInPDF}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded active:bg-blue-700"
+          // className="mt-4 px-4 py-2 bg-blue-500 text-white rounded active:bg-blue-700"
+          className={`${styles2.button4} px-4 py-2 rounded active:bg-blue-700`}
         >
           {capturedTabs.some((tab) => tab.name === activeTab)
             ? "Quitar del PDF"
@@ -155,8 +157,8 @@ export default function Component({ dataEventos, dataEquipos }) {
         
         <button
           onClick={generatePDF}
-          className="mt-4 px-4 py-2 bg-green-500 text-white rounded active:bg-green-700"
-        >
+          className={`${styles2.button5} px-4 py-2 rounded active:bg-blue-700 m-2.5`}
+          >
           Generar PDF con vistas seleccionadas
         </button>
       </div>

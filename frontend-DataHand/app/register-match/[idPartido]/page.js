@@ -756,7 +756,7 @@ export default function Home() {
                 
                 {/* Rectángulo 3 */}
                 <div className="flex-1 h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
-                    <p className="text-xl font-semibold text-black text-center">Equipo visitante</p>
+                    <p className="text-xl font-semibold text-black text-center">Equipo Visitante</p>
 
                     {/* Sección Tiempo Muerto dentro del Rectángulo 1 */}
                     <div className="mt-4">

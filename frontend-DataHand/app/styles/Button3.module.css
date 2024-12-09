@@ -51,3 +51,38 @@
     box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6); /* Efecto de sombra */
     color: #fff;
 }
+
+/* Botón 3 (Azul) */
+.button4 {
+    background-color: #bfdbfe; /* Azul claro */
+    color: #3b82f6; /* Azul más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 150px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button4:hover {
+    background-color: #3b82f6; /* Azul más oscuro */
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+.button5 {
+    background-color: #d1fae5; /* Verde claro */
+    color: #10b981; /* Verde más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 400px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button5:hover {
+    background-color: #10b981; /* Verde más oscuro */
+    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
