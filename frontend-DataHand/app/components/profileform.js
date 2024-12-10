@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styles2 from "../styles/Input1.module.css"; // Ruta para los estilos de los inputs
 import styles3 from '../styles/Card1.module.css';
-
+import { useRouter } from 'next/navigation'; // Importar useRouter
+import ActualizacionExito from './ActualizacionExito'; // Asegúrate de importar el componente de la alerta
 
 export default function ProfileForm({ userData, setUserData }) {
+  const router = useRouter(); // Crear la instancia del router
   const [previewImage, setPreviewImage] = useState(userData.fotoPerfil);
   const [password, setPassword] = useState(userData.contrasena || "");
   const [confirmPassword, setConfirmPassword] = useState(userData.contrasena || "");
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [imageSmall, setImageSmall] = React.useState(false);
+  const [showAlert, setShowAlert] = useState(false); // Estado para controlar la alerta de éxito
 
   // Sincroniza el estado con los datos del usuario
   useEffect(() => {
@@ -77,6 +80,7 @@ export default function ProfileForm({ userData, setUserData }) {
       const data = await response.json();
       if (response.ok) {
         console.log("Usuario actualizado:", data);
+        setShowAlert(true); // Mostrar alerta de éxito antes de redirigir
       } else {
         console.error("Error al actualizar usuario:", data.error);
       }
@@ -85,93 +89,105 @@ export default function ProfileForm({ userData, setUserData }) {
     }
   };
 
+  const handleAlertClose = () => {
+    setShowAlert(false);
+    router.push(`../profile/${userData.userID}`); // Redirigir al perfil después de cerrar la alerta
+  };
+
   return (
-    <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
-      <label style={{ ...styles.label, marginTop: '-15px' }} htmlFor="nombreCompleto" >
-        Nombre Completo:
-      </label>
-      <input
-        type="text"
-        id="nombreCompleto"
-        name="nombreCompleto"
-        required
-        value={userData.nombreCompleto}
-        onChange={handleChange}
-        className={styles2.input2}
-      />
+    <>
+      <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
+        <label style={{ ...styles.label, marginTop: '-15px' }} htmlFor="nombreCompleto" >
+          Nombre Completo:
+        </label>
+        <input
+          type="text"
+          id="nombreCompleto"
+          name="nombreCompleto"
+          required
+          value={userData.nombreCompleto}
+          onChange={handleChange}
+          className={styles2.input2}
+        />
 
-      <label style={styles.label} htmlFor="contrasena">
-        Contraseña:
-      </label>
-      <input
-        type="password"
-        id="contrasena"
-        name="contrasena"
-        required
-        value={password}
-        onChange={handlePasswordChange}
-        className={styles2.input2}
-      />
+        <label style={styles.label} htmlFor="contrasena">
+          Contraseña:
+        </label>
+        <input
+          type="password"
+          id="contrasena"
+          name="contrasena"
+          required
+          value={password}
+          onChange={handlePasswordChange}
+          className={styles2.input2}
+        />
 
-      <label style={styles.label} htmlFor="confirmarContrasena">
-        Repite la Contraseña:
-      </label>
-      <input
-        type="password"
-        id="confirmarContrasena"
-        name="confirmarContrasena"
-        required
-        value={confirmPassword}
-        onChange={handleConfirmPasswordChange}
-        className={styles2.input2}
-      />
-      {passwordMatchError && (
-        <p style={styles.errorText}>Las contraseñas no coinciden.</p>
-      )}
-
-      {/* *************** */}
-      {/* TIENES QUE METER AQUI LA CARD QUE TOCA */}
-      <label style={styles.label}>Foto de Perfil:</label>
-      <div style={{ marginBottom: '20px' }}></div>
-      <div
-        className={styles3.card}
-        onDrop={handleImageDrop}
-        onDragOver={(e) => e.preventDefault()}
-      >
-        <div className={styles3.bg}></div>
-        <div className={styles3.blob}></div>
-        {previewImage ? (
-          <img
-            src={previewImage}
-            alt="Vista previa"
-            style={{ ...styles.imagePreview, zIndex: 10, position: "relative", width: "80%", height: "80%" }}
-          />
-        ) : (
-          <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>
-            Arrastra una imagen aquí o haz clic para seleccionar
-          </p>
+        <label style={styles.label} htmlFor="confirmarContrasena">
+          Repite la Contraseña:
+        </label>
+        <input
+          type="password"
+          id="confirmarContrasena"
+          name="confirmarContrasena"
+          required
+          value={confirmPassword}
+          onChange={handleConfirmPasswordChange}
+          className={styles2.input2}
+        />
+        {passwordMatchError && (
+          <p style={styles.errorText}>Las contraseñas no coinciden.</p>
         )}
-      </div>
 
-      <label style={styles.label} htmlFor="club">
-        Club:
-      </label>
-      <input
-        type="text"
-        id="club"
-        name="club"
-        required
-        value={userData.club}
-        onChange={handleChange}
-        className={styles2.input2}
-      />
+        <label style={styles.label}>Foto de Perfil:</label>
+        <div style={{ marginBottom: '20px' }}></div>
+        <div
+          className={styles3.card}
+          onDrop={handleImageDrop}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <div className={styles3.bg}></div>
+          <div className={styles3.blob}></div>
+          {previewImage ? (
+            <img
+              src={previewImage}
+              alt="Vista previa"
+              style={{ ...styles.imagePreview, zIndex: 10, position: "relative", width: "80%", height: "80%" }}
+            />
+          ) : (
+            <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>
+              Arrastra una imagen aquí o haz clic para seleccionar
+            </p>
+          )}
+        </div>
 
-      <input
-        type="submit"
-        value="Guardar Cambios"
-        style={styles.submit}
-      />
-    </form>
+        <label style={styles.label} htmlFor="club">
+          Club:
+        </label>
+        <input
+          type="text"
+          id="club"
+          name="club"
+          required
+          value={userData.club}
+          onChange={handleChange}
+          className={styles2.input2}
+        />
+
+        <input
+          type="submit"
+          value="Guardar Cambios"
+          style={styles.submit}
+        />
+      </form>
+
+      {showAlert && (
+        <ActualizacionExito
+          mensaje="El perfil se ha actualizado correctamente."
+          onClose={handleAlertClose}
+        />
+      )}
+    </>
   );
 }
 
