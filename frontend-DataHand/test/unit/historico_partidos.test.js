@@ -76,30 +76,26 @@ describe('Home Page', () => {
         expect(mockPush).toHaveBeenCalledWith('/register-match/Partido-81');
     });
 
-    // Test de Integracion
-    it('debe eliminar un partido del historial al hacer clic en el botón de borrar', async () => {
-        // Mock de window.confirm para simular que el usuario hace clic en "Aceptar"
-        jest.spyOn(window, 'confirm').mockReturnValue(true);
-
+    it('debe eliminar un partido del historial al confirmar en el modal', async () => {
+        // Renderizar el componente
         render(<Home />);
 
-        // Espera a que se cargue el partido
-        await waitFor(() => {
-            // Verifica que el partido "Partido-81" esté presente
-            const partido = screen.getByText('Partido-81');
-            expect(partido).toBeInTheDocument();
-        });
+        // Esperamos a que se renderice el partido
+        await waitFor(() => screen.getByText('Partido-81'));
 
-        // Simula el clic en el botón de "Borrar"
-        const borrarButton = screen.getByText('Borrar');
-        fireEvent.click(borrarButton);
+        // Simular el clic en el botón de borrar
+        const deleteButton = screen.getByText('Borrar');
+        fireEvent.click(deleteButton);
 
-        // Espera a que el popup de confirmación sea disparado (simulado)
-        await waitFor(() => {
-            expect(window.confirm).toHaveBeenCalledWith('¿Está seguro de querer eliminar este partido?');
-        });
+        // Esperar a que el modal de confirmación sea visible
+        const confirmModal = await screen.findByText('¿Está seguro de querer eliminar este partido?');
+        expect(confirmModal).toBeInTheDocument();
 
-        // Espera a que el partido sea eliminado del historial
+        // Simular clic en el botón de confirmación dentro del modal
+        const confirmButton = screen.getByText('Eliminar');
+        fireEvent.click(confirmButton);
+
+        // Esperar a que el partido sea eliminado del historial
         await waitFor(() => {
             const partidoEliminado = screen.queryByText('Partido-81');
             expect(partidoEliminado).toBeNull(); // El partido ya no debe estar en el DOM
