@@ -502,11 +502,11 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         {/* Popup ocupa una gran parte de la pantalla y es naranja */}
         <div className="bg-orange-500 rounded-lg p-6 w-full max-w-5xl h-auto max-h-[90vh] overflow-y-auto flex items-center justify-center">
             {/* Rectángulo blanco dentro del popup */}
-            <div className="bg-white rounded-lg p-6 w-full h-full flex flex-col md:flex-row shadow-lg">
+            <div className="bg-white rounded-lg p-6 w-full h-full flex flex-col sm:flex-row shadow-lg">
                 {/* Columna izquierda */}
-                <div className="flex flex-col flex-1 justify-between mb-6 md:mb-0">
+                <div className="flex flex-col flex-1 justify-between mb-6 sm:mb-0">
                     {/* Sección de Posición Gol */}
-                    <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4">
+                    <div className="bg-gray-200 rounded-lg p-4 flex-grow flex flex-col items-center justify-center text-center mb-4 sm:mb-0">
                         <h3 className="text-sm font-semibold text-black">Posición Gol</h3>
                         <PorteriaBalonmano onClick={handlePorteriaClick} />
                     </div>
@@ -518,7 +518,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                 </div>
 
                 {/* Línea separadora */}
-                <div className="hidden md:block w-1 bg-orange-500 mx-4" />
+                <div className="hidden sm:block w-1 bg-orange-500 mx-4" />
 
                 {/* Columna derecha */}
                 <div className="flex flex-col flex-1">
@@ -587,7 +587,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                     </div>
                     
                     {/* Botón de Cerrar */}
-                    <div className="flex justify-center">
+                    <div className="flex justify-center mt-4">
                         <button
                             className="bg-red-500 text-white px-6 py-2 rounded"
                             onClick={() => { handleAbrirAlerta(); }} // Llamamos a ambas funciones                        
