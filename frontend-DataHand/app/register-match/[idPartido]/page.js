@@ -13,7 +13,7 @@ import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import '../../styles/styles.css';
 import PartidoAlerta from '../../components/PartidoAlerta'; // Importa la modal
-
+import EventoAlerta from '../../components/EventoAlerta'; // Importa la modal
 
 export default function Home() {
 
@@ -290,6 +290,29 @@ export default function Home() {
     const [alertaVisible, setAlertaVisible] = useState(false);
     const [mensajeAlerta, setMensajeAlerta] = useState('');
 
+    const [alertaVisible2, setAlertaVisible2] = useState(false);
+    const [mensajeAlerta2, setMensajeAlerta2] = useState('');
+    const [onConfirm, setOnConfirm] = useState(null);
+
+
+    const customConfirm = (mensaje) => {
+        return new Promise((resolve) => {
+            // Primero establece el mensaje
+            setMensajeAlerta2(mensaje);
+            if(mensaje == mensajeAlerta2){
+                setAlertaVisible2(false); // Muestra la alerta después de haber actualizado el mensaje
+            }else{
+                setAlertaVisible2(true); // Muestra la alerta después de haber actualizado el mensaje
+            }
+    
+            // Define la función que resolverá la promesa
+            setOnConfirm(() => (response) => {
+                setAlertaVisible2(false); // Oculta la alerta
+                resolve(response); // Devuelve la respuesta
+            });
+        });
+    };
+
     // Función para intercambiar posiciones entre jugadores y banquillo
     const intercambiarPosiciones = (equipo, index, tipo) => {
         const equipoSeleccionado = equipos[equipo];
@@ -459,18 +482,17 @@ export default function Home() {
         const handleEvento = async () => {
             if (datosEvento.IdPartido && datosEvento.IdJugador !== null) {
                 try {
+
+
                     await registrarEvento(); // Esperar a que se complete el registro del evento
                     // Una vez que el evento se ha registrado correctamente, actualizamos el estado
                     const eventosObtenidos = await obtenerEventos(idPartido);
                     setEventos(eventosObtenidos);
                     // Resetear variables solo después de registrar el evento
                     if(datosEvento.Accion !== null){
-                        setMensajeAlerta(`Se ha registrado un evento de: ${datosEvento.Accion} del jugador: ${datosEvento.IdJugador}`);
-                        setAlertaVisible(true);
-
+                        const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.Accion} del jugador: ${datosEvento.IdJugador}`);
                     } else {
-                        setMensajeAlerta(`Se ha registrado un evento de: ${datosEvento.Suspension} del jugador: ${datosEvento.IdJugador}`);
-                        setAlertaVisible(true);
+                        const confirmacion2 = await customConfirm(`Se ha registrado un evento de: ${datosEvento.Suspension} del jugador: ${datosEvento.IdJugador}`);
                     }
                     resetearDatosEvento();
                 } catch (error) {
@@ -530,6 +552,13 @@ export default function Home() {
                 <PartidoAlerta 
                     mensaje={mensajeAlerta} 
                     onClose={() => setAlertaVisible(false)} 
+                />
+            )}
+
+            {alertaVisible2 && (
+                <EventoAlerta 
+                    mensaje={mensajeAlerta2} 
+                    onConfirm={() => setAlertaVisible2(false)} // Cambiado de onClose a onConfirm
                 />
             )}
 

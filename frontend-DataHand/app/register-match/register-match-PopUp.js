@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stage, Layer, Rect, Circle, Line } from 'react-konva';
 import { useRouter } from 'next/router';
+import EventoAlerta from '../components/EventoAlerta'; // Importa la modal
 
 const CampoBalonmano = ({ onClick }) => {
   //const [cruzPosicion, setCruzPosicion] = useState(null); // Para guardar la posición de la cruz
@@ -417,9 +418,35 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     }
   }, [datosEvento, eventoRegistrado]); // Cambiar solo si cambia datosEvento o eventoRegistrado 
 
+  const [alertaVisible, setAlertaVisible] = useState(false);
+  const [mensajeAlerta, setMensajeAlerta] = useState('');
+  const [onConfirm, setOnConfirm] = useState(null);
+
+
+  const customConfirm = (mensaje) => {
+    return new Promise((resolve) => {
+        setMensajeAlerta(mensaje); // Establece el mensaje
+        // setAlertaVisible(true); // Muestra la alerta
+
+        // Define la función que resolverá la promesa
+        setOnConfirm(() => (response) => {
+            setAlertaVisible(false); // Oculta la alerta
+            resolve(response); // Devuelve la respuesta
+        });
+    });
+  };
+
+
   // Función para registrar un partido
   const registrarEvento = async () => {
     try {
+      // const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${datosEvento.IdJugador}`);
+      
+      // if (!confirmacion) {
+      //   console.log('El usuario canceló la acción.');
+      //   return; // Detener el flujo si el usuario cancela
+      // }
+      
       const res = await fetch('../api/users/eventos', {
         method: 'POST',
         headers: {
@@ -432,7 +459,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         const data = await res.json();
         console.log('Evento registrado:', data);
         // Reiniciar los campos
-        window.confirm("Se ha registrado un evento de: "+ datosEvento.resultado + " del jugador: "+ datosEvento.IdJugador);
+        // window.confirm("Se ha registrado un evento de: "+ datosEvento.resultado + " del jugador: "+ datosEvento.IdJugador);
+        const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${datosEvento.IdJugador}`);
         reiniciarCampos();
 
         // Cerrar el popup
@@ -459,8 +487,18 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
     setDatosEvento({}); // Reiniciar datosEvento
   };
 
+  const handleAbrirAlerta = () => {
+    handleCerrar();
+  };
+
+  const handleCerrar = () => {
+     // Mostrar la alerta cuando se cierre el pop-up principal
+    setAlertaVisible(true); // Mostrar la alerta cuando se cierre el pop-up principal
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      
         {/* Popup ocupa una gran parte de la pantalla y es naranja */}
         <div className="bg-orange-500 rounded-lg p-6 w-full max-w-5xl h-auto max-h-[90vh] overflow-y-auto flex items-center justify-center">
             {/* Rectángulo blanco dentro del popup */}
@@ -547,15 +585,22 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                             </div>
                         </div>
                     </div>
-
+                    
                     {/* Botón de Cerrar */}
                     <div className="flex justify-center">
                         <button
                             className="bg-red-500 text-white px-6 py-2 rounded"
-                            onClick={onClose}
+                            onClick={() => { handleAbrirAlerta(); }} // Llamamos a ambas funciones                        
                         >
                             Cerrar
                         </button>
+                        {alertaVisible && (
+                          <EventoAlerta
+                            mensaje={mensajeAlerta}
+                            onConfirm={() => setAlertaVisible(false)} // Cambiado de onClose a onConfirm
+                            onClose={() => onClose()} // Cambiado de onClose a onConfirm
+                          />
+                        )}
                     </div>
                 </div>
             </div>
