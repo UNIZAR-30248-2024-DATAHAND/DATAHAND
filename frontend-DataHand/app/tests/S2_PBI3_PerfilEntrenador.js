@@ -14,24 +14,21 @@ const { Builder, By, until } = require('selenium-webdriver');
         // Esperar a que el botón "Iniciar Sesión" esté visible
         await driver.wait(until.elementLocated(By.css('button')), 5000);
 
-        // Hacer clic en el botón "Iniciar Sesión"
-        const loginButton = await driver.findElement(By.css('button'));
+       // Espera hasta que los campos estén disponibles
+       await driver.wait(until.elementLocated(By.css('input[placeholder="Correo electrónico"]')), 10000);
+
+       // Localiza el campo de correo electrónico por el atributo placeholder y escribe el correo
+       await driver.findElement(By.css('input[placeholder="Correo electrónico"]')).sendKeys('carlos.perez@example.com');
+
+       // Localiza el campo de contraseña por el atributo placeholder y escribe la contraseña
+       await driver.findElement(By.css('input[placeholder="Contraseña"]')).sendKeys('1234ab');
+
+       // Localiza el botón de envío por su clase y haz clic en él
+       const loginButton = await driver.findElement(By.css('button'));
         await loginButton.click();
 
         // Esperar 1 segundo
         await driver.sleep(1000);
-
-        // Verificar la redirección a "/home"
-        await driver.wait(until.urlIs('http://localhost:3000/home'), 5000);
-
-        // Esperar a que el botón "Entrenador" esté visible
-        const coachButton = await driver.wait(
-            until.elementLocated(By.xpath("//button[contains(text(),'Entrenador')]")), // Selector por texto
-            5000
-        );
-
-        // Hacer clic en el botón "Entrenador"
-        await coachButton.click();
 
         // Verificar la redirección al perfil de entrenador
         await driver.wait(until.urlIs('http://localhost:3000/profile/1'), 5000);
@@ -49,26 +46,17 @@ const { Builder, By, until } = require('selenium-webdriver');
         await toggleSidebarButton.click();
 
         // Verificar que la cabecera "Perfil Entrenador" esté presente
-        const header = await driver.wait(
-            until.elementLocated(By.css('h1.text-5xl.font-bold.mb-4.text-white')),
-            5000
-        );
-        const headerText = await header.getText();
-        if (headerText === 'Perfil Entrenador') {
-            console.log('Cabecera "Perfil Entrenador" verificada correctamente.');
-        } else {
-            console.error('La cabecera no es la esperada. Se encontró: ' + headerText);
-        }
+        const header = await driver.wait(until.elementLocated(By.xpath("//h1[contains(@class, 'titulo-personalizado')]//span[contains(text(), 'PERFIL ENTRENADOR')]")), 5000);
 
-        // Verificar la información del entrenador
         const coachInfoContainer = await driver.wait(
-            until.elementLocated(By.css('p.text-3xl.font-semibold.text-orange-500')),  // Usar un selector CSS más directo
-            5000
+            until.elementLocated(By.css('p.text-orange-500')),
+            5000  // Tiempo de espera en milisegundos
         );
         const name = await coachInfoContainer.getText();
+        
 
         // Verificar que el nombre del entrenador sea correcto
-        if (name === 'Jaime Chuletaa') {
+        if (name === 'Juanjo Ruiz') {
             console.log('Información del entrenador verificada correctamente.');
         } else {
             console.error('La información del entrenador es incorrecta. Nombre encontrado:', name);
