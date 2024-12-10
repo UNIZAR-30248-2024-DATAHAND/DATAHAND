@@ -7,28 +7,69 @@
 // eventos en una línea de tiempo. El encabezado de la página incluye el nombre del equipo y el jugador, 
 // mientras que el diseño está optimizado para ser responsivo y se puede desplazar verticalmente.
 
-import { obtenerResultadoJugador, obtenerSuspensionJugador, obtenerAccionJugador, filtrarResultadoPorLocalizacionJugador, filtrarResultadoPorPosicionJugador}  from '../utils/calculosEstadistica'; 
+import { obtenerResultadoJugador, obtenerSuspensionJugador, obtenerAccionJugador, filtrarResultadoPorLocalizacionJugador,
+     filtrarResultadoPorPosicionJugador, obtenerJugadoresUnicos}  from '../utils/calculosEstadistica'; 
 import { useState , useEffect} from "react";
 import { Card } from "../components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { X } from "lucide-react";
 
+const obtenerUsuario = async (userID, setUsuario) => {
+    try {
+      const res = await fetch(`/api/users/usuarios?userID=${userID}`);
+      const data = await res.json();
+      setUsuario(data);
+      return data;
+    } catch (error) {
+      console.error('Error al obtener el usuario', error);
+    }
+  };
+
 export default function EspecificoJugadores({dataEventos, dataEquipos}) {
     //Aqui de alguna manera habra que ver si es entrenador o jugador para mostrarle el nombre del jugador o una pestaña con todos sus jugadores
     // Simulamos la condición de si el usuario es entrenador
-    const isEntrenador = true; // Cambia a false para probar la otra condición
-    const jugadorFalso = "2";
-    const jugadores = [
+    const isEntrenador = true; // Cambia a false para probar la otra condición 
+
+    const [jugadorFalso, setJugadorFalso] = useState("2"); // Jugador falso inicial
+
+    const jugadoresIniciales = [
         { id: 1, nombre: "Jugador 1" },
         { id: 2, nombre: "Jugador 2" },
         { id: 3, nombre: "Jugador 3" },
-        { id: 4, nombre: "Jugador 4" },
-        { id: 5, nombre: "Jugador 5" },
-        { id: 6, nombre: "Jugador 6" },
-        { id: 7, nombre: "Jugador 7" },
-        { id: 8, nombre: "Jugador 8" },
-        { id: 9, nombre: "Jugador 9" },
-    ];
+      ];
+
+    const [usuario, setUsuario] = useState(null); // Estado para un usuario específico
+    const [jugadores, setJugadores] = useState(jugadoresIniciales);
+
+    useEffect(() => {
+        const jugadoresUnicos = obtenerJugadoresUnicos(dataEventos, "local");
+        const nuevosJugadores = jugadoresUnicos.map((id) => ({
+            id,
+            nombre: `Jugador ${id}`, // Formato de nombre
+          }));
+        setJugadores(nuevosJugadores);
+
+        const actualizarNombresJugadores = async () => {
+            try {
+              const jugadoresConNombresReales = await Promise.all(
+                nuevosJugadores.map(async (jugador) => {
+                  const usuario = await obtenerUsuario(jugador.id, setUsuario); // Llamar a la función obtenerUsuario
+                  return {
+                    ...jugador,
+                    nombre: usuario?.nombreCompleto || `Jugador ${jugador.id}`, // Usar el nombre real o el temporal
+                  };
+                })
+              );
+              setJugadores(jugadoresConNombresReales); // Actualizar el estado con los nombres reales
+            } catch (error) {
+              console.error("Error al actualizar los nombres de jugadores:", error);
+            }
+          };
+      
+        actualizarNombresJugadores();
+        
+        
+    }, []);
 
     const cambiarColor = (lanzamientos, total) => {
         // Si el total es 0, asignamos el color azul
@@ -159,6 +200,7 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
     // Función para manejar la selección de un jugador
     const handleJugadorClick = (jugador) => {
         setJugadorSeleccionado(jugador);
+        setJugadorFalso(jugador.id);  
     };
     
     return (

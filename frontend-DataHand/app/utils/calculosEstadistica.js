@@ -703,3 +703,19 @@ export const sacarBlocajes = (dataEventos, equipo) => {
     return 0;  // Si no es un vector, devuelve 0
   }
 };
+
+
+export const obtenerJugadoresUnicos = (dataEventos, equipo) => {
+  // Verifica que dataEventos sea un arreglo
+  if (Array.isArray(dataEventos)) {
+    // Utilizamos un Set para obtener solo los valores únicos de IdJugador
+    const valoresUnicos = new Set(
+      dataEventos
+        .filter(evento => evento.EquipoJugador === equipo) // Filtra por equipo
+        .map(evento => evento.IdJugador) // Mapea a los IdJugador
+    );    return [...valoresUnicos]; // Convertimos el Set a un array
+  } else {
+    console.error('dataEventos no es un arreglo');
+    return [];  // Retorna un array vacío si no es un arreglo
+  }
+};
