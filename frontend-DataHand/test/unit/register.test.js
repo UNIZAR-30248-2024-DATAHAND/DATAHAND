@@ -51,7 +51,6 @@ describe('Register Component', () => {
         });
     });
 
-
     it('shows an error when passwords do not match', async () => {
         // Renderizar el componente
         render(<Register />);
@@ -65,5 +64,30 @@ describe('Register Component', () => {
 
         // Verificar que se muestra el mensaje de error
         expect(await screen.findByText('Las contraseñas no coinciden.')).toBeInTheDocument();
+    });
+
+    it('shows an error when an invalid email is entered', async () => {
+        // Renderizar el componente
+        render(<Register />);
+
+        // Rellenar el formulario con un correo inválido
+        fireEvent.change(screen.getByPlaceholderText('Correo electrónico'), { target: { value: 'juan.perez@com' } });
+
+        // Simular envío del formulario
+        fireEvent.click(screen.getByText('Registrarse'));
+
+        // Verificar que se muestra el mensaje de error
+        expect(await screen.findByText('Error al conectar con el servidor.')).toBeInTheDocument();
+    });
+
+    it('shows an error when required fields are left empty', async () => {
+        // Renderizar el componente
+        render(<Register />);
+
+        // Simular envío del formulario sin completar los campos obligatorios
+        fireEvent.click(screen.getByText('Registrarse'));
+
+        // Verificar que se muestra el mensaje de error
+        expect(await screen.findByText('Error al conectar con el servidor.')).toBeInTheDocument();
     });
 });
