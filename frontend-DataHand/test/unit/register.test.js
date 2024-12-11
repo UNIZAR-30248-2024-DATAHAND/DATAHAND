@@ -17,7 +17,7 @@ describe('Register Component', () => {
         jest.clearAllMocks();
     });
 
-    it('completes the registration process successfully', async () => {
+    it('completes the registration process successfully and redirects to homepage', async () => {
         global.fetch.mockResolvedValue({
             ok: true,
             json: jest.fn().mockResolvedValue({ nombreCompleto: 'Juan Pérez' }),
@@ -25,6 +25,7 @@ describe('Register Component', () => {
 
         render(<Register />);
 
+        // Completar el formulario
         fireEvent.change(screen.getByPlaceholderText('Nombre'), { target: { value: 'Juan' } });
         fireEvent.change(screen.getByPlaceholderText('Apellido'), { target: { value: 'Pérez' } });
         fireEvent.change(screen.getByPlaceholderText('Correo electrónico'), { target: { value: 'juan.perez@example.com' } });
@@ -34,16 +35,22 @@ describe('Register Component', () => {
         const birthDateInput = screen.getByLabelText('Fecha de nacimiento');
         fireEvent.change(birthDateInput, { target: { value: '1990-01-01' } });
 
+        // Simular el clic en "Registrarse"
         fireEvent.click(screen.getByText('Registrarse'));
 
-        const confirmModal = await screen.findByText((content, element) => {
-            return (
-                element.tagName.toLowerCase() === 'p' &&
-                content.includes('El usuario Juan Pérez se ha creado correctamente.')
-            );
+        // Esperar a que aparezca el botón "Cerrar"
+        const closeButton = await screen.findByText('Cerrar');
+        expect(closeButton).toBeInTheDocument();
+
+        // Simular el clic en "Cerrar"
+        fireEvent.click(closeButton);
+
+        // Verificar que se realizó la redirección a la página de inicio
+        await waitFor(() => {
+            expect(mockPush).toHaveBeenCalledWith('/');
         });
-        expect(confirmModal).toBeInTheDocument();
     });
+
 
     it('shows an error when passwords do not match', async () => {
         // Renderizar el componente

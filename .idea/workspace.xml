@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/babel.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/register-user/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/register-user/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/statsGen/[idPartido]/page.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/statsGen/[idPartido]/page.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/apartados_estadisticas.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/apartados_estadisticas.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/crear_partido.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/crear_partido.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/estadisticas.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/estadisticas.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/register.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/register.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,19 +91,6 @@
       <recent name="$PROJECT_DIR$/frontend-DataHand/public" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="DATAHAND" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="DATAHAND" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -140,6 +123,7 @@
       <workItem from="1732060768324" duration="1118000" />
       <workItem from="1733658442114" duration="19393000" />
       <workItem from="1733843024994" duration="8719000" />
+      <workItem from="1733917522361" duration="200000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />
