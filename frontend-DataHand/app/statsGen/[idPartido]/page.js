@@ -121,9 +121,7 @@ import '../../styles/styles.css';
     return (
       <div className="relative min-h-screen flex flex-col items-center justify-start px-4 sm:px-8 background-imageEG">
         
-        <h1
-          className="text-4xl sm:text-5xl font-bold mb-4 text-white text-center mt-6 titulo-personalizado"
-        >
+        <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-white text-center mt-6 titulo-personalizado">
           ESTADISTICAS GENERALES
         </h1>
 

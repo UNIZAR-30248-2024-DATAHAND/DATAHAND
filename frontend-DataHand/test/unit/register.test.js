@@ -31,14 +31,18 @@ describe('Register Component', () => {
         fireEvent.change(screen.getByPlaceholderText('Contraseña'), { target: { value: 'password123' } });
         fireEvent.change(screen.getByPlaceholderText('Repite contraseña'), { target: { value: 'password123' } });
         fireEvent.change(screen.getByPlaceholderText('País'), { target: { value: 'España' } });
+        const birthDateInput = screen.getByLabelText('Fecha de nacimiento');
+        fireEvent.change(birthDateInput, { target: { value: '1990-01-01' } });
 
         fireEvent.click(screen.getByText('Registrarse'));
 
-        await waitFor(() => {
-            expect(global.alert).toHaveBeenCalledWith(
-                'Registro exitoso. El usuario Juan Pérez se ha creado correctamente.'
+        const confirmModal = await screen.findByText((content, element) => {
+            return (
+                element.tagName.toLowerCase() === 'p' &&
+                content.includes('El usuario Juan Pérez se ha creado correctamente.')
             );
         });
+        expect(confirmModal).toBeInTheDocument();
     });
 
     it('shows an error when passwords do not match', async () => {

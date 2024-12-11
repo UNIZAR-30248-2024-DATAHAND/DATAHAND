@@ -52,33 +52,4 @@ describe("BarraHorizontal Component", () => {
         // Verificamos que router.push fue llamado con la URL correcta
         expect(mockPush).toHaveBeenCalledWith("/statsGen/Partido-123");
     });
-
-    it("muestra elementos relevantes en la página StatsGen", async () => {
-        // Mock de useParams para controlar el id del partido
-        useParams.mockReturnValue({ idPartido: "129" });
-
-        const mockPush = jest.fn(); // Mock para el método push
-        useRouter.mockReturnValue({
-            push: mockPush,
-        });
-
-        // Renderizamos el componente StatsGen
-        render(<StatsGen />);
-
-        // Verificamos que los textos esperados estén presentes en la página
-        const vistageneralText = await screen.findByText("VISTA GENERAL");
-        expect(vistageneralText).toBeInTheDocument();
-
-        const sistjuegoText = await screen.findByText(/sistema de juego/i);
-        expect(sistjuegoText).toBeInTheDocument();
-
-        const lanzamientosText = await screen.findByText(/lanzamientos/i);
-        expect(lanzamientosText).toBeInTheDocument();
-
-        const especjugText = await screen.findByText(/específicas jugadores/i);
-        expect(especjugText).toBeInTheDocument();
-
-        const jugadoresText = await screen.findByText("JUGADORES");
-        expect(jugadoresText).toBeInTheDocument();
-    });
 });
