@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/babel.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/actualizacion_exito.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/lanzamientos.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/loading.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/profileform.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/statsGen.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/register.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/register.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/components/LoadingPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/components/LoadingPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/apartados_estadisticas.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/gestion_tiempo.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/gestion_tiempo.test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/pdf.test.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +130,7 @@
       <workItem from="1732060768324" duration="1118000" />
       <workItem from="1733658442114" duration="19393000" />
       <workItem from="1733843024994" duration="8719000" />
-      <workItem from="1733917522361" duration="200000" />
+      <workItem from="1733917522361" duration="6900000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />
