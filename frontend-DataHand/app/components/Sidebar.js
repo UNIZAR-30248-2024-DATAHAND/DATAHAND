@@ -101,6 +101,7 @@ const Sidebar = ({ userID }) => {
           ...banquillo
         ].filter(
           (valor) =>
+            typeof valor === "string" && // Asegúrate de que es un string
             !["jugador", "portero", "banquillo"].some((palabraClave) =>
               valor.toLowerCase().includes(palabraClave)
             )
