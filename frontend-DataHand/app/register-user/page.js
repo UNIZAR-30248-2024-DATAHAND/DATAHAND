@@ -176,7 +176,7 @@ export default function Register() {
       </div>
   
       {/* Sección del formulario */}
-      <div className="w-full lg:w-1/2 max-w-3xl p-6 bg-white bg-opacity-20 rounded-lg shadow-lg z-10">  {/* Añadido z-10 */}
+      <div className="w-full lg:w-1/2 max-w-3xl p-6 bg-white bg-opacity-20 rounded-lg shadow-lg z-10 mr-10">  {/* Añadido z-10 */}
         <h2 className="text-3xl font-semibold text-center mb-6 text-white">
           Registro de Usuario
         </h2>
