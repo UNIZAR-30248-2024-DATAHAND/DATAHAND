@@ -68,6 +68,8 @@ export default function Home() {
         Fecha: new Date(),               // Fecha del partido
         EquipoLocal: 'Local',         // Nombre del equipo local
         EquipoVisitante: 'Visitante',     // Nombre del equipo visitante
+        EscudoLocal: '/images/shield_pre.svg', // Escudo del equipo visitante
+        EscudoVisitante: '/images/shield_pre.svg', // Escudo del equipo visitante
         MarcadorLocal: 0,                // Marcador del equipo local
         MarcadorVisitante: 0,            // Marcador del equipo visitante
         TiempoDeJuego: 0,                // Tiempo de juego transcurrido en minutos
@@ -139,6 +141,8 @@ export default function Home() {
                     Fecha: new Date(data.Fecha) || new Date(),
                     EquipoLocal: data.EquipoLocal || '',
                     EquipoVisitante: data.EquipoVisitante || '',
+                    EscudoLocal: data.EscudoLocal || '/images/shield_pre.svg',
+                    EscudoVisitante: data.EscudoVisitante ||'/images/shield_pre.svg',
                     MarcadorLocal: data.MarcadorLocal || 0,
                     MarcadorVisitante: data.MarcadorVisitante || 0,
                     TiempoDeJuego: data.TiempoDeJuego || 0,
@@ -266,13 +270,13 @@ export default function Home() {
             }
         };
     
-        // Actualizar nombres de jugadores y porteros
+        /*// Actualizar nombres de jugadores y porteros
         if (jugadoresTotales) {
             actualizarNombres(jugadoresTotales, setNombresJugadores);
         }
         if (porterosTotales) {
             actualizarNombres(porterosTotales, setNombresPorteros);
-        }
+        }*/
     }, []);
 
     // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
