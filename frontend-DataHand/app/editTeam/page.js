@@ -12,6 +12,8 @@ export default function EditarEquipo() {
   const [error, setError] = useState(""); // Estado para manejar el error
   const userID = localStorage.getItem('userID');
 
+
+  //ESTO A REVISAR 
   useEffect(() => {
     const fetchEquipo = async () => {
       try {
@@ -51,6 +53,17 @@ export default function EditarEquipo() {
       let nuevoEstado = {};
 
       // Validación: No se puede intercambiar un portero por un jugador
+      if (
+        (seleccionado.tipo === "portero" && tipo === "jugador") || 
+        (seleccionado.tipo === "jugador" && tipo === "portero")
+      ) {
+        setError("No puedes intercambiar un portero por un jugador.");
+        return; // Evita hacer el intercambio si los tipos no son compatibles
+      } else {
+        setError(""); // Resetea el error si el tipo es válido
+      }
+
+      //AQUI 
       if (
         (seleccionado.tipo === "portero" && tipo === "jugador") || 
         (seleccionado.tipo === "jugador" && tipo === "portero")
