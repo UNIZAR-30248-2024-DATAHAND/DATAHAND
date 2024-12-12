@@ -15,6 +15,7 @@ import '../../styles/styles.css';
 import PartidoAlerta from '../../components/PartidoAlerta'; // Importa la modal
 import EventoAlerta from '../../components/EventoAlerta'; // Importa la modal
 
+
 export default function Home() {
 
     // VARIABLE PREDETERMINADA PARA USERID PENDIENTE DE LOGIN   
@@ -228,6 +229,51 @@ export default function Home() {
     
         cargarDatos();
     }, [idPartido]);
+
+    const obtenerUsuario = async (userID) => {
+        try {
+            const res = await fetch(`/api/users/usuarios?userID=${userID}`);
+            const data = await res.json();
+            return data; // Devuelve los datos del usuario
+        } catch (error) {
+            console.error('Error al obtener el usuario', error);
+            return null; // En caso de error, devuelve null
+        }
+      };
+    
+      //Necesito: los id de los jugadores, una variable para guardar los nombres
+    const [nombresJugadores, setNombresJugadores] = useState([]);
+    const [nombresPorteros, setNombresPorteros] = useState([]);
+
+    useEffect(() => {
+        // Función para obtener y actualizar nombres de jugadores
+        const actualizarNombres = async (ids, setNombres) => {
+            try {
+                const nombresActualizados = await Promise.all(
+                    ids.map(async (id) => {
+                        console.log('ID:', id);
+                        const usuario = await obtenerUsuario(id);
+                        return {
+                            id,
+                            nombre: usuario?.nombreCompleto || `Jugador ${id}`, // Nombre real o temporal
+                        };
+                    })
+                );
+                console.log('Nombres actualizados:', nombresActualizados);
+                setNombres(nombresActualizados); // Actualiza el estado con los nombres
+            } catch (error) {
+                console.error('Error al actualizar los nombres:', error);
+            }
+        };
+    
+        // Actualizar nombres de jugadores y porteros
+        if (jugadoresTotales) {
+            actualizarNombres(jugadoresTotales, setNombresJugadores);
+        }
+        if (porterosTotales) {
+            actualizarNombres(porterosTotales, setNombresPorteros);
+        }
+    }, []);
 
     // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
     useEffect(() => {
