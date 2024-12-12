@@ -66,7 +66,7 @@ export default function EditarPerfil() {
         </h1>
   
         {/* Formulario de edición de perfil */}
-        <div className="w-full px-4 md:px-6 mt-6 ml-20">
+        <div className="w-full px-4 md:px-6 mt-20 ml-20">
           <ProfileForm userData={usuario} setUserData={setUsuario} />
         </div>
       </div>
