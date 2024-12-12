@@ -98,10 +98,11 @@ export default function Component({ dataEventos, dataEquipos }) {
   return (
     <div className="w-full bg-white text-black h-auto mt-6">
       {/* Header Tabs */}
-      <Tabs defaultValue="vista-general" className="w-full">
+      <Tabs defaultValue="vista-general" className="w-full" data-testid="contenedor">
         <TabsList className="flex flex-wrap space-x-4 border-b">
           <TabsTrigger
             value="vista-general"
+            data-testid="tab-vista-general"
             className={`px-4 py-2 rounded ${activeTab === "vista-general" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
             onClick={() => setActiveTab("vista-general")}
           >
@@ -109,6 +110,7 @@ export default function Component({ dataEventos, dataEquipos }) {
           </TabsTrigger>
           <TabsTrigger
             value="sistema-de-juego"
+            data-testid="tab-sistema-de-juego"
             className={`px-4 py-2 rounded ${activeTab === "sistema-de-juego" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
             onClick={() => setActiveTab("sistema-de-juego")}
           >
@@ -116,6 +118,7 @@ export default function Component({ dataEventos, dataEquipos }) {
           </TabsTrigger>
           <TabsTrigger
             value="lanzamientos"
+            data-testid="tab-lanzamientos"
             className={`px-4 py-2 rounded ${activeTab === "lanzamientos" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
             onClick={() => setActiveTab("lanzamientos")}
           >
@@ -123,6 +126,7 @@ export default function Component({ dataEventos, dataEquipos }) {
           </TabsTrigger>
           <TabsTrigger
             value="especificas-jugadores"
+            data-testid="tab-especificas-jugadores"
             className={`px-4 py-2 rounded ${activeTab === "especificas-jugadores" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
             onClick={() => setActiveTab("especificas-jugadores")}
           >
@@ -130,6 +134,7 @@ export default function Component({ dataEventos, dataEquipos }) {
           </TabsTrigger>
           <TabsTrigger
             value="jugadores"
+            data-testid="tab-jugadores"
             className={`px-4 py-2 rounded ${activeTab === "jugadores" ? 'bg-[#45b6e5] text-white' : 'text-gray-400'}`}
             onClick={() => setActiveTab("jugadores")}
           >
