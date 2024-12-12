@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from '../styles/PopupTeams.module.css';
 import { useParams } from 'next/navigation';
+import UndoAlerta from '../components/UndoAlerta'; // Importa la modal
+import UndoConfirmacion from '../components/UndoConfirmacion'; // Importa la modal
 
 // <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado}/>
 const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats, setEventosUndo}) => {
@@ -217,32 +219,55 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             console.error('Error en la solicitud DELETE:', error);
         }
     };
-    
-      const handleUndo = async () => {
+
+    const [mostrarAlertaUNDO, setMostrarAlertaUNDO] = useState(false);
+    const [mensajeAlertaUNDO, setMensajeAlertaUNDO] = useState('');
+    const [ultimoEvento, setUltimoEvento] = useState(null);
+    const [mostrarAlertaUNDO2, setMostrarAlertaUNDO2] = useState(false); // Estado para mostrar la alerta
+
+
+    const handleUndo = async () => {
         try {
-            const ultimoEvento = await obtenerUltimoEvento(equipos.idPartido); // Asegúrate de que `equipos` contiene `idPartido`
-            
-            if (ultimoEvento) {
-                console.log('Último evento a deshacer:', ultimoEvento);
-                // Aquí puedes realizar la lógica de eliminación o reversión del evento
-                // Ejemplo: Mostrar una alerta para confirmar la acción
-                const confirmar = window.confirm(`¿Deseas deshacer el ultimo evento del jugador `+ ultimoEvento.IdJugador +`?`);
-                
-                if (confirmar) {
-                    // Lógica para deshacer el evento en el backend o frontend
-                    // Por ejemplo, hacer un DELETE en tu API
-                    eliminarEvento(ultimoEvento.IdEvento);
-                    alert('El evento se ha deshecho correctamente.');
-                }
-                setEventosUndo(true);
+            const evento = await obtenerUltimoEvento(equipos.idPartido); // Asegúrate de que `equipos` contiene `idPartido`
+            setUltimoEvento(evento);
+
+            if (evento) {
+                console.log('Último evento a deshacer:', evento);
+                setMensajeAlertaUNDO(`¿Deseas deshacer el último evento del jugador ${evento.IdJugador}?`);
+                setMostrarAlertaUNDO(true); // Mostrar la alerta personalizada
             } else {
-                alert('No hay eventos para deshacer.');
+                setMensajeAlertaUNDO('No hay eventos para deshacer.');
+                setMostrarAlertaUNDO(true); // Mostrar mensaje de no eventos
             }
         } catch (error) {
             console.error('Error al deshacer el último evento:', error);
-            alert('Hubo un error al intentar deshacer el último evento.');
+            setMensajeAlertaUNDO('Hubo un error al intentar deshacer el último evento.');
+            setMostrarAlertaUNDO(true);
         }
     };
+
+    const confirmarUndo = async () => {
+        if (ultimoEvento) {
+            try {
+                await eliminarEvento(ultimoEvento.IdEvento);  // Elimina el evento
+                console.log('Evento eliminado:', ultimoEvento.IdEvento);
+                setMostrarAlertaUNDO(false);  // Cierra la alerta Undo
+                setMostrarAlertaUNDO2(true);  // Muestra la alerta de confirmación
+            } catch (error) {
+                console.error('Error al eliminar el evento:', error);
+                alert('Hubo un error al intentar deshacer el evento.');
+            }
+        }
+    };
+    
+    const cerrarAlerta = () => {
+        setMostrarAlertaUNDO(false);
+    };
+
+    const cerrarConfirmacion = () => {
+        setMostrarAlertaUNDO2(false);  // Cierra la alerta de confirmación
+    };
+
 
     return (
         <div className="w-full max-w-8xl mx-auto h-auto bg-white rounded-lg flex flex-col md:flex-row items-center justify-between p-4 mb-8 shadow-md">
@@ -330,7 +355,23 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                     )}
                 </div>
             </div>
-    
+                                
+            {mostrarAlertaUNDO && (
+                <UndoAlerta 
+                    mensaje={mensajeAlertaUNDO}
+                    onConfirm={confirmarUndo}
+                    onClose={cerrarAlerta}
+                />
+            )}
+
+             {/* Mostrar la alerta de confirmación de Undo */}
+             {mostrarAlertaUNDO2 && (
+                <UndoConfirmacion 
+                    mensaje={`El evento ha sido deshecho correctamente.`}
+                    onClose={cerrarConfirmacion}
+                />
+            )}
+
             {/* Otros botones */}
             <div className="flex flex-wrap gap-2 mt-4 md:mt-0">
                 <button 
