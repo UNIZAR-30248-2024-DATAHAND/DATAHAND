@@ -160,6 +160,8 @@ export default function Home() {
                     sistemaDefensivoLocal: data.sistemaDefensivoLocal || '',
                     sistemaDefensivoVisitante: data.sistemaDefensivoVisitante || ''
                 });
+
+                setTengoNombres(true);
             } else {
                 const errorText = await res.text();
                 console.error('Error al obtener los datos del partido:', errorText); // Muestra el mensaje de error
@@ -244,10 +246,29 @@ export default function Home() {
             return null; // En caso de error, devuelve null
         }
       };
-    
-      //Necesito: los id de los jugadores, una variable para guardar los nombres
+
+    //Necesito: los id de los jugadores, una variable para guardar los nombres AAA
     const [nombresJugadores, setNombresJugadores] = useState([]);
-    const [nombresPorteros, setNombresPorteros] = useState([]);
+    const [tengoNombres, setTengoNombres] = useState(false);
+
+    const obtenerNombresJugadores = (equipos) => {
+        const nombres = [];
+    
+        // Iterar sobre los equipos local y visitante
+        ['local', 'visitante'].forEach((equipo) => {
+          const categorias = equipos[equipo];
+          if (categorias) {
+            // Agregar los nombres de cada categoría: porteros, jugadores, banquillo
+            ['porteros', 'jugadores', 'banquillo'].forEach((categoria) => {
+              if (categorias[categoria]) {
+                nombres.push(...categorias[categoria]);
+              }
+            });
+          }
+        });
+    
+        setNombresJugadores(nombres); // Actualizar el estado con los nombres obtenidos
+      };
 
     useEffect(() => {
         // Función para obtener y actualizar nombres de jugadores
@@ -270,14 +291,12 @@ export default function Home() {
             }
         };
     
-        /*// Actualizar nombres de jugadores y porteros
-        if (jugadoresTotales) {
-            actualizarNombres(jugadoresTotales, setNombresJugadores);
-        }
-        if (porterosTotales) {
-            actualizarNombres(porterosTotales, setNombresPorteros);
-        }*/
-    }, []);
+        // Actualizar nombres de jugadores y porteros
+        //actualizarNombres(jugadoresTotales, setNombresJugadores);
+        obtenerNombresJugadores(equipos);
+        console.log("Nombres de los jugadores",nombresJugadores);
+
+    }, [equipos]);
 
     // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
     useEffect(() => {

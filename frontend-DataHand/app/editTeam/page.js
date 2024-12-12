@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import '../styles/styles.css';
 import LoadingPage from '../components/LoadingPage';
-
+import PartidoAlerta from '../components/PartidoAlerta'; // Importa la modal
 
 export default function EditarEquipo() {
   const [equipo, setEquipo] = useState();
   const [seleccionado, setSeleccionado] = useState(null);
   const [error, setError] = useState(""); // Estado para manejar el error
+  const [error2, setError2] = useState(""); // Estado para manejar el error
+  const [alertaVisible, setAlertaVisible] = useState(false);
+  const [alertaVisible2, setAlertaVisible2] = useState(false);
   const userID = localStorage.getItem('userID');
 
 
@@ -58,20 +61,22 @@ export default function EditarEquipo() {
         (seleccionado.tipo === "jugador" && tipo === "portero")
       ) {
         setError("No puedes intercambiar un portero por un jugador.");
+        setAlertaVisible(true);
         return; // Evita hacer el intercambio si los tipos no son compatibles
       } else {
         setError(""); // Resetea el error si el tipo es válido
       }
 
-      //AQUI 
+      //AQUI NO SALTA EL ERROR
       if (
-        (seleccionado.tipo === "portero" && tipo === "jugador") || 
-        (seleccionado.tipo === "jugador" && tipo === "portero")
+        (seleccionado.tipo === "portero" && tipo === "banquillo") || 
+        (seleccionado.tipo === "banquillo" && tipo === "portero")
       ) {
-        setError("No puedes intercambiar un portero por un jugador.");
+        setError2("No puedes intercambiar un portero por un jugador de banquillo.");
+        setAlertaVisible(true);
         return; // Evita hacer el intercambio si los tipos no son compatibles
       } else {
-        setError(""); // Resetea el error si el tipo es válido
+        setError2(""); // Resetea el error si el tipo es válido
       }
 
       // Intercambio de jugadores
@@ -199,6 +204,21 @@ export default function EditarEquipo() {
           EDITAR EQUIPO
         </h1>
         
+         {alertaVisible && (
+                <PartidoAlerta 
+                    mensaje={error} 
+                    onClose={() => setAlertaVisible(false)} 
+                />
+            )}
+
+          {alertaVisible2 && (
+              <EventoAlerta 
+                  mensaje={error2} 
+                  onConfirm={() => setAlertaVisible2(false)} // Cambiado de onClose a onConfirm
+              />
+          )}
+
+
         {/* Nombre y Foto del Equipo */}
         <div className="flex flex-col items-center mt-6 mb-4 mt-6">
           {equipo.imagen ? (
