@@ -153,7 +153,7 @@ export default function Component({ dataEventos, dataEquipos }) {
         <button
           onClick={toggleTabInPDF}
           // className="mt-4 px-4 py-2 bg-blue-500 text-white rounded active:bg-blue-700"
-          className={`${styles2.button4} px-4 py-2 rounded active:bg-blue-700`}
+          className={`${styles2.button4} px-4 py-2 mt-6 rounded active:bg-blue-700`}
         >
           {capturedTabs.some((tab) => tab.name === activeTab)
             ? "Quitar del PDF"

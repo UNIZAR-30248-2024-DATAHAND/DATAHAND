@@ -333,7 +333,7 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
                     {/* Zaragoza Court */}
                     <div className="space-y-4">
                         <h2 className="text-center font-bold text-[#0f2d50]">ZARAGOZA BALONMANO</h2>
-                        <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
+                        <div className="relative aspect-[0.90] bg-[#0f2d50] rounded-lg overflow-hidden">
                         
                         {/* Top Section with Grid */}
                         <div className="relative h-[45%] border-b-4 border-white">

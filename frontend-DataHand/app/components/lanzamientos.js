@@ -176,8 +176,7 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
           {/* Zaragoza Court */}
           <div className="space-y-4">
             <h2 className="text-center font-bold text-[#0f2d50]">{dataEquipos.EquipoLocal}</h2>
-            <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
-              
+            <div className="relative aspect-ratio aspect-[0.90] bg-[#0f2d50] rounded-lg overflow-hidden">              
               {/* Top Section with Grid */}
               <div className="relative h-[45%] border-b-4 border-white overflow-y-auto">
                 <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
@@ -293,7 +292,7 @@ export default function Lanzamientos({dataEventos, dataEquipos}) {
           {/* Soria Court */}
           <div className="space-y-4">
             <h2 className="text-center font-bold text-[#45e5d6]">{dataEquipos.EquipoVisitante}</h2>
-              <div className="relative aspect-[4/3] bg-[#0f2d50] rounded-lg overflow-hidden">
+              <div className="relative aspect-[0.90] bg-[#0f2d50] rounded-lg overflow-hidden">
                 {/* Top Section with Grid */}
                 <div className="relative h-[45%] border-b-4 border-white overflow-y-auto">
                     <div className="absolute top-10 left-1/2 -translate-x-1/2 w-3/4 grid grid-cols-3 gap-3">
