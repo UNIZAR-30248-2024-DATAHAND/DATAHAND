@@ -592,6 +592,8 @@ export default function Home() {
         handleEvento();
     }, [datosEvento]); // Solo se ejecuta cuando 'datosEvento' cambia
 
+    const [reloadEventos, setReloadEventos] = useState(false);
+
     useEffect(() => {
         const fetchEventos = async () => {
             try {
@@ -602,7 +604,10 @@ export default function Home() {
             }
         };
     
-        fetchEventos();
+        if (reloadEventos) {
+            setReloadEventos(false);
+            fetchEventos();
+        }
     }, [eventos]); // Se ejecutará cada vez que 'eventos' cambie
 
     const handleClosePopup = async () => {
@@ -685,6 +690,9 @@ export default function Home() {
                 handleNavigateStats={handleNavigateStats}
                 setEventosUndo={setEventosUndo}
                 setTengoDatos={setTengoDatos}
+                setReloadEventos={setReloadEventos}
+                setEventos={setEventos}
+                obtenerEventos={obtenerEventos}
             />
 
             {/* Fila de tres rectángulos */}
