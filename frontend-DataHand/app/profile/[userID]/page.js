@@ -331,10 +331,11 @@ export default function Home() {
         labels: ['Goles', 'Asistencias', 'Efectividad', 'Blocajes', 'Perdidas de balón'],
         datasets: [
           {
+            label: 'Estadísticas',  // Asegúrate de que esto esté definido
             data: [
               usuario.atributos.goles || 0,
               usuario.atributos.asistencias || 0,
-              usuario.atributos.efectividad/10 || 0,
+              Math.ceil(usuario.atributos.efectividad / 10) || 0, // Redondeamos la efectividad hacia arriba
               usuario.atributos.blocajes || 0,
               usuario.atributos.recuperaciones || 0,
             ],
@@ -351,6 +352,31 @@ export default function Home() {
       });
     }
   }, [usuario, partidosProcesados]);
+  
+  // Opciones del gráfico
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            // Comprobamos si el label es "Efectividad" y multiplicamos por 10 solo en este caso
+            if (tooltipItem.label === 'Efectividad') {
+              const originalValue = Math.ceil(tooltipItem.raw * 10); // Redondeamos el valor hacia arriba
+              return `${tooltipItem.label}: ${originalValue === 0 ? '0' : originalValue}`; // Muestra el valor original de la efectividad
+            } else {
+              return `${tooltipItem.label}: ${tooltipItem.raw}`; // Para los demás valores, muestra el valor tal como es
+            }
+          },
+        },
+      },
+    },
+    legend: {
+      display: false,  // Esto oculta la leyenda
+    },
+  };
+  
+
   
 
   const handleEditClick = (idPartido) => {
@@ -428,7 +454,7 @@ export default function Home() {
             <h2 className="text-[4vw] sm:text-2xl font-semibold text-orange-500">Media de estadísticas por partido</h2>
           </div>
           <div className="flex justify-center items-center">
-            <Radar data={data} options={options} />
+            <Radar data={data} options={chartOptions} />
           </div>
         </div>
       </div>

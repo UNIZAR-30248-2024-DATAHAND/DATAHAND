@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/component.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/inicio.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/inicio.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/register.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/test/unit/register.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/test/unit/statsGen.test.js" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/babel.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +89,19 @@
       <recent name="$PROJECT_DIR$/frontend-DataHand/public" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="DATAHAND" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="DATAHAND" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -127,7 +136,8 @@
       <workItem from="1733843024994" duration="8719000" />
       <workItem from="1733917522361" duration="6900000" />
       <workItem from="1733939782358" duration="5000" />
-      <workItem from="1733939793410" duration="2946000" />
+      <workItem from="1733939793410" duration="4354000" />
+      <workItem from="1734017772061" duration="5512000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />

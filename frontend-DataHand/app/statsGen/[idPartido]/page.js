@@ -37,7 +37,7 @@ import '../../styles/styles.css';
       sistemaDefensivoVisitante: "", // Sistema defensivo del equipo visitante
   });
 
-  const obtenerPartido = async () => {
+    const obtenerPartido = async () => {
     try {
         console.log(`Solicitando partido con IdPartido: ${idPartido}`);
         const res = await fetch(`../api/users/crearPartido?IdPartido=${idPartido}`, {

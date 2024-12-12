@@ -7,6 +7,7 @@ module.exports = {
     setupFilesAfterEnv: [
         "@testing-library/jest-dom",
         "<rootDir>/jest.setup.js",
+
     ],
     moduleNameMapper: {
         "^@/(.*)$": "<rootDir>/src/$1",
