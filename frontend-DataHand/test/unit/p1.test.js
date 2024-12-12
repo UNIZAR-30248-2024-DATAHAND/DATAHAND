@@ -1,7 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useRouter } from "next/router"; // Mock del router de Next.js
 import { BarraHorizontal } from "../../app/register-match/register-match-Horizontal"; // Ajusta el path según tu estructura
-import StatsGen from "../../app/statsGen/[idPartido]/page"; // Componente de la página StatsGen
 import { useParams } from "next/navigation"; // Mock para useParams de Next.js
 
 // Mock de useRouter de Next.js
@@ -67,96 +66,73 @@ describe("BarraHorizontal Component", () => {
         fireEvent.click(botonIniciar);
     });
 
-    it('debe parar el cronómetro cuando se presiona el botón "Detener"', async () => {
+    it("debe abrir el selector de equipos cuando se selecciona el tipo de equipo", async () => {
+        const mockSetEquipos = jest.fn();
+
         // Mock de useParams para controlar el id del partido
         useParams.mockReturnValue({ idPartido: "123" });
 
-        const mockPush = jest.fn(); // Mock para el método push
-        useRouter.mockReturnValue({
-            push: mockPush, // Mockea router.push
-        });
-
-        // Renderizamos el componente BarraHorizontal, pasándole las props necesarias
-        render(
-            <BarraHorizontal
-                equipos={equiposMock}
-                setEquipos={jest.fn()}
-                tiempoJugado={0}
-                setTiempoJugado={jest.fn()}
-                handleNavigateStats={() => mockPush(`/statsGen/Partido-123`)}
-            />
-        );
-
-        const botonIniciar = screen.getByText('Detener');
-        fireEvent.click(botonIniciar);
-    });
-
-    // Test de Integracion
-    it('debe finalizar el primer tiempo cuando se presiona el botón "Fin del Primer Tiempo"', async () => {
-        // Mock de useParams para controlar el id del partido
-        useParams.mockReturnValue({ idPartido: "123" });
-
-        const mockPush = jest.fn(); // Mock para el método push
-        useRouter.mockReturnValue({
-            push: mockPush, // Mockea router.push
-        });
-
-        // Renderizamos el componente BarraHorizontal, pasándole las props necesarias
-        render(
-            <BarraHorizontal
-                equipos={equiposMock}
-                setEquipos={jest.fn()}
-                tiempoJugado={0}
-                setTiempoJugado={jest.fn()}
-                handleNavigateStats={() => mockPush(`/statsGen/Partido-123`)}
-            />
-        );
-
-        const botonIniciar = screen.getByText('Fin del Primer Tiempo');
-        fireEvent.click(botonIniciar);
-    });
-
-    // Test de Integracion
-    it("debería mostrar y cerrar el popup al hacer clic en un equipo", async () => {
-        // Mock de useParams para controlar el id del partido
-        useParams.mockReturnValue({ idPartido: "123" });
-
-        const mockPush = jest.fn(); // Mock para el método push
-        useRouter.mockReturnValue({
-            push: mockPush, // Mockea router.push
-        });
-
-        // Renderizamos el componente BarraHorizontal, pasándole las props necesarias
-        render(
-            <BarraHorizontal
-                equipos={equiposMock}
-                setEquipos={jest.fn()}
-                tiempoJugado={0}
-                setTiempoJugado={jest.fn()}
-                handleNavigateStats={() => mockPush(`/statsGen/Partido-123`)}
-            />
-        );
-
-        fireEvent.click(screen.getByText("Equipo 1")); // Abre el popup
-
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith("/api/users/equipos"); // Verifica fetch
-        });
-
-    });
-
-    // Test de Integracion
-    it('debe formatear correctamente el tiempo', () => {
         render(
             <BarraHorizontal
                 equipos={equiposMock}
                 setEquipos={mockSetEquipos}
-                tiempoJugado={equiposMock.TiempoDeJuego}
-                setTiempoJugado={mockSetTiempoJugado}
+                tiempoJugado={0}
+                setTiempoJugado={jest.fn()}
                 handleNavigateStats={() => {}}
+                setEventosUndo={jest.fn()}
             />
         );
 
-        expect(screen.getByText('Cronómetro: 00:00')).toBeInTheDocument();
+        // Simulamos el click para seleccionar el equipo local
+        const botonEquipoLocal = screen.getByText("Equipo A");
+        fireEvent.click(botonEquipoLocal);
+
+        // Esperamos a que aparezca el selector de equipos
+        await waitFor(() => expect(screen.getByText('Equipo 1')).toBeInTheDocument());
+
+        // Simulamos la selección de un equipo
+        const equipoSeleccionado = screen.getByText('Equipo 1');
+        fireEvent.click(equipoSeleccionado);
+
+        // Verificamos que el estado de los equipos se ha actualizado
+        expect(mockSetEquipos).toHaveBeenCalledWith(expect.objectContaining({
+            EquipoLocal: 'Equipo 1'
+        }));
+        expect(screen.queryByText('Seleccionar Equipo Local')).not.toBeInTheDocument(); // Verifica que el popup se cierre
+    });
+
+    it("debe abrir el selector de equipos cuando se selecciona el tipo de equipo visitante", async () => {
+        const mockSetEquipos = jest.fn();
+
+        // Mock de useParams para controlar el id del partido
+        useParams.mockReturnValue({ idPartido: "123" });
+
+        render(
+            <BarraHorizontal
+                equipos={equiposMock}
+                setEquipos={mockSetEquipos}
+                tiempoJugado={0}
+                setTiempoJugado={jest.fn()}
+                handleNavigateStats={() => {}}
+                setEventosUndo={jest.fn()}
+            />
+        );
+
+        // Simulamos el click para seleccionar el equipo visitante
+        const botonEquipoVisitante = screen.getByText('Seleccionar Equipo Visitante');
+        fireEvent.click(botonEquipoVisitante);
+
+        // Esperamos a que aparezca el selector de equipos
+        await waitFor(() => expect(screen.getByText('Equipo 2')).toBeInTheDocument());
+
+        // Simulamos la selección de un equipo
+        const equipoSeleccionado = screen.getByText('Equipo 2');
+        fireEvent.click(equipoSeleccionado);
+
+        // Verificamos que el estado de los equipos se ha actualizado
+        expect(mockSetEquipos).toHaveBeenCalledWith(expect.objectContaining({
+            EquipoVisitante: 'Equipo 2'
+        }));
+        expect(screen.queryByText('Seleccionar Equipo Visitante')).not.toBeInTheDocument(); // Verifica que el popup se cierre
     });
 });

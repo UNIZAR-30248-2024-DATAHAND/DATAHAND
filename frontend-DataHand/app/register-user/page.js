@@ -8,7 +8,7 @@ import styles3 from '../styles/Card1.module.css';
 import styles4 from '../styles/Checkbox1.module.css';
 import UsuarioCreado from '../components/UsuarioCreado'; // Importa la modal
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Register() {
@@ -28,7 +28,29 @@ export default function Register() {
     position: '',
   });
 
+  const [equipos, setEquipos] = useState([]); // Estado para los equipos filtrados
   const [mensaje, setMensaje] = useState('');
+
+  // Obtener equipos desde la API
+  useEffect(() => {
+    const fetchEquipos = async () => {
+      try {
+        const response = await fetch('/api/users/equipos'); // Asegúrate de que esta ruta sea la correcta
+        if (response.ok) {
+          const data = await response.json();
+          // Filtrar los equipos cuyo entrenador es "No asignado"
+          const equiposFiltrados = data.filter(equipo => equipo.entrenador === 'No asignado');
+          setEquipos(equiposFiltrados);
+        } else {
+          setMensaje('Error al obtener los equipos');
+        }
+      } catch (error) {
+        setMensaje('Error al conectar con el servidor.');
+      }
+    };
+    
+    fetchEquipos();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +84,9 @@ export default function Register() {
       contrasena: formData.password,
       fechaNacimiento: formData.birthDate,
       fotoPerfil: previewImage, // La URI de la imagen de perfil
-      club: "No seleccionado", // Valor por defecto
+      club: formData.userType === 'Entrenador' 
+      ? (formData.club ? formData.club : 'No asignado') 
+      : 'No asignado',
       pais: formData.country,
       tipoUsuario: formData.userType === 'Entrenador' ? 'entrenador' : 'jugador', // Asignamos el tipo de usuario
       posicion: formData.userType === 'Entrenador' ? 'NA' : formData.position,
@@ -161,7 +185,7 @@ export default function Register() {
           <input type="text" name="firstName" placeholder="Nombre" value={formData.firstName} onChange={handleInputChange} className={styles.input1} />
           <input type="text" name="lastName" placeholder="Apellido" value={formData.lastName} onChange={handleInputChange} className={styles.input1} />
           <input type="email" name="email" placeholder="Correo electrónico" value={formData.email} onChange={handleInputChange} className={styles.input1} />
-          <input type="date" name="birthDate" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
+          <input type="date" name="birthDate" aria-label="Fecha de nacimiento" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="confirmPassword" placeholder="Repite contraseña" value={formData.confirmPassword} onChange={handleInputChange} className={styles.input1} />
   
@@ -210,18 +234,49 @@ export default function Register() {
           </div>
   
           {/* Campos adicionales */}
-          <input type="text" name="country" placeholder="País" value={formData.country} onChange={handleInputChange} className={styles.input1} />
+          <input
+              type="text"
+              name="country"
+              placeholder="País"
+              value={formData.country}
+              onChange={handleInputChange}
+              className={styles.input1}
+          />
+
+          {/* Condición para mostrar el campo según el tipo de usuario */}
           {formData.userType === 'Jugador' && (
-            <select name="position" value={formData.position} onChange={handleInputChange} className={styles.input1}>
-              <option value="">Selecciona una posición</option>
-              <option value="EI">Extremo Izquierdo</option>
-              <option value="ED">Extremo Derecho</option>
-              <option value="LI">Lateral Izquierdo</option>
-              <option value="LD">Lateral Derecho</option>
-              <option value="CE">Central</option>
-              <option value="PV">Pivote</option>
-              <option value="PO">Portero</option>
-            </select>
+              <select
+                  name="position"
+                  value={formData.position}
+                  onChange={handleInputChange}
+                  className={styles.input1}
+              >
+                  <option value="">Selecciona una posición</option>
+                  <option value="EI">Extremo Izquierdo</option>
+                  <option value="ED">Extremo Derecho</option>
+                  <option value="LI">Lateral Izquierdo</option>
+                  <option value="LD">Lateral Derecho</option>
+                  <option value="CE">Central</option>
+                  <option value="PV">Pivote</option>
+                  <option value="PO">Portero</option>
+              </select>
+          )}
+
+          {/* Si el usuario es Entrenador, mostrar lista de equipos */}
+          {formData.userType === 'Entrenador' && (
+              <select
+                name="club"
+                value={formData.club}
+                onChange={handleInputChange}
+                className={styles.input1}
+              >
+                <option value="">Selecciona un equipo</option>
+                {equipos.map((equipo) => (
+                  <option key={equipo._id} value={equipo.nombre}>
+                    {equipo.nombre}
+                  </option>
+                ))}
+              </select>
           )}
   
           {/* Botón de registro */}

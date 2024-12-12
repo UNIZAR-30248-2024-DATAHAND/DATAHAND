@@ -25,6 +25,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             setEquipos((prevEquipos) => ({
                 ...prevEquipos,
                 EquipoLocal: equipo.nombre,
+                EscudoLocal: equipo.imagen,
                 local: {
                     ...prevEquipos.local,
                     jugadores: equipo.jugadores,
@@ -37,6 +38,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             setEquipos((prevEquipos) => ({
                 ...prevEquipos,
                 EquipoVisitante: equipo.nombre,
+                EscudoVisitante: equipo.imagen,
                 visitante: {
                     ...prevEquipos.visitante,
                     jugadores: equipo.jugadores,
@@ -251,28 +253,32 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                     className="flex items-center mb-4 md:mb-0 mr-0 md:mr-8 cursor-pointer" 
                     onClick={() => manejarClickEquipo('local')}
                 >
+                    {/* Imagen del Escudo Local */}
                     <Image 
-                        src="/path/to/escudo1.png" 
-                        alt="Escudo Equipo 1"
-                        width={50}
-                        height={50}
-                        className="mr-2"
+                        src={equipos.EscudoLocal} 
+                        alt="Escudo del equipo local"
+                        width={50}  // Ajusta según el tamaño que desees
+                        height={50} // Ajusta según el tamaño que desees
+                        className="w-14 h-14 object-cover rounded-full mr-2"  // Clase para un borde redondeado si lo prefieres
                     />
+                    {/* Nombre del equipo local */}
                     <span className="text-lg md:text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
                 </div>
-    
+
                 {/* Equipo Visitante */}
                 <div 
-                    className="flex items-center cursor-pointer"
+                    className="flex items-center mb-4 md:mb-0 mr-0 md:mr-8 cursor-pointer" 
                     onClick={() => manejarClickEquipo('visitante')}
                 >
+                    {/* Imagen del Escudo Visitante */}
                     <Image 
-                        src="/path/to/escudo2.png" 
-                        alt="Escudo Equipo 2"
-                        width={50}
-                        height={50}
-                        className="mr-2"
+                        src={equipos.EscudoVisitante} 
+                        alt="Escudo del equipo visitante"
+                        width={50}  // Ajusta según el tamaño que desees
+                        height={50} // Ajusta según el tamaño que desees
+                        className="w-14 h-14 object-cover rounded-full mr-2"  // Clase para un borde redondeado si lo prefieres
                     />
+                    {/* Nombre del equipo local */}
                     <span className="text-lg md:text-xl font-semibold text-black">{equipos.EquipoVisitante}</span>
                 </div>
             </div>

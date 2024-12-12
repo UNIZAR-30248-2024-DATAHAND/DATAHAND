@@ -10,4 +10,6 @@ process.env.SUPPRESS_JEST_WARNINGS = 'true';
 
 // Para tests de Jest con canvas
 import 'jest-canvas-mock';
+import fetchMock from 'jest-fetch-mock';
+fetchMock.enableMocks();
 

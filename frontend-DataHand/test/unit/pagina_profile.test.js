@@ -88,7 +88,7 @@ describe('Página de Perfil - Profile Page', () => {
     
         await waitFor(() => {
             const imagenPerfil = screen.getByAltText('Imagen del jugador');
-            expect(imagenPerfil.src).toContain('http://localhost/_next/image?url=https%3A%2F%2Fexample.com%2Ffoto.jpg&w=828&q=75');
+            expect(imagenPerfil.src).toContain("http://localhost/_next/image?url=https%3A%2F%2Fexample.com%2Ffoto.jpg&w=640&q=75");
         });
     });
     

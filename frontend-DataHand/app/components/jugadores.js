@@ -1,5 +1,6 @@
 // components/jugadores.js
 import { Tabs } from "@radix-ui/react-tabs";
+import { useState , useEffect} from "react";
 import {obtenerResultadoIntervaloJugador, obtenerAccionIntervaloJugador, obtenerSuspensionIntervaloJugador, 
   obtenerResultado7MIntervaloJugador, obtenerAsistenciaIntervaloJugador, obtenerResultadoTotalJugador, obtenerSuspensionJugador,
     obtenerAsistenciaTotalJugador, obtenerJugadoresEquipo, obtenerPorterosEquipo, obtenerResultadoIntervaloPortero, obtenerResultadoTotalPortero}  from '../utils/calculosEstadistica'; 
@@ -23,10 +24,55 @@ import {obtenerResultadoIntervaloJugador, obtenerAccionIntervaloJugador, obtener
 ]
 */
 
+// Función para obtener los datos de usuario desde el backend
+const obtenerUsuario = async (userID) => {
+  try {
+      const res = await fetch(`/api/users/usuarios?userID=${userID}`);
+      const data = await res.json();
+      return data; // Devuelve los datos del usuario
+  } catch (error) {
+      console.error('Error al obtener el usuario', error);
+      return null; // En caso de error, devuelve null
+  }
+};
+
 export default function Jugadores({dataEventos, dataEquipos}) {
 
   const jugadoresTotales= obtenerJugadoresEquipo(dataEventos,"local");
   const porterosTotales = obtenerPorterosEquipo(dataEventos, "visitante").filter(portero => portero !== undefined);
+
+  const [nombresJugadores, setNombresJugadores] = useState([]);
+  const [nombresPorteros, setNombresPorteros] = useState([]);
+
+  useEffect(() => {
+    // Función para obtener y actualizar nombres de jugadores
+    const actualizarNombres = async (ids, setNombres) => {
+        try {
+            const nombresActualizados = await Promise.all(
+                ids.map(async (id) => {
+                    console.log('ID:', id);
+                    const usuario = await obtenerUsuario(id);
+                    return {
+                        id,
+                        nombre: usuario?.nombreCompleto || `Jugador ${id}`, // Nombre real o temporal
+                    };
+                })
+            );
+            console.log('Nombres actualizados:', nombresActualizados);
+            setNombres(nombresActualizados); // Actualiza el estado con los nombres
+        } catch (error) {
+            console.error('Error al actualizar los nombres:', error);
+        }
+    };
+
+    // Actualizar nombres de jugadores y porteros
+    if (jugadoresTotales) {
+        actualizarNombres(jugadoresTotales, setNombresJugadores);
+    }
+    if (porterosTotales) {
+        actualizarNombres(porterosTotales, setNombresPorteros);
+    }
+}, []);
 
   const calcularEstadisticasJugador = (inicio, fin, jugador) => {
     const susJug = obtenerSuspensionIntervaloJugador(dataEventos, "2 Minutos", inicio, fin, jugador, "local");
@@ -228,7 +274,7 @@ const calcularEstadisticasPortero = (inicio, fin, jugador) => {
               <tr className="border-b" key={idJugador}>
                 <td className="px-2 py-2 border border-gray-300">
                   <div className="flex gap-2">
-                    <span>{idJugador}</span>
+                    <span>{nombresJugadores[index]?.nombre}</span>
                   </div>
                 </td>
                 {/* Celdas vacías o con contenido dinámico según los datos */}
@@ -256,7 +302,7 @@ const calcularEstadisticasPortero = (inicio, fin, jugador) => {
               <tr className="border-b" key={idPortero}>
                 <td className="px-2 py-2 border border-gray-300">
                   <div className="flex gap-2">
-                    <span>{idPortero}</span>
+                    <span>{nombresPorteros[index]?.nombre}</span>
                   </div>
                 </td>
                 {/* Celdas vacías o con contenido dinámico según los datos */}

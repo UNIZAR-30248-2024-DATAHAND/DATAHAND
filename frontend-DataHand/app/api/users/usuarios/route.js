@@ -1,5 +1,7 @@
 import { connectDB } from '../../../../lib/db'; // Ruta relativa para db.js
 import Usuario from '../../../../models/Usuarios'; // Ruta relativa para Usuario.js
+import Equipo from '../../../../models/Equipos';
+
 
 // Método POST para crear un nuevo usuario
 export async function POST(request) {
@@ -33,6 +35,18 @@ export async function POST(request) {
   
       // Guardamos el nuevo usuario
       const usuarioGuardado = await nuevoUsuario.save();
+
+      // 4. Si el usuario es un entrenador y tiene un club asignado
+      if (data.tipoUsuario === 'entrenador' && data.club !== 'No asignado') {
+        // Buscar el equipo por el nombre
+        const equipo = await Equipo.findOne({ nombre: data.club });
+
+        // Si el equipo existe, asignamos el userID del entrenador al campo 'entrenador'
+        if (equipo) {
+          equipo.entrenador = nuevoUsuario.userID;
+          await equipo.save(); // Guardamos el equipo actualizado
+        }
+      }
   
       return new Response(JSON.stringify(usuarioGuardado), {
         status: 201,
