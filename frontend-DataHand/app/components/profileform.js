@@ -40,20 +40,20 @@ export default function ProfileForm({ userData, setUserData }) {
     setPasswordMatchError(value !== password);
   };
 
-  const handleImageDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
+  // const handleImageDrop = (e) => {
+  //   e.preventDefault();
+  //   const file = e.dataTransfer.files[0];
     
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewImage(reader.result); // Establece la vista previa de la imagen
-        setUserData({ ...userData, fotoPerfil: reader.result }); // Actualiza el usuario con la imagen
-        setImageSmall(file.size < 500000); // Cambia el estado para reducir el tamaño de la imagen
-      };
-      reader.readAsDataURL(file);
-    }
-  };  
+  //   if (file && file.type.startsWith("image/")) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setPreviewImage(reader.result); // Establece la vista previa de la imagen
+  //       setUserData({ ...userData, fotoPerfil: reader.result }); // Actualiza el usuario con la imagen
+  //       setImageSmall(file.size < 500000); // Cambia el estado para reducir el tamaño de la imagen
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,6 +101,18 @@ export default function ProfileForm({ userData, setUserData }) {
   const handleAlertClose = () => {
     setShowAlert(false);
     router.push(`../profile/${userData.userID}`); // Redirigir al perfil después de cerrar la alerta
+  };
+
+  // const [previewImage, setPreviewImage] = useState(null);
+
+  const handleImageDrop = (e) => {
+    e.preventDefault();handleImageDrop
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleDragOver = (e) => e.preventDefault();
@@ -160,16 +172,12 @@ export default function ProfileForm({ userData, setUserData }) {
           <div className={styles3.bg}></div>
           <div className={styles3.blob}></div>
           {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Vista previa"
-              style={{ ...styles.imagePreview, zIndex: 10, position: "relative", width: "80%", height: "80%" }}
-            />
-          ) : (
-            <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>
-              Arrastra una imagen aquí o haz clic para seleccionar
-            </p>
-          )}
+                <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover z-10 " 
+                  style={{ width: '90%', height: '90%' }}
+                />
+              ) : (
+                <p className="text-gray-500 text-center z-10">Arrastra o selecciona una imagen</p>
+              )}
         </div>
 
         <label style={styles.label} htmlFor="club">
