@@ -55,18 +55,18 @@ export default function EditarPerfil() {
   }, [userID]);
 
   return (
-    <div className="relative flex flex-col items-center justify-start min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4 background-imageEP">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4 background-imageEP">
       <div className="w-full max-w-4xl flex flex-col items-center">
-      <h1
-        className="text-3xl md:text-5xl font-bold mb-4 text-white text-center mt-6 titulo-personalizado"
-      >
-        {usuario.tipoUsuario === 'entrenador'
-          ? 'EDITAR PERFIL ENTRENADOR'
-          : 'EDITAR PERFIL JUGADOR'}
-      </h1>
+        <h1
+          className="text-3xl md:text-5xl font-bold text-white text-center titulo-personalizado"
+        >
+          {usuario.tipoUsuario === 'entrenador'
+            ? 'EDITAR PERFIL ENTRENADOR'
+            : 'EDITAR PERFIL JUGADOR'}
+        </h1>
   
         {/* Formulario de edición de perfil */}
-        <div className="w-full px-4 md:px-8 mt-4">
+        <div className="w-full px-4 md:px-6 mt-6 ml-20">
           <ProfileForm userData={usuario} setUserData={setUsuario} />
         </div>
       </div>
