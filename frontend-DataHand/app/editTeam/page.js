@@ -73,7 +73,7 @@ export default function EditarEquipo() {
         (seleccionado.tipo === "banquillo" && tipo === "portero")
       ) {
         setError2("No puedes intercambiar un portero por un jugador de banquillo.");
-        setAlertaVisible(true);
+        setAlertaVisible2(true);
         return; // Evita hacer el intercambio si los tipos no son compatibles
       } else {
         setError2(""); // Resetea el error si el tipo es válido
@@ -212,9 +212,9 @@ export default function EditarEquipo() {
             )}
 
           {alertaVisible2 && (
-              <EventoAlerta 
+              <PartidoAlerta 
                   mensaje={error2} 
-                  onConfirm={() => setAlertaVisible2(false)} // Cambiado de onClose a onConfirm
+                  onClose={() => setAlertaVisible2(false)} // Esto no cierra
               />
           )}
 
