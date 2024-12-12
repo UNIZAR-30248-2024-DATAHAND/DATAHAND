@@ -77,6 +77,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     
     npm install jest-canvas-mock --save-dev
    
+    npm install jest-fetch-mock --save-dev
+
+
 2. Create a file called 'babel.config.js' with the following content:
    ```js
    module.exports = {
