@@ -577,10 +577,11 @@ export default function Home() {
                     const eventosObtenidos = await obtenerEventos(idPartido);
                     setEventos(eventosObtenidos);
                     // Resetear variables solo después de registrar el evento
+                    let jugadorConf = obtenerNombrePorID(datosEvento.IdJugador)
                     if(datosEvento.Accion !== null){
-                        const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.Accion} del jugador: ${datosEvento.IdJugador}`);
+                        const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.Accion} del jugador: ${jugadorConf}`);
                     } else {
-                        const confirmacion2 = await customConfirm(`Se ha registrado un evento de: ${datosEvento.Suspension} del jugador: ${datosEvento.IdJugador}`);
+                        const confirmacion2 = await customConfirm(`Se ha registrado un evento de: ${datosEvento.Suspension} del jugador: ${jugadorConf}`);
                     }
                     resetearDatosEvento();
                 } catch (error) {
@@ -808,10 +809,10 @@ export default function Home() {
                                 {eventos.length > 0 ? (
                                     eventos.slice(-4).reverse().map((evento, index) => ( // Solo los últimos 4 eventos
                                     <tr key={index}>
-                                        <td className="border border-gray-300 px-4 py-2 text-black">{obtenerNombrePorID(evento.IdJugador)}</td> 
+                                        <td className="border border-gray-300 px-4 py-2 text-black">{obtenerNombrePorID(Number(evento.IdJugador))}</td> 
                                         <td className="border border-gray-300 px-4 py-2 text-black">
                                             {evento.Resultado 
-                                                ? `${evento.Resultado}${evento.Asistencia && evento.Asistencia !== '0' ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
+                                                ? `${evento.Resultado}${evento.Asistencia && evento.Asistencia !== '0' ? ` (Asistencia: ${obtenerNombrePorID(Number(evento.Asistencia))})` : ''}` 
                                                 : evento.Accion || evento.Suspension || 'No especificado'}
                                         </td>
                                         <td className="border border-gray-300 px-4 py-2 text-black">{evento.MinSeg ? formatTime(evento.MinSeg) : 'No especificado'}</td>
