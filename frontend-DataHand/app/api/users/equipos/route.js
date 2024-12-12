@@ -97,13 +97,14 @@ export async function PATCH(req) {
       return new Response('Equipo lleno, no hay espacio para más jugadores', { status: 400 });
     }
 
+    let userIDInt = parseInt(userID, 10);
     // Ahora asignamos el UserID al primer jugador disponible en la posición encontrada
     if (posicion === "PO") {
-      equipo.porteros[posicionJugador] = userID;
+      equipo.porteros[posicionJugador] = userIDInt;
     } else if (posicionJugador < equipo.jugadores.length) {
-      equipo.jugadores[posicionJugador] = userID;
+      equipo.jugadores[posicionJugador] = userIDInt;
     } else {
-      equipo.banquillo[posicionJugador] = userID;
+      equipo.banquillo[posicionJugador] = userIDInt;
     }
 
     // Guardar el equipo actualizado
