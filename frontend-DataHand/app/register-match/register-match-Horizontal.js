@@ -131,6 +131,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     };
 
     const detenerCronometro = () => {
+        
         setCronometroActivo(false);
     };
 
