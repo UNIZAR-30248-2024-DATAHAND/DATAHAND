@@ -131,6 +131,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     };
 
     const detenerCronometro = () => {
+        
         setCronometroActivo(false);
     };
 
@@ -274,8 +275,9 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             {/* Escudos y Nombres de Equipos */}
             <div className="flex flex-col md:flex-row items-center mb-4 md:mb-0">
                 {/* Equipo Local */}
-                <div 
-                    className="flex items-center mb-4 md:mb-0 mr-0 md:mr-8 cursor-pointer" 
+                <div
+                    data-testid="boton-equipo-local"
+                    className="flex items-center mb-4 md:mb-0 mr-0 md:mr-8 cursor-pointer"
                     onClick={() => manejarClickEquipo('local')}
                 >
                     {/* Imagen del Escudo Local */}
@@ -291,7 +293,8 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                 </div>
 
                 {/* Equipo Visitante */}
-                <div 
+                <div
+                    data-testid="boton-equipo-visitante"
                     className="flex items-center mb-4 md:mb-0 mr-0 md:mr-8 cursor-pointer" 
                     onClick={() => manejarClickEquipo('visitante')}
                 >
@@ -390,7 +393,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
             
             {/* Popup de Selección de Equipos */}
             {showEquipoSelector && (
-                <div className={styles.popup}>
+                <div data-testid="texto" className={styles.popup}>
                     <div className={styles.popupContent}>
                         <h2 className={styles.popupTitle}>Selecciona un Equipo</h2>
                         {equiposList.length > 0 ? (

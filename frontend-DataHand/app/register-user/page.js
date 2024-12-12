@@ -185,7 +185,7 @@ export default function Register() {
           <input type="text" name="firstName" placeholder="Nombre" value={formData.firstName} onChange={handleInputChange} className={styles.input1} />
           <input type="text" name="lastName" placeholder="Apellido" value={formData.lastName} onChange={handleInputChange} className={styles.input1} />
           <input type="email" name="email" placeholder="Correo electrónico" value={formData.email} onChange={handleInputChange} className={styles.input1} />
-          <input type="date" name="birthDate" placeholder="Correo electrónico" aria-label="Fecha de nacimiento" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
+          <input type="date" name="birthDate" aria-label="Fecha de nacimiento" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="confirmPassword" placeholder="Repite contraseña" value={formData.confirmPassword} onChange={handleInputChange} className={styles.input1} />
   

@@ -27,17 +27,6 @@ const CampoBalonmano = ({ onClick }) => {
     setSelectedButton(posicion.nombre); // Marcar el botón como seleccionado
   };
 
-  /*const handleClick = (event) => {
-    const stage = event.target.getStage();
-    if (stage) {
-      const { x, y } = stage.getPointerPosition();
-      setCruzPosicion({ x, y });
-      if (onClick) {
-        onClick({ x, y });
-      }
-    }
-  };*/
-
   return (
     <div style={{ position: 'relative', width: '300px', height: '300px' }}>
       <div className="flex flex-wrap justify-center absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
@@ -426,8 +415,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   const customConfirm = (mensaje) => {
     return new Promise((resolve) => {
         setMensajeAlerta(mensaje); // Establece el mensaje
-        // setAlertaVisible(true); // Muestra la alerta
-
+        setAlertaVisible(true);
         // Define la función que resolverá la promesa
         setOnConfirm(() => (response) => {
             setAlertaVisible(false); // Oculta la alerta
@@ -440,13 +428,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   // Función para registrar un partido
   const registrarEvento = async () => {
     try {
-      // const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${datosEvento.IdJugador}`);
-      
-      // if (!confirmacion) {
-      //   console.log('El usuario canceló la acción.');
-      //   return; // Detener el flujo si el usuario cancela
-      // }
-      
+      // const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${datosEvento.IdJugador}`);      
       const res = await fetch('../api/users/eventos', {
         method: 'POST',
         headers: {
@@ -459,7 +441,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         const data = await res.json();
         console.log('Evento registrado:', data);
         // Reiniciar los campos
-        // window.confirm("Se ha registrado un evento de: "+ datosEvento.resultado + " del jugador: "+ datosEvento.IdJugador);
+        //window.confirm("Se ha registrado un evento de: "+ datosEvento.resultado + " del jugador: "+ datosEvento.IdJugador);
         const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${datosEvento.IdJugador}`);
         reiniciarCampos();
 
@@ -590,7 +572,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                     <div className="flex justify-center mt-4">
                         <button
                             className="bg-red-500 text-white px-6 py-2 rounded"
-                            onClick={() => { handleAbrirAlerta(); }} // Llamamos a ambas funciones                        
+                            onClick={onClose} // Llamamos a ambas funciones                        
                         >
                             Cerrar
                         </button>
