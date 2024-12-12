@@ -309,10 +309,8 @@ export default function Home() {
 
     const obtenerNombrePorID = (id) => {
         const jugador = nombresJugadoresEID.find((jugador) => jugador.id === id);
-        //console.log(jugador);
         return jugador ? jugador.nombre : `Jugador ${id}`; // Devuelve el nombre o null si no se encuentra
     };
-    
 
     // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
     useEffect(() => {
@@ -785,7 +783,7 @@ export default function Home() {
                         <table className="w-full text-left border border-gray-300">
                             <thead>
                                 <tr className="bg-gray-100">
-                                    <th className="border border-gray-300 px-4 py-2 text-black">ID Jugador</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Nombre jugador</th>
                                     <th className="border border-gray-300 px-4 py-2 text-black">Accion del juego</th>
                                     <th className="border border-gray-300 px-4 py-2 text-black">Tiempo</th>
                                 </tr>
@@ -794,7 +792,7 @@ export default function Home() {
                                 {eventos.length > 0 ? (
                                     eventos.slice(-4).reverse().map((evento, index) => ( // Solo los últimos 4 eventos
                                     <tr key={index}>
-                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">{obtenerNombrePorID(evento.IdJugador)}</td> 
                                         <td className="border border-gray-300 px-4 py-2 text-black">
                                             {evento.Resultado 
                                                 ? `${evento.Resultado}${evento.Asistencia && evento.Asistencia !== '0' ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
@@ -1000,7 +998,7 @@ export default function Home() {
 
             {/* Popup para Gol */}
             <PopUpAccion showPopup={showPopup} onClose={handleClosePopup} asistencias={asistencias}
-             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} equipos={equipos} setEquipos={setEquipos} />   {/*Me falta pasarle el IdPartido*/}
+             seleccionado={seleccionado} faseDeJuego={faseDeJuego} resultado={resultado} tiempoJugado={tiempoJugado} idPartido={idPartido} equipos={equipos} setEquipos={setEquipos} nombresJugadoresEID={nombresJugadoresEID}/>   {/*Me falta pasarle el IdPartido*/}
         </div>
     );
 }

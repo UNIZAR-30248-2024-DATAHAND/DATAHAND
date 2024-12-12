@@ -243,7 +243,7 @@ const PorteriaBalonmano = ({ onClick }) => {
   );
 };
 
-const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado, idPartido, equipos, setEquipos }) => {
+const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJuego, resultado, tiempoJugado, idPartido, equipos, setEquipos, nombresJugadoresEID}) => {
 
   if (!showPopup) return null; // Si no se debe mostrar el popup, no renderizar nada
 
@@ -442,7 +442,8 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
         console.log('Evento registrado:', data);
         // Reiniciar los campos
         //window.confirm("Se ha registrado un evento de: "+ datosEvento.resultado + " del jugador: "+ datosEvento.IdJugador);
-        const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${datosEvento.IdJugador}`);
+        let jugadorConf = obtenerNombrePorID(datosEvento.IdJugador)
+        const confirmacion = await customConfirm(`Se ha registrado un evento de: ${datosEvento.resultado} del jugador: ${jugadorConf}`);
         reiniciarCampos();
 
         // Cerrar el popup
@@ -477,6 +478,11 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
      // Mostrar la alerta cuando se cierre el pop-up principal
     setAlertaVisible(true); // Mostrar la alerta cuando se cierre el pop-up principal
   };
+
+  const obtenerNombrePorID = (id) => {
+    const jugador = nombresJugadoresEID.find((jugador) => jugador.id === id);
+    return jugador ? jugador.nombre : `Jugador ${id}`; // Devuelve el nombre o null si no se encuentra
+};
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -516,7 +522,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
                                         asistenciaDada === jugador ? 'opacity-80' : ''
                                     }`}
                                 >
-                                    Jugador {jugador}
+                                    {obtenerNombrePorID(jugador)}
                                 </button>
                             ))}
                             {/* Botón adicional para "Sin asistencia" */}
