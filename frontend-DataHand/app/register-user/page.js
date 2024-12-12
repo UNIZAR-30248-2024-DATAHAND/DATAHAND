@@ -176,7 +176,7 @@ export default function Register() {
       </div>
   
       {/* Sección del formulario */}
-      <div className="w-full lg:w-1/2 max-w-3xl p-6 bg-white bg-opacity-20 rounded-lg shadow-lg z-10">  {/* Añadido z-10 */}
+      <div className="w-full lg:w-1/2 max-w-3xl p-6 bg-white bg-opacity-20 rounded-lg shadow-lg z-10 mr-10">  {/* Añadido z-10 */}
         <h2 className="text-3xl font-semibold text-center mb-6 text-white">
           Registro de Usuario
         </h2>
@@ -185,7 +185,7 @@ export default function Register() {
           <input type="text" name="firstName" placeholder="Nombre" value={formData.firstName} onChange={handleInputChange} className={styles.input1} />
           <input type="text" name="lastName" placeholder="Apellido" value={formData.lastName} onChange={handleInputChange} className={styles.input1} />
           <input type="email" name="email" placeholder="Correo electrónico" value={formData.email} onChange={handleInputChange} className={styles.input1} />
-          <input type="date" name="birthDate" aria-label="Fecha de nacimiento" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
+          <input type="date" name="birthDate" placeholder="Correo electrónico" aria-label="Fecha de nacimiento" value={formData.birthDate} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleInputChange} className={styles.input1} />
           <input type="password" name="confirmPassword" placeholder="Repite contraseña" value={formData.confirmPassword} onChange={handleInputChange} className={styles.input1} />
   
