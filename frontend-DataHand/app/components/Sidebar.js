@@ -66,7 +66,7 @@ const Sidebar = ({ userID }) => {
     return (
       ultimoMensaje &&
       (ultimoMensaje[1] === "Nuevas estadisticas disponibles" || 
-       ultimoMensaje[1] === "Invitación")
+       ultimoMensaje[1] === "Invitacion")
     );
   }
   

@@ -7,6 +7,7 @@ const EquipoSchema = new mongoose.Schema({
   porteros: [String], // Almacenamos como strings
   jugadores: [String], // Almacenamos como strings
   banquillo: [String], // Almacenamos como strings
+  nuevos: [String], // Almacenamos como strings
   sistemaDefensivoLocal: String,
 });
 
