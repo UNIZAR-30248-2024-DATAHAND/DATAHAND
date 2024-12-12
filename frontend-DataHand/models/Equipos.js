@@ -4,9 +4,9 @@ const EquipoSchema = new mongoose.Schema({
   nombre: String,
   entrenador: String,
   imagen: String, // Para el URL de la imagen del equipo
-  porteros: [Number], // Almacenamos como strings
-  jugadores: [Number], // Almacenamos como strings
-  banquillo: [Number], // Almacenamos como strings
+  porteros: [String], // Almacenamos como strings
+  jugadores: [String], // Almacenamos como strings
+  banquillo: [String], // Almacenamos como strings
   sistemaDefensivoLocal: String,
 });
 

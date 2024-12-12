@@ -669,6 +669,7 @@ export default function Home() {
                 setTiempoJugado={setTiempoJugado}
                 handleNavigateStats={handleNavigateStats}
                 setEventosUndo={setEventosUndo}
+                setTengoDatos={setTengoDatos}
             />
 
             {/* Fila de tres rectángulos */}
@@ -812,7 +813,7 @@ export default function Home() {
                             </tbody>
                         </table>
                     </div>
-                    
+
                     {/* Sección Fases de Juego */}
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold text-black mb-2">Fases de Juego</h2>
