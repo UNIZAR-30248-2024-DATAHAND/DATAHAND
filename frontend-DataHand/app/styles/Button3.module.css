@@ -1,4 +1,4 @@
-/* Botón 1 (Verde) */
+/* VERDE CORTO */
 .button1 {
     background-color: #d1fae5; /* Verde claro */
     color: #10b981; /* Verde más oscuro */
@@ -16,7 +16,7 @@
     color: #fff;
 }
 
-/* Botón 2 (Rojo) */
+/* ROJO CORTO */
 .button2 {
     background-color: #fee2e2; /* Rojo claro */
     color: #ef4444; /* Rojo más oscuro */
@@ -34,7 +34,7 @@
     color: #fff;
 }
 
-/* Botón 3 (Azul) */
+/* AZUL CORTO */
 .button3 {
     background-color: #bfdbfe; /* Azul claro */
     color: #3b82f6; /* Azul más oscuro */
@@ -52,7 +52,7 @@
     color: #fff;
 }
 
-/* Botón 3 (Azul) */
+/* AZUL MEDIO CORTO */
 .button4 {
     background-color: #bfdbfe; /* Azul claro */
     color: #3b82f6; /* Azul más oscuro */
@@ -70,9 +70,10 @@
     color: #fff;
 }
 
+/* VERDE LARGO */
 .button5 {
-    background-color: #d1fae5; /* Verde claro */
-    color: #10b981; /* Verde más oscuro */
+    background-color: #d1e9fa; /* Verde claro */
+    color: #1083b9; /* Verde más oscuro */
     border: none;
     cursor: pointer;
     border-radius: 8px;
@@ -82,7 +83,78 @@
 }
 
 .button5:hover {
-    background-color: #10b981; /* Verde más oscuro */
-    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.6); /* Efecto de sombra */
+    background-color: #1075b9; /* Verde más oscuro */
+    box-shadow: 0 0 0 5px rgba(16, 89, 185, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+/* AZUL MEDIO LARGO */
+.button6 {
+    background-color: #bfdbfe; /* Azul claro */
+    color: #3b82f6; /* Azul más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 250px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button6:hover {
+    background-color: #3b82f6; /* Azul más oscuro */
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+/* NARANJA LARGO */
+.button7 {
+    background-color: #fae8d1; /* Verde claro */
+    color: #b97510; /* Verde más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 400px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button7:hover {
+    background-color: #b96a10; /* Verde más oscuro */
+    box-shadow: 0 0 0 5px rgba(185, 157, 16, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+/* AZUL LARGO */
+.button8 {
+    background-color: #bfdbfe; /* Azul claro */
+    color: #3b82f6; /* Azul más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 415px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button8:hover {
+    background-color: #3b82f6; /* Azul más oscuro */
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6); /* Efecto de sombra */
+    color: #fff;
+}
+
+.button9 {
+    background-color: #8ab997; /* Azul claro */
+    color: #0f4124; /* Azul más oscuro */
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 415px;
+    height: 45px;
+    transition: 0.3s;
+}
+
+.button9:hover {
+    background-color: #27ab5e; /* Azul más oscuro */
+    box-shadow: 0 0 0 5px rgba(40, 167, 118, 0.6); /* Efecto de sombra */
     color: #fff;
 }
