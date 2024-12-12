@@ -314,7 +314,6 @@ export default function EditarPerfil() {
                   onClick={() => setSelectedChat({ id: notif[0], name: `Chat ${notif[0]}` })}
                   className="flex items-center p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 mb-4"
                 >
-                  <Image src="/default-chat-icon.png" alt={`Chat ${notif[0]}`} width={50} height={50} className="rounded-full" />
                   <div className="ml-4">
                     <h2 className="text-xl text-gray-800 font-bold">Chat {notif[0]}</h2>
                   </div>
@@ -406,7 +405,6 @@ export default function EditarPerfil() {
             </button>
             <div className="flex justify-center items-center mb-4">
               <div className="flex items-center">
-                <Image src="/default-chat-icon.png" alt={selectedChat.name} width={50} height={50} className="rounded-full" />
                 <h2 className="text-2xl text-gray-800 font-bold ml-4">{selectedChat.name}</h2>
               </div>
             </div>
