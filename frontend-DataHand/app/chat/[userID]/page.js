@@ -8,6 +8,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import ProfileForm from '../../components/profileform'; // Importamos el componente ProfileForm
+import '../../styles/styles.css';
+import styles3 from '../../styles/Button3.module.css';  // Ajusta la ruta según sea necesario
+
 
 ChartJS.register(...registerables);
 
@@ -291,11 +294,11 @@ export default function EditarPerfil() {
 
     
     return (
-      <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500">
+      <div className="flex flex-col items-center min-h-screen bg-gradient-to-r background-imageCHAT">
         <Sidebar userID={userID} />
         {!selectedChat ? (
           <>
-            <h1 className="text-5xl font-bold text-white mb-6">Lista de Chats</h1>
+            <h1 className="text-5xl font-bold text-white mb-6 mt-6 titulo-personalizado">LISTA DE CHATS</h1>
             <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-lg p-6 overflow-y-auto">
             {
             // Filtrar notificaciones para eliminar duplicados por el primer valor (ID del chat)
@@ -325,7 +328,8 @@ export default function EditarPerfil() {
               <div className="mt-6">
                 <button
                   onClick={handleNuevaNotificacion}
-                  className="bg-blue-500 text-white p-3 rounded-lg font-bold"
+                  className={`${styles3.button9} px-4 py-2 text-white rounded-lg active:bg-blue-500`}
+
                 >
                   Mandar nueva notificación
                 </button>
@@ -340,20 +344,21 @@ export default function EditarPerfil() {
                   <div className="space-y-4">
                     <button
                       onClick={() => handleSeleccionarNotificacion("Invitación")}
-                      className="bg-green-500 text-white p-3 rounded-lg font-bold w-full"
+                      className={`${styles3.button5} px-4 py-2 text-white rounded font-bold active:bg-red-700`}
+
                     >
                       Invitación
                     </button>
                     <button
                       onClick={() => handleSeleccionarNotificacion("Nuevas estadísticas disponibles")}
-                      className="bg-yellow-500 text-white p-3 rounded-lg font-bold w-full"
+                      className={`${styles3.button7} px-4 py-2 text-white rounded font-bold active:bg-red-700`}
                     >
                       Nuevas estadísticas disponibles
                     </button>
                   </div>
                   <button
                     onClick={handleCloseModal}
-                    className="mt-4 text-center text-blue-500 underline"
+                    className="mt-4 text-center text-red-500 underline"
                   >
                     Cerrar
                   </button>
@@ -377,13 +382,13 @@ export default function EditarPerfil() {
                   />
                   <button
                     onClick={handleInvitacionSubmit}
-                    className="bg-blue-500 text-white p-3 rounded-lg font-bold w-full"
+                    className={`${styles3.button8} px-4 py-2 rounded active:bg-red-700`}
                   >
                     Enviar invitación
                   </button>
                   <button
                     onClick={handleCloseModal}
-                    className="mt-4 text-center text-blue-500 underline"
+                    className="mt-4 text-center text-red-500 underline"
                   >
                     Cerrar
                   </button>
