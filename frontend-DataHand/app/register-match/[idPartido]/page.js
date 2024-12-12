@@ -644,7 +644,13 @@ export default function Home() {
             {alertaVisible2 && (
                 <EventoAlerta 
                     mensaje={mensajeAlerta2} 
-                    onConfirm={() => setAlertaVisible2(false)} // Cambiado de onClose a onConfirm
+                    onConfirm={() => {
+                        setAlertaVisible2(false);
+                        resetearDatosEvento();
+                    } // Cambiado de onClose a onConfirm
+
+                    }
+                    resetearDatos={resetearDatosEvento}
                 />
             )}
 
