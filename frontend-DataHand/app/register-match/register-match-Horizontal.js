@@ -259,7 +259,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                         alt="Escudo del equipo local"
                         width={50}  // Ajusta según el tamaño que desees
                         height={50} // Ajusta según el tamaño que desees
-                        className="mr-2 rounded-full"  // Clase para un borde redondeado si lo prefieres
+                        className="w-14 h-14 object-cover rounded-full mr-2"  // Clase para un borde redondeado si lo prefieres
                     />
                     {/* Nombre del equipo local */}
                     <span className="text-lg md:text-xl font-semibold text-black">{equipos.EquipoLocal}</span>
@@ -276,7 +276,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                         alt="Escudo del equipo visitante"
                         width={50}  // Ajusta según el tamaño que desees
                         height={50} // Ajusta según el tamaño que desees
-                        className="mr-2 rounded-full"  // Clase para un borde redondeado si lo prefieres
+                        className="w-14 h-14 object-cover rounded-full mr-2"  // Clase para un borde redondeado si lo prefieres
                     />
                     {/* Nombre del equipo local */}
                     <span className="text-lg md:text-xl font-semibold text-black">{equipos.EquipoVisitante}</span>
