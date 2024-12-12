@@ -77,35 +77,14 @@ export async function PATCH(req) {
       return new Response('Equipo no encontrado para este entrenador', { status: 404 });
     }
 
-    let posicionJugador;
-
-    // Si la posición es "PO", buscar en el campo de porteros
-    if (posicion === "PO") {
-      posicionJugador = equipo.porteros.findIndex((jugador) => jugador.includes('Portero'));
-    } else {
-      // Si no es "PO", primero buscamos en jugadores
-      posicionJugador = equipo.jugadores.findIndex((jugador) => jugador.includes('Jugador'));
-
-      // Si no encontramos en jugadores, buscamos en banquillo
-      if (posicionJugador === -1) {
-        posicionJugador = equipo.banquillo.findIndex((jugador) => jugador.includes('Banquillo'));
-      }
+    // Asegurarse de que 'nuevos' sea un array
+    if (!Array.isArray(equipo.nuevos)) {
+      equipo.nuevos = []; // Inicializa 'nuevos' como un array vacío si no está definido
     }
-
-    // Si no se encontró espacio en ninguno de los lugares (jugadores, porteros o banquillo)
-    if (posicionJugador === -1) {
-      return new Response('Equipo lleno, no hay espacio para más jugadores', { status: 400 });
-    }
-
-    // Ahora asignamos el UserID al primer jugador disponible en la posición encontrada
-    if (posicion === "PO") {
-      equipo.porteros[posicionJugador] = userID;
-    } else if (posicionJugador < equipo.jugadores.length) {
-      equipo.jugadores[posicionJugador] = userID;
-    } else {
-      equipo.banquillo[posicionJugador] = userID;
-    }
-
+    
+    const nuevoJugador = userID; // Supongamos que es un número o string
+    equipo.nuevos.push(nuevoJugador);
+    
     // Guardar el equipo actualizado
     const equipoActualizado = await equipo.save();
 

@@ -7,7 +7,7 @@ import UndoAlerta from '../components/UndoAlerta'; // Importa la modal
 import UndoConfirmacion from '../components/UndoConfirmacion'; // Importa la modal
 
 // <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado}/>
-const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats, setEventosUndo}) => {
+const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats, setEventosUndo, setTengoDatos}) => {
 
     // Estado para el cronómetro
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
@@ -50,6 +50,7 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
                 sistemaDefensivoVisitante: equipo.sistemaDefensivo,
             }));
         }
+        setTengoDatos(true);
         setShowEquipoSelector(false); // Cierra el popup
     };
 

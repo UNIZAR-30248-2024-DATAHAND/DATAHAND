@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import ProfileForm from '../../components/profileform'; // Importamos el componente ProfileForm
 import '../../styles/styles.css';
 import styles3 from '../../styles/Button3.module.css';  // Ajusta la ruta según sea necesario
-
+import NotificacionAlerta from '../../components/NotificacionAlerta'; // Importa la modal
 
 ChartJS.register(...registerables);
 
@@ -35,6 +35,11 @@ export default function EditarPerfil() {
   const [isInvitacionSelected, setIsInvitacionSelected] = useState(false); 
   const [equipos, setEquipos] = useState([]);
   const [equipoSeleccionado, setEquipoSeleccionado] = useState(null);
+
+  const [error, setError] = useState(""); // Estado para manejar el error
+  const [error2, setError2] = useState(""); // Estado para manejar el error
+  const [alertaVisible, setAlertaVisible] = useState(false);
+  const [alertaVisible2, setAlertaVisible2] = useState(false);
 
   const [usuario, setUsuario] = useState({
     nombreCompleto: '',
@@ -159,7 +164,9 @@ export default function EditarPerfil() {
             }
           }
       
-          alert('Notificaciones enviadas a todos los jugadores');
+          //alert('Notificaciones enviadas a todos los jugadores');
+          setError("Notificaciones enviadas a todos los jugadores");
+          setAlertaVisible(true);
         } catch (error) {
           console.error('Error al obtener los jugadores:', error);
         }
@@ -172,7 +179,9 @@ export default function EditarPerfil() {
     const handleInvitacionSubmit = async () => {
       // Aquí se maneja la lógica para enviar la invitación (actualmente solo se simula con un alert)
       if (invitacionEmail) {
-        alert(`Invitación enviada a: ${invitacionEmail}`);
+        //alert(`Invitación enviada a: ${invitacionEmail}`);
+        setError("Invitación enviada a: "+invitacionEmail);
+        setAlertaVisible(true);
         try {
           // Llamada a la función PUT del backend 
           const response = await fetch("/api/users/usuarios", {
@@ -212,7 +221,9 @@ export default function EditarPerfil() {
     };
     
     const handleAceptarInvitacion = async () => {
-      alert(`Invitación aceptada para el usuario con ID: ${userID}`);
+      //alert(`Invitación aceptada para el usuario con ID: ${userID}`);
+      setError("Invitación aceptada para el usuario con ID: "+userID);
+      setAlertaVisible(true);
       try {
           const response = await fetch('/api/users/usuarios', {
               method: 'PATCH',
@@ -265,7 +276,9 @@ export default function EditarPerfil() {
     };
     
     const handleRechazarInvitacion = async () => {
-      alert(`Invitación rechazada para el usuario con ID: ${userID}`);
+      //alert(`Invitación rechazada para el usuario con ID: ${userID}`);
+      setError("Invitación rechazada para el usuario con ID: "+userID);
+      setAlertaVisible(true);
       try {
         const response = await fetch('/api/users/usuarios', {
             method: 'PATCH',
@@ -299,96 +312,119 @@ export default function EditarPerfil() {
         {!selectedChat ? (
           <>
             <h1 className="text-5xl font-bold text-white mb-6 mt-6 titulo-personalizado">LISTA DE CHATS</h1>
-            <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-lg p-6 overflow-y-auto">
-            {
-            // Filtrar notificaciones para eliminar duplicados por el primer valor (ID del chat)
-            usuario.historialNotificaciones
-              .filter((value, index, self) => 
-                index === self.findIndex((t) => (
-                  t[0] === value[0] // Asegura que solo se muestre un chat con el mismo ID
-                ))
-              )
-              .map((notif, index) => (
-                <div
-                  key={index}
-                  onClick={() => setSelectedChat({ id: notif[0], name: `Chat ${notif[0]}` })}
-                  className="flex items-center p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 mb-4"
-                >
-                  <Image src="/default-chat-icon.png" alt={`Chat ${notif[0]}`} width={50} height={50} className="rounded-full" />
-                  <div className="ml-4">
-                    <h2 className="text-xl text-gray-800 font-bold">Chat {notif[0]}</h2>
-                  </div>
-                </div>
-              ))
-          }
+            <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-lg p-6 overflow-y-auto mx-4 sm:mx-0">
+              {
+                // Filtrar notificaciones para eliminar duplicados por el primer valor (ID del chat)
+                usuario.historialNotificaciones
+                  .filter((value, index, self) => 
+                    index === self.findIndex((t) => (
+                      t[0] === value[0] // Asegura que solo se muestre un chat con el mismo ID
+                    ))
+                  )
+                  .map((notif, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setSelectedChat({ id: notif[0], name: `Chat ${notif[0]}` })}
+                      className="flex items-center p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 mb-4"
+                    >
+                      <div className="ml-4">
+                        <h2 className="text-xl text-gray-800 font-bold">Chat {notif[0]}</h2>
+                      </div>
+                    </div>
+                  ))
+              }
             </div>
-  
+    
             {/* Mostrar el botón para entrenadores */}
             {usuario.tipoUsuario === "entrenador" && (
-              <div className="mt-6">
+              <div className="mt-6 mx-4 sm:mx-0">
                 <button
                   onClick={handleNuevaNotificacion}
                   className={`${styles3.button9} px-4 py-2 text-white rounded-lg active:bg-blue-500`}
-
                 >
                   Mandar nueva notificación
                 </button>
               </div>
             )}
-  
+
+            {alertaVisible && (
+              <NotificacionAlerta 
+                mensaje={error} 
+                onClose={() => setAlertaVisible(false)} 
+              />
+            )}
+
             {/* Modal con las opciones */}
             {showModal && (
               <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-                <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-                  <h2 className="text-xl text-gray-800 font-bold text-center mb-6">Selecciona una opción</h2>
+                <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto">
+                  {/* Título del Modal */}
+                  <h2 className="text-2xl text-gray-800 font-bold text-center mb-6">
+                    Selecciona una opción
+                  </h2>
+                  
+                  {/* Botones de Opciones */}
                   <div className="space-y-4">
                     <button
                       onClick={() => handleSeleccionarNotificacion("Invitación")}
-                      className={`${styles3.button5} px-4 py-2 text-white rounded font-bold active:bg-red-700`}
-
+                      className={`${styles3.button5} w-full px-4 py-2 text-white rounded font-bold active:bg-red-700`}
                     >
                       Invitación
                     </button>
                     <button
                       onClick={() => handleSeleccionarNotificacion("Nuevas estadísticas disponibles")}
-                      className={`${styles3.button7} px-4 py-2 text-white rounded font-bold active:bg-red-700`}
+                      className={`${styles3.button7} w-full px-4 py-2 text-white rounded font-bold active:bg-red-700`}
                     >
                       Nuevas estadísticas disponibles
                     </button>
                   </div>
+                  
+                  {/* Botón de Cerrar */}
                   <button
                     onClick={handleCloseModal}
-                    className="mt-4 text-center text-red-500 underline"
+                    className="mt-6 w-full text-center text-red-500 underline"
                   >
                     Cerrar
                   </button>
                 </div>
               </div>
             )}
-  
+    
             {/* Si se selecciona "Invitación", mostrar el input para el correo */}
             {showModal && isInvitacionSelected && (
               <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-                <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-                  <h2 className="text-xl text-gray-800 font-bold mb-4">Invitación</h2>
-                  <label htmlFor="correo" className="block text-gray-700">Correo del usuario:</label>
-                  <input
-                    type="email"
-                    id="correo"
-                    value={invitacionEmail}
-                    onChange={(e) => setInvitacionEmail(e.target.value)}
-                    className="w-full p-2 border text-gray-800 rounded-md mt-2 mb-4"
-                    placeholder="Correo electrónico"
-                  />
+                <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto">
+                  {/* Título del Modal */}
+                  <h2 className="text-2xl text-gray-800 font-bold text-center mb-6">
+                    Invitación
+                  </h2>
+    
+                  {/* Campo de Correo */}
+                  <div className="mb-4">
+                    <label htmlFor="correo" className="block text-gray-700 font-semibold mb-2">
+                      Correo del usuario:
+                    </label>
+                    <input
+                      type="email"
+                      id="correo"
+                      value={invitacionEmail}
+                      onChange={(e) => setInvitacionEmail(e.target.value)}
+                      className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
+                      placeholder="Correo electrónico"
+                    />
+                  </div>
+    
+                  {/* Botón para Enviar Invitación */}
                   <button
                     onClick={handleInvitacionSubmit}
-                    className={`${styles3.button8} px-4 py-2 rounded active:bg-red-700`}
+                    className={`${styles3.button8} w-auto px-3 py-1 text-white rounded font-bold active:bg-red-700 mb-4`}
                   >
                     Enviar invitación
                   </button>
+                  {/* Botón para Cerrar */}
                   <button
                     onClick={handleCloseModal}
-                    className="mt-4 text-center text-red-500 underline"
+                    className="w-full text-center text-red-500 underline"
                   >
                     Cerrar
                   </button>
@@ -397,7 +433,7 @@ export default function EditarPerfil() {
             )}
           </>
         ) : (
-          <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
+          <div className="w-full max-w-2xl h-[600px] bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between mx-4 sm:mx-0">
             <button
               onClick={() => setSelectedChat(null)}
               className="text-blue-500 underline mb-4 font-bold"
@@ -406,7 +442,6 @@ export default function EditarPerfil() {
             </button>
             <div className="flex justify-center items-center mb-4">
               <div className="flex items-center">
-                <Image src="/default-chat-icon.png" alt={selectedChat.name} width={50} height={50} className="rounded-full" />
                 <h2 className="text-2xl text-gray-800 font-bold ml-4">{selectedChat.name}</h2>
               </div>
             </div>
@@ -419,7 +454,7 @@ export default function EditarPerfil() {
                   className="w-full max-w-4xl px-4 py-2 rounded-lg bg-blue-500 text-white font-bold flex justify-between items-center mx-auto"
                 >
                   <span>{msg[1]}</span> {/* Mensaje del historialNotificaciones */}
-                  {msg[1] === "Invitacion" && ( // Mostrar botones solo si el mensaje es una invitación */}
+                  {msg[1] === "Invitacion" && ( // Mostrar botones solo si el mensaje es una invitación
                     <div className="space-x-2">
                       <button
                         onClick={() => handleAceptarInvitacion()}
@@ -437,7 +472,6 @@ export default function EditarPerfil() {
                   )}
                 </div>
               ))}
-
             </div>
           </div>
         )}

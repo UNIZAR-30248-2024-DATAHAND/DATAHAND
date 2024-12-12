@@ -644,7 +644,13 @@ export default function Home() {
             {alertaVisible2 && (
                 <EventoAlerta 
                     mensaje={mensajeAlerta2} 
-                    onConfirm={() => setAlertaVisible2(false)} // Cambiado de onClose a onConfirm
+                    onConfirm={() => {
+                        setAlertaVisible2(false);
+                        resetearDatosEvento();
+                    } // Cambiado de onClose a onConfirm
+
+                    }
+                    resetearDatos={resetearDatosEvento}
                 />
             )}
 
@@ -663,6 +669,7 @@ export default function Home() {
                 setTiempoJugado={setTiempoJugado}
                 handleNavigateStats={handleNavigateStats}
                 setEventosUndo={setEventosUndo}
+                setTengoDatos={setTengoDatos}
             />
 
             {/* Fila de tres rectángulos */}
@@ -771,6 +778,41 @@ export default function Home() {
                 {/* Rectángulo 2 (más grande) */}
                 <div className="flex-[1.5] h-auto bg-white rounded-lg shadow-md mx-2 p-4 flex flex-col">
                     <p className="text-xl font-semibold text-black text-center">Acciones del juego</p>
+                    
+                    {/* Tabla */}
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold text-black mb-2">Tabla de Últimos Eventos</h2>
+                        <table className="w-full text-left border border-gray-300">
+                            <thead>
+                                <tr className="bg-gray-100">
+                                    <th className="border border-gray-300 px-4 py-2 text-black">ID Jugador</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Accion del juego</th>
+                                    <th className="border border-gray-300 px-4 py-2 text-black">Tiempo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {eventos.length > 0 ? (
+                                    eventos.slice(-4).reverse().map((evento, index) => ( // Solo los últimos 4 eventos
+                                    <tr key={index}>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">
+                                            {evento.Resultado 
+                                                ? `${evento.Resultado}${evento.Asistencia && evento.Asistencia !== '0' ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
+                                                : evento.Accion || evento.Suspension || 'No especificado'}
+                                        </td>
+                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.MinSeg ? formatTime(evento.MinSeg) : 'No especificado'}</td>
+                                    </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="3" className="border border-gray-300 px-4 py-2 text-black text-center">
+                                            No hay eventos para mostrar.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {/* Sección Fases de Juego */}
                     <div className="mt-4">
@@ -847,41 +889,6 @@ export default function Home() {
                             </button>
                             ))}
                         </div>
-                    </div>
-
-                    {/* Tabla */}
-                    <div className="mt-4">
-                        <h2 className="text-lg font-semibold text-black mb-2">Tabla de Últimos Eventos</h2>
-                        <table className="w-full text-left border border-gray-300">
-                            <thead>
-                                <tr className="bg-gray-100">
-                                    <th className="border border-gray-300 px-4 py-2 text-black">ID Jugador</th>
-                                    <th className="border border-gray-300 px-4 py-2 text-black">Accion del juego</th>
-                                    <th className="border border-gray-300 px-4 py-2 text-black">Tiempo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {eventos.length > 0 ? (
-                                    eventos.slice(-4).reverse().map((evento, index) => ( // Solo los últimos 4 eventos
-                                    <tr key={index}>
-                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.IdJugador}</td>
-                                        <td className="border border-gray-300 px-4 py-2 text-black">
-                                            {evento.Resultado 
-                                                ? `${evento.Resultado}${evento.Asistencia && evento.Asistencia !== '0' ? ` (Asistencia: ${evento.Asistencia})` : ''}` 
-                                                : evento.Accion || evento.Suspension || 'No especificado'}
-                                        </td>
-                                        <td className="border border-gray-300 px-4 py-2 text-black">{evento.MinSeg ? formatTime(evento.MinSeg) : 'No especificado'}</td>
-                                    </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="3" className="border border-gray-300 px-4 py-2 text-black text-center">
-                                            No hay eventos para mostrar.
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
                     </div>
 
                 </div>

@@ -40,20 +40,20 @@ export default function ProfileForm({ userData, setUserData }) {
     setPasswordMatchError(value !== password);
   };
 
-  const handleImageDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
+  // const handleImageDrop = (e) => {
+  //   e.preventDefault();
+  //   const file = e.dataTransfer.files[0];
     
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewImage(reader.result); // Establece la vista previa de la imagen
-        setUserData({ ...userData, fotoPerfil: reader.result }); // Actualiza el usuario con la imagen
-        setImageSmall(true); // Cambia el estado para reducir el tamaño de la imagen
-      };
-      reader.readAsDataURL(file);
-    }
-  };  
+  //   if (file && file.type.startsWith("image/")) {
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setPreviewImage(reader.result); // Establece la vista previa de la imagen
+  //       setUserData({ ...userData, fotoPerfil: reader.result }); // Actualiza el usuario con la imagen
+  //       setImageSmall(file.size < 500000); // Cambia el estado para reducir el tamaño de la imagen
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,15 +89,38 @@ export default function ProfileForm({ userData, setUserData }) {
     }
   };
 
+  const handleImageSelect = (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAlertClose = () => {
     setShowAlert(false);
     router.push(`../profile/${userData.userID}`); // Redirigir al perfil después de cerrar la alerta
   };
 
+  // const [previewImage, setPreviewImage] = useState(null);
+
+  const handleImageDrop = (e) => {
+    e.preventDefault();handleImageDrop
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e) => e.preventDefault();
+
   return (
     <>
       <form onSubmit={handleSubmit} style={styles.form} id="profileForm">
-        <label style={{ ...styles.label, marginTop: '-15px' }} htmlFor="nombreCompleto" >
+        <label style={{ ...styles.label, marginTop: '-5px' }} htmlFor="nombreCompleto" >
           Nombre Completo:
         </label>
         <input
@@ -149,16 +172,12 @@ export default function ProfileForm({ userData, setUserData }) {
           <div className={styles3.bg}></div>
           <div className={styles3.blob}></div>
           {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Vista previa"
-              style={{ ...styles.imagePreview, zIndex: 10, position: "relative", width: "80%", height: "80%" }}
-            />
-          ) : (
-            <p style={{ zIndex: 10, position: "relative", color: "#555", textAlign: "center" }}>
-              Arrastra una imagen aquí o haz clic para seleccionar
-            </p>
-          )}
+                <img src={previewImage} alt="Vista previa" className="max-h-full max-w-full rounded-md object-cover z-10 " 
+                  style={{ width: '90%', height: '90%' }}
+                />
+              ) : (
+                <p className="text-gray-500 text-center z-10">Arrastra o selecciona una imagen</p>
+              )}
         </div>
 
         <label style={styles.label} htmlFor="club">
@@ -205,7 +224,7 @@ const styles = {
   form: {
     position: "relative",
     border: "6px solid white",
-    padding: "2rem",
+    padding: "1rem",
     borderRadius: "25px", // Más redondeado
     width: "90%",
     maxWidth: "1300px",
@@ -222,7 +241,7 @@ const styles = {
   },
   label: {
     display: "block",
-    marginTop: "1.5rem",
+    marginTop: "0.5rem",
     fontSize: "1.1rem",
     fontWeight: "600",
     color: "#FFF", // Negro para las etiquetas

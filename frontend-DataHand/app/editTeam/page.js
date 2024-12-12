@@ -67,7 +67,6 @@ export default function EditarEquipo() {
         setError(""); // Resetea el error si el tipo es válido
       }
 
-      //AQUI NO SALTA EL ERROR
       if (
         (seleccionado.tipo === "portero" && tipo === "banquillo") || 
         (seleccionado.tipo === "banquillo" && tipo === "portero")
@@ -109,6 +108,21 @@ export default function EditarEquipo() {
         const nuevoBanquillo = [...equipoSeleccionadoNuevo.banquillo];
         [nuevoBanquillo[seleccionado.index], nuevosPorteros[index]] = [nuevosPorteros[index], nuevoBanquillo[seleccionado.index]];
         nuevoEstado = { ...equipoSeleccionadoNuevo, porteros: nuevosPorteros, banquillo: nuevoBanquillo };
+      } else if ((tipo === "jugador" && seleccionado.tipo === "nuevo") || (tipo === "nuevo" && seleccionado.tipo === "jugador")) {
+        const nuevosJugadores = [...equipoSeleccionadoNuevo.jugadores];
+        const nuevoBanquillo = [...equipoSeleccionadoNuevo.nuevos];
+        [nuevoBanquillo[seleccionado.index], nuevosJugadores[index]] = [nuevosJugadores[index], nuevoBanquillo[seleccionado.index]];
+        nuevoEstado = { ...equipoSeleccionadoNuevo, jugadores: nuevosJugadores, nuevos: nuevoBanquillo };
+      } else if ((tipo === "nuevo" && seleccionado.tipo === "banquillo") || (tipo === "banquillo" && seleccionado.tipo === "nuevo")) {
+        const nuevosJugadores = [...equipoSeleccionadoNuevo.nuevos];
+        const nuevoBanquillo = [...equipoSeleccionadoNuevo.banquillo];
+        [nuevoBanquillo[seleccionado.index], nuevosJugadores[index]] = [nuevosJugadores[index], nuevoBanquillo[seleccionado.index]];
+        nuevoEstado = { ...equipoSeleccionadoNuevo, nuevos: nuevosJugadores, banquillo: nuevoBanquillo };
+      } else if ((tipo === "nuevo" && seleccionado.tipo === "portero") || (tipo === "portero" && seleccionado.tipo === "nuevo")) {
+        const nuevosJugadores = [...equipoSeleccionadoNuevo.nuevos];
+        const nuevoBanquillo = [...equipoSeleccionadoNuevo.porteros];
+        [nuevoBanquillo[seleccionado.index], nuevosJugadores[index]] = [nuevosJugadores[index], nuevoBanquillo[seleccionado.index]];
+        nuevoEstado = { ...equipoSeleccionadoNuevo, nuevos: nuevosJugadores, porteros: nuevoBanquillo };
       }
 
       // Actualiza el estado del equipo
@@ -198,27 +212,26 @@ export default function EditarEquipo() {
     <div className="relative flex flex-col items-center min-h-screen bg-gradient-to-r from-orange-500 to-purple-500 overflow-hidden animate-gradient p-4 background-imageEE">
       {/* Sidebar */}
       <Sidebar userID={userID} />
-      
+  
       <div className="w-full max-w-4xl flex flex-col items-center mt-6">
         <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white text-center titulo-personalizado">
           EDITAR EQUIPO
         </h1>
-        
-         {alertaVisible && (
-                <PartidoAlerta 
-                    mensaje={error} 
-                    onClose={() => setAlertaVisible(false)} 
-                />
-            )}
-
-          {alertaVisible2 && (
-              <PartidoAlerta 
-                  mensaje={error2} 
-                  onClose={() => setAlertaVisible2(false)} // Esto no cierra
-              />
-          )}
-
-
+  
+        {alertaVisible && (
+          <PartidoAlerta 
+            mensaje={error} 
+            onClose={() => setAlertaVisible(false)} 
+          />
+        )}
+  
+        {alertaVisible2 && (
+          <PartidoAlerta 
+            mensaje={error2} 
+            onClose={() => setAlertaVisible2(false)} 
+          />
+        )}
+  
         {/* Nombre y Foto del Equipo */}
         <div className="flex flex-col items-center mt-6 mb-4 mt-6">
           {equipo.imagen ? (
@@ -230,84 +243,104 @@ export default function EditarEquipo() {
           )}
           <h1 className="text-2xl font-semibold text-white">{equipo.nombre}</h1>
         </div>
-      </div>
-
-      {/* Sección Porteros */}
-      <div className="mt-10 mr-10">
-        <h2 className="text-md sm:text-lg font-semibold text-white mb-2">Porteros</h2>        
+  
+        {/* Sección Porteros */}
+        <div className="mt-6 w-full">
+          <h2 className="text-md sm:text-lg font-semibold text-white mb-2 text-left">Porteros</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          <button
-            onClick={() => seleccionarJugador("local", 0, "portero")}
-            className={`${
-              seleccionado?.equipo === "local" && seleccionado?.index === 0 && seleccionado?.tipo === "portero"
-                ? "bg-red-500"
-                : "bg-blue-500"
-            } text-white px-3 py-2 rounded-lg`}
-          >
-            {equipo.porteros[0]}
-          </button>
-        </div>
-      </div>
-
-      {/* Sección Jugadores */}
-      <div className="mt-4">
-        <h2 className="text-md sm:text-lg font-semibold text-white mb-2">Jugadores</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {equipo.jugadores && equipo.jugadores.length > 0 ? (
-            equipo.jugadores.map((jugador, index) => (
-              <button
-                key={index}
-                onClick={() => seleccionarJugador("local", index, "jugador")}
-                className={`${
-                  seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "jugador"
-                    ? "bg-red-500"
-                    : "bg-green-500"
-                } text-white px-3 py-2 rounded-lg`}
-              >
-                {jugador}
-              </button>
-            ))
-          ) : (
-            <p>No hay jugadores disponibles</p>
-          )}
-        </div>
-
-        {/* Sección Banquillo */}
-        <h2 className="text-md sm:text-lg font-semibold text-white mt-4 mb-2 text-left">Banquillo Local</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {equipo.banquillo && equipo.banquillo.length > 0 ? (
-            equipo.banquillo.map((jugador, index) => (
-              <button
-                key={index}
-                onClick={() => seleccionarJugador("local", index, "banquillo")}
-                className={`${
-                  seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "banquillo"
-                    ? "bg-red-500"
-                    : "bg-yellow-500"
-                } text-white px-3 py-2 rounded-lg`}
-              >
-                {jugador}
-              </button>
-            ))
-          ) : (
-            <p>No hay jugadores disponibles</p>
-          )}
-          
-            {/* Segundo portero */}
-            {equipo.porteros && equipo.porteros.length > 1 && (
-            <button
-              onClick={() => seleccionarJugador("local", 1, "portero")}
-              className={`${
-                seleccionado?.equipo === "local" && seleccionado?.index === 1 && seleccionado?.tipo === "portero"
-                  ? "bg-red-500"
-                  : "bg-blue-500"
-                } text-white px-3 py-2 rounded-lg`}
+            {equipo.porteros && equipo.porteros.length > 0 ? (
+              equipo.porteros.map((portero, index) => (
+                <button
+                  key={index}
+                  onClick={() => seleccionarJugador("local", index, "portero")}
+                  className={`${
+                    seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "portero"
+                      ? "bg-red-500"
+                      : "bg-blue-500"
+                  } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
                 >
-            {equipo.porteros[1]}
-            </button>
-          )}
+                  {portero}
+                </button>
+              ))
+            ) : (
+              <p className="text-white">No hay porteros disponibles</p>
+            )}
+          </div>
+        </div>
+  
+        {/* Sección Jugadores */}
+        <div className="mt-6 w-full">
+          <h2 className="text-md sm:text-lg font-semibold text-white mb-2 text-left">Jugadores</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {equipo.jugadores && equipo.jugadores.length > 0 ? (
+              equipo.jugadores.map((jugador, index) => (
+                <button
+                  key={index}
+                  onClick={() => seleccionarJugador("local", index, "jugador")}
+                  className={`${
+                    seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "jugador"
+                      ? "bg-red-500"
+                      : "bg-green-500"
+                  } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
+                >
+                  {jugador}
+                </button>
+              ))
+            ) : (
+              <p className="text-white">No hay jugadores disponibles</p>
+            )}
+          </div>
+        </div>
+  
+        {/* Sección Banquillo */}
+        <div className="mt-6 w-full">
+          <h2 className="text-md sm:text-lg font-semibold text-white mb-2 text-left">Banquillo Local</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {equipo.banquillo && equipo.banquillo.length > 0 ? (
+              equipo.banquillo.map((jugador, index) => (
+                <button
+                  key={index}
+                  onClick={() => seleccionarJugador("local", index, "banquillo")}
+                  className={`${
+                    seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "banquillo"
+                      ? "bg-red-500"
+                      : "bg-yellow-500"
+                  } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
+                >
+                  {jugador}
+                </button>
+              ))
+            ) : (
+              <p className="text-white">No hay jugadores disponibles</p>
+            )}
+          </div>
+        </div>
+
+        {/* Sección Nuevos */}
+        <div className="mt-6 w-full">
+          <h2 className="text-md sm:text-lg font-semibold text-white mb-2 text-left">Nuevos fichajes</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {equipo.nuevos && equipo.nuevos.length > 0 ? (
+              equipo.nuevos.map((jugador, index) => (
+                <button
+                  key={index}
+                  onClick={() => seleccionarJugador("local", index, "nuevo")}
+                  className={`${
+                    seleccionado?.equipo === "local" && seleccionado?.index === index && seleccionado?.tipo === "nuevo"
+                      ? "bg-red-500"
+                      : "bg-pink-500"
+                  } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
+                >
+                  {jugador}
+                </button>
+              ))
+            ) : (
+              <p className="text-white">No hay jugadores disponibles</p>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
+  
 }
