@@ -160,8 +160,8 @@ export default function Home() {
                     sistemaDefensivoLocal: data.sistemaDefensivoLocal || '',
                     sistemaDefensivoVisitante: data.sistemaDefensivoVisitante || ''
                 });
-
-                setTengoNombres(true);
+                
+                setTengoDatos(true);
             } else {
                 const errorText = await res.text();
                 console.error('Error al obtener los datos del partido:', errorText); // Muestra el mensaje de error
@@ -249,7 +249,10 @@ export default function Home() {
 
     //Necesito: los id de los jugadores, una variable para guardar los nombres AAA
     const [nombresJugadores, setNombresJugadores] = useState([]);
+    const [tengoDatos, setTengoDatos] = useState(false);
     const [tengoNombres, setTengoNombres] = useState(false);
+
+    const [nombresJugadoresEID, setNombresJugadoresEID] = useState([]);
 
     const obtenerNombresJugadores = (equipos) => {
         const nombres = [];
@@ -271,32 +274,45 @@ export default function Home() {
       };
 
     useEffect(() => {
-        // Función para obtener y actualizar nombres de jugadores
-        const actualizarNombres = async (ids, setNombres) => {
+        // Actualizar nombres de jugadores y porteros   
+        if(tengoDatos){
+            obtenerNombresJugadores(equipos);    
+            setTengoNombres(true);
+        }
+        setTengoDatos(false);
+
+    }, [tengoDatos]);
+
+    useEffect(() => {
+        // Función para obtener y actualizar nombres de jugadores 
+        const actualizarEID = async () => {
             try {
-                const nombresActualizados = await Promise.all(
-                    ids.map(async (id) => {
-                        console.log('ID:', id);
-                        const usuario = await obtenerUsuario(id);
+                // Obtener las contraseñas para los IDs de jugadores
+                const nombresEIDActualizados = await Promise.all(
+                    nombresJugadores.map(async (id) => {
+                        const usuario = await obtenerUsuario(id); // Obtener datos del usuario
                         return {
-                            id,
-                            nombre: usuario?.nombreCompleto || `Jugador ${id}`, // Nombre real o temporal
+                            id, // El ID del jugador
+                            nombre: usuario?.nombreCompleto || `Jugador ${id}`, // Contraseña real o fallback
                         };
                     })
                 );
-                console.log('Nombres actualizados:', nombresActualizados);
-                setNombres(nombresActualizados); // Actualiza el estado con los nombres
+                setNombresJugadoresEID(nombresEIDActualizados); // Actualizar el estado con los pares
             } catch (error) {
-                console.error('Error al actualizar los nombres:', error);
+                console.error('Error al actualizar los IDs y nombres:', error);
             }
         };
-    
-        // Actualizar nombres de jugadores y porteros
-        //actualizarNombres(jugadoresTotales, setNombresJugadores);
-        obtenerNombresJugadores(equipos);
-        console.log("Nombres de los jugadores",nombresJugadores);
+        setTengoNombres(false);
+        actualizarEID();
 
-    }, [equipos]);
+    }, [tengoNombres]);
+
+    const obtenerNombrePorID = (id) => {
+        const jugador = nombresJugadoresEID.find((jugador) => jugador.id === id);
+        //console.log(jugador);
+        return jugador ? jugador.nombre : `Jugador ${id}`; // Devuelve el nombre o null si no se encuentra
+    };
+    
 
     // useEffect para actualizar partidos cuando ocurren cambios en equipos (sin `TiempoDeJuego`)
     useEffect(() => {
@@ -676,7 +692,7 @@ export default function Home() {
                                         : "bg-blue-500"
                                 } text-white px-3 py-2 rounded-lg`}
                             >
-                                Portero {equipos.local.porteros[0]}
+                                {obtenerNombrePorID(equipos.local.porteros[0])}
                             </button>
                         </div>
                     </div>
@@ -695,7 +711,7 @@ export default function Home() {
                                             : "bg-green-500"
                                     } text-white px-3 py-2 rounded-lg`}
                                 >
-                                    Jugador {jugador}
+                                    {obtenerNombrePorID(jugador)}
                                 </button>
                             ))}
                         </div>
@@ -712,7 +728,7 @@ export default function Home() {
                                             : "bg-yellow-500"
                                     } text-white px-3 py-2 rounded-lg`}
                                 >
-                                    Jugador {jugador}
+                                    {obtenerNombrePorID(jugador)}
                                 </button>
                             ))}
 
@@ -725,7 +741,7 @@ export default function Home() {
                                         : "bg-blue-500"
                                 } text-white px-3 py-2 rounded-lg`}
                             >
-                                Portero {equipos.local.porteros[1]}
+                                {obtenerNombrePorID(equipos.local.porteros[1])}
                             </button>
                         </div>
                     </div>
@@ -896,7 +912,7 @@ export default function Home() {
                                         : "bg-blue-500"
                                 } text-white px-3 py-3 rounded-lg`}
                             >
-                                Portero {equipos.visitante.porteros[0]} {/* Primer portero visible */}
+                                {obtenerNombrePorID(equipos.visitante.porteros[0])} {/* Primer portero visible */}
                             </button>
                         </div>
                     </div>
@@ -915,7 +931,7 @@ export default function Home() {
                                             : "bg-green-500"
                                     } text-white px-3 py-3 rounded-lg`}
                                 >
-                                    Jugador {jugador}
+                                    {obtenerNombrePorID(jugador)}
                                 </button>
                             ))}
                         </div>
@@ -932,7 +948,7 @@ export default function Home() {
                                             : "bg-yellow-500"
                                     } text-white px-3 py-3 rounded-lg`}
                                 >
-                                    Jugador {jugador}
+                                    {obtenerNombrePorID(jugador)}
                                 </button>
                             ))}
 
@@ -945,7 +961,7 @@ export default function Home() {
                                         : "bg-blue-500"
                                 } text-white px-3 py-3 rounded-lg`}
                             >
-                                Portero {equipos.visitante.porteros[1]} {/* Segundo portero en el banquillo */}
+                                {obtenerNombrePorID(equipos.visitante.porteros[1])} {/* Segundo portero en el banquillo */}
                             </button>
                         </div>
                     </div>
