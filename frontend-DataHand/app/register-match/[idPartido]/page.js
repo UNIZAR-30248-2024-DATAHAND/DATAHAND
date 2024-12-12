@@ -23,6 +23,8 @@ export default function Home() {
 
     const router = useRouter();
     const [contador, setContador] = useState(0);
+    const [eventosUndo, setEventosUndo] = useState([]);
+
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -329,7 +331,9 @@ export default function Home() {
         equipos.EquipoVisitante, 
         equipos.MarcadorLocal,
         equipos.MarcadorVisitante,
-        equipos.TiempoDeJuego, 
+        equipos.TiempoDeJuego,
+        equipos.EscudoLocal,
+        equipos.EscudoVisitante, 
         equipos.Parte, 
         equipos.local,
         equipos.visitante,
@@ -587,6 +591,19 @@ export default function Home() {
         handleEvento();
     }, [datosEvento]); // Solo se ejecuta cuando 'datosEvento' cambia
 
+    useEffect(() => {
+        const fetchEventos = async () => {
+            try {
+                const eventosObtenidos = await obtenerEventos(idPartido);
+                setEventos(eventosObtenidos);
+            } catch (error) {
+                console.error("Error al obtener los eventos:", error);
+            }
+        };
+    
+        fetchEventos();
+    }, [eventos]); // Se ejecutará cada vez que 'eventos' cambie
+
     const handleClosePopup = async () => {
         setShowPopup(false); // Oculta el popup
         // Actualizar eventos
@@ -612,7 +629,6 @@ export default function Home() {
         }));
     };
 
-    const [eventosUndo, setEventosUndo] = useState(null);
     
     useEffect(() => {
         const fetchEventos = async () => {

@@ -21,6 +21,8 @@ export async function POST(req) {
             EquipoVisitante: 'Equipo B',
             MarcadorLocal: 0,
             MarcadorVisitante: 0,
+            EscudoLocal: '/images/icon_shield.svg',
+            EscudoVisitante: '/images/icon_shield.svg',
             TiempoDeJuego: 0,
             Parte: 'Primera parte',
             local: {

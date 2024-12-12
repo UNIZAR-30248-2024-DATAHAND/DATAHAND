@@ -19,6 +19,14 @@ const crearPartidoSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    EscudoLocal: {
+      type: String,
+      required: true,
+    },
+    EscudoVisitante: {
+      type: String,
+      required: true,
+    },
     MarcadorLocal: {
       type: Number,
       required: true,
