@@ -212,6 +212,8 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
     
             if (res.ok) {
                 console.log('Evento eliminado correctamente');
+                const eventosObtenidos = await obtenerEventos(idPartido);
+                setEventos(eventosObtenidos);
                 const data = await res.json(); // Si deseas obtener datos del evento eliminado
             } else {
                 const errorData = await res.json(); // Captura el mensaje de error del servidor
