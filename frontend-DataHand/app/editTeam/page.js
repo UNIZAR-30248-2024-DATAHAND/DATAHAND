@@ -15,7 +15,6 @@ export default function EditarEquipo() {
   const [alertaVisible2, setAlertaVisible2] = useState(false);
   const userID = localStorage.getItem('userID');
 
-
     const [nombresJugadores, setNombresJugadores] = useState([]);
     const [tengoDatos, setTengoDatos] = useState(false);
     const [tengoNombres, setTengoNombres] = useState(false);
@@ -32,7 +31,7 @@ export default function EditarEquipo() {
           return null; // En caso de error, devuelve null
       }
     };
-    
+
     const obtenerNombresJugadores = (equipos) => {
       const nombres = [];
       // Recorrer cada categoría y agregar los ID de cada uno

@@ -38,8 +38,11 @@ export default function EditarPerfil() {
 
   const [error, setError] = useState(""); // Estado para manejar el error
   const [error2, setError2] = useState(""); // Estado para manejar el error
+  const [error3, setError3] = useState(""); // Estado para manejar el error
   const [alertaVisible, setAlertaVisible] = useState(false);
   const [alertaVisible2, setAlertaVisible2] = useState(false);
+  const [alertaVisible3, setAlertaVisible3] = useState(false);
+
 
   const [usuario, setUsuario] = useState({
     nombreCompleto: '',
@@ -222,8 +225,8 @@ export default function EditarPerfil() {
     
     const handleAceptarInvitacion = async () => {
       //alert(`Invitación aceptada para el usuario con ID: ${userID}`);
-      setError("Invitación aceptada para el usuario con ID: "+userID);
-      setAlertaVisible(true);
+      setError2("Invitación aceptada para el usuario con ID: "+userID);
+      setAlertaVisible2(true);
       try {
           const response = await fetch('/api/users/usuarios', {
               method: 'PATCH',
@@ -277,8 +280,8 @@ export default function EditarPerfil() {
     
     const handleRechazarInvitacion = async () => {
       //alert(`Invitación rechazada para el usuario con ID: ${userID}`);
-      setError("Invitación rechazada para el usuario con ID: "+userID);
-      setAlertaVisible(true);
+      setError2("Invitación rechazada para el usuario con ID: "+userID);
+      setAlertaVisible2(true);
       try {
         const response = await fetch('/api/users/usuarios', {
             method: 'PATCH',
@@ -448,6 +451,12 @@ export default function EditarPerfil() {
       
             <div className="flex-1 overflow-y-auto space-y-4 flex flex-col items-center px-4">
               {/* Mostrar los mensajes del chat seleccionado */}
+              {alertaVisible2 && (
+              <NotificacionAlerta 
+                mensaje={error2} 
+                onClose={() => setAlertaVisible2(false)} 
+              />
+            )}
               {mensajesFiltrados.reverse().map((msg, index) => (
                 <div
                   key={index}
