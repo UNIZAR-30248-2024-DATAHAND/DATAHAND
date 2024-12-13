@@ -16,6 +16,74 @@ export default function EditarEquipo() {
   const userID = localStorage.getItem('userID');
 
 
+    const [nombresJugadores, setNombresJugadores] = useState([]);
+    const [tengoDatos, setTengoDatos] = useState(false);
+    const [tengoNombres, setTengoNombres] = useState(false);
+
+    const [nombresJugadoresEID, setNombresJugadoresEID] = useState([]);
+
+    const obtenerUsuario = async (userID) => {
+      try {
+          const res = await fetch(`/api/users/usuarios?userID=${userID}`);
+          const data = await res.json();
+          return data; // Devuelve los datos del usuario
+      } catch (error) {
+          console.error('Error al obtener el usuario', error);
+          return null; // En caso de error, devuelve null
+      }
+    };
+    
+    const obtenerNombresJugadores = (equipos) => {
+      const nombres = [];
+      // Recorrer cada categoría y agregar los ID de cada uno
+      ['porteros', 'jugadores', 'banquillo', 'nuevos'].forEach((categoria) => {
+        // Verificar si la categoría existe dentro del objeto equipos
+        if (equipos[categoria]) {
+          // Agregar los valores de cada jugador en la categoría (no solo el 'id')
+          equipos[categoria].forEach((jugador) => {
+            nombres.push(jugador); // Aquí agregamos el valor completo de cada jugador
+          });
+        }
+      });
+      setNombresJugadores(nombres);
+    };
+
+    useEffect(() => {
+        // Actualizar nombres de jugadores y porteros   
+        if(tengoDatos){
+            obtenerNombresJugadores(equipo);    
+            setTengoNombres(true);
+        }
+        setTengoDatos(false);
+
+    }, [tengoDatos]);
+
+    useEffect(() => {
+        // Función para obtener y actualizar nombres de jugadores 
+        const actualizarEID = async () => {
+            try {
+                // Obtener las contraseñas para los IDs de jugadores
+                const nombresEIDActualizados = await Promise.all(
+                    nombresJugadores.map(async (id) => {
+                        const usuario = await obtenerUsuario(id); // Obtener datos del usuario
+                        return {
+                            id, // El ID del jugador
+                            nombre: usuario?.nombreCompleto || `Jugador ${id}`, // Contraseña real o fallback
+                        };
+                    })
+                );
+                console.log('Nombres de jugadores actualizados:', nombresEIDActualizados);
+                setNombresJugadoresEID(nombresEIDActualizados); // Actualizar el estado con los pares
+            } catch (error) {
+                console.error('Error al actualizar los IDs y nombres:', error);
+            }
+        };
+        actualizarEID();
+        setTengoNombres(false);
+        
+
+    }, [tengoNombres]);
+
   //ESTO A REVISAR 
   useEffect(() => {
     const fetchEquipo = async () => {
@@ -38,6 +106,7 @@ export default function EditarEquipo() {
         const equipoDelEntrenador = data.find((equipo) => equipo.entrenador === userID);
         if (equipoDelEntrenador) {
           setEquipo(equipoDelEntrenador);
+          setTengoDatos(true);
         } else {
           console.error('No se encontró un equipo para el entrenador especificado.');
         }
@@ -48,6 +117,11 @@ export default function EditarEquipo() {
 
     fetchEquipo();
   }, []);
+
+  const obtenerNombrePorID = (id) => {
+    const jugador = nombresJugadoresEID.find((jugador) => jugador.id === id);
+    return jugador ? jugador.nombre : `Jugador ${id}`; // Devuelve el nombre o null si no se encuentra
+  };
 
   const seleccionarJugador = (equipoSeleccionado, index, tipo) => {
     // Si ya se ha seleccionado un jugador, hacer el intercambio
@@ -259,7 +333,7 @@ export default function EditarEquipo() {
                       : "bg-blue-500"
                   } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
                 >
-                  {portero}
+                  {obtenerNombrePorID(portero)}
                 </button>
               ))
             ) : (
@@ -283,7 +357,7 @@ export default function EditarEquipo() {
                       : "bg-green-500"
                   } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
                 >
-                  {jugador}
+                  {obtenerNombrePorID(jugador)}
                 </button>
               ))
             ) : (
@@ -307,7 +381,7 @@ export default function EditarEquipo() {
                       : "bg-yellow-500"
                   } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
                 >
-                  {jugador}
+                  {obtenerNombrePorID(jugador)}
                 </button>
               ))
             ) : (
@@ -331,7 +405,7 @@ export default function EditarEquipo() {
                       : "bg-pink-500"
                   } text-white px-3 py-2 rounded-lg min-w-[80px] min-h-[40px]`}
                 >
-                  {jugador}
+                  {obtenerNombrePorID(jugador)}
                 </button>
               ))
             ) : (

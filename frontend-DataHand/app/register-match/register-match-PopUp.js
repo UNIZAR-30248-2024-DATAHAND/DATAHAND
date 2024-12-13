@@ -482,7 +482,7 @@ const PopUpAccion = ({ showPopup, onClose, asistencias, seleccionado, faseDeJueg
   const obtenerNombrePorID = (id) => {
     const jugador = nombresJugadoresEID.find((jugador) => jugador.id === id);
     return jugador ? jugador.nombre : `Jugador ${id}`; // Devuelve el nombre o null si no se encuentra
-};
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
