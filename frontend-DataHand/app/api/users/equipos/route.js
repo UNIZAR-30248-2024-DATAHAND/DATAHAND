@@ -137,6 +137,7 @@ export async function PUT(req) {
     equipo.jugadores = equipoActualizado.jugadores || equipo.jugadores;
     equipo.banquillo = equipoActualizado.banquillo || equipo.banquillo;
     equipo.sistemaDefensivo = equipoActualizado.sistemaDefensivo || equipo.sistemaDefensivo;
+    equipo.nuevos = equipoActualizado.nuevos || equipo.nuevos;
 
     // Guardar los cambios en la base de datos
     const equipoGuardado = await equipo.save();
