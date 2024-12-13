@@ -7,7 +7,7 @@ import UndoAlerta from '../components/UndoAlerta'; // Importa la modal
 import UndoConfirmacion from '../components/UndoConfirmacion'; // Importa la modal
 
 // <BarraHorizontal equipos={equipos} setEquipos={setEquipos} tiempoJugado={tiempoJugado} setTiempoJugado={setTiempoJugado}/>
-const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats, setEventosUndo, setTengoDatos}) => {
+const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, handleNavigateStats, setEventosUndo, setTengoDatos, setReloadEventos, setEventos, obtenerEventos}) => {
 
     // Estado para el cronómetro
     const [cronometroActivo, setCronometroActivo] = useState(false); // Estado para controlar si el cronómetro está activo
@@ -268,8 +268,11 @@ const BarraHorizontal = ({equipos, setEquipos, tiempoJugado, setTiempoJugado, ha
         setMostrarAlertaUNDO(false);
     };
 
-    const cerrarConfirmacion = () => {
+    const cerrarConfirmacion = async () => {
         setMostrarAlertaUNDO2(false);  // Cierra la alerta de confirmación
+        setReloadEventos(true);
+        const eventosObtenidos = await obtenerEventos(idPartido);
+        setEventos(eventosObtenidos);
     };
 
 
