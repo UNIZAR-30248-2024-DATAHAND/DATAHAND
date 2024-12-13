@@ -158,21 +158,3 @@
     box-shadow: 0 0 0 5px rgba(40, 167, 118, 0.6); /* Efecto de sombra */
     color: #fff;
 }
-
-/* AZUL NO TAN LARGO */
-.button10 {
-    background-color: #bfdbfe; /* Azul claro */
-    color: #3b82f6; /* Azul más oscuro */
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    width: 385px;
-    height: 45px;
-    transition: 0.3s;
-}
-
-.button10:hover {
-    background-color: #3b82f6; /* Azul más oscuro */
-    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.6); /* Efecto de sombra */
-    color: #fff;
-}

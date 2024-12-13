@@ -420,7 +420,7 @@ export default function EditarPerfil() {
                   {/* Botón para Enviar Invitación */}
                   <button
                     onClick={handleInvitacionSubmit}
-                    className={`${styles3.button10} w-auto px-3 py-1 text-white rounded font-bold active:bg-red-700 mb-4`}
+                    className={`${styles3.button8} w-auto px-3 py-1 text-white rounded font-bold active:bg-red-700 mb-4`}
                   >
                     Enviar invitación
                   </button>
