@@ -1,5 +1,5 @@
 import { render, fireEvent, screen } from '@testing-library/react';
-import UndoAlerta from '../../app/components/UndoAlerta'; // Ajusta la ruta si es necesario
+import UndoAlerta from '../../app/components/UndoAlerta';
 
 describe('UndoAlerta', () => {
     const mockOnConfirm = jest.fn();
