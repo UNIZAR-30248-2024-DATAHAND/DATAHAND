@@ -40,36 +40,44 @@ export default function EspecificoJugadores({dataEventos, dataEquipos}) {
 
     const [usuario, setUsuario] = useState(null); // Estado para un usuario específico
     const [jugadores, setJugadores] = useState(jugadoresIniciales);
+    
 
     useEffect(() => {
+        // Verificación si dataEventos es un array y si hay resultados en jugadoresUnicos
         const jugadoresUnicos = obtenerJugadoresUnicos(dataEventos, "local");
+    
+        if (!Array.isArray(jugadoresUnicos) || jugadoresUnicos.length === 0) {
+            console.error('No se encontraron jugadores únicos o el resultado no es un array');
+            return;  // No continuar si no hay jugadores
+        }
+    
         const nuevosJugadores = jugadoresUnicos.map((id) => ({
             id,
             nombre: `Jugador ${id}`, // Formato de nombre
-          }));
+        }));
+    
         setJugadores(nuevosJugadores);
-
+    
         const actualizarNombresJugadores = async () => {
             try {
-              const jugadoresConNombresReales = await Promise.all(
-                nuevosJugadores.map(async (jugador) => {
-                  const usuario = await obtenerUsuario(jugador.id, setUsuario); // Llamar a la función obtenerUsuario
-                  return {
-                    ...jugador,
-                    nombre: usuario?.nombreCompleto || `Jugador ${jugador.id}`, // Usar el nombre real o el temporal
-                  };
-                })
-              );
-              setJugadores(jugadoresConNombresReales); // Actualizar el estado con los nombres reales
+                const jugadoresConNombresReales = await Promise.all(
+                    nuevosJugadores.map(async (jugador) => {
+                        const usuario = await obtenerUsuario(jugador.id, setUsuario); // Llamar a la función obtenerUsuario
+                        return {
+                            ...jugador,
+                            nombre: usuario?.nombreCompleto || `Jugador ${jugador.id}`, // Usar el nombre real o el temporal
+                        };
+                    })
+                );
+                setJugadores(jugadoresConNombresReales); // Actualizar el estado con los nombres reales
             } catch (error) {
-              console.error("Error al actualizar los nombres de jugadores:", error);
+                console.error("Error al actualizar los nombres de jugadores:", error);
             }
-          };
-      
+        };
+    
         actualizarNombresJugadores();
-        
-        
-    }, []);
+    }, [dataEventos]);  // Asegúrate de añadir dataEventos como dependencia
+    
 
     const cambiarColor = (lanzamientos, total) => {
         // Si el total es 0, asignamos el color azul
