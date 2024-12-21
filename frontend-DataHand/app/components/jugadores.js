@@ -90,7 +90,7 @@ export default function Jugadores({dataEventos, dataEquipos}) {
         <div className="flex flex-wrap gap-1">
           {/* Suspensiones */}
           {Array.from({ length: susJug }).map((_, index) => (
-            <div key={`suspension-${index}`} className="w-4 h-4 rounded-full border-2 border-red-500"></div>
+            <div key={`suspension-${index}`} className="w-4 h-4 rounded-full border-2 border-red-500" role="presentation"></div>
           ))}
           {/* Goles 7m */}
           {Array.from({ length: gol7M }).map((_, index) => (
@@ -144,7 +144,7 @@ const calcularEstadisticasPortero = (inicio, fin, jugador) => {
       <div className="flex flex-wrap gap-1">
         {/* Suspensiones */}
         {Array.from({ length: susJug }).map((_, index) => (
-          <div key={`suspension-${index}`} className="w-4 h-4 rounded-full border-2 border-red-500"></div>
+          <div key={`suspension-${index}`} className="w-4 h-4 rounded-full border-2 border-red-500" ></div>
         ))}
         {/* Goles 7m */}
         {Array.from({ length: gol7M }).map((_, index) => (
