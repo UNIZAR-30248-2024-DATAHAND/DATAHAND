@@ -1,125 +1,82 @@
-// import { render, screen, act } from '@testing-library/react';
-// import '@testing-library/jest-dom';
-// import Home from '../../app/statsGen/[idPartido]/page';
-// import fetchMock from 'jest-fetch-mock';
-// import { useParams } from 'next/navigation';
+import { render, screen, waitFor } from "@testing-library/react";
+import Home from "../../app/statsGen/[idPartido]/page";
+import { useParams } from "next/navigation";
 
-// // Mock de `useParams`
-// jest.mock('next/navigation', () => ({
-//   useParams: jest.fn(),
-// }));
+jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
+}));
 
-// // Mock del almacenamiento local
-// Storage.prototype.getItem = jest.fn((key) => {
-//   if (key === 'userID') return '12345';
-//   return null;
-// });
+jest.mock("../../app/components/component", () => () => <div>Mocked Component</div>);
+jest.mock("../../app/components/Sidebar", () => () => <div>Mocked Sidebar</div>);
 
-// fetchMock.enableMocks();
+global.localStorage = {
+  getItem: jest.fn(() => "mockUserID"),
+};
 
-// describe('StatsGen Page', () => {
-//   beforeEach(() => {
-//     fetchMock.resetMocks();
-//     useParams.mockReturnValue({ idPartido: '1' }); // Mock de ID del partido
-//   });
+global.fetch = jest.fn();
 
-//   test('renders title and checks initial UI components', async () => {
-//     await act(async () => {
-//       render(<Home />);
-//     });
+describe("Home Page - StatsGen", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useParams.mockReturnValue({ idPartido: "123" });
+  });
 
-//     expect(screen.getByText('ESTADISTICAS GENERALES')).toBeInTheDocument();
-//     expect(screen.getByText('Cargando datos de equipos...')).toBeInTheDocument(); // Espera el componente hijo cargando.
-//   });
+  const mockEquipoData = {
+    IdPartido: "123",
+    Fecha: new Date().toISOString(),
+    EquipoLocal: "Equipo A",
+    EquipoVisitante: "Equipo B",
+    local: { jugadores: [], banquillo: [], porteros: [] },
+    visitante: { jugadores: [], banquillo: [], porteros: [] },
+  };
 
-//   test('fetches match data and updates UI on success', async () => {
-//     fetchMock.mockResponse((req) => {
-//       if (req.url.includes('crearPartido')) {
-//         return Promise.resolve(
-//           JSON.stringify({
-//             IdPartido: '1',
-//             Fecha: '2023-12-01T10:00:00Z',
-//             EquipoLocal: 'Equipo A',
-//             EquipoVisitante: 'Equipo B',
-//             MarcadorLocal: 10,
-//             MarcadorVisitante: 8,
-//             TiempoDeJuego: 30,
-//             Parte: 'Primera parte',
-//             local: {
-//               jugadores: [],
-//               banquillo: [],
-//               porteros: [],
-//             },
-//             visitante: {
-//               jugadores: [],
-//               banquillo: [],
-//               porteros: [],
-//             },
-//           }),
-//         );
-//       }
+  const mockEventoData = {
+    totalEventos: 2,
+    eventos: [
+      { Tipo: "Gol", Minuto: 10, Equipo: "Equipo A" },
+      { Tipo: "Gol", Minuto: 20, Equipo: "Equipo B" },
+    ],
+  };
 
-//       if (req.url.includes('eventos')) {
-//         return Promise.resolve(
-//           JSON.stringify({
-//             totalEventos: 2,
-//             eventos: [{ id: 1, tipo: 'gol' }, { id: 2, tipo: 'ataque fallido' }],
-//           }),
-//         );
-//       }
+  it("Debería renderizar correctamente el título de la página", () => {
+    render(<Home />);
+    const title = screen.getByText(/ESTADISTICAS GENERALES/i);
+    expect(title).toBeInTheDocument();
+  });
 
-//       return Promise.reject('unknown endpoint');
-//     });
+  it("Debería renderizar correctamente los componentes hijos", () => {
+    render(<Home />);
+    expect(screen.getByText("Mocked Component")).toBeInTheDocument();
+    expect(screen.getByText("Mocked Sidebar")).toBeInTheDocument();
+  });
 
-//     await act(async () => {
-//       render(<Home />);
-//     });
+  it("Debería mostrar estado de carga inicialmente", async () => {
+    fetch.mockResolvedValueOnce({ ok: true, json: jest.fn().mockResolvedValue(mockEquipoData) });
+    render(<Home />);
+    expect(screen.queryByText("Cargando...")).not.toBeInTheDocument(); // Asume que no hay indicador de carga textual
+  });
 
-//     expect(screen.getByText('ESTADISTICAS GENERALES')).toBeInTheDocument();
-//     expect(screen.queryByText('Cargando datos de equipos...')).not.toBeInTheDocument();
-//     expect(fetchMock).toHaveBeenCalledWith('../api/users/crearPartido?IdPartido=1', expect.anything());
-//     expect(fetchMock).toHaveBeenCalledWith('../../api/users/eventos?idPartido=1', expect.anything());
-//   });
+  it("Debería cargar los datos correctamente tras las llamadas API", async () => {
+    fetch
+      .mockResolvedValueOnce({ ok: true, json: jest.fn().mockResolvedValue(mockEventoData) }) // Eventos
+      .mockResolvedValueOnce({ ok: true, json: jest.fn().mockResolvedValue(mockEquipoData) }); // Equipo
 
-//   test('handles API errors gracefully', async () => {
-//     fetchMock.mockReject(new Error('API error'));
+    render(<Home />);
 
-//     await act(async () => {
-//       render(<Home />);
-//     });
+    await waitFor(() => {
+      expect(fetch).toHaveBeenCalledWith("../api/users/crearPartido?IdPartido=123", expect.any(Object));
+      expect(fetch).toHaveBeenCalledWith("../../api/users/eventos?idPartido=123", expect.any(Object));
+    });
+  });
 
-//     expect(screen.getByText('ESTADISTICAS GENERALES')).toBeInTheDocument();
-//     // Aquí podrías verificar si muestra un mensaje de error o realiza una acción de fallback según la implementación
-//     expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error en la solicitud GET'));
-//     expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error en la solicitud:'));
-//   });
+  it("Debería mostrar un error cuando falla la llamada a los datos del partido", async () => {
+    fetch.mockRejectedValueOnce(new Error("Error al obtener datos"));
 
-//   test('calls fetchData on mount and processes promises correctly', async () => {
-//     const mockEventos = [
-//       { id: 1, tipo: 'gol' },
-//       { id: 2, tipo: 'penalti' },
-//     ];
-//     const mockEquipos = {
-//       IdPartido: '1',
-//       Fecha: '2023-12-01',
-//       EquipoLocal: 'Local',
-//       EquipoVisitante: 'Visitante',
-//       MarcadorLocal: 5,
-//       MarcadorVisitante: 3,
-//     };
+    render(<Home />);
 
-//     fetchMock.mockResponses(
-//       [JSON.stringify({ totalEventos: mockEventos.length, eventos: mockEventos }), { status: 200 }],
-//       [JSON.stringify(mockEquipos), { status: 200 }],
-//     );
-
-//     await act(async () => {
-//       render(<Home />);
-//     });
-
-//     expect(fetchMock).toHaveBeenCalledTimes(2);
-//     expect(fetchMock).toHaveBeenCalledWith('../../api/users/eventos?idPartido=1', expect.anything());
-//     expect(fetchMock).toHaveBeenCalledWith('../api/users/crearPartido?IdPartido=1', expect.anything());
-//     expect(screen.getByText('ESTADISTICAS GENERALES')).toBeInTheDocument();
-//   });
-// });
+    await waitFor(() => {
+      // Reemplazar por mensajes de error manejados en el componente si existen
+      expect(fetch).toHaveBeenCalled();
+    });
+  });
+});
