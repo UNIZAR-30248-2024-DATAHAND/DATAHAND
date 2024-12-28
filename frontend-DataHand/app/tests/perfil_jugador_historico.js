@@ -8,8 +8,14 @@ const { Builder, By, until } = require('selenium-webdriver');
         // Abrir la página de inicio de Next.js
         await driver.get('http://localhost:3000'); // Cambia la URL según tu configuración
 
-        // Esperar 1 segundo
-        await driver.sleep(1000);
+        // Espera hasta que los campos estén disponibles
+        await driver.wait(until.elementLocated(By.css('input[placeholder="Correo electrónico"]')), 10000);
+
+        // Localiza el campo de correo electrónico por el atributo placeholder y escribe el correo
+        await driver.findElement(By.css('input[placeholder="Correo electrónico"]')).sendKeys('juan.lopez@example.com');
+
+        // Localiza el campo de contraseña por el atributo placeholder y escribe la contraseña
+        await driver.findElement(By.css('input[placeholder="Contraseña"]')).sendKeys('password123');
 
         // Esperar a que el botón "Iniciar Sesión" esté visible
         await driver.wait(until.elementLocated(By.css('button')), 5000);
@@ -18,46 +24,16 @@ const { Builder, By, until } = require('selenium-webdriver');
         const loginButton = await driver.findElement(By.css('button'));
         await loginButton.click();
 
-        // Esperar 1 segundo
-        await driver.sleep(1000);
-
-        // Verificar la redirección a "/home"
-        await driver.wait(until.urlIs('http://localhost:3000/home'), 5000);
-
-        // Esperar a que el botón "jugador" esté visible
-        const playerButton = await driver.wait(
-            until.elementLocated(By.xpath("//button[contains(text(),'Jugador')]")), // Selector por texto
-            5000
+        // Verificar que el texto 'PERFIL JUGADOR' está presente
+        const perfilTitle = await driver.wait(
+            until.elementLocated(By.css('h1 span span.letters')),
+            10000 // Incrementa el tiempo de espera
         );
-
-        // Hacer clic en el botón "jugador"
-        await playerButton.click();
-
-        // Verificar la redirección al perfil de jugador
-        await driver.wait(until.urlIs('http://localhost:3000/profile/2'), 5000);
-
-        // Esperar a que el botón para activar el sidebar esté visible
-        const toggleSidebarButton = await driver.wait(
-            until.elementLocated(By.xpath("//div[.//img[@src='/images/icon_right_arrow.svg']]")), // Selector por el atributo src
-            5000
-        );
-
-        // Esperar 1 segundo
-        await driver.sleep(1000);
-
-        // Hacer clic en el botón de toggle para mostrar el sidebar
-        await toggleSidebarButton.click();
-
-        // Verificar que la cabecera "Perfil jugador" esté presente
-        const header = await driver.wait(
-            until.elementLocated(By.css('h1.text-5xl.font-bold.mb-4.text-white')),
-            5000
-        );
-        const headerText = await header.getText();
-        if (headerText === 'Perfil Jugador') {
-            console.log('Cabecera "Perfil Jugador" verificada correctamente.');
+        const titleText = await perfilTitle.getText();
+        if (titleText.includes('PERFIL JUGADOR')) {
+            console.log('Título del perfil verificado correctamente: PERFIL JUGADOR');
         } else {
-            console.error('La cabecera no es la esperada. Se encontró: ' + headerText);
+            console.error('El título del perfil es incorrecto. Texto encontrado:', titleText);
         }
 
         // Verificar que el div con "Partido-82" y los botones esté presente
