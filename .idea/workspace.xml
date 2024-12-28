@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil_jugador.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/perfil_jugador_info.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/registro.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI17.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil_entrenador.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI3_PerfilEntrenador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/perfil_entrenador_info.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI3_PerfilJugador.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI4_PerfilEntrenador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/perfil_entrenador_stats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI4_PerfilJugador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/perfil_jugador_stats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI5_PerfilEntrenador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/perfil_entrenador_historico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/S2_PBI5_PerfilJugador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/perfil_jugador_historico.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/testLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/inicio_sesion.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil_entrenador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil_jugador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/stats_partido_jugador.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +129,7 @@
       <workItem from="1734017772061" duration="9193000" />
       <workItem from="1735212219690" duration="2503000" />
       <workItem from="1735238163282" duration="940000" />
-      <workItem from="1735398462227" duration="8639000" />
+      <workItem from="1735398462227" duration="10838000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />

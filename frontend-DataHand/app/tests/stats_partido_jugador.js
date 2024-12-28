@@ -1,6 +1,7 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
 (async function testPlayerProfile() {
+    // Inicializar el controlador para Chrome
     let driver = await new Builder().forBrowser('chrome').build();
 
     try {
@@ -35,45 +36,39 @@ const { Builder, By, until } = require('selenium-webdriver');
             console.error('El título del perfil es incorrecto. Texto encontrado:', titleText);
         }
 
-        // Verificar la información del jugador (nombre completo)
-        const playerInfoContainer = await driver.wait(
-            until.elementLocated(By.xpath("//p[contains(@class, 'font-semibold') and contains(@class, 'text-orange-500')]")),
+        // Verificar que el div con "Partido-82" y los botones esté presente
+        const partidoElement = await driver.wait(
+            until.elementLocated(By.xpath("//div[contains(@class, 'flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded')]//p[contains(text(), 'Partido-82')]")),
             5000
         );
-        const name = await playerInfoContainer.getText();
-        console.log('Contenido de name:', name);
 
-        if (name === 'Carlos Pérez') {
-            console.log('Información del jugador verificada correctamente.');
+        // Verificar que el texto sea "Partido-82"
+        const partidoText = await partidoElement.getText();
+        if (partidoText === 'Partido-82') {
+            console.log('El div con "Partido-82" está presente en la página.');
         } else {
-            console.error('La información del jugador es incorrecta. Nombre encontrado:', name);
+            console.error('No se encontró el partido esperado. Se encontró: ' + partidoText);
         }
 
-        // Buscar y hacer clic en el botón de la sidebar (se puede identificar por su clase, id o texto)
-        const sidebarButton = await driver.wait(
-            until.elementLocated(By.xpath("//button[contains(text(), 'Editar perfil')]")), // Usa el texto del botón de editar
+        // Verificar que el botón "Ver" esté presente
+        const buttonVer = await driver.wait(
+            until.elementLocated(By.xpath("//div[contains(@class, 'flex justify-between items-center p-2 border-b border-gray-400 mb-2 bg-gray-300 rounded')]//p[contains(text(), 'Partido-82')]/following-sibling::div//button[contains(text(), 'Ver')]")),
             5000
         );
-        await sidebarButton.click();
 
-        console.log('Botón "Editar perfil" clickeado');
+        console.log('El botón "Ver" está presente para "Partido-82".');
 
-        // Verificar si la página de edición de perfil se ha abierto correctamente
-        const editProfileTitle = await driver.wait(
-            until.elementLocated(By.xpath("//h1[contains(text(), 'Editar Perfil')]")),
-            5000 // Tiempo de espera hasta que aparezca el título de la página de edición
-        );
-        const editProfileText = await editProfileTitle.getText();
-        if (editProfileText === 'Editar Perfil') {
-            console.log('Página de edición de perfil abierta correctamente');
-        } else {
-            console.error('No se ha abierto la página de edición de perfil. Texto encontrado:', editProfileText);
-        }
+        // Hacer clic en el botón "Ver"
+        await buttonVer.click();
 
-        console.log('Prueba exitosa: Perfil del jugador y la edición verificada');
+
+        await driver.wait(until.urlIs('http://localhost:3000/statsGen/Partido-82'), 5000);
+
+        console.log('Prueba completada.');
     } catch (error) {
         console.error('Prueba fallida:', error);
     } finally {
+        // Cerrar el navegador
         await driver.quit();
     }
 })();

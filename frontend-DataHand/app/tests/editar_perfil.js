@@ -31,7 +31,7 @@ const { Builder, By, until } = require('selenium-webdriver');
         const guardarButton = await driver.wait(until.elementLocated(By.css('input[type="submit"][value="Guardar Cambios"]')), 5000);
         await guardarButton.click(); // Hacer clic en el botón "Guardar Cambios"
 
-        console.log("PBI17 exitosamente.");
+        console.log("Editar perfil correcto.");
         await driver.sleep(2000);
 
     } catch (error) {
