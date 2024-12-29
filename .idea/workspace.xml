@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="98035f58-caf1-41ea-be7e-e3001bbcfaeb" name="Changes" comment="Changes DB">
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_partido_entrenador.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/eliminar_partido_entrenador.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/stats_partido_entrenador.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil_entrenador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend-DataHand/app/tests/editar_perfil_jugador.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend-DataHand/app/tests/stats_partido_jugador.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +130,7 @@
       <workItem from="1734017772061" duration="9193000" />
       <workItem from="1735212219690" duration="2503000" />
       <workItem from="1735238163282" duration="940000" />
-      <workItem from="1735398462227" duration="10838000" />
+      <workItem from="1735398462227" duration="14233000" />
     </task>
     <task id="LOCAL-00001" summary="Changes DB">
       <option name="closed" value="true" />
