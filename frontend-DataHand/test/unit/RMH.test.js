@@ -1,21 +1,11 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { BarraHorizontal } from "../register-match-Horizontal"; // Ajusta el path si es necesario
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { BarraHorizontal } from "../../app/register-match/register-match-Horizontal";
+import { useParams } from "next/navigation";
 
 // Mock de `next/image`
 jest.mock("next/image", () => ({
     __esModule: true,
     default: (props) => <img {...props} />,
-}));
-
-// Mock de `styles` (si usas módulos CSS)
-jest.mock("../register-match-Horizontal.module.css", () => ({
-    popup: "popup",
-    popupContent: "popupContent",
-    popupTitle: "popupTitle",
-    equipoItem: "equipoItem",
-    equipoButton: "equipoButton",
-    closeButton: "closeButton",
 }));
 
 describe("BarraHorizontal Component", () => {
