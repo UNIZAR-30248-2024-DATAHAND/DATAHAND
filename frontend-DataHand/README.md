@@ -60,7 +60,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## Setting Up Jest for Testing
 
-1. Install necessary dependencies: Run the following command to install Jest and related testing libraries in 'frontend-Datahand' directory:
+1. **Install necessary dependencies: Run the following command to install Jest and related testing libraries in 'frontend-Datahand' directory:**
 
     ```bash
     npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event babel-jest
@@ -80,7 +80,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     npm install jest-fetch-mock --save-dev
 
 
-2. Create a file called 'babel.config.js' with the following content:
+2. **Create a file called 'babel.config.js' with the following content:**
    ```js
    module.exports = {
     presets: [
@@ -91,14 +91,32 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
    ```
    This file can only exist for testing. It cannot exist when running 'npm run dev'.
 
-3. Create a test in directory 'test'.
-4. To run tests, use the following command:
+3. **Create a test in directory 'test'.**
+4. **To run tests, use the following command:**
    ```bash
    npm test
 
+5. **Test Environment Configuration**
 
-Tema happy test selenium(lo primero actualizar con install para tener selenium y geckodriver):
-- los test se crean en la carpeta app/tests/
-- hay que lanzar npm run dev en una terminal
-- en otra terminal node app/tests/"testLogin.js"
-- aparecera una pantalla ejecutando el test dejar que acabe y revisar en terminal si ha sido exitoso
+Ensure that the `babel.config.js` file is correctly set up with the following presets.
+
+## Topic: Happy Selenium Test
+
+1. **Preparation**  
+   First, update and install Selenium and geckodriver.
+
+2. **Test Creation**  
+   - Tests are created in the `app/tests/` folder.
+
+3. **Running the Development Environment**  
+   - Run the command `npm run dev` in one terminal.
+
+4. **Executing the Test**  
+   - In another terminal, execute the following command:  
+     ```bash
+     node app/tests/"testLogin.js"
+     ```
+     
+5. **Results**  
+   - A window will appear running the test.  
+   - Let it finish and check the terminal to see if the test was successful.
